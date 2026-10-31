@@ -58,7 +58,7 @@
     const score = state === 'pre' ? '<span class="today-versus">VS</span>' :
       `<span class="today-score">${escapeHtml(away.score ?? '0')} <span>–</span> ${escapeHtml(home.score ?? '0')}</span>`;
     return `<article class="today-game-card">
-      <button class="today-game-trigger" type="button" data-game-index="${index}" aria-expanded="false" aria-controls="todayGameProps${index}" aria-label="${escapeHtml(away.team?.displayName || 'Away team')} at ${escapeHtml(home.team?.displayName || 'home team')}: show player prop projections">
+      <button class="today-game-trigger" type="button" data-game-index="${index}" aria-expanded="false" aria-controls="todayGameProps${index}" aria-label="${escapeHtml(away.team?.displayName || 'Away team')} at ${escapeHtml(home.team?.displayName || 'home team')}: show player prop lines">
         <div class="today-game-top"><span>${escapeHtml(time)}</span><span class="today-game-status ${state === 'in' ? 'is-live' : ''}">${escapeHtml(statusText || (state === 'post' ? 'Final' : 'Scheduled'))}</span></div>
         <div class="today-game-matchup">${team(away)}<div class="today-game-center">${score}</div>${team(home)}</div>
         ${context}
@@ -109,10 +109,12 @@
     return modelCache.get(key);
   }
 
-  function supportingData() {
+  function supportingData(sport, dateKey) {
     if (!supportingDataPromise) {
+      const date = `${dateKey.slice(0, 4)}-${dateKey.slice(4, 6)}-${dateKey.slice(6)}`;
+      const oddsPath = sport === 'nba' ? `/nba_odds_${date}.json` : '/live_odds_feed.json';
       supportingDataPromise = Promise.allSettled([
-        fetchJson('/feeds/player_photos.json'), fetchJson('/live_odds_feed.json')
+        fetchJson('/feeds/player_photos.json'), fetchJson(oddsPath)
       ]).then(([photos, odds]) => ({
         photos: photos.status === 'fulfilled' ? photos.value : {},
         quotes: odds.status === 'fulfilled' && Array.isArray(odds.value.quotes) ? odds.value.quotes : []
@@ -169,6 +171,14 @@
     </div>`;
   }
 
+  function marketQuoteRow(quote, photos) {
+    const row = { player_display_name: quote.player_name, player_id: quote.player_id };
+    return `<div class="today-prop-row">
+      <div class="today-prop-summary">${playerPhoto(row, photos)}<div class="today-prop-player"><strong>${escapeHtml(quote.player_name)}</strong><span>${escapeHtml(quote.book)} · sportsbook quote, unverified</span></div><div class="today-prop-projection"><b>${Number(quote.line).toFixed(1)}</b><small>PTS LINE</small></div></div>
+      ${lineBoxes(quote, Number.NaN)}
+    </div>`;
+  }
+
   async function showGameProps(button) {
     const panel = document.getElementById(button.getAttribute('aria-controls'));
     if (button.getAttribute('aria-expanded') === 'true') {
@@ -179,12 +189,12 @@
     button.setAttribute('aria-expanded', 'true');
     panel.hidden = false;
     if (panel.dataset.loaded) return;
-    panel.innerHTML = '<p class="today-prop-message">Loading player projections…</p>';
+    panel.innerHTML = '<p class="today-prop-message">Loading player lines…</p>';
     const event = currentEvents[Number(button.dataset.gameIndex)];
     const sport = activeSport();
     const dateKey = easternDate(new Date(event.date));
     try {
-      const [sources, extras] = await Promise.all([modelSources(sport, dateKey), supportingData()]);
+      const [sources, extras] = await Promise.all([modelSources(sport, dateKey), supportingData(sport, dateKey)]);
       if (!button.isConnected) return;
       const { away, home } = eventTeams(event);
       const match = sources.flatMap((source) => (Array.isArray(source.games) ? source.games : []).map((game) => ({ game, slate: source.slate })))
@@ -193,9 +203,14 @@
         ? match.slate.filter((row) => row.game_id === match.game.game_id && !row._fixture && (row.status === 'ACT' || row.status === 'ACTIVE') && !row.excl_reason)
         : [];
       rows.sort((a, b) => Number(b.proj_yards ?? b.proj_pts ?? 0) - Number(a.proj_yards ?? a.proj_pts ?? 0));
-      panel.innerHTML = rows.length
+      const marketQuotes = sport === 'nba' && match && !rows.length
+        ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false)
+        : [];
+      panel.innerHTML = marketQuotes.length
+        ? `<div class="today-prop-heading"><strong>${marketQuotes.length} player-points lines</strong><span>Unverified sportsbook quotes · no model predictions or qualified edges</span></div><div class="today-prop-list">${marketQuotes.map((quote) => marketQuoteRow(quote, extras.photos)).join('')}</div>`
+        : rows.length
         ? `<div class="today-prop-heading"><strong>${rows.length} player props</strong><span>Model estimates · line snapshots, not picks</span></div><div class="today-prop-list">${rows.map((row) => projectionRow(row, sport, match.game, dateKey, extras.photos, extras.quotes)).join('')}</div>`
-        : '<p class="today-prop-message">No PropStein player projections are available for this matchup yet.</p>';
+        : '<p class="today-prop-message">No player-points lines or PropStein projections are available for this matchup yet.</p>';
       panel.dataset.loaded = 'true';
     } catch (error) {
       if (!button.isConnected) return;
@@ -230,7 +245,7 @@
       currentEvents = games;
       gamesEl.innerHTML = games.length ? games.map(gameCard).join('') : `<p class="today-schedule-message">No ${leagueNames[sport]} games are scheduled for today.</p>`;
       document.getElementById('todayScheduleSource').textContent = `Schedule and scores: ESPN · Times shown in ${timeZoneSelect?.value === 'et' ? 'Eastern' : 'your local'} time · ${games.length} game${games.length === 1 ? '' : 's'}`;
-      modelSources(sport, dateKey).then((sources) => {
+      Promise.all([modelSources(sport, dateKey), supportingData(sport, dateKey)]).then(([sources, extras]) => {
         if (currentRequest !== requestNumber) return;
         games.forEach((event, index) => {
           const { away, home } = eventTeams(event);
@@ -238,8 +253,10 @@
             .find(({ game }) => game.gameday?.replaceAll('-', '') === dateKey && teamCode(game.away_team) === away && teamCode(game.home_team) === home && !game._fixture);
           const count = match && Array.isArray(match.slate)
             ? match.slate.filter((row) => row.game_id === match.game.game_id && !row._fixture && (row.status === 'ACT' || row.status === 'ACTIVE') && !row.excl_reason).length : 0;
+          const marketCount = sport === 'nba' && match && !count
+            ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false).length : 0;
           const label = gamesEl.querySelector(`[data-game-index="${index}"] [data-prop-count]`);
-          if (label && count) label.textContent = `PLAYER PROPS (${count})`;
+          if (label && (count || marketCount)) label.textContent = marketCount ? `PLAYER LINES (${marketCount})` : `PLAYER PROPS (${count})`;
         });
       }).catch(() => {});
     } catch (error) {

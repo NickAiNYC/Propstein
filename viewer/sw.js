@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
   '/app.js',
   '/style.css?v=2026_v205',
   '/app.js?v=2026_v205',
-  '/js/today-schedule.js?v=2026_v199',
+  '/js/today-schedule.js?v=2026_v205',
   '/js/sports/ufc.js?v=2026_v200',
   '/ufc.css?v=2026_v200',
   '/js/ufc-fighter.js?v=2026_v199',

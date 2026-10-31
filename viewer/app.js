@@ -3343,6 +3343,26 @@
     const asOf = health.oddsUpdatedAt && !Number.isNaN(Date.parse(health.oddsUpdatedAt))
       ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(health.oddsUpdatedAt))
       : null;
+    if (SPORT_ID === 'nba' && SLATES[state.slateKey]?.marketOnly) {
+      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false);
+      const samples = [];
+      const shownGames = new Set();
+      for (const quote of quotes) {
+        if (shownGames.has(quote.game_id)) continue;
+        shownGames.add(quote.game_id);
+        samples.push(quote);
+        if (samples.length === 5) break;
+      }
+      const title = $('#homeEdgeTitle');
+      if (title) title.textContent = 'NBA player points lines';
+      status.textContent = `${quotes.length} unverified sportsbook quotes across ${state.games.length} games · The Odds API · ${asOf || 'time unavailable'} · no model predictions`;
+      list.innerHTML = samples.map((quote) => `<article class="home-edge-card home-research-card">
+        <div class="home-edge-player"><strong>${esc(quote.player_name)}</strong><span>${esc(quote.book)} · ${esc(quote.market)}</span></div>
+        <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number(quote.line).toFixed(1)} <small>pts</small></strong><span>Over ${esc(oddsText(quote.over_odds))} · Under ${esc(oddsText(quote.under_odds))}</span></div>
+        <p class="home-research-note">Market line only · price and availability must be checked at the book.</p>
+      </article>`).join('') || '<p class="home-edge-empty">No paired player-points lines were returned for this date.</p>';
+      return;
+    }
     const fresh = !SLATES[state.slateKey]?.historical && health.dataKind !== 'fixture' && health.odds === 'ok' && health.oddsFreshness === 'ok'
       && health.news === 'ok' && health.newsFreshness === 'ok'
       && state.odds.quotes.some((quote) => quoteState(quote) === 'verified');
