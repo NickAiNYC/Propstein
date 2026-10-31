@@ -37,7 +37,7 @@ on:
   workflow_dispatch:
     inputs:
       nba_only:
-        description: 'Refresh NBA schedule and unverified player points quotes only (max 10 credits)'
+        description: 'Refresh NBA schedule and unverified FanDuel points lines only (max 10 credits)'
         type: boolean
         default: false
 
