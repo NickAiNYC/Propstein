@@ -53,6 +53,7 @@ export type PanelToBackgroundMessage =
   | { type: "REFRESH_SESSION" }
   | { type: "GET_STATE" }
   | { type: "UPDATE_SETTINGS"; settings: Record<string, unknown> }
+  | { type: "GET_AUDIT" }
   | { type: "OPEN_DEMO_PAGE" };
 
 export type PanelStatus =

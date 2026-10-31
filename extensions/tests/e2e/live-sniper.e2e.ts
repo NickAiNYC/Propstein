@@ -72,6 +72,7 @@ async function extensionId(): Promise<string> {
 test.before(async () => {
   await startDemoServer();
   context = await chromium.launchPersistentContext("/tmp/propstein-e2e-profile", {
+    ...(process.env.PROPSTEIN_E2E_CHROME ? { executablePath: process.env.PROPSTEIN_E2E_CHROME } : {}),
     // channel "chromium" = full browser binary in NEW headless mode, which
     // is required for extension loading (the headless shell has no
     // extension support).
@@ -168,7 +169,7 @@ test("e2e: monitoring the demo page produces four priced signal cards with exact
   assert.ok(text.includes("Juwan Johnson"), "Johnson card present");
   assert.ok(text.includes("DRIVE-REC-V1"), "model version shown");
   assert.ok(text.includes("UNCALIBRATED"), "honest confidence label shown");
-  assert.ok(text.includes("VISIBLE PAGE"), "source shown");
+  assert.ok(text.includes("SYNTHETIC DEMO PAGE"), "source shown honestly as synthetic");
   assert.ok(text.includes("SYNTHETIC") || text.includes("DEMO"), "synthetic provenance visible");
   // Kelce must be the alertable one; Henry/Johnson negative EV.
   assert.ok(text.includes("ALERTABLE"), "at least one alertable signal");
@@ -241,6 +242,18 @@ test("e2e: stopping monitoring withdraws all signals", async () => {
   });
   const text = await waitForPanel((t) => !t.includes("PAUSE MONITORING"), 15_000, "(monitoring stopped)");
   assert.ok(!text.includes("Travis Kelce"), "signals cleared after stop");
+});
+
+test("e2e: trial journal exports observed, repriced, and suspended decisions", async () => {
+  const result = await panelPage!.evaluate(async () => {
+    return (globalThis as { chrome: { runtime: { sendMessage(m: unknown): Promise<unknown> } } })
+      .chrome.runtime.sendMessage({ type: "GET_AUDIT" });
+  }) as { records?: Array<{ kind: string; reasonCodes: string[]; mode: string }>; error?: string };
+  assert.equal(result.error, undefined);
+  assert.ok((result.records?.length ?? 0) >= 4, "journal has the observation history");
+  assert.ok(result.records?.some((r) => r.kind === "ODDS_CHANGED"), "price move recorded");
+  assert.ok(result.records?.some((r) => r.reasonCodes.includes("SUSPENDED")), "suspension reason recorded");
+  assert.ok(result.records?.every((r) => r.mode === "synthetic-demo"), "fixture records cannot masquerade as live trial data");
 });
 
 // ---------------------------------------------------------------------------

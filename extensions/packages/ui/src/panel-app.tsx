@@ -23,6 +23,7 @@ export interface PanelBridge {
   requestSitePermission(origin: string): Promise<{ granted: boolean; reason: string }>;
   openDemoPage(): Promise<{ ok: boolean }>;
   updateSettings(settings: SniperSettings): Promise<{ ok: boolean }>;
+  exportAudit(): Promise<{ records?: unknown[]; error?: string }>;
   onMessage(handler: (msg: Record<string, unknown>) => void): () => void;
 }
 
@@ -92,6 +93,10 @@ export function LiveSniperPanel({ bridge }: { bridge: PanelBridge }) {
       />
 
       <div className="panel-body">
+        <div className="state-view state-view--warn" role="status">
+          <h2 className="state-view__title">RESEARCH TRIAL · NO LIVE BET SIGNALS</h2>
+          <p className="state-view__body">Only the synthetic DemoBook fixture is enabled. Real NFL drive alerts require a verified book quote, an independent possession feed, and a prospectively calibrated model. No wagers are placed.</p>
+        </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
           <ConnectionState quality={connection} detail={panelState?.adapterPlatform ? `adapter: ${panelState.adapterPlatform}` : undefined} />
           <EntitlementGate
@@ -203,6 +208,17 @@ export function LiveSniperPanel({ bridge }: { bridge: PanelBridge }) {
           </button>
         )}
         <button type="button" className="btn btn--ghost" onClick={() => setShowSettings((v) => !v)}>SETTINGS</button>
+        <button type="button" className="btn btn--ghost" onClick={async () => {
+          const result = await bridge.exportAudit();
+          if (result.error || !result.records) { setError(result.error ?? "Audit export unavailable"); return; }
+          const blob = new Blob([result.records.map((record) => JSON.stringify(record)).join("\n") + "\n"], { type: "application/x-ndjson" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `propstein-trial-audit-${new Date().toISOString().slice(0, 10)}.jsonl`;
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(url), 60_000);
+        }}>EXPORT TRIAL LOG</button>
       </div>
 
       {showSettings && (

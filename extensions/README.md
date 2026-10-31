@@ -77,6 +77,22 @@ APP_ENV=development PROPWIRE_ALLOW_DEV_AUTH_BYPASS=1 \
 
 ## The signal pipeline
 
+### Read-only trial status (2026-10-31)
+
+Only DemoBook is enabled. Its drive context and model are synthetic and are
+labeled as such in the panel. DraftKings, FanDuel, and Polymarket adapters
+remain disabled. A sportsbook DOM drive ID is never treated as an independent
+possession feed. Real drive signals require a separate feed with matching
+event and drive IDs, a fresh source timestamp, and a prospectively calibrated
+model. Until those inputs exist, the extension cannot provide live NFL betting
+alerts.
+
+The service worker appends observed events and decisions to a local IndexedDB
+trial journal. Use **EXPORT TRIAL LOG** in the panel to save a JSONL copy for
+review. If the journal cannot be opened or written, monitoring stops. The log
+is local to the browser profile; export it before removing the extension or
+clearing browser data.
+
 ```
 sportsbook tab (visible DOM only)
   └─ content bridge (isolated world, read-only, opt-in per origin)
