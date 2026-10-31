@@ -64,7 +64,11 @@
       if (titleEl) titleEl.textContent = card.event_name || 'Next UFC card';
       const fights = [...(card.fights || [])].reverse(); // main event first
       const stale = card.market_as_of ? `Odds as of ${new Date(card.market_as_of).toLocaleString('en-US', { timeZone: 'America/New_York', timeZoneName: 'short' })}` : 'No odds pulled yet';
-      container.innerHTML = `<div class="ufc-honesty"><strong>${esc(card.honesty || 'NO EDGE')}</strong> · Results-only backtest: Brier ${esc(card.backtest?.brier ?? '—')} vs 0.25 coin flip (n=${esc(card.backtest?.n ?? 0)})</div>
+      // Receipt state must stay visible on the UFC surface (charter: UNVERIFIED is never hidden).
+      // card.receipts_verified is 0/absent until a receipt layer exists; generic toasts stay
+      // suppressed on this tab because this banner is the sport-native home for the signal.
+      const receipts = card.receipts_verified ?? 0;
+      container.innerHTML = `<div class="ufc-honesty"><strong>${esc(card.honesty || 'NO EDGE')}</strong> · Results-only backtest: Brier ${esc(card.backtest?.brier ?? '—')} vs 0.25 coin flip (n=${esc(card.backtest?.n ?? 0)}) · Receipt-verified quotes: ${receipts} — displayed lines are metered pulls, not receipts</div>
         <div class="ufc-card-list">${fights.map(fightCard).join('')}</div>`;
       if (sourceEl) sourceEl.textContent = `Card: ESPN · Odds: The Odds API (fight winner, total rounds) · ${stale} · Times in Eastern Time · ${fights.length} fights`;
     } catch (error) {
