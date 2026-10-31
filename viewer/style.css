@@ -7184,9 +7184,9 @@ article[data-focused="true"] {
   font: 600 9px/1 var(--mono, monospace);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #f5b445;
-  border: 1px solid rgba(245, 180, 69, 0.45);
-  background: rgba(245, 180, 69, 0.10);
+  color: #c7ad85;
+  border: 1px solid rgba(199, 173, 133, 0.25);
+  background: rgba(199, 173, 133, 0.06);
   padding: 2px 5px;
   border-radius: var(--radius-sm);
   white-space: nowrap;
@@ -15310,10 +15310,10 @@ body {
   #cardView.card-grid { grid-template-columns: 1fr !important; max-width: 1220px !important; gap: 10px !important; }
   #cardView:not(.compact-grid) .mobile-quant-row.quoted-card {
     display: grid !important; grid-template-columns: minmax(215px,.85fr) minmax(205px,1fr) minmax(250px,1.15fr);
-    gap: 10px 14px; align-items: stretch; padding: 13px 15px !important;
+    gap: 10px 14px; align-items: stretch; padding: 15px !important;
   }
-  #cardView:not(.compact-grid) .quoted-card .card-header-row { grid-column: 1; grid-row: 1 / span 2; margin: 0 !important; flex-direction: column !important; align-items: stretch !important; }
-  #cardView:not(.compact-grid) .quoted-card .card-id-block { align-items: flex-start !important; width: 100%; }
+  #cardView:not(.compact-grid) .quoted-card .card-header-row { grid-column: 1; grid-row: 1 / span 2; margin: 0 !important; flex-direction: column !important; align-items: stretch !important; justify-content: flex-start !important; gap: 10px !important; }
+  #cardView:not(.compact-grid) .quoted-card .card-id-block { align-items: flex-start !important; width: 100%; flex: 0 0 auto !important; }
   #cardView:not(.compact-grid) .quoted-card .card-name-group { min-width: 0; }
   #cardView:not(.compact-grid) .quoted-card .card-id-block .pw-avatar { width: 52px !important; height: 52px !important; min-width: 52px !important; min-height: 52px !important; border-radius: 10px !important; }
   #cardView:not(.compact-grid) .quoted-card .card-hero-edge-block { align-self: flex-start; align-items: flex-start !important; margin-left: 34px; }
