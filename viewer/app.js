@@ -3320,12 +3320,13 @@
     if (!box) return;
     box.hidden = false;
     box.classList.add('nba-market-only');
-    const quotesHtml = rows.slice(0, 100).map(q => {
+    const quotesHtml = rows.map(q => {
       const game = state.games.find(g => g.game_id === q.game_id);
       const matchup = game ? `${game.away_team} @ ${game.home_team}` : 'NBA';
+      const started = game?.tipoff_utc && Date.parse(game.tipoff_utc) <= Date.now();
       const oddsLabel = value => Number(value) > 0 ? `+${value}` : String(value);
       return `<article class="nba-market-quote">
-        <div><strong>${esc(q.player_name)}</strong><span>${esc(matchup)} · ${esc(q.book)}</span></div>
+        <div><strong>${esc(q.player_name)}</strong><span>${esc(matchup)} · ${esc(q.book)}${started ? ' · GAME STARTED' : ''}</span></div>
         <div class="nba-market-sides"><span class="nba-market-over">↑ OVER ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span class="nba-market-under">↓ UNDER ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
       </article>`;
     }).join('');
