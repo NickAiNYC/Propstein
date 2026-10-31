@@ -1,0 +1,46 @@
+name: Odds Feed Freshness
+
+on:
+  schedule:
+    - cron: '15 */4 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: autopilot
+  cancel-in-progress: false
+
+jobs:
+  refresh-and-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Install contract validator
+        run: python -m pip install 'pydantic>=2,<3'
+
+      - name: Refresh public Polymarket observations
+        run: python scripts/fetch_polymarket_props.py
+
+      - name: Check freshness and provenance
+        run: python scripts/check_odds_freshness.py --max-age-hours 6
+
+      - name: Publish passing snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add viewer/live_odds_feed.json viewer/live_odds_feed.manifest.json
+          if git diff --cached --quiet; then
+            echo "No new odds snapshot to publish."
+            exit 0
+          fi
+          git commit -m "chore(data): refresh Polymarket odds snapshot [skip ci]"
+          git push

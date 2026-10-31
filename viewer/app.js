@@ -681,7 +681,7 @@
     if (widget) {
       widget.onclick = (e) => {
         if (e.target.closest('#manualPollBtn')) return;
-        toast('Live odds: The Odds API (multi-book player props) · refreshed by Daily Data Autopilot');
+        toast(`Market quote feed: ${marketFeedSourceLabel()} · checked against the published snapshot`);
       };
     }
   }
@@ -720,8 +720,40 @@
     return 'UNVERIFIED';
   }
 
+  function marketFeedSourceLabel() {
+    if (state.feedHealth?.dataKind === 'fixture') return 'Research fixture';
+    const quotes = state.odds?.quotes || [];
+    const polymarket = quotes.some((quote) => String(quote.book).toLowerCase() === 'polymarket');
+    const sportsbooks = quotes.some((quote) => {
+      const book = String(quote.book || '').toLowerCase();
+      return book && book !== 'polymarket' && !book.includes('synthetic') && !book.includes('demo');
+    });
+    if (polymarket && sportsbooks) return 'Polymarket CLOB + sportsbooks';
+    if (polymarket) return 'Polymarket CLOB';
+    if (sportsbooks) return 'Sportsbook quotes';
+    return 'No current market quotes';
+  }
+
   function updateFeedVerificationUI() {
     const label = feedVerificationLabel();
+    const health = feedHealthStates();
+    const verified = (state.odds?.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
+    const researchCount = Array.isArray(state.livePicks?.picks) ? state.livePicks.picks.length : 0;
+    const researchSource = researchCount ? String(state.livePicks.source || 'Source unspecified') : 'No current research scan';
+    if ($('#settingsFeedProvider')) $('#settingsFeedProvider').textContent = marketFeedSourceLabel();
+    if ($('#settingsResearchSource')) $('#settingsResearchSource').textContent = researchSource;
+    if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent = `${verified} feed-verified quotes${verified ? '' : ' · independent audit pending'}`;
+    const blockers = [];
+    if (SLATES[state.slateKey]?.historical || health.dataKind === 'fixture') {
+      blockers.push('historical/fixture slate');
+    } else {
+      if (health.odds !== 'ok' || health.oddsFreshness !== 'ok') blockers.push('fresh market quotes');
+      if (!verified) blockers.push('independent quote audit');
+      if (health.news !== 'ok' || health.newsFreshness !== 'ok') blockers.push('fresh news');
+      if (breakerFor(state.filters.market).calibrated === false) blockers.push('calibrated model');
+    }
+    if ($('#settingsQualificationStatus')) $('#settingsQualificationStatus').textContent = blockers.length
+      ? `Waiting on: ${blockers.join(', ')}` : 'Feed prerequisites met; per-line gates still apply';
     const selector = $('#slateSelector');
     const activeOption = selector && selector.querySelector
       ? selector.querySelector(`option[value="${state.slateKey}"]`)
@@ -772,6 +804,7 @@
           state.feedHealth.odds = 'ok';
           state.feedHealth.oddsUpdatedAt = freshData.updated_at || null;
         }
+        updateFeedVerificationUI();
 
         // Compute directional EV / edge tick flashes
         state.tickFlashes = {};
@@ -3214,7 +3247,7 @@
       $('#emptyState').innerHTML = state.proView === 'verified'
         ? '<div class="anti-tout-empty-wrap"><div class="anti-tout-title">No verified 15%+ edges</div><p class="anti-tout-desc">This view requires a verified quote and a modeled probability edge of at least 15%.</p></div>'
         : state.proView === 'gaps'
-          ? '<div class="anti-tout-empty-wrap"><div class="anti-tout-title">No book line gaps</div><p class="anti-tout-desc">A gap appears when two listed books differ by at least half a unit for this market.</p></div>'
+          ? '<div class="anti-tout-empty-wrap"><div class="anti-tout-title">No comparable sportsbook lines</div><p class="anti-tout-desc">This view compares lines from two distinct sportsbooks. Polymarket CLOB prices and research fixtures are excluded.</p></div>'
           : `
         <div class="anti-tout-empty-wrap">
           <div class="anti-tout-icon">${SVG_ICONS.search}</div>
@@ -3280,7 +3313,7 @@
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
       status.textContent = research.length
-        ? `Live qualification paused · ${research.length} model-scored observations · last scan ${scanTime || 'unknown'} · no independent quote audit`
+        ? `Showing ${Math.min(5, research.length)} of ${research.length} ${String(state.livePicks.source || 'source-unspecified')} research lines · ${(state.odds.quotes || []).filter((quote) => String(quote.book).toLowerCase() === 'polymarket').length} Polymarket CLOB quotes · qualification paused (no independent quote audit) · scan ${scanTime || 'unknown'}`
         : `Live qualification paused · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
       list.innerHTML = research.length
         ? research.slice(0, 5).map((pick) => {
@@ -5875,7 +5908,7 @@
       <th style="width:12%">Matchup</th>
       <th class="th-num${dimCls} th-num-w18">Book / Implied % <span class="help-bubble" title="Listed side's raw implied probability from American odds, before removing vig. Quote status appears below.">?</span></th>
       <th class="th-num" style="width:24%">Model (Fair | Proj | 80% CI) <span class="help-bubble" title="True-scale bullet graph: Amber tick is Book line, White tick is Model Fair, Green dot is Proj Mean, Shaded bar is 80% CI.">?</span></th>
-      <th class="th-num${dimCls} th-num-w18">Price Check / Edge <span class="help-bubble" title="Mathematical edge vs de-vigged market line.">?</span></th>
+      <th class="th-num${dimCls} th-num-w18">Price Check / Edge <span class="help-bubble" title="Model comparison with the observed market price. Unverified sources remain research only.">?</span></th>
     </tr>`;
   }
 
@@ -6490,6 +6523,7 @@
   function detectBookDiscrepancy(row) {
     if (!row) return null;
     const offers = (state.odds?.quotes || []).filter((q) => q.market === state.filters.market &&
+      !/polymarket|synthetic|demo/i.test(String(q.book || '')) &&
       (q.player_id === row.player_id || String(q.player_name || '').toLowerCase() === String(row.player_display_name || '').toLowerCase()));
     if (offers.length < 2) return null;
     // Compare distinct books only. Multiple snapshots from one book are a
