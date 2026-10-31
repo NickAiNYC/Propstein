@@ -1,11 +1,11 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v203-ufc-card-parity';
+const CACHE_NAME = 'propstein-v204-odds-provenance';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v202',
-  '/app.js?v=2026_v202',
+  '/style.css?v=2026_v204',
+  '/app.js?v=2026_v204',
   '/js/today-schedule.js?v=2026_v199',
   '/js/sports/ufc.js?v=2026_v200',
   '/ufc.css?v=2026_v200',

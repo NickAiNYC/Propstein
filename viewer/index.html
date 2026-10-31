@@ -51,11 +51,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ufc.css?v=2026_v200">
-  <link rel="stylesheet" href="/style.css?v=2026_v202">
+  <link rel="stylesheet" href="/style.css?v=2026_v204">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v179" defer></script>
-  <script src="/app.js?v=2026_v202" defer></script>
+  <script src="/app.js?v=2026_v204" defer></script>
   <script src="/js/sports/ufc.js?v=2026_v200" defer></script>
   <script src="/js/today-schedule.js?v=2026_v199" defer></script>
   <script src="/js/front-page.js?v=2026_v198" defer></script>
@@ -139,7 +139,7 @@
         </div>
 
         <!-- Live Odds Polling Countdown & Status Widget (Desktop only) -->
-        <div class="live-polling-widget pw-desktop-only" id="livePollingWidget" title="Live Odds Ingestion Engine · The Odds API · Click to poll now">
+        <div class="live-polling-widget pw-desktop-only" id="livePollingWidget" title="Market quote feed status · Click to check again">
           <span class="polling-dot pulse"></span>
           <span class="polling-timer" id="pollingTimerText">Telemetry active</span>
           <button type="button" class="polling-refresh-btn" id="manualPollBtn" aria-label="Poll fresh quotes now" title="Poll fresh quotes now">
@@ -441,7 +441,7 @@
         <div class="front-pro-segments">
           <button type="button" data-pro-view="all" aria-pressed="true">All</button>
           <button type="button" data-pro-view="verified" aria-pressed="false">Verified 15%+ edge</button>
-          <button type="button" data-pro-view="gaps" aria-pressed="false">Book line gaps</button>
+          <button type="button" data-pro-view="gaps" aria-pressed="false">Sportsbook line gaps</button>
         </div>
       </div>
       <noscript>
@@ -605,12 +605,20 @@
           <h3>Data Feed &amp; Verification</h3>
           <div class="settings-info-card">
             <div class="settings-info-row">
-              <span>Feed Provider</span>
-              <b>The Odds API</b>
+              <span>Market quote feed</span>
+              <b id="settingsFeedProvider">Checking source…</b>
+            </div>
+            <div class="settings-info-row">
+              <span>Research scan</span>
+              <b id="settingsResearchSource">Checking source…</b>
             </div>
             <div class="settings-info-row">
               <span>Verification</span>
-              <b class="text-accent" id="settingsReceiptsStatus">Receipt-Verified</b>
+              <b id="settingsReceiptsStatus">Checking receipts…</b>
+            </div>
+            <div class="settings-info-row">
+              <span>Qualification</span>
+              <b id="settingsQualificationStatus">Checking prerequisites…</b>
             </div>
             <div class="settings-info-row">
               <span>Settlement Audit</span>

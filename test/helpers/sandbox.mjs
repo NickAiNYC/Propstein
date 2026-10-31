@@ -250,7 +250,7 @@ export function loadApp(sandbox) {
     renderAll, renderBoard, renderHomeEdgePreview, fairValue, projectionValue, logBet, openExecutionSlip, confirmExecution, setView,
     setPlayMode, breakerFor,
     sportSwitcherItems, switchToSport, defaultBootSlate,
-    feedHealthStates, updateFeedHealthUI, feedVerificationLabel, updateFeedVerificationUI, executionDecision, stampProvenance,
+    feedHealthStates, updateFeedHealthUI, feedVerificationLabel, updateFeedVerificationUI, marketFeedSourceLabel, detectBookDiscrepancy, executionDecision, stampProvenance,
     renderSportChrome, renderDetailModal,
     storage: { loadPortfolio, savePortfolio, loadWatchlist, saveWatchlist, migrateLegacyStorage, MIGRATION_FLAG, STORE, migrationResult }
   };
