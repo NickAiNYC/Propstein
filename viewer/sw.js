@@ -1,14 +1,15 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v198-player-drawer-ufc';
+const CACHE_NAME = 'propstein-v199-ufc-polish';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
   '/style.css?v=2026_v198',
   '/app.js?v=2026_v198',
-  '/js/today-schedule.js?v=2026_v198',
-  '/js/sports/ufc.js?v=2026_v196',
-  '/ufc.css?v=2026_v196',
+  '/js/today-schedule.js?v=2026_v199',
+  '/js/sports/ufc.js?v=2026_v199',
+  '/ufc.css?v=2026_v199',
+  '/js/ufc-fighter.js?v=2026_v199',
   '/js/front-page.js?v=2026_v198',
   '/league-logos/nba.png',
   '/league-logos/nfl.png',

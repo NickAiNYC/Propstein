@@ -253,6 +253,8 @@
   let ufcActive = false;
 
   function showComingSoon(sport) {
+    ufcActive = false;
+    document.body.classList.remove('ufc-active');
     const label = sport.toUpperCase();
     document.getElementById('comingSoonLogo').src = `/league-logos/${sport === 'ufc' ? 'ufc.svg' : 'nhl.png'}`;
     document.getElementById('comingSoonTitle').textContent = `${label} coming soon`;
@@ -276,6 +278,7 @@
       button.setAttribute('aria-checked', String(selected));
     });
     ufcActive = true;
+    document.body.classList.add('ufc-active');
     requestNumber += 1; // cancel any in-flight league schedule render
     document.getElementById('todayScheduleDate').textContent = 'Next UFC card · fight winner and total rounds';
     if (window.PropSteinUFC) {
@@ -288,6 +291,8 @@
 
   function showSchedule() {
     ufcActive = false;
+    document.body.classList.remove('ufc-active');
+    gamesEl.classList.remove('ufc-scope');
     document.getElementById('comingSoonPage').hidden = true;
     document.body.classList.remove('coming-soon-active');
     document.querySelectorAll('#sportSwitcher [data-sport], #mobileSportSwitcher [data-sport]').forEach((button) => {

@@ -2,14 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>UFC fighter · PropStein</title>
   <meta name="theme-color" content="#070708">
-  <link rel="stylesheet" href="/ufc.css?v=2026_v196">
-  <style>body { margin: 0; background: #070708; }</style>
-  <script src="/js/ufc-fighter.js?v=2026_v196" defer></script>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="manifest" href="/site.webmanifest?v=2027_icon2">
+  <link rel="preload" href="/ufc_fighters.json" as="fetch" crossorigin="anonymous">
+  <link rel="preconnect" href="https://a.espncdn.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ufc.css?v=2026_v199">
+  <script src="/js/ufc-fighter.js?v=2026_v199" defer></script>
 </head>
-<body>
-  <main class="ufc-page" id="ufcFighter"><p>Loading fighter…</p></main>
+<body class="ufc-page-body">
+  <main class="ufc-page" id="ufcFighter" aria-busy="true">
+    <a class="ufc-back" href="/">← PropStein</a>
+    <div class="ufc-hero"><span class="ufc-photo ufc-skel"></span><div style="flex:1"><div class="ufc-skel" style="height:24px;width:60%"></div><div class="ufc-skel" style="height:14px;width:40%;margin-top:10px"></div></div></div>
+    <div class="ufc-stats"><div class="ufc-skel" style="height:58px"></div><div class="ufc-skel" style="height:58px"></div><div class="ufc-skel" style="height:58px"></div></div>
+  </main>
 </body>
 </html>
