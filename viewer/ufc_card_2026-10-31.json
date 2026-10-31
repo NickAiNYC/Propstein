@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-10-31T08:09:52Z",
+  "generated_at": "2026-10-31T15:58:32Z",
   "event_id": "600061420",
   "event_name": "UFC Fight Night: Moicano vs. Nolan",
   "date": "2026-10-31",
@@ -79,11 +79,11 @@
         ],
         "best": [
           {
-            "price": -650,
-            "book": "draftkings"
+            "price": -670,
+            "book": "fanduel"
           },
           {
-            "price": 550,
+            "price": 585,
             "book": "betonlineag"
           }
         ],
@@ -203,16 +203,16 @@
       },
       "market": {
         "h2h_novig": [
-          0.2914,
-          0.7086
+          0.2905,
+          0.7095
         ],
         "best": [
           {
-            "price": 246,
-            "book": "betus"
+            "price": 240,
+            "book": "fanduel"
           },
           {
-            "price": -270,
+            "price": -275,
             "book": "betonlineag"
           }
         ],
@@ -341,8 +341,8 @@
             "book": "fanduel"
           },
           {
-            "price": -320,
-            "book": "bovada"
+            "price": -310,
+            "book": "draftkings"
           }
         ],
         "books": [
@@ -463,16 +463,16 @@
       },
       "market": {
         "h2h_novig": [
-          0.7711,
-          0.2289
+          0.7706,
+          0.2294
         ],
         "best": [
           {
             "price": -400,
-            "book": "betrivers"
+            "book": "betonlineag"
           },
           {
-            "price": 330,
+            "price": 340,
             "book": "draftkings"
           }
         ],
@@ -512,9 +512,9 @@
             },
             {
               "book": "draftkings",
-              "over": 140,
-              "under": -180,
-              "p_over": 0.39325842696629215
+              "over": 135,
+              "under": -175,
+              "p_over": 0.4007285974499089
             }
           ]
         }
@@ -592,13 +592,13 @@
       },
       "market": {
         "h2h_novig": [
-          0.4262,
-          0.5738
+          0.429,
+          0.571
         ],
         "best": [
           {
-            "price": 132,
-            "book": "betrivers"
+            "price": 126,
+            "book": "betus"
           },
           {
             "price": -145,
@@ -721,7 +721,7 @@
             "book": "betonlineag"
           },
           {
-            "price": 155,
+            "price": 153,
             "book": "bovada"
           }
         ],
@@ -840,13 +840,13 @@
       },
       "market": {
         "h2h_novig": [
-          0.6523,
-          0.3477
+          0.6473,
+          0.3527
         ],
         "best": [
           {
             "price": -205,
-            "book": "draftkings"
+            "book": "betonlineag"
           },
           {
             "price": 185,
@@ -968,17 +968,17 @@
       },
       "market": {
         "h2h_novig": [
-          0.7095,
-          0.2905
+          0.7175,
+          0.2825
         ],
         "best": [
           {
-            "price": -265,
+            "price": -285,
             "book": "betus"
           },
           {
-            "price": 240,
-            "book": "betmgm"
+            "price": 247,
+            "book": "betonlineag"
           }
         ],
         "books": [
@@ -1097,17 +1097,17 @@
       },
       "market": {
         "h2h_novig": [
-          0.2706,
-          0.7294
+          0.2672,
+          0.7328
         ],
         "best": [
           {
-            "price": 260,
+            "price": 270,
             "book": "draftkings"
           },
           {
-            "price": -300,
-            "book": "betmgm"
+            "price": -310,
+            "book": "betonlineag"
           }
         ],
         "books": [
@@ -1227,17 +1227,17 @@
       },
       "market": {
         "h2h_novig": [
-          0.4848,
-          0.5152
+          0.4866,
+          0.5134
         ],
         "best": [
           {
             "price": 100,
-            "book": "betonlineag"
+            "book": "fanduel"
           },
           {
-            "price": -115,
-            "book": "betmgm"
+            "price": -114,
+            "book": "betonlineag"
           }
         ],
         "books": [
@@ -1279,14 +1279,14 @@
         },
         {
           "line": 2.5,
-          "p_over_novig": 0.4279,
+          "p_over_novig": 0.4367,
           "model_p_over": 0.5128,
           "books": [
             {
               "book": "bovada",
-              "over": 120,
-              "under": -155,
-              "p_over": 0.4278523489932886
+              "over": 115,
+              "under": -150,
+              "p_over": 0.43668122270742354
             }
           ]
         }
@@ -1363,17 +1363,17 @@
       },
       "market": {
         "h2h_novig": [
-          0.3022,
-          0.6978
+          0.3053,
+          0.6947
         ],
         "best": [
           {
             "price": 220,
-            "book": "betonlineag"
+            "book": "betmgm"
           },
           {
             "price": -260,
-            "book": "fanduel"
+            "book": "betonlineag"
           }
         ],
         "books": [
@@ -1390,7 +1390,7 @@
       "totals": [
         {
           "line": 1.5,
-          "p_over_novig": 0.4698,
+          "p_over_novig": 0.4647,
           "model_p_over": 0.6135,
           "books": [
             {
@@ -1401,9 +1401,9 @@
             },
             {
               "book": "bovada",
-              "over": 110,
-              "under": -145,
-              "p_over": 0.4458598726114649
+              "over": 115,
+              "under": -150,
+              "p_over": 0.43668122270742354
             },
             {
               "book": "betus",
@@ -1413,9 +1413,9 @@
             },
             {
               "book": "draftkings",
-              "over": 100,
-              "under": -130,
-              "p_over": 0.4693877551020409
+              "over": 105,
+              "under": -135,
+              "p_over": 0.4592085979482169
             }
           ]
         }
@@ -1494,17 +1494,17 @@
       },
       "market": {
         "h2h_novig": [
-          0.5254,
-          0.4746
+          0.5217,
+          0.4783
         ],
         "best": [
           {
-            "price": -120,
-            "book": "draftkings"
+            "price": -115,
+            "book": "betonlineag"
           },
           {
-            "price": 105,
-            "book": "betonlineag"
+            "price": 108,
+            "book": "fanduel"
           }
         ],
         "books": [
@@ -1568,13 +1568,13 @@
   "odds_meter": {
     "cost_measured": 2,
     "cost_estimated": 2,
-    "remaining": "418",
-    "used": "82",
-    "events_returned": 18,
+    "remaining": "390",
+    "used": "110",
+    "events_returned": 16,
     "ufc_matched": 12,
-    "non_ufc_dropped": 6
+    "non_ufc_dropped": 4
   },
-  "market_as_of": "2026-10-31T08:09:52Z",
+  "market_as_of": "2026-10-31T15:58:32Z",
   "backtest": {
     "n": 3500,
     "brier": 0.2431,

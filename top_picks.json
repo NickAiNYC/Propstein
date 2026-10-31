@@ -151,10 +151,10 @@
       "proj_rec": 5.7,
       "fair_line_rec": 5.5,
       "p_rec_at_fair_line": 0.472,
-      "proj_yards": 71.1,
+      "proj_yards": 71.0,
       "fair_line_yards": 64.0,
-      "implied_total": 17.5,
-      "spread": -5.5,
+      "implied_total": 17.2,
+      "spread": -6.0,
       "questionable": 0
     },
     {
@@ -264,21 +264,6 @@
     },
     {
       "rank": 18,
-      "player": "DK Metcalf",
-      "team": "PIT",
-      "opponent": "CLE",
-      "position": "WR",
-      "proj_rec": 4.2,
-      "fair_line_rec": 3.5,
-      "p_rec_at_fair_line": 0.57,
-      "proj_yards": 56.6,
-      "fair_line_yards": 49.5,
-      "implied_total": 21.5,
-      "spread": 3.5,
-      "questionable": 0
-    },
-    {
-      "rank": 19,
       "player": "Garrett Wilson",
       "team": "NYJ",
       "opponent": "LV",
@@ -290,6 +275,21 @@
       "fair_line_yards": 50.0,
       "implied_total": 23.5,
       "spread": 1.5,
+      "questionable": 0
+    },
+    {
+      "rank": 19,
+      "player": "DK Metcalf",
+      "team": "PIT",
+      "opponent": "CLE",
+      "position": "WR",
+      "proj_rec": 4.2,
+      "fair_line_rec": 3.5,
+      "p_rec_at_fair_line": 0.567,
+      "proj_yards": 56.0,
+      "fair_line_yards": 49.0,
+      "implied_total": 21.0,
+      "spread": 3.5,
       "questionable": 0
     },
     {
@@ -316,10 +316,10 @@
       "proj_rec": 4.9,
       "fair_line_rec": 4.5,
       "p_rec_at_fair_line": 0.501,
-      "proj_yards": 54.8,
-      "fair_line_yards": 48.5,
-      "implied_total": 23.0,
-      "spread": 5.5,
+      "proj_yards": 54.9,
+      "fair_line_yards": 49.0,
+      "implied_total": 23.2,
+      "spread": 6.0,
       "questionable": 0
     },
     {

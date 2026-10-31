@@ -50,7 +50,7 @@
     "away_team": "CLE",
     "home_team": "PIT",
     "spread_line": 3.5,
-    "total_line": 39.5,
+    "total_line": 38.5,
     "roof": "outdoors",
     "wind": null
   },
@@ -137,7 +137,7 @@
     "gametime": "20:20",
     "away_team": "PHI",
     "home_team": "WAS",
-    "spread_line": 5.5,
+    "spread_line": 6.0,
     "total_line": 40.5,
     "roof": "outdoors",
     "wind": null
