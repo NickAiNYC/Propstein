@@ -147,7 +147,7 @@ export function buildSandbox({ seedLocalStorage = {} } = {}) {
     console: { log() {}, warn() {}, error() {}, debug() {}, info() {} },
     setTimeout: () => 0, clearTimeout() {}, setInterval: () => 0, clearInterval() {},
     document, window, localStorage, Date: FrozenDate,
-    fetch: fetchImpl, URL, URLSearchParams, Event: class { constructor() {} },
+    fetch: fetchImpl, URL, URLSearchParams, AbortController, Event: class { constructor() {} },
     navigator: window.navigator,
     location: window.location,
     matchMedia: window.matchMedia,
@@ -247,7 +247,7 @@ export function loadApp(sandbox) {
   const hook = `
   globalThis.__PW_PARITY__ = {
     state, SLATES, SPORT_ID, adapter, loadSlate, evaluateRow, filteredRows,
-    renderAll, renderBoard, fairValue, projectionValue, logBet, openExecutionSlip, confirmExecution, setView,
+    renderAll, renderBoard, renderHomeEdgePreview, fairValue, projectionValue, logBet, openExecutionSlip, confirmExecution, setView,
     setPlayMode, breakerFor,
     sportSwitcherItems, switchToSport, defaultBootSlate,
     feedHealthStates, updateFeedHealthUI, feedVerificationLabel, updateFeedVerificationUI, executionDecision, stampProvenance,

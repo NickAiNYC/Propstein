@@ -2170,11 +2170,24 @@
 
   // ── §12. Data ingestion — fetch, slate loading, feed health ───────────
 
+  async function fetchData(path) {
+    // A stalled dependency must resolve to the fail-closed UI, not leave the
+    // homepage on its initial "Checking" state indefinitely.
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch(`${path}?v=${Date.now()}`, { cache: 'no-store', signal: controller.signal });
+      return { response, data: response.ok ? await response.json() : null };
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
   async function fetchJson(path, fallback) {
     try {
-      const response = await fetch(`${path}?v=${Date.now()}`, { cache: 'no-store' });
+      const { response, data } = await fetchData(path);
       if (!response.ok) return fallback;
-      return await response.json();
+      return data;
     } catch (_) {
       return fallback;
     }
@@ -2183,9 +2196,9 @@
   /** fetchJson + transport status — powers the Phase 2 failure-mode UI. */
   async function fetchJsonStatus(path, fallback) {
     try {
-      const response = await fetch(`${path}?v=${Date.now()}`, { cache: 'no-store' });
+      const { response, data } = await fetchData(path);
       if (!response.ok) return { data: fallback, ok: false, status: response.status };
-      return { data: await response.json(), ok: true, status: response.status };
+      return { data, ok: true, status: response.status };
     } catch (_) {
       return { data: fallback, ok: false, status: 0 };
     }
@@ -3260,13 +3273,17 @@
       const scanTime = scanAt && !Number.isNaN(Date.parse(scanAt))
         ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(scanAt))
         : null;
+      const modelRows = research.length ? [] : state.slate
+        .filter((row) => Number.isFinite(Number(fairValue(row))) && Number(fairValue(row)) > 0)
+        .sort((a, b) => projectionValue(b) - projectionValue(a))
+        .slice(0, 5);
       const title = $('#homeEdgeTitle');
-      if (title) title.textContent = research.length ? 'Observed player lines' : 'Player prop research';
+      if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
       status.textContent = research.length
         ? `Live qualification paused · ${research.length} model-scored observations · last scan ${scanTime || 'unknown'} · no independent quote audit`
-        : `Live edges paused · ${asOf ? `last odds update ${asOf}` : 'no verified update available'}`;
+        : `Live qualification paused · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
       list.innerHTML = research.length
-        ? research.slice(0, 3).map((pick) => {
+        ? research.slice(0, 5).map((pick) => {
           const line = Number(pick.line);
           const odds = Number(pick.odds);
           return `<article class="home-edge-card home-research-card">
@@ -3275,7 +3292,13 @@
             <p class="home-research-note">Research only · price and availability must be checked at the book.</p>
           </article>`;
         }).join('')
-        : '<p class="home-edge-empty">Prices or news are unavailable or stale. Browse model projections below; no picks are being recommended.</p>';
+        : modelRows.length
+          ? modelRows.map((row) => `<article class="home-edge-card home-research-card">
+            <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(state.filters.market.replaceAll('_', ' '))}</span></div>
+            <div class="home-edge-line"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span><strong>${Number(fairValue(row)).toFixed(1)} <small>${esc(marketDef().unit || 'units')}</small></strong><span>Projection ${Number(projectionValue(row)).toFixed(1)}</span></div>
+            <p class="home-research-note">Research only · no current edge or stake is available.</p>
+          </article>`).join('')
+          : '<p class="home-edge-empty">Prices or news are unavailable. No model slate is loaded; no picks are being recommended.</p>';
       return;
     }
     const title = $('#homeEdgeTitle');
