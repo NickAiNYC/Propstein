@@ -918,6 +918,7 @@
           snapshots: typeof cfg.snapshots === 'string' ? cfg.snapshots : null,
           historical: cfg.historical === true,
           timezone: typeof cfg.timezone === 'string' ? cfg.timezone : undefined,
+          marketOnly: cfg.marketOnly === true,
           fromManifest: true
         };
         merged += 1;
@@ -2886,7 +2887,7 @@
       const hour = Number(String(game.gametime || '').split(':')[0]);
       return hour >= 20 || hour < 11;
     });
-    const chipGames = prime.length ? prime : allGames;
+    const chipGames = SPORT_ID === 'nba' ? allGames : prime.length ? prime : allGames;
     if ($('#primeChips')) {
       const allActive = !state.filters.gameId;
       const allBtn = `<button class="game-chip ${allActive ? 'active' : ''}" type="button" data-game-id=""><span>All games</span></button>`;
@@ -2956,6 +2957,11 @@
   }
 
   function primeLabel(game) {
+    if (SPORT_ID === 'nba') {
+      const [hour, minute] = String(game.gametime_et || game.gametime || '').split(':').map(Number);
+      if (Number.isFinite(hour) && Number.isFinite(minute)) return `${hour % 12 || 12}:${String(minute).padStart(2, '0')} ${hour >= 12 ? 'PM' : 'AM'} ET`;
+      return 'Tipoff ET';
+    }
     const date = new Date(`${game.gameday}T12:00:00Z`);
     const day = date.getUTCDay();
     if (Number(String(game.gametime).split(':')[0]) < 11) return 'International';
@@ -3110,6 +3116,11 @@
 
   function renderBoard() {
     renderHomeEdgePreview();
+    if (SPORT_ID === 'nba' && state.slate.length === 0 && SLATES[state.slateKey]?.marketOnly) {
+      renderNbaMarketOnly();
+      return;
+    }
+    if ($('#emptyState')) $('#emptyState').classList.remove('nba-market-only');
     const rows = filteredRows();
     $$('.front-pro-bar [data-pro-view]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.proView === state.proView)));
     const hasPrices = rows.some((row) => Boolean(findQuote(row, state.filters.market)));
@@ -3287,6 +3298,40 @@
     updateHeroCard(isResearchMode, quotedCount, displayRows.length);
     updateStickyContext(displayRows);
     updateActiveFilterBadge();
+  }
+
+  function renderNbaMarketOnly() {
+    const all = (state.odds.quotes || []).filter(q => q._fixture === false && q.market === 'points' && q.verified === false);
+    const { search, gameId } = state.filters;
+    const rows = state.filters.market === 'points'
+      ? all.filter(q => (!gameId || q.game_id === gameId) && (!search || `${q.player_name} ${q.book}`.toLowerCase().includes(search)))
+      : [];
+    const asOf = state.odds.updated_at ? new Date(state.odds.updated_at) : null;
+    const ageMs = asOf && Number.isFinite(asOf.getTime()) ? Date.now() - asOf.getTime() : Infinity;
+    const stale = ageMs < 0 || ageMs > 6 * 60 * 60 * 1000;
+    const stamp = asOf && Number.isFinite(asOf.getTime()) ? asOf.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }) : 'unknown time';
+    if ($('#allCount')) $('#allCount').textContent = String(all.length);
+    if ($('#actionableCount')) $('#actionableCount').textContent = '0';
+    if ($('#resultCount')) $('#resultCount').textContent = `${rows.length} unverified market quotes · no NBA model predictions`;
+    if ($('#slateRows')) $('#slateRows').innerHTML = '';
+    if ($('#cardView')) { $('#cardView').innerHTML = ''; $('#cardView').hidden = true; }
+    if ($('#tableView')) $('#tableView').hidden = true;
+    const box = $('#emptyState');
+    if (!box) return;
+    box.hidden = false;
+    box.classList.add('nba-market-only');
+    const quotesHtml = rows.slice(0, 100).map(q => {
+      const game = state.games.find(g => g.game_id === q.game_id);
+      const matchup = game ? `${game.away_team} @ ${game.home_team}` : 'NBA';
+      const oddsLabel = value => Number(value) > 0 ? `+${value}` : String(value);
+      return `<article class="nba-market-quote">
+        <div><strong>${esc(q.player_name)}</strong><span>${esc(matchup)} · ${esc(q.book)}</span></div>
+        <div class="nba-market-sides"><span class="nba-market-over">↑ OVER ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span class="nba-market-under">↓ UNDER ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
+      </article>`;
+    }).join('');
+    box.innerHTML = `<div class="nba-market-head"><div><strong>October 31 NBA player points</strong><p>${stale ? 'STALE · ' : ''}The Odds API · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
+      <p class="nba-market-disclaimer">Sportsbook quotes only. No NBA model predictions or qualified edges are available; these prices may change.</p>
+      ${rows.length ? `<div class="nba-market-list">${quotesHtml}</div>` : `<p>${state.filters.market === 'points' ? 'No player points lines match this filter.' : 'Only player points quotes are available for this date.'}</p>`}`;
   }
 
   function renderHomeEdgePreview() {

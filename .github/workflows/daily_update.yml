@@ -35,6 +35,11 @@ on:
     # Monday Night Football pre-kickoff (19:30 ET / 23:30 UTC)
     - cron: '30 23 * * 1'
   workflow_dispatch:
+    inputs:
+      nba_only:
+        description: 'Refresh NBA schedule and unverified player points quotes only (max 10 credits)'
+        type: boolean
+        default: false
 
 concurrency:
   group: autopilot
@@ -57,17 +62,31 @@ jobs:
           cache: 'pip'
 
       - name: Install model stack
+        if: ${{ inputs.nba_only != true }}
         run: |
           python -m pip install --upgrade pip
           pip install "pandas>=2.2" "numpy>=1.26" "scipy>=1.13" \
             "scikit-learn>=1.5" "statsmodels>=0.14" "pyarrow>=16" "requests>=2.32"
 
+      - name: Install NBA contract dependency
+        if: ${{ inputs.nba_only == true }}
+        run: python -m pip install "pydantic>=2,<3"
+
       - name: Run autopilot
+        if: ${{ inputs.nba_only != true }}
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           BALLDONTLIE_API_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
           NBA_ODDS_API_KEY: ${{ secrets.NBA_ODDS_API_KEY }}
         run: python scripts/autopilot.py --run
+
+      - name: Refresh today's NBA market slate
+        if: ${{ inputs.nba_only == true }}
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          PYTHONPATH=. python scripts/fetch_nba_odds.py --dates 2026-10-31 --max-credits 10
+          python scripts/publish_nba_market_slate.py 2026-10-31
 
       - name: Commit and push refreshed slate (if changed)
         run: |

@@ -3308,6 +3308,22 @@ body {
 }
 .inspect-button:hover { color: var(--text); border-color: var(--line-strong); background: rgba(255, 255, 255, 0.08); }
 .empty-state { padding: 48px 20px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); color: var(--muted); text-align: center; }
+.empty-state.nba-market-only { padding: 18px; text-align: left; }
+.nba-market-head, .nba-market-quote, .nba-market-sides { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.nba-market-head strong { color: var(--text); font-size: 17px; }
+.nba-market-head p, .nba-market-disclaimer { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.nba-market-head > span { color: var(--muted); border: 1px solid var(--line); border-radius: 7px; padding: 5px 8px; font: 700 10px var(--mono); }
+.nba-market-disclaimer { margin: 10px 0 16px; }
+.nba-market-list { display: grid; gap: 8px; max-height: 680px; overflow-y: auto; }
+.nba-market-quote { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(135deg, #171a1f, #0b0d11); }
+.nba-market-quote strong { display: block; color: var(--text); font-size: 13px; }
+.nba-market-quote span { display: block; font-size: 11px; }
+.nba-market-quote > div:first-child span { margin-top: 4px; }
+.nba-market-sides span { min-width: 122px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; font-family: var(--mono); white-space: nowrap; }
+.nba-market-sides b { float: right; margin-left: 8px; color: var(--text); }
+.nba-market-over { color: #ACE4AA; }
+.nba-market-under { color: #FF8383; }
+@media (max-width: 640px) { .nba-market-quote { align-items: stretch; flex-direction: column; } .nba-market-sides span { flex: 1; min-width: 0; } }
 
 /* ─── DATA INTEGRITY FOOTER ─── */
 .trust-line { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; color: var(--faint); font-size: 11px; }

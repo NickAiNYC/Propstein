@@ -209,8 +209,7 @@ def run(dates, max_credits, key):
                 key,
             )
             quotes += normalize_quotes(g, eo, now)
-        write_json(f"nba_games_{day}.json", games)
-        write_json(f"nba_odds_{day}.json", {
+        odds_published = write_json(f"nba_odds_{day}.json", {
             "schema_version": "nba.v1",
             "feed_status": "live-unverified",
             "_fixture": False,
@@ -226,6 +225,9 @@ def run(dates, max_credits, key):
             "consensus_lines": consensus_lines(quotes),
             "quotes": quotes,
         })
+        if not odds_published:
+            return 5
+        write_json(f"nba_games_{day}.json", games)
         print(f"[fetch_nba_odds] {day}: {len(games)} games, {len(quotes)} quotes")
     print(f"[fetch_nba_odds] credits remaining this month: {remaining}")
     return 0

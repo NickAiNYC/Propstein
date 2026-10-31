@@ -24,6 +24,28 @@ test('NBA player drawer uses NBA units and only available telemetry', async () =
   assert.match(registry.get('#detailSummary').textContent, /31\.1 pts/);
 });
 
+test('NBA market-only date shows real unverified lines without model or edge claims', () => {
+  const { sandbox, registry } = buildSandbox({ seedLocalStorage: { propwire_active_sport: 'nba' } });
+  const app = loadApp(sandbox);
+  app.SLATES['2026-10-31'] = { marketOnly: true, historical: false };
+  app.state.slateKey = '2026-10-31';
+  app.state.slate = [];
+  app.state.games = [{ game_id: 'nba-20261031-PHI-CHA', away_team: 'PHI', home_team: 'CHA' }];
+  app.state.odds = {
+    feed_status: 'live-unverified', updated_at: '2026-10-31T15:00:00Z',
+    quotes: [{ player_name: 'Test Player', game_id: 'nba-20261031-PHI-CHA', book: 'Book A',
+      market: 'points', line: 24.5, over_odds: -110, under_odds: 100, _fixture: false, verified: false }]
+  };
+  app.renderBoard();
+  const markup = registry.get('#emptyState').innerHTML;
+  assert.match(markup, /Test Player/);
+  assert.match(markup, /OVER 24\.5/);
+  assert.match(markup, /UNDER 24\.5/);
+  assert.match(markup, /UNVERIFIED/);
+  assert.match(markup, /No NBA model predictions or qualified edges/);
+  assert.doesNotMatch(markup, /model fair|probability edge|expected value/i);
+});
+
 /**
  * NBA INTEGRATION TESTS — Phase 2, commit 1 (adapter + fixture feeds).
  *
@@ -93,7 +115,7 @@ test('NBA adapter: contract complete, markets cover marketOrder, storage keys na
   assert.equal(nba.defaultSlateKey(), '2026-10-22');
 
   // v1 is fixture-only and breaker values are uncalibrated by contract.
-  assert.equal(nba.fixturesOnly, true);
+  assert.equal(nba.fixturesOnly, false, 'real market-only dates must not be mislabeled fixtures');
   assert.match(nba.fixtureNotice, /Research fixtures/);
   assert.match(nba.fixtureNotice, /Not sportsbook quotes/);
   assert.equal(nba.breakerFallback.calibrated, false);
