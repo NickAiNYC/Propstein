@@ -1,11 +1,11 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v201-player-card-hierarchy';
+const CACHE_NAME = 'propstein-v202-degraded-home';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v201',
-  '/app.js?v=2026_v198',
+  '/style.css?v=2026_v202',
+  '/app.js?v=2026_v202',
   '/js/today-schedule.js?v=2026_v199',
   '/js/sports/ufc.js?v=2026_v199',
   '/ufc.css?v=2026_v199',
