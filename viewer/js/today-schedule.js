@@ -10,7 +10,7 @@
   const leaguePaths = { nba: 'basketball/nba', nfl: 'football/nfl' };
   const timeZoneSelect = document.getElementById('todayScheduleTimezone');
   const selectedTimeZone = () => timeZoneSelect?.value === 'et' ? 'America/New_York' : Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const teamAliases = { LAR: 'LA', WSH: 'WAS', NY: 'NYK', GS: 'GSW', SA: 'SAS', NO: 'NOP' };
+  const teamAliases = { LAR: 'LA', WSH: 'WAS', NY: 'NYK', GS: 'GSW', SA: 'SAS', NO: 'NOP', UTAH: 'UTA' };
   const activeSport = () => localStorage.getItem('propwire_active_sport') === 'nba' ? 'nba' : 'nfl';
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 

@@ -109,9 +109,10 @@ def normalize_quotes(game, event_odds, observed_at):
                 if "over" not in px or "under" not in px:
                     continue
                 pid = f"odds-nba-{slug(player)}"
+                line_key = f"{line:g}".replace(".", "p")
                 quotes.append({
-                    "quote_id": f"{game['game_id']}_{book['key']}_{slug(player)}_{market}",
-                    "provider_quote_id": f"{event_odds['id']}:{book['key']}:{slug(player)}:{mk['key']}",
+                    "quote_id": f"{game['game_id']}_{book['key']}_{slug(player)}_{market}_{line_key}",
+                    "provider_quote_id": f"{event_odds['id']}:{book['key']}:{slug(player)}:{mk['key']}:{line:g}",
                     "source_url": f"{BASE_URL}/sports/{SPORT}/events/{event_odds['id']}/odds",
                     "book": book["title"],
                     "player_id": pid,
@@ -252,6 +253,7 @@ def selftest():
             {"name": "Under", "description": "Test Player", "price": -120, "point": 25.5}]}]}]}
     qs = normalize_quotes(game, eo, "2026-10-28T12:00:00Z")
     assert len(qs) == 2, qs  # unpaired side dropped
+    assert len({q["quote_id"] for q in qs}) == 2
     assert all(q["verified"] is False and q["_fixture"] is False for q in qs)
     assert consensus_lines(qs) == {"odds-nba-test-player:points": 25.0}
     assert estimate_credits(18) == 18

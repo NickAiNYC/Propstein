@@ -44,6 +44,16 @@ test('NBA market-only date shows real unverified lines without model or edge cla
   assert.match(markup, /UNVERIFIED/);
   assert.match(markup, /No NBA model predictions or qualified edges/);
   assert.doesNotMatch(markup, /model fair|probability edge|expected value/i);
+  assert.equal(registry.get('#homeEdgeTitle').textContent, 'NBA player points lines');
+});
+
+test('October 31 NBA market feed keeps every alternate points line distinct and unverified', () => {
+  const feed = readViewerJson('nba_odds_2026-10-31.json');
+  assert.equal(feed.feed_status, 'live-unverified');
+  assert.equal(feed.verified_quotes_count, 0);
+  assert.equal(feed.total_quotes, feed.quotes.length);
+  assert.equal(new Set(feed.quotes.map((q) => q.quote_id)).size, feed.quotes.length);
+  assert.ok(feed.quotes.every((q) => q.verified === false && q._fixture === false && q.market === 'points'));
 });
 
 /**
