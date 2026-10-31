@@ -48,7 +48,6 @@ VIEWER = ROOT / "viewer"
 GAMMA = "https://gamma-api.polymarket.com"
 CLOB = "https://clob.polymarket.com"
 BOOK = "Polymarket"
-SOURCE = "https://gamma-api.polymarket.com"
 FEED_PATH = VIEWER / "live_odds_feed.json"
 SLATE_INDEX = VIEWER / "feeds" / "slate-index.json"
 
@@ -92,6 +91,15 @@ def parse_market(question: str):
 
 def _http_json(url: str, timeout: int = 20):
     req = Request(url, headers={"User-Agent": "propstein-odds/1.0"})
+    with urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def _http_post_json(url: str, payload: list[dict], timeout: int = 12):
+    req = Request(
+        url, data=json.dumps(payload).encode("utf-8"), method="POST",
+        headers={"User-Agent": "propstein-odds/1.0", "Content-Type": "application/json"},
+    )
     with urlopen(req, timeout=timeout) as r:
         return json.loads(r.read().decode("utf-8"))
 
@@ -148,10 +156,8 @@ def outcome_token_ids(market: dict) -> tuple[str, str] | None:
         return None
 
 
-def fetch_token_book(token_id: str) -> dict:
-    """Read the executable best ask and its available dollar depth."""
-    from urllib.parse import quote
-    book = _http_json(f"{CLOB}/book?token_id={quote(token_id, safe='')}")
+def parse_token_book(token_id: str, book: dict) -> dict:
+    """Extract executable best ask and dollar depth from one CLOB book."""
     asks = book.get("asks") if isinstance(book, dict) else None
     if not isinstance(asks, list):
         raise ValueError(f"CLOB book missing asks for token {token_id}")
@@ -161,6 +167,33 @@ def fetch_token_book(token_id: str) -> dict:
     best = min(price for price, _ in levels)
     depth_usd = sum(price * size for price, size in levels if price == best)
     return {"token_id": token_id, "ask_price": best, "ask_depth_usd": round(depth_usd, 2)}
+
+
+def fetch_token_book(token_id: str) -> dict:
+    """Single-book path retained for diagnostics and offline tests."""
+    from urllib.parse import quote
+    return parse_token_book(token_id, _http_json(f"{CLOB}/book?token_id={quote(token_id, safe='')}"))
+
+
+def fetch_token_books(token_ids: list[str], batch_size: int = 400) -> dict[str, dict]:
+    """Read CLOB books in documented batches (maximum 500 tokens/request)."""
+    books: dict[str, dict] = {}
+    for start in range(0, len(token_ids), batch_size):
+        ids = token_ids[start:start + batch_size]
+        response = _http_post_json(f"{CLOB}/books", [{"token_id": token_id} for token_id in ids])
+        if not isinstance(response, list):
+            raise ValueError("CLOB batch response is not a list")
+        requested = set(ids)
+        for raw in response:
+            token_id = str(raw.get("asset_id") or "") if isinstance(raw, dict) else ""
+            if token_id not in requested or token_id in books:
+                raise ValueError("CLOB batch returned an unexpected or duplicate token")
+            try:
+                books[token_id] = parse_token_book(token_id, raw)
+            except (KeyError, TypeError, ValueError):
+                # A suspended or empty book cannot produce an executable quote.
+                continue
+    return books
 
 
 def _norm_cdf(x: float) -> float:
@@ -334,13 +367,16 @@ def collect_quotes(min_liquidity: float = 10.0) -> list[dict]:
     slate_idx = index_slate(load_slate())
     quotes: list[dict] = []
     matched, skipped_liq, skipped_nomatch, skipped_parse = 0, 0, 0, 0
+    candidates = []
+    requested_tokens = []
+    seen_tokens = set()
     for event in events:
         for market in event.get("markets", []):
             parsed = parse_market(market.get("question") or "")
             if parsed is None:
                 continue  # stat out of v1 scope (TD, passing, rushing...)
-            token_ids = outcome_token_ids(market)
-            if token_ids is None:
+            outcome_ids = outcome_token_ids(market)
+            if outcome_ids is None:
                 skipped_parse += 1
                 continue
             player, stat, _line = parsed
@@ -348,14 +384,24 @@ def collect_quotes(min_liquidity: float = 10.0) -> list[dict]:
             if row is None:
                 skipped_nomatch += 1
                 continue
-            books = (fetch_token_book(token_ids[0]), fetch_token_book(token_ids[1]))
-            if min(book["ask_depth_usd"] for book in books) < min_liquidity:
-                skipped_liq += 1
-                continue
-            q = build_quote(market, event, row, stat, books)
-            if q:
-                quotes.append(q)
-                matched += 1
+            candidates.append((market, event, row, stat, outcome_ids))
+            for token_id in outcome_ids:
+                if token_id not in seen_tokens:
+                    seen_tokens.add(token_id)
+                    requested_tokens.append(token_id)
+    books_by_token = fetch_token_books(requested_tokens)
+    for market, event, row, stat, outcome_ids in candidates:
+        if not all(token_id in books_by_token for token_id in outcome_ids):
+            skipped_parse += 1
+            continue
+        books = (books_by_token[outcome_ids[0]], books_by_token[outcome_ids[1]])
+        if min(book["ask_depth_usd"] for book in books) < min_liquidity:
+            skipped_liq += 1
+            continue
+        q = build_quote(market, event, row, stat, books)
+        if q:
+            quotes.append(q)
+            matched += 1
     print(f"[polymarket] prop events: {len(events)} | matched: {matched} | "
           f"low-liq skipped: {skipped_liq} | off-slate: {skipped_nomatch} | unparsed: {skipped_parse}")
     return quotes

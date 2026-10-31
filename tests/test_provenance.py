@@ -71,8 +71,8 @@ def _feed_quote_violations(path: Path):
                                    "liquidity_usd") if not q.get(k)]
             if missing:
                 violations.append(f"{path}: {q.get('quote_id')}: Polymarket quote missing {missing}")
-            if not str(q.get("source", "")).startswith("https://gamma-api.polymarket.com"):
-                violations.append(f"{path}: {q.get('quote_id')}: Polymarket source must be the gamma API")
+            if not str(q.get("source", "")).startswith("https://clob.polymarket.com"):
+                violations.append(f"{path}: {q.get('quote_id')}: Polymarket order-book source must be the CLOB API")
             if not str(q.get("source_url", "")).startswith("https://polymarket.com/"):
                 violations.append(f"{path}: {q.get('quote_id')}: source_url must point at the tradeable market")
             ev = q.get("evaluation") or {}
