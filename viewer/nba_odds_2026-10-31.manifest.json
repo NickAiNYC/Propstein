@@ -1,0 +1,15 @@
+{
+  "run_id": "run_45180d5113e5",
+  "schema_version": "propstein_contract_v1",
+  "schema_class": "LiveOddsFeed",
+  "source_feed": "the_odds_api_nba",
+  "timestamp": "2026-10-31T20:49:43.554581+00:00",
+  "status": "PASS_ATOMIC_PUBLISHED",
+  "target_file": "viewer/nba_odds_2026-10-31.json",
+  "rows_seen": 916,
+  "rows_valid": 916,
+  "rows_rejected": 0,
+  "quarantine_path": null,
+  "config_hash": "dfd1b9e06c70b476445de1287296cacd79bc099ac7d5e7129870cd64f374a6f7",
+  "sha256": "3fc3088f9484f6f47434b0143f5efc98791455dee18f82062a901de36127b45a"
+}

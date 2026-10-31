@@ -58,10 +58,10 @@
     label: 'NBA',
     periodNoun: 'Slate',
 
-    /** v1 ships no live data: every fixture row/quote is flagged upstream. */
-    fixturesOnly: true,
+    /** Historical fixture rows remain flagged individually; market-only slates are real but unverified. */
+    fixturesOnly: false,
     fixtureNotice: 'Research fixtures — synthetic model data for terminal validation. Not sportsbook quotes. Not for wagering decisions.',
-    pageTitle: 'PropStein · NBA Player Props (Research Fixtures)',
+    pageTitle: 'PropStein · NBA Player Props Research',
 
     /** Allow viewer/app.js to lend its helper functions to hook implementations. */
     bindContext(helpers) {

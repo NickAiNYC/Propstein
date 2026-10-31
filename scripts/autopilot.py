@@ -471,6 +471,7 @@ def scan_nba_slates(now: datetime) -> dict:
             "snapshots": None,
             "historical": is_past,
             "timezone": "America/New_York",
+            "marketOnly": json.loads(slate_file.read_text(encoding="utf-8")) == [],
         }
     return slates
 

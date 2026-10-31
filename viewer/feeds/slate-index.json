@@ -1,6 +1,6 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-10-31T15:57:58Z",
+  "generated_at": "2026-10-31T20:44:13Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
@@ -51,7 +51,7 @@
       }
     },
     "nba": {
-      "default_slate": null,
+      "default_slate": "2026-10-31",
       "slates": {
         "2026-10-22": {
           "season": 2026,
@@ -65,7 +65,8 @@
           "odds": "nba_odds_2026-10-22.json",
           "snapshots": null,
           "historical": true,
-          "timezone": "America/New_York"
+          "timezone": "America/New_York",
+          "marketOnly": false
         },
         "2026-10-23": {
           "season": 2026,
@@ -79,7 +80,8 @@
           "odds": "nba_odds_2026-10-23.json",
           "snapshots": null,
           "historical": true,
-          "timezone": "America/New_York"
+          "timezone": "America/New_York",
+          "marketOnly": false
         },
         "2026-10-29": {
           "season": 2026,
@@ -93,7 +95,23 @@
           "odds": "nba_odds_2026-10-29.json",
           "snapshots": null,
           "historical": true,
-          "timezone": "America/New_York"
+          "timezone": "America/New_York",
+          "marketOnly": false
+        },
+        "2026-10-31": {
+          "season": 2026,
+          "date": "2026-10-31",
+          "shortLabel": "Oct 31 Slate",
+          "state": "Slate \u00b7 2026-10-31",
+          "slate": "nba_slate_2026-10-31.json",
+          "games": "nba_games_2026-10-31.json",
+          "picks": null,
+          "injuries": "nba_injuries_2026-10-31.json",
+          "odds": "nba_odds_2026-10-31.json",
+          "snapshots": null,
+          "historical": false,
+          "timezone": "America/New_York",
+          "marketOnly": true
         }
       }
     },

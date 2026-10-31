@@ -24,6 +24,7 @@ class QuoteEvaluation(BaseModel):
 
 class OddsQuote(BaseModel):
     quote_id: str = Field(..., min_length=1)
+    provider_quote_id: Optional[str] = None
     player_id: str = Field(..., min_length=1)
     player_name: str = Field(..., min_length=1)
     team: Optional[str] = None
@@ -41,6 +42,8 @@ class OddsQuote(BaseModel):
     receipt_id: Optional[str] = None
     content_hash: Optional[str] = None
     verified: bool = False
+    fixture: bool = Field(default=False, alias="_fixture")
+    unit: Optional[str] = None
     fair_line: Optional[float] = None
     evaluation: Optional[QuoteEvaluation] = None
 
@@ -99,7 +102,8 @@ class LiveOddsFeed(BaseModel):
     qualified_count: Optional[int] = Field(default=0, ge=0)
     quotes: List[OddsQuote] = Field(default_factory=list)
     schema_version: Optional[str] = None
-    _fixture: Optional[bool] = None
+    source: Optional[str] = None
+    fixture: bool = Field(default=False, alias="_fixture")
     fixture_notice: Optional[str] = None
 
     @model_validator(mode="after")
