@@ -83,6 +83,8 @@ jobs:
             'viewer/injuries_*_w*.json' \
             'viewer/snapshots_*_w*.json' \
             'viewer/live_picks_*_w*.json' \
+            'viewer/live_odds_feed.json' \
+            'viewer/live_odds_feed.manifest.json' \
             'viewer/slate_projections.json' \
             'viewer/slate_projections.csv' \
             'viewer/todays_board.html' 'viewer/todays_board.txt' \

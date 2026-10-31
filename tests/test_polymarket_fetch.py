@@ -83,6 +83,30 @@ def test_clob_outcome_orientation_and_depth(monkeypatch):
         "token_id": "over-id", "ask_price": 0.55, "ask_depth_usd": 27.5}
 
 
+def test_clob_books_are_batched_and_keyed_by_returned_asset_id(monkeypatch):
+    calls = []
+
+    def batch(url, payload):
+        calls.append((url, payload))
+        return [{"asset_id": item["token_id"], "asks": [{"price": "0.4", "size": "100"}]}
+                for item in reversed(payload)]
+
+    monkeypatch.setattr(pm, "_http_post_json", batch)
+    books = pm.fetch_token_books(["a", "b", "c"], batch_size=2)
+    assert len(calls) == 2
+    assert all(len(payload) <= 2 for _, payload in calls)
+    assert set(books) == {"a", "b", "c"}
+    assert books["a"]["ask_depth_usd"] == 40.0
+
+
+def test_clob_batch_rejects_unrequested_book(monkeypatch):
+    monkeypatch.setattr(pm, "_http_post_json", lambda _url, _payload: [
+        {"asset_id": "wrong", "asks": [{"price": "0.4", "size": "100"}]}
+    ])
+    with pytest.raises(ValueError, match="unexpected"):
+        pm.fetch_token_books(["a"])
+
+
 def test_merge_feed_is_idempotent_and_fails_closed(tmp_path, monkeypatch):
     feed_path = tmp_path / "live_odds_feed.json"
     feed_path.write_text(json.dumps({
