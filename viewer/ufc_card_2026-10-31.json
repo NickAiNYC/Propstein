@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-10-31T23:50:38Z",
+  "generated_at": "2026-10-31T23:58:43Z",
   "event_id": "600061420",
   "event_name": "UFC Fight Night: Moicano vs. Nolan",
   "date": "2026-10-31",
@@ -16,16 +16,16 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "W Flyweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
       "fighters": [
         {
           "id": "5130185",
           "name": "Lucia Szabová",
-          "record": "12-0-0",
+          "record": "13-0-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/svk.png",
-          "winner": false,
+          "winner": true,
           "age": 28,
           "reach_in": null,
           "stance": "Orthodox",
@@ -34,7 +34,7 @@
         {
           "id": "4418809",
           "name": "Tainara Lisboa",
-          "record": "7-4-0",
+          "record": "7-5-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 35,
@@ -74,7 +74,7 @@
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -85,14 +85,14 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "W Strawweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "5139556",
           "name": "Talita Alencar",
-          "record": "8-1-1",
+          "record": "8-2-1",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 36,
@@ -103,9 +103,9 @@
         {
           "id": "4816066",
           "name": "Piera Rodriguez",
-          "record": "12-2-0",
+          "record": "13-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ven.png",
-          "winner": false,
+          "winner": true,
           "age": 33,
           "reach_in": 63.5,
           "stance": "Orthodox",
@@ -147,7 +147,7 @@
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -158,14 +158,14 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "Middleweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 2,
+      "went_distance": false,
       "fighters": [
         {
           "id": "5134399",
           "name": "Nick Klein",
-          "record": "6-3-0",
+          "record": "6-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
           "age": 31,
@@ -176,9 +176,9 @@
         {
           "id": "4687604",
           "name": "Joe Kropschot",
-          "record": "9-3-0",
+          "record": "10-3-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 31,
           "reach_in": 79.0,
           "stance": "Orthodox",
@@ -219,7 +219,7 @@
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -230,16 +230,16 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "Middleweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "5143223",
           "name": "Zach Reese",
-          "record": "10-4-0",
+          "record": "11-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 32,
           "reach_in": 77.0,
           "stance": "Switch",
@@ -248,7 +248,7 @@
         {
           "id": "3960470",
           "name": "Mickey Gall",
-          "record": "7-7-0",
+          "record": "7-8-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
           "age": 34,
@@ -293,7 +293,7 @@
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -304,16 +304,16 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "Featherweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 1,
+      "went_distance": false,
       "fighters": [
         {
           "id": "3955577",
           "name": "Julian Erosa",
-          "record": "31-14-0",
+          "record": "32-14-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 37,
           "reach_in": 74.5,
           "stance": "Southpaw",
@@ -322,7 +322,7 @@
         {
           "id": "5068724",
           "name": "JeongYeong Lee",
-          "record": "11-3-0",
+          "record": "11-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png",
           "winner": false,
           "age": 30,
@@ -366,7 +366,7 @@
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -377,16 +377,16 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "Welterweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 2,
+      "went_distance": false,
       "fighters": [
         {
           "id": "5289853",
           "name": "Rodrigo Sezinando",
-          "record": "9-2-0",
+          "record": "10-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
+          "winner": true,
           "age": 28,
           "reach_in": 71.0,
           "stance": "Orthodox",
@@ -395,7 +395,7 @@
         {
           "id": "5085010",
           "name": "Theodor Berggren",
-          "record": "8-4-0",
+          "record": "8-5-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
           "winner": false,
           "age": 26,
@@ -438,7 +438,7 @@
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -509,51 +509,28 @@
       },
       "market": {
         "h2h_novig": [
-          0.734,
-          0.266
+          0.2129,
+          0.7871
         ],
         "best": [
           {
-            "price": -196,
-            "book": "betonlineag"
+            "price": 500,
+            "book": "draftkings"
           },
           {
-            "price": 350,
-            "book": "draftkings"
+            "price": -450,
+            "book": "bovada"
           }
         ],
         "books": [
           "betmgm",
-          "betonlineag",
           "betrivers",
-          "betus",
           "bovada",
-          "draftkings",
-          "fanduel"
+          "draftkings"
         ],
         "odds_event_id": "cb8bbfa745f8248ce8453d9f561e86d7"
       },
-      "totals": [
-        {
-          "line": 2.5,
-          "p_over_novig": 0.6116,
-          "model_p_over": 0.5729,
-          "books": [
-            {
-              "book": "betonlineag",
-              "over": -175,
-              "under": 149,
-              "p_over": 0.6130847696095674
-            },
-            {
-              "book": "betus",
-              "over": -175,
-              "under": 146,
-              "p_over": 0.6102055279943301
-            }
-          ]
-        }
-      ],
+      "totals": [],
       "status": "scheduled",
       "status_events": [],
       "short_notice": false,
@@ -1151,8 +1128,8 @@
       },
       "market": {
         "h2h_novig": [
-          0.5239,
-          0.4761
+          0.5242,
+          0.4758
         ],
         "best": [
           {
@@ -1161,7 +1138,7 @@
           },
           {
             "price": 105,
-            "book": "bovada"
+            "book": "betonlineag"
           }
         ],
         "books": [
@@ -1225,13 +1202,13 @@
   "odds_meter": {
     "cost_measured": 2,
     "cost_estimated": 2,
-    "remaining": "347",
-    "used": "153",
+    "remaining": "345",
+    "used": "155",
     "events_returned": 6,
     "ufc_matched": 6,
     "non_ufc_dropped": 0
   },
-  "market_as_of": "2026-10-31T23:50:38Z",
+  "market_as_of": "2026-10-31T23:58:43Z",
   "backtest": {
     "n": 3506,
     "brier": 0.243,
