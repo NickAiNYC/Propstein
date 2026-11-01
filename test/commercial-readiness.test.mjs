@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
+import { buildSandbox, loadApp } from './helpers/sandbox.mjs';
 
 const read = (path) => readFile(new URL(path, import.meta.url), 'utf8');
 
@@ -62,4 +63,23 @@ test('slate labels guard optional week metadata', async () => {
   // slates keep their own label instead of a week-derived one.
   assert.match(app, /if \(slateCfg\.week != null\)/);
   assert.doesNotMatch(app, /W\$\{SLATES\[state\.slateKey\]\.week\}/);
+});
+
+test('paid access cannot be activated by URL or local storage', () => {
+  const { sandbox } = buildSandbox({ seedLocalStorage: { 'propwire-user-tier': 'pro' } });
+  sandbox.window.location.search = '?tier=pro&checkout=success&session_id=cs_forged';
+  sandbox.window.location.href = 'https://propstein.test/?tier=pro&checkout=success&session_id=cs_forged';
+  const app = loadApp(sandbox);
+  assert.equal(app.state.userTier, 'free');
+});
+
+test('all public pricing panels present frozen paid access without checkout controls', async () => {
+  for (const page of ['../viewer/index.html', '../viewer/audit.html', '../viewer/ledger.html', '../viewer/ledger/index.html']) {
+    const html = await read(page);
+    const panel = html.match(/<dialog class="detail-dialog pricing-dialog"[\s\S]*?<\/dialog>/)?.[0];
+    assert.ok(panel, `pricing panel missing in ${page}`);
+    assert.match(panel, /Paid signups frozen/);
+    assert.match(panel, /Quant waitlisted/);
+    assert.doesNotMatch(panel, /data-checkout-tier|data-switch-tier|Sub-minute priority ingestion/);
+  }
 });

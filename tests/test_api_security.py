@@ -37,8 +37,27 @@ def _reset_billing_rate_limit():
 @pytest.fixture(autouse=True)
 def _clean_env(monkeypatch):
     """Deterministic auth + redirect-clamp environment for every test."""
-    for var in ("PROPSTEIN_API_KEY", "PROPWIRE_API_KEY", "APP_URL", "STRIPE_SECRET_KEY"):
+    for var in ("PROPSTEIN_API_KEY", "PROPWIRE_API_KEY", "APP_URL", "STRIPE_SECRET_KEY", "PROPSTEIN_PAID_SIGNUPS_ENABLED"):
         monkeypatch.delenv(var, raising=False)
+    # Existing authentication tests exercise the checkout path with the
+    # operator gate explicitly open. Production defaults to frozen.
+    monkeypatch.setenv("PROPSTEIN_PAID_SIGNUPS_ENABLED", "1")
+
+
+def test_paid_signups_frozen_by_default_even_for_authenticated_user(client, monkeypatch):
+    monkeypatch.delenv("PROPSTEIN_PAID_SIGNUPS_ENABLED", raising=False)
+
+    def _must_not_be_called(*args, **kwargs):
+        raise AssertionError("BillingService was invoked while paid signups are frozen")
+
+    monkeypatch.setattr("src.services.billing.BillingService", _must_not_be_called)
+    res = client.post(
+        "/api/billing/create-checkout-session",
+        json={"plan": "pro_monthly"},
+        headers={"X-PropStein-API-Key": "authenticated_research_user"},
+    )
+    assert res.status_code == 503
+    assert "frozen" in res.json()["detail"].lower()
 
 
 def _install_fake_billing(monkeypatch, recorded):

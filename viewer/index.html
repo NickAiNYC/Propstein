@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#18181b">
-  <meta name="build-hash" content="2026-w8-v30">
+  <meta name="build-hash" content="2026-w8-v31">
   <meta name="description" content="PropStein quantitative player props research terminal for NFL &amp; NBA.">
   <link rel="canonical" href="https://propstein.vercel.app/">
   <title>PropStein · Quantitative Player Props Terminal</title>
@@ -163,8 +163,8 @@
         </button>
 
         <!-- Commercial Pricing / Membership Tiers (Desktop & Sheet Trigger) -->
-        <button type="button" id="pricingBtn" class="pw-btn-nav pw-btn-upgrade pw-desktop-only" title="Upgrade: membership tiers & access">
-          <span class="pro-text-desktop">Upgrade</span>
+        <button type="button" id="pricingBtn" class="pw-btn-nav pw-btn-upgrade pw-desktop-only" title="Research access and evidence">
+          <span class="pro-text-desktop">Access</span>
         </button>
 
         <!-- Desktop Action Buttons -->
@@ -586,7 +586,7 @@
         <!-- Membership status is server-authoritative. -->
         <div class="settings-section">
           <h3>Membership Access</h3>
-          <p class="settings-desc">Observer mode. Paid access is verified by the server after sign-in and cannot be changed on this device.</p>
+          <p class="settings-desc">Observer research mode. New paid access is frozen while live performance is being validated.</p>
         </div>
 
         <!-- Slate Selection -->
@@ -761,62 +761,54 @@
       <div class="dialog-sheet-handle" aria-hidden="true"></div>
       <div class="dialog-header">
         <div>
-          <div class="eyebrow">Institutional Access Tiers</div>
-          <h2 id="pricingTitle">PropStein Memberships</h2>
+          <div class="eyebrow">Research Access</div>
+          <h2 id="pricingTitle">Access &amp; Evidence</h2>
         </div>
         <button class="icon-button" value="cancel" aria-label="Close pricing">×</button>
       </div>
       <div class="dialog-body" id="pricingContent">
-        <!-- 3 Tier Cards -->
         <div class="pricing-tier-grid">
-          <div class="pricing-tier-card" data-tier="free">
-            <div class="tier-badge">Observer</div>
+          <div class="pricing-tier-card featured" data-tier="free">
+            <div class="tier-featured-pill">OPEN RESEARCH ACCESS</div>
+            <div class="tier-badge highlight">Observer</div>
             <div class="tier-price">$0 <span>/ mo</span></div>
-            <p class="tier-tagline">Fair lines, conditional distributions, and injury vacancy tracker.</p>
+            <p class="tier-tagline">Model fair lines and public performance research.</p>
             <ul class="tier-feature-list">
               <li>Full slate model fair lines</li>
-              <li>Target &amp; air-yard vacancy stats</li>
-              <li>Live line movement sparklines</li>
-              <li class="locked">Actionable edge calculations (+X.X%)</li>
-              <li class="locked">Personal CLV Ledger &amp; Closing Line Value tracking</li>
-              <li class="locked">Real-time Sniper alerts &amp; webhooks</li>
+              <li>Quote status and source timestamps</li>
+              <li>Public calibration and CLV record</li>
+              <li>Research calculations, clearly marked when unverified</li>
             </ul>
-            <button type="button" class="tier-cta-btn secondary" disabled>Active: Observer Mode</button>
+            <button type="button" class="tier-cta-btn secondary" disabled>Current access: Observer</button>
           </div>
 
-          <div class="pricing-tier-card featured" data-tier="sharp">
-            <div class="tier-featured-pill">MOST POPULAR · SHARP BETTOR</div>
-            <div class="tier-badge highlight">Sharp (Pro)</div>
-            <div class="tier-price">$29 <span>/ mo</span></div>
-            <p class="tier-tagline">Full mathematical edge calculations, Kelly sizing, and personal CLV ledger.</p>
+          <div class="pricing-tier-card" data-tier="sharp">
+            <div class="tier-badge">Sharp (Pro)</div>
+            <div class="tier-price">Paused</div>
+            <p class="tier-tagline">New paid access is frozen while live edge remains unproven.</p>
             <ul class="tier-feature-list">
-              <li><strong>All Observer features included</strong></li>
-              <li><strong>Uncensored mathematical edge (+X.X%)</strong></li>
-              <li><strong>Fractional Kelly sizing recommendations</strong></li>
-              <li><strong>Personal CLV Ledger &amp; Closing Line Value tracking</strong></li>
-              <li><strong>Same-team exposure &amp; hedge detection</strong></li>
-              <li><strong>Sniper Webhook &amp; Discord/Telegram alerts</strong></li>
+              <li>Research tools remain available in Observer mode</li>
+              <li>Edge and Kelly outputs are estimates, not validated picks</li>
+              <li>No actionable live Sniper alerts are offered</li>
             </ul>
-            <button type="button" class="tier-cta-btn primary" data-checkout-tier="sharp">Sign in to unlock Sharp ($29/mo)</button>
+            <button type="button" class="tier-cta-btn secondary" disabled>Paid signups frozen</button>
           </div>
 
           <div class="pricing-tier-card" data-tier="quant">
             <div class="tier-badge">Quant (API)</div>
-            <div class="tier-price">$99 <span>/ mo</span></div>
-            <p class="tier-tagline">Automated programmatic feeds for syndicates and quantitative funds.</p>
+            <div class="tier-price">Waitlist</div>
+            <p class="tier-tagline">Programmatic access is under evaluation and is not for sale.</p>
             <ul class="tier-feature-list">
-              <li><strong>All Sharp features included</strong></li>
-              <li><strong>REST JSON API endpoints (/api/v1/slate)</strong></li>
-              <li><strong>Downloadable historical CSV snapshots</strong></li>
-              <li><strong>Sub-minute priority ingestion stream</strong></li>
-              <li><strong>Custom Kelly covariance matrix parameters</strong></li>
+              <li>Public snapshots show their own timestamps</li>
+              <li>Public Polymarket refresh is scheduled every four hours</li>
+              <li>API scope and cadence will be published before launch</li>
             </ul>
-            <button type="button" class="tier-cta-btn secondary" data-checkout-tier="quant">Sign in to unlock Quant ($99/mo)</button>
+            <button type="button" class="tier-cta-btn secondary" disabled>Quant waitlisted</button>
           </div>
         </div>
 
         <div class="pricing-guarantee-box">
-          <p><strong>Beat-Close Guarantee Suspended</strong>: The Beat-Close Guarantee is suspended pending sample size validation (N ≥ 300). Current graded decisions (N=37) yield 95% CI [-0.10, 1.45], which includes zero. All projections are provided for research and information.</p>
+          <p><strong>Paid signups frozen; Beat-Close Guarantee suspended.</strong> The current public record does not establish a live betting edge. Paid access stays closed until at least 300 prospectively graded board decisions show positive closing-line value with a 95% confidence interval above zero. See the <a href="/performance/">public performance record</a> for the latest results.</p>
         </div>
       </div>
     </form>

@@ -1,5 +1,5 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v207-nba-fanduel-lines';
+const CACHE_NAME = 'propstein-v207-access-proof';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',

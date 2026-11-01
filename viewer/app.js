@@ -210,21 +210,9 @@
     priceHistory: {},
     openSnapshots: {},
     bottomTab: 'slate',
-    userTier: (function() {
-      try {
-        if (typeof window !== 'undefined' && window.location) {
-          const p = new URLSearchParams(window.location.search).get('tier');
-          if (p === 'free' || p === 'pro') return p;
-        }
-        if (typeof localStorage !== 'undefined') {
-          const stored = localStorage.getItem('propwire-user-tier');
-          if (stored === 'free' || stored === 'pro') return stored;
-        }
-        return 'pro';
-      } catch (_) {
-        return 'pro';
-      }
-    })(),
+    // Paid access cannot be inferred from query parameters or local storage.
+    // The public research shell stays in Observer mode while signups are frozen.
+    userTier: 'free',
     slateScrollY: 0
   };
   try {
@@ -1041,18 +1029,6 @@
   function checkDeepLinks() {
     try {
       const url = new URL(window.location.href);
-      const checkoutParam = url.searchParams.get('checkout');
-      const sessionId = url.searchParams.get('session_id');
-      if (checkoutParam === 'success' || (sessionId && sessionId.startsWith('cs_'))) {
-        try {
-          if (typeof localStorage !== 'undefined') localStorage.setItem('propwire-user-tier', 'pro');
-          state.userTier = 'pro';
-          setTimeout(() => {
-            toast('✓ Sniper PRO Active! Live Terminal & Webhooks Unlocked ($29/mo).');
-          }, 350);
-        } catch (_) {}
-      }
-
       const rootParam = (url.searchParams.get('root') || url.searchParams.get('r') || '').trim();
       const receiptParam = (url.searchParams.get('receipt') || url.searchParams.get('ticket') || url.searchParams.get('id') || '').trim();
       const path = (window.location.pathname || '').toLowerCase();
@@ -1342,56 +1318,6 @@
         pricingDialog.showModal();
       }
 
-      const checkoutBtn = e.target.closest('[data-checkout-tier]');
-      if (checkoutBtn) {
-        e.preventDefault();
-        triggerHaptic('light');
-        const planTier = checkoutBtn.getAttribute('data-checkout-tier') || 'sharp';
-        const plan = planTier === 'quant' ? 'pro_yearly' : 'pro_monthly';
-        // v175 P2: checkout requires a server-verified session token — the
-        // server derives the billing user_id from it and rejects anonymous
-        // calls with 401 before touching Stripe. No token → no API call.
-        const sessionToken = (() => {
-          try {
-            return (typeof localStorage !== 'undefined' &&
-              (localStorage.getItem('propstein-session-token') || localStorage.getItem('propwire-session-token'))) || null;
-          } catch (_) { return null; }
-        })();
-        if (!sessionToken) {
-          toast('Sign in to start checkout. Access is verified by the server.');
-          return;
-        }
-        toast('Redirecting to secure Stripe checkout ($29/mo)...');
-        (async () => {
-          try {
-            const email = (typeof localStorage !== 'undefined' && localStorage.getItem('propwire-user-email')) || undefined;
-            const res = await fetch('/api/billing/create-checkout-session', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'X-PropStein-API-Key': sessionToken },
-              body: JSON.stringify({
-                plan: plan,
-                email: email
-              })
-            });
-            if (res.ok) {
-              const data = await res.json();
-              if (data.checkout_url) {
-                window.location.href = data.checkout_url;
-                return;
-              }
-            } else if (res.status === 401) {
-              toast('Session rejected. Sign in again to manage membership.');
-              return;
-            } else if (res.status === 429) {
-              toast('Too many checkout attempts. Please wait a minute and retry.');
-              return;
-            }
-          } catch (err) {
-            console.warn('Checkout redirection failed:', err);
-          }
-          toast('Sign in to manage membership. Access is verified by the server.');
-        })();
-      }
     });
 
     // Slim Availability Header Pill
@@ -4400,7 +4326,7 @@
                     <div class="nba-side-sniper-title">Live Substitution Sniper Feed</div>
                     <div class="nba-side-sniper-sub">Spatial court triggers &rarr; Bayesian recalc on last-known odds</div>
                   </div>
-                  <span class="sniper-live-pulse-badge">${isStaleCourt ? 'HALTED' : isFreeTier ? 'PRO ONLY' : 'LIVE 5s PBP'}</span>
+                  <span class="sniper-live-pulse-badge">${isStaleCourt ? 'HALTED' : isFreeTier ? 'PAUSED' : 'LIVE 5s PBP'}</span>
                 </div>
                 <div class="nba-side-sniper-list ${isFreeTier ? 'pro-blur-target' : ''}">
                   ${sideBySideAlertsHtml}
@@ -4412,7 +4338,7 @@
                     <div class="nba-side-sniper-title">Cross-Venue Arb Board</div>
                     <div class="nba-side-sniper-sub">Bayesian Fair vs Sportsbook vs Polymarket CLOB (Fee-Adj VWAP)</div>
                   </div>
-                  <span class="arb-status-pill ${isPolyWsDisconnected ? 'is-stale' : 'is-live'}">${isPolyWsDisconnected ? 'STALE' : 'CLOB LIVE'}</span>
+                  <span class="arb-status-pill ${isPolyWsDisconnected || isFreeTier ? 'is-stale' : 'is-live'}">${isFreeTier ? 'UNVERIFIED' : isPolyWsDisconnected ? 'STALE' : 'CLOB LIVE'}</span>
                 </div>
                 <div class="nba-arb-cards-list ${isFreeTier ? 'pro-blur-target' : ''}">
                   ${arbBoardHtml}
@@ -4536,15 +4462,15 @@
                 <div class="nba-side-sniper-title">Live Substitution Sniper Feed</div>
                 <div class="nba-side-sniper-sub">Spatial court triggers &rarr; Bayesian recalc on last-known odds</div>
               </div>
-              <span class="sniper-live-pulse-badge">${isStaleCourt ? 'HALTED' : isFreeTier ? 'PRO ONLY' : 'LIVE 5s PBP'}</span>
+              <span class="sniper-live-pulse-badge">${isStaleCourt ? 'HALTED' : isFreeTier ? 'PAUSED' : 'LIVE 5s PBP'}</span>
             </div>
             <div class="nba-side-sniper-list ${isFreeTier ? 'pro-blur-target' : ''}" id="nbaSideSniperList">
               ${sideBySideAlertsHtml}
             </div>
             ${isFreeTier ? `
               <div class="pro-lock-gate-overlay">
-                <button type="button" class="pro-lock-badge" data-open-pricing>🔒 Unlock Live Sniper PRO ($29/mo)</button>
-                <span class="pro-lock-subtext">Instant live substitution &amp; vacancy alerts. One arb pays for the month.</span>
+                <button type="button" class="pro-lock-badge" data-open-pricing>Live Sniper paused</button>
+                <span class="pro-lock-subtext">No validated live edge or actionable alerts are available.</span>
               </div>
             ` : ''}
           </div>
@@ -4557,8 +4483,8 @@
                 <div class="nba-side-sniper-sub">Bayesian Fair vs Sportsbook vs Polymarket CLOB (Fee-Adj VWAP)</div>
               </div>
               <div class="arb-head-tools">
-                <span class="arb-status-pill ${isPolyWsDisconnected ? 'is-stale' : 'is-live'}" id="nbaArbStatusPill">
-                  ${isPolyWsDisconnected ? 'STALE' : 'CLOB LIVE'}
+                <span class="arb-status-pill ${isPolyWsDisconnected || isFreeTier ? 'is-stale' : 'is-live'}" id="nbaArbStatusPill">
+                  ${isFreeTier ? 'UNVERIFIED' : isPolyWsDisconnected ? 'STALE' : 'CLOB LIVE'}
                 </span>
                 <button type="button" class="arb-ws-toggle-btn" id="nbaTogglePolyWsBtn" title="Simulate Polymarket CLOB WebSocket Disconnect (Stale Orderbook Guard)">
                   ${isPolyWsDisconnected ? 'Reconnect WS' : 'Test WS Drop'}
@@ -4575,8 +4501,8 @@
             </div>
             ${isFreeTier ? `
               <div class="pro-lock-gate-overlay">
-                <button type="button" class="pro-lock-badge" data-open-pricing>🔒 Unlock Cross-Venue Arbs ($29/mo)</button>
-                <span class="pro-lock-subtext">Polymarket CLOB vs Sportsbook mispricing arbitrage.</span>
+                <button type="button" class="pro-lock-badge" data-open-pricing>Cross-venue research paused</button>
+                <span class="pro-lock-subtext">Independent quote verification is still required.</span>
               </div>
             ` : ''}
           </div>
@@ -6228,9 +6154,6 @@
       const isPos = settled.delta > 0;
       heroEdgeHtml = `<span class="card-hero-edge ${isPos ? 'positive' : 'negative'}">${isPos ? '+' : ''}${settled.delta}${settled.isYards ? 'y' : 'r'}</span>`;
       heroSubHtml = `<span class="card-edge-sub">${settled.outcome}</span>`;
-    } else if (state.userTier === 'free') {
-      heroEdgeHtml = `<span class="card-hero-edge free-locked" data-open-pricing title="Unlock Edge with Sharp ($29/mo)">PRO</span>`;
-      heroSubHtml = `<span class="card-edge-sub">EDGE LOCKED</span>`;
     } else if (evaluation.closed) {
       heroEdgeHtml = '<span class="card-hero-edge closed">CLOSED</span>';
       heroSubHtml = '<span class="card-edge-sub status-no-line">OFF BOARD</span>';
@@ -6744,15 +6667,6 @@
           <span class="text-muted edge-cell-muted">—</span>
           <span class="unverified-state-micro" title="Awaiting 3-book consensus receipt hash">Awaiting Hash</span>
         </div>
-      </div>`;
-    }
-    if (state.userTier === 'free' && !SLATES[state.slateKey]?.historical) {
-      return `<div class="edge-cell-wrap">
-        <button type="button" class="edge-cell free-locked ${flashClass}" data-open-pricing title="Unlock Edge with Sharp ($29/mo)" style="width:100%; border:1px dashed rgba(255,255,255,0.2); cursor:pointer;">
-          <span class="edge-line-top" style="color:#94a3b8; font-size:11px;">LOCKED</span>
-          <span class="exec-tag" style="background:rgba(255,255,255,0.06); color:#cbd5e1;">PRO TIER</span>
-        </button>
-        <button class="mq-log-btn" type="button" data-open-pricing aria-label="Unlock Sharp Tier" title="Unlock Sharp Tier">${SVG_ICONS.lock}</button>
       </div>`;
     }
     if (evaluation.closed) {
