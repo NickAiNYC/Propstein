@@ -40,7 +40,10 @@ class SundayFreezeTests(unittest.TestCase):
             snapshots.mkdir()
             shutil.copy(ROOT / "viewer/slate_2026_w8.json", viewer / "slate_2026_w8.json")
             with patch.object(freeze, "VIEWER_DIR", viewer), patch.object(freeze, "SNAPSHOTS_DIR", snapshots):
-                frozen, source, bundle = freeze.freeze_slate(2026, 8, game_ids=set(kickoffs))
+                frozen, source, bundle = freeze.freeze_slate(
+                    2026, 8, game_ids=set(kickoffs),
+                    created_at="2026-11-01T17:20:00+00:00",
+                )
             kickoff_map = root / "kickoffs.json"
             kickoff_map.write_text(json.dumps(kickoffs), encoding="utf-8")
             journal = snapshots / "full_board.jsonl"
