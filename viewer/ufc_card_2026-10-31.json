@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-10-31T23:58:43Z",
+  "generated_at": "2026-11-01T04:06:25Z",
   "event_id": "600061420",
   "event_name": "UFC Fight Night: Moicano vs. Nolan",
   "date": "2026-10-31",
@@ -449,14 +449,14 @@
       "start": "2026-10-31T21:00Z",
       "weight_class": "Featherweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "5060394",
           "name": "Francis Marshall",
-          "record": "10-3-0",
+          "record": "10-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
           "age": 27,
@@ -467,9 +467,9 @@
         {
           "id": "4898914",
           "name": "Dakota Hope",
-          "record": "11-2-0",
+          "record": "12-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 29,
           "reach_in": 67.0,
           "stance": "Orthodox",
@@ -531,7 +531,7 @@
         "odds_event_id": "cb8bbfa745f8248ce8453d9f561e86d7"
       },
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -542,16 +542,16 @@
       "start": "2026-11-01T00:00Z",
       "weight_class": "Welterweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
       "fighters": [
         {
           "id": "4629138",
           "name": "Jean-Paul Lebosnoyani",
-          "record": "11-2-0",
+          "record": "12-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 27,
           "reach_in": 72.0,
           "stance": "Switch",
@@ -560,7 +560,7 @@
         {
           "id": "5350562",
           "name": "Farman Hasanov",
-          "record": "5-0-0",
+          "record": "5-1-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/aze.png",
           "winner": false,
           "age": 31,
@@ -659,7 +659,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -670,14 +670,14 @@
       "start": "2026-11-01T00:00Z",
       "weight_class": "W Bantamweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "3154898",
           "name": "Yana Santos",
-          "record": "17-8-0",
+          "record": "17-9-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/rus.png",
           "winner": false,
           "age": 36,
@@ -688,9 +688,9 @@
         {
           "id": "5110469",
           "name": "Luana Santos",
-          "record": "11-2-0",
+          "record": "12-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
+          "winner": true,
           "age": 26,
           "reach_in": 67.0,
           "stance": "Orthodox",
@@ -788,7 +788,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -799,14 +799,14 @@
       "start": "2026-11-01T00:00Z",
       "weight_class": "Flyweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "4424224",
           "name": "Ode' Osbourne",
-          "record": "13-9-0",
+          "record": "13-10-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jam.png",
           "winner": false,
           "age": 34,
@@ -817,9 +817,9 @@
         {
           "id": "4686725",
           "name": "Cody Durden",
-          "record": "18-11-1",
+          "record": "19-11-1",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 35,
           "reach_in": 67.0,
           "stance": "Southpaw",
@@ -925,7 +925,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -936,14 +936,14 @@
       "start": "2026-11-01T00:00Z",
       "weight_class": "Welterweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "3960071",
           "name": "Randy Brown",
-          "record": "20-8-0",
+          "record": "20-9-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jam.png",
           "winner": false,
           "age": 36,
@@ -954,9 +954,9 @@
         {
           "id": "5149961",
           "name": "Jacobe Smith",
-          "record": "13-0-0",
+          "record": "14-0-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 30,
           "reach_in": 72.0,
           "stance": "Southpaw",
@@ -1054,7 +1054,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -1065,14 +1065,14 @@
       "start": "2026-11-01T00:00Z",
       "weight_class": "Lightweight",
       "sched_rounds": 5,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
       "fighters": [
         {
           "id": "3028863",
           "name": "Renato Moicano",
-          "record": "21-7-1",
+          "record": "21-8-1",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 37,
@@ -1083,9 +1083,9 @@
         {
           "id": "5144007",
           "name": "Tom Nolan",
-          "record": "11-1-0",
+          "record": "12-1-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
-          "winner": false,
+          "winner": true,
           "age": 26,
           "reach_in": 73.0,
           "stance": "Southpaw",
@@ -1192,7 +1192,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -1200,19 +1200,14 @@
     }
   ],
   "odds_meter": {
-    "cost_measured": 2,
-    "cost_estimated": 2,
-    "remaining": "345",
-    "used": "155",
-    "events_returned": 6,
-    "ufc_matched": 6,
-    "non_ufc_dropped": 0
+    "skipped": "outside 48h window or --no-odds",
+    "market_from": "2026-10-31T23:58:43Z"
   },
   "market_as_of": "2026-10-31T23:58:43Z",
   "backtest": {
-    "n": 3506,
+    "n": 3512,
     "brier": 0.243,
-    "log_loss": 0.6791,
+    "log_loss": 0.679,
     "coinflip_brier": 0.25,
     "coinflip_log_loss": 0.6931,
     "type": "walk-forward results-only (not closing-line CLV)"
