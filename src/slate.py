@@ -41,6 +41,7 @@ much smaller stakes, both of which `week1.py` enforces.
 
 from __future__ import annotations
 
+import json
 import os
 
 import numpy as np
@@ -120,6 +121,30 @@ def questionable_flags(inj: pd.DataFrame) -> set[str]:
         return set()
     q = inj.report_status.fillna("").str.lower().eq("questionable")
     return set(inj.loc[q, "player_id"].dropna())
+
+
+def confirmed_inactive_ids(season: int, week: int) -> set[str]:
+    """Read a source-attributed official inactive snapshot for this exact slate."""
+    path = os.path.join(os.path.dirname(DATA_DIR), "viewer", f"official_inactives_{season}_w{week}.json")
+    if not os.path.exists(path):
+        return set()
+    with open(path, encoding="utf-8") as handle:
+        report = json.load(handle)
+    if report.get("season") != season or report.get("week") != week or not report.get("source_url"):
+        raise ValueError("official inactive report has invalid slate or provenance")
+    return {str(row["player_id"]) for row in report.get("players", []) if row.get("player_id")}
+
+
+def availability_eligible(slate: pd.DataFrame, injured: set[str],
+                          confirmed_inactive: set[str]) -> pd.DataFrame:
+    """Apply hard availability exclusions in every week, including Weeks 2+."""
+    result = slate.copy()
+    result["excl_reason"] = ""
+    result.loc[result.player_id.isin(injured), "excl_reason"] = "injury: out/doubtful"
+    result.loc[result.player_id.isin(confirmed_inactive), "excl_reason"] = "official inactive"
+    inactive_roster = result.get("status", pd.Series("ACT", index=result.index)).fillna("ACT") != "ACT"
+    result.loc[inactive_roster & (result.excl_reason == ""), "excl_reason"] = "not on active roster"
+    return result
 
 
 # ---------------------------------------------------------------------------

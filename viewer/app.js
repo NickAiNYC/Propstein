@@ -2236,7 +2236,11 @@
     const odds = oddsRes.data;
     const newsState = newsRes.data;
 
-    state.slate = Array.isArray(slate) ? slate : [];
+    // Keep excluded players in the immutable slate artifact for audit, but
+    // never surface confirmed nonparticipants as current prop candidates.
+    state.slate = Array.isArray(slate)
+      ? slate.filter(row => !String(row.excl_reason || '').trim())
+      : [];
     state.games = Array.isArray(games) ? games : [];
     state.picks = picks && typeof picks === 'object' ? picks : {};
     state.livePicks = livePicksRes.ok && Array.isArray(livePicksRes.data?.picks)
