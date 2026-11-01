@@ -15,7 +15,7 @@ name: Daily Data Autopilot
 # Cadence: 11:00 UTC (07:00 ET, morning rollover check) and 21:00 UTC
 # (17:00 ET, catches afternoon injury reports before the evening slates).
 # GitHub cron is UTC-only; the pipeline itself resolves the active week from
-# the schedule, so DST drift is harmless.
+# the schedule. The extra EST Sunday run below preserves the 12:45 ET check.
 
 on:
   schedule:
@@ -23,9 +23,11 @@ on:
     - cron: '0 11 * * *'
     - cron: '0 21 * * *'
     # Game-day live kickoff windows:
-    # Sunday early window (11:30 ET / 15:30 UTC inactives + 12:45 ET / 16:45 UTC pre-kickoff line lock)
+    # Sunday early window in EDT (11:30 ET / 15:30 UTC inactives + 12:45 ET / 16:45 UTC pre-kickoff line lock)
     - cron: '30 15 * * 0'
     - cron: '45 16 * * 0'
+    # 12:45 ET in EST; skipped during EDT by the window guard below.
+    - cron: '45 17 * * 0'
     # Sunday late window (15:30 ET / 19:30 UTC afternoon inactives)
     - cron: '30 19 * * 0'
     # Sunday Night Football pre-kickoff (19:45 ET / 23:45 UTC)
@@ -55,25 +57,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: Check EST pre-kickoff window
+        id: window
+        run: |
+          if [ "${{ github.event.schedule }}" = '45 17 * * 0' ] && [ "$(TZ=America/New_York date +%z)" != '-0500' ]; then
+            echo 'should_run=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'should_run=true' >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Python
+        if: steps.window.outputs.should_run == 'true'
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
           cache: 'pip'
 
       - name: Install model stack
-        if: ${{ inputs.nba_only != true }}
+        if: steps.window.outputs.should_run == 'true' && inputs.nba_only != true
         run: |
           python -m pip install --upgrade pip
           pip install "pandas>=2.2" "numpy>=1.26" "scipy>=1.13" \
             "scikit-learn>=1.5" "statsmodels>=0.14" "pyarrow>=16" "requests>=2.32"
 
       - name: Install NBA contract dependency
-        if: ${{ inputs.nba_only == true }}
+        if: steps.window.outputs.should_run == 'true' && inputs.nba_only == true
         run: python -m pip install "pydantic>=2,<3"
 
       - name: Run autopilot
-        if: ${{ inputs.nba_only != true }}
+        if: steps.window.outputs.should_run == 'true' && inputs.nba_only != true
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           BALLDONTLIE_API_KEY: ${{ secrets.BALLDONTLIE_API_KEY }}
@@ -81,7 +93,7 @@ jobs:
         run: python scripts/autopilot.py --run
 
       - name: Refresh today's NBA market slate
-        if: ${{ inputs.nba_only == true }}
+        if: steps.window.outputs.should_run == 'true' && inputs.nba_only == true
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
@@ -89,6 +101,7 @@ jobs:
           python scripts/publish_nba_market_slate.py 2026-10-31
 
       - name: Commit and push refreshed slate (if changed)
+        if: steps.window.outputs.should_run == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
