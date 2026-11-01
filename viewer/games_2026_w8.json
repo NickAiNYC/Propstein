@@ -93,7 +93,7 @@
     "gametime": "13:00",
     "away_team": "TEN",
     "home_team": "CIN",
-    "spread_line": 12.5,
+    "spread_line": 13.5,
     "total_line": 45.5,
     "roof": "outdoors",
     "wind": null
@@ -137,7 +137,7 @@
     "gametime": "20:20",
     "away_team": "PHI",
     "home_team": "WAS",
-    "spread_line": 6.5,
+    "spread_line": 6.0,
     "total_line": 40.5,
     "roof": "outdoors",
     "wind": null
