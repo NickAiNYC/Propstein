@@ -3,27 +3,12 @@
   "week": 8,
   "gate_edge": 0.1,
   "kelly_cap": 0.03,
-  "rostered_player_records": 152,
-  "projectable_player_records": 100,
+  "rostered_player_records": 125,
+  "projectable_player_records": 77,
   "note": "Top 25 Projections & Fair Lines (Active Games Only)",
   "picks": [
     {
       "rank": 1,
-      "player": "Puka Nacua",
-      "team": "LA",
-      "opponent": "LAC",
-      "position": "WR",
-      "proj_rec": 10.3,
-      "fair_line_rec": 9.5,
-      "p_rec_at_fair_line": 0.522,
-      "proj_yards": 129.7,
-      "fair_line_yards": 120.5,
-      "implied_total": 26.5,
-      "spread": 6.5,
-      "questionable": 0
-    },
-    {
-      "rank": 2,
       "player": "Jaxon Smith-Njigba",
       "team": "SEA",
       "opponent": "CHI",
@@ -38,7 +23,7 @@
       "questionable": 0
     },
     {
-      "rank": 3,
+      "rank": 2,
       "player": "Rashee Rice",
       "team": "KC",
       "opponent": "DEN",
@@ -53,7 +38,7 @@
       "questionable": 0
     },
     {
-      "rank": 4,
+      "rank": 3,
       "player": "Stefon Diggs",
       "team": "WAS",
       "opponent": "PHI",
@@ -68,7 +53,7 @@
       "questionable": 0
     },
     {
-      "rank": 5,
+      "rank": 4,
       "player": "Jaylen Waddle",
       "team": "DEN",
       "opponent": "KC",
@@ -83,22 +68,7 @@
       "questionable": 1
     },
     {
-      "rank": 6,
-      "player": "Davante Adams",
-      "team": "LA",
-      "opponent": "LAC",
-      "position": "WR",
-      "proj_rec": 4.1,
-      "fair_line_rec": 3.5,
-      "p_rec_at_fair_line": 0.543,
-      "proj_yards": 52.3,
-      "fair_line_yards": 45.5,
-      "implied_total": 26.5,
-      "spread": 6.5,
-      "questionable": 0
-    },
-    {
-      "rank": 7,
+      "rank": 5,
       "player": "Colston Loveland",
       "team": "CHI",
       "opponent": "SEA",
@@ -113,7 +83,7 @@
       "questionable": 0
     },
     {
-      "rank": 8,
+      "rank": 6,
       "player": "Luther Burden III",
       "team": "CHI",
       "opponent": "SEA",
@@ -128,7 +98,7 @@
       "questionable": 0
     },
     {
-      "rank": 9,
+      "rank": 7,
       "player": "Terry McLaurin",
       "team": "WAS",
       "opponent": "PHI",
@@ -143,7 +113,7 @@
       "questionable": 0
     },
     {
-      "rank": 10,
+      "rank": 8,
       "player": "Travis Kelce",
       "team": "KC",
       "opponent": "DEN",
@@ -158,7 +128,7 @@
       "questionable": 0
     },
     {
-      "rank": 11,
+      "rank": 9,
       "player": "Rome Odunze",
       "team": "CHI",
       "opponent": "SEA",
@@ -173,22 +143,7 @@
       "questionable": 0
     },
     {
-      "rank": 12,
-      "player": "Quentin Johnston",
-      "team": "LAC",
-      "opponent": "LA",
-      "position": "WR",
-      "proj_rec": 2.4,
-      "fair_line_rec": 2.5,
-      "p_rec_at_fair_line": 0.423,
-      "proj_yards": 39.0,
-      "fair_line_yards": 31.5,
-      "implied_total": 20.0,
-      "spread": -6.5,
-      "questionable": 0
-    },
-    {
-      "rank": 13,
+      "rank": 10,
       "player": "Xavier Worthy",
       "team": "KC",
       "opponent": "DEN",
@@ -203,7 +158,7 @@
       "questionable": 0
     },
     {
-      "rank": 14,
+      "rank": 11,
       "player": "Cooper Kupp",
       "team": "SEA",
       "opponent": "CHI",
@@ -218,7 +173,7 @@
       "questionable": 0
     },
     {
-      "rank": 15,
+      "rank": 12,
       "player": "Malik Washington",
       "team": "MIA",
       "opponent": "NE",
@@ -233,7 +188,7 @@
       "questionable": 0
     },
     {
-      "rank": 16,
+      "rank": 13,
       "player": "Dallas Goedert",
       "team": "PHI",
       "opponent": "WAS",
@@ -248,7 +203,7 @@
       "questionable": 0
     },
     {
-      "rank": 17,
+      "rank": 14,
       "player": "Romeo Doubs",
       "team": "NE",
       "opponent": "MIA",
@@ -263,7 +218,7 @@
       "questionable": 0
     },
     {
-      "rank": 18,
+      "rank": 15,
       "player": "Courtland Sutton",
       "team": "DEN",
       "opponent": "KC",
@@ -278,7 +233,7 @@
       "questionable": 0
     },
     {
-      "rank": 19,
+      "rank": 16,
       "player": "Greg Dulcich",
       "team": "MIA",
       "opponent": "NE",
@@ -293,7 +248,7 @@
       "questionable": 0
     },
     {
-      "rank": 20,
+      "rank": 17,
       "player": "Hunter Henry",
       "team": "NE",
       "opponent": "MIA",
@@ -308,7 +263,7 @@
       "questionable": 0
     },
     {
-      "rank": 21,
+      "rank": 18,
       "player": "DeMario Douglas",
       "team": "NE",
       "opponent": "MIA",
@@ -323,7 +278,7 @@
       "questionable": 0
     },
     {
-      "rank": 22,
+      "rank": 19,
       "player": "Makai Lemon",
       "team": "PHI",
       "opponent": "WAS",
@@ -338,7 +293,7 @@
       "questionable": 0
     },
     {
-      "rank": 23,
+      "rank": 20,
       "player": "Chig Okonkwo",
       "team": "WAS",
       "opponent": "PHI",
@@ -353,22 +308,7 @@
       "questionable": 0
     },
     {
-      "rank": 24,
-      "player": "Tre Harris",
-      "team": "LAC",
-      "opponent": "LA",
-      "position": "WR",
-      "proj_rec": 2.5,
-      "fair_line_rec": 2.5,
-      "p_rec_at_fair_line": 0.444,
-      "proj_yards": 33.1,
-      "fair_line_yards": 27.0,
-      "implied_total": 20.0,
-      "spread": -6.5,
-      "questionable": 0
-    },
-    {
-      "rank": 25,
+      "rank": 21,
       "player": "Antonio Williams",
       "team": "WAS",
       "opponent": "PHI",
@@ -380,6 +320,66 @@
       "fair_line_yards": 27.0,
       "implied_total": 23.2,
       "spread": 6.0,
+      "questionable": 0
+    },
+    {
+      "rank": 22,
+      "player": "Mack Hollins",
+      "team": "NE",
+      "opponent": "MIA",
+      "position": "WR",
+      "proj_rec": 2.6,
+      "fair_line_rec": 2.5,
+      "p_rec_at_fair_line": 0.452,
+      "proj_yards": 32.8,
+      "fair_line_yards": 26.5,
+      "implied_total": 24.2,
+      "spread": 7.0,
+      "questionable": 0
+    },
+    {
+      "rank": 23,
+      "player": "Tyquan Thornton",
+      "team": "KC",
+      "opponent": "DEN",
+      "position": "WR",
+      "proj_rec": 2.2,
+      "fair_line_rec": 1.5,
+      "p_rec_at_fair_line": 0.604,
+      "proj_yards": 31.7,
+      "fair_line_yards": 25.0,
+      "implied_total": 20.0,
+      "spread": -1.5,
+      "questionable": 0
+    },
+    {
+      "rank": 24,
+      "player": "Marquise Brown",
+      "team": "PHI",
+      "opponent": "WAS",
+      "position": "WR",
+      "proj_rec": 2.2,
+      "fair_line_rec": 1.5,
+      "p_rec_at_fair_line": 0.62,
+      "proj_yards": 28.9,
+      "fair_line_yards": 23.0,
+      "implied_total": 17.2,
+      "spread": -6.0,
+      "questionable": 0
+    },
+    {
+      "rank": 25,
+      "player": "AJ Barner",
+      "team": "SEA",
+      "opponent": "CHI",
+      "position": "TE",
+      "proj_rec": 2.8,
+      "fair_line_rec": 2.5,
+      "p_rec_at_fair_line": 0.512,
+      "proj_yards": 28.3,
+      "fair_line_yards": 23.5,
+      "implied_total": 24.8,
+      "spread": 3.0,
       "questionable": 0
     }
   ]
