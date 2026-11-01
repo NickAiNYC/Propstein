@@ -370,7 +370,7 @@ def fetch_nba_days(now: datetime) -> None:
 
 
 def fetch_nba_odds_days(now: datetime) -> None:
-    """Optional: The Odds API NBA schedule + points props for today + next 2 ET days.
+    """Optional: The Odds API NBA schedule + FanDuel points lines for today + next 2 ET days.
 
     Uses a DEDICATED NBA_ODDS_API_KEY (free plan, 500 credits/mo) so it never
     drains the NFL ODDS_API_KEY pool. ~1 credit per game; the script refuses to

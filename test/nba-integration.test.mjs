@@ -33,7 +33,7 @@ test('NBA market-only date shows real unverified lines without model or edge cla
   app.state.games = [{ game_id: 'nba-20261031-PHI-CHA', away_team: 'PHI', home_team: 'CHA' }];
   app.state.odds = {
     feed_status: 'live-unverified', updated_at: '2026-10-31T15:00:00Z',
-    quotes: [{ player_name: 'Test Player', game_id: 'nba-20261031-PHI-CHA', book: 'Book A',
+    quotes: [{ player_name: 'Test Player', game_id: 'nba-20261031-PHI-CHA', book: 'FanDuel',
       market: 'points', line: 24.5, over_odds: -110, under_odds: 100, _fixture: false, verified: false }]
   };
   app.renderBoard();
@@ -44,7 +44,7 @@ test('NBA market-only date shows real unverified lines without model or edge cla
   assert.match(markup, /UNVERIFIED/);
   assert.match(markup, /No NBA model predictions or qualified edges/);
   assert.doesNotMatch(markup, /model fair|probability edge|expected value/i);
-  assert.equal(registry.get('#homeEdgeTitle').textContent, 'NBA player points lines');
+  assert.equal(registry.get('#homeEdgeTitle').textContent, 'FanDuel player points lines');
 });
 
 test('October 31 NBA market feed keeps every alternate points line distinct and unverified', () => {
@@ -53,7 +53,7 @@ test('October 31 NBA market feed keeps every alternate points line distinct and 
   assert.equal(feed.verified_quotes_count, 0);
   assert.equal(feed.total_quotes, feed.quotes.length);
   assert.equal(new Set(feed.quotes.map((q) => q.quote_id)).size, feed.quotes.length);
-  assert.ok(feed.quotes.every((q) => q.verified === false && q._fixture === false && q.market === 'points'));
+  assert.ok(feed.quotes.every((q) => q.verified === false && q._fixture === false && q.market === 'points' && q.book === 'FanDuel'));
 });
 
 /**
