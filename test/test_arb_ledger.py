@@ -150,7 +150,7 @@ def test_public_verify_landing_page():
     assert res_base.status_code == 200
 
 
-def test_stripe_billing_checkout_and_webhook():
+def test_stripe_billing_checkout_and_webhook(monkeypatch):
     import secrets
     from fastapi.testclient import TestClient
     from api.main import app
@@ -158,6 +158,9 @@ def test_stripe_billing_checkout_and_webhook():
 
     client = TestClient(app)
     uid = f"usr_test_{secrets.token_hex(4)}"
+    # Exercise the billing contract under an explicit operator reopening.
+    # Production checkout remains frozen by default (see test_api_security).
+    monkeypatch.setenv("PROPSTEIN_PAID_SIGNUPS_ENABLED", "1")
 
     # 1. Create checkout session for $29/mo.
     #    P2 contract (v175): checkout requires an authenticated session token
