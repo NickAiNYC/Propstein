@@ -1,5 +1,5 @@
 PROPSTEIN PRE-KICKOFF RESEARCH BOARD
-Slate: 2026_w8 | Generated: 2026-11-01 21:23 UTC
+Slate: 2026_w8 | Generated: 2026-11-01 22:57 UTC
 Zero Tout Fluff · Pure Distribution Math · Transparent Limitations
 ============================================================
 STATUS NOTE:
@@ -10,30 +10,30 @@ Historical Week 07 trigger decisions (N=37) 95% CI: [-0.10, +1.45], spans zero.
 PLAYER               MKT    LINE   ODDS   FAIR   PROJ   BOOK
 ------------------------------------------------------------
 Makai Lemon          Receptions 4.5    105.0  —      3.4    betmgm
-Will Kacmarek        Receptions 0.5    -110.0 —      1.5    draftkings
 Dallas Goedert       Receptions 4.5    120.0  —      3.9    draftkings
-Cyrus Allen          Receptions 0.5    -108.0 —      1.4    fanduel
-Rashee Rice          Receptions 4.5    130.0  —      5.5    fanduel
-Rhamondre Stevenson  Yards  24.5   -108.0 —      18.5   draftkings
 Makai Lemon          Yards  43.5   -111.0 —      33.5   draftkings
 Darius Cooper        Receptions 2.5    -121.0 —      1.8    draftkings
-Rhamondre Stevenson  Receptions 3.5    -149.0 —      2.4    draftkings
+Dallas Goedert       Yards  45.5   -111.0 —      37.2   betonlineag
 Darius Cooper        Yards  27.5   -113.0 —      22.0   fanduel
-Malik Washington     Receptions 4.5    -138.0 —      3.4    draftkings
-Darius Cooper        Yards  26.5   -111.0 —      22.0   betmgm
-DeMario Douglas      Yards  40.5   -109.0 —      34.1   draftkings
-Kenneth Walker III   Receptions 3.5    -153.0 —      2.4    draftkings
-Emmett Johnson       Receptions 1.5    131.0  —      1.9    draftkings
-Kyle Williams        Yards  23.5   -114.0 —      20.0   draftkings
-Jaxon Smith-Njigba   Receptions 7.5    115.0  —      8.7    draftkings
-Antonio Williams     Yards  35.5   100.0  —      33.0   betmgm
-Kenneth Walker III   Yards  19.5   -109.0 —      17.4   draftkings
-DeMario Douglas      Receptions 3.5    -122.0 —      2.9    fanduel
-Antonio Williams     Receptions 3.5    -152.0 —      2.6    betonlineag
-Saquon Barkley       Receptions 2.5    -158.0 —      1.7    fanduel
-Saquon Barkley       Yards  13.5   -111.0 —      12.4   draftkings
-Malik Washington     Yards  41.5   -111.0 —      37.3   draftkings
-Courtland Sutton     Receptions 3.5    -140.0 —      2.8    betmgm
+Jaxon Smith-Njigba   Receptions 7.5    118.0  —      8.7    draftkings
+Antonio Williams     Receptions 3.5    -155.0 —      2.6    betmgm
+Luther Burden III    Yards  52.5   -114.0 —      47.1   draftkings
+Saquon Barkley       Yards  13.5   -115.0 —      12.4   bovada
+Luther Burden III    Receptions 4.5    -135.0 —      3.8    betmgm
+Saquon Barkley       Receptions 2.5    -175.0 —      1.7    draftkings
+Stefon Diggs         Receptions 4.5    132.0  —      4.9    fanduel
+Sam Roush            Yards  5.5    -114.0 —      13.7   fanduel
+Chig Okonkwo         Yards  34.5   -109.0 —      33.3   draftkings
+Kalif Raymond        Receptions 2.5    -174.0 —      1.9    draftkings
+AJ Barner            Receptions 3.5    -156.0 —      2.8    betonlineag
+AJ Barner            Yards  28.5   -112.0 —      28.3   betonlineag
+Rachaad White        Receptions 2.5    -132.0 —      2.2    draftkings
+Sam Roush            Receptions 0.5    -205.0 —      1.4    fanduel
+D'Andre Swift        Receptions 3.5    -167.0 —      2.8    betonlineag
+D'Andre Swift        Yards  18.5   -110.0 —      19.0   draftkings
+Stefon Diggs         Yards  42.5   -113.0 —      54.9   fanduel
+Chig Okonkwo         Yards  32.5   -110.0 —      33.3   betmgm
+Chig Okonkwo         Receptions 3.5    -125.0 —      3.3    betmgm
 ============================================================
 Research terminal: https://propstein.vercel.app
 To inspect model distributions: https://propstein.vercel.app/methodology/

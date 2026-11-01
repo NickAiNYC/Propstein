@@ -18,7 +18,7 @@
     "home_team": "DAL",
     "spread_line": 7.0,
     "total_line": 54.5,
-    "roof": null,
+    "roof": "closed",
     "wind": null
   },
   {
