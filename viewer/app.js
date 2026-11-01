@@ -711,6 +711,8 @@
   function marketFeedSourceLabel() {
     if (state.feedHealth?.dataKind === 'fixture') return 'Research fixture';
     const quotes = state.odds?.quotes || [];
+    if (SPORT_ID === 'nba') return quotes.some((quote) => String(quote.book).toLowerCase() === 'fanduel')
+      ? 'FanDuel via The Odds API' : 'No current FanDuel lines';
     const polymarket = quotes.some((quote) => String(quote.book).toLowerCase() === 'polymarket');
     const sportsbooks = quotes.some((quote) => {
       const book = String(quote.book || '').toLowerCase();
@@ -3227,7 +3229,7 @@
   }
 
   function renderNbaMarketOnly() {
-    const all = (state.odds.quotes || []).filter(q => q._fixture === false && q.market === 'points' && q.verified === false);
+    const all = (state.odds.quotes || []).filter(q => q._fixture === false && q.market === 'points' && q.verified === false && String(q.book).toLowerCase() === 'fanduel');
     const { search, gameId } = state.filters;
     const rows = state.filters.market === 'points'
       ? all.filter(q => (!gameId || q.game_id === gameId) && (!search || `${q.player_name} ${q.book}`.toLowerCase().includes(search)))
@@ -3238,7 +3240,7 @@
     const stamp = asOf && Number.isFinite(asOf.getTime()) ? asOf.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }) : 'unknown time';
     if ($('#allCount')) $('#allCount').textContent = String(all.length);
     if ($('#actionableCount')) $('#actionableCount').textContent = '0';
-    if ($('#resultCount')) $('#resultCount').textContent = `${rows.length} unverified market quotes · no NBA model predictions`;
+    if ($('#resultCount')) $('#resultCount').textContent = `${rows.length} unverified FanDuel lines · no NBA model predictions`;
     if ($('#slateRows')) $('#slateRows').innerHTML = '';
     if ($('#cardView')) { $('#cardView').innerHTML = ''; $('#cardView').hidden = true; }
     if ($('#tableView')) $('#tableView').hidden = true;
@@ -3256,8 +3258,8 @@
         <div class="nba-market-sides"><span class="nba-market-over">↑ OVER ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span class="nba-market-under">↓ UNDER ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
       </article>`;
     }).join('');
-    box.innerHTML = `<div class="nba-market-head"><div><strong>October 31 NBA player points</strong><p>${stale ? 'STALE · ' : ''}The Odds API · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
-      <p class="nba-market-disclaimer">Sportsbook quotes only. No NBA model predictions or qualified edges are available; these prices may change.</p>
+    box.innerHTML = `<div class="nba-market-head"><div><strong>October 31 FanDuel player points</strong><p>${stale ? 'STALE · ' : ''}FanDuel via The Odds API · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
+      <p class="nba-market-disclaimer">FanDuel lines only. No NBA model predictions or qualified edges are available; these prices may change.</p>
       ${rows.length ? `<div class="nba-market-list">${quotesHtml}</div>` : `<p>${state.filters.market === 'points' ? 'No player points lines match this filter.' : 'Only player points quotes are available for this date.'}</p>`}`;
   }
 
@@ -3270,7 +3272,7 @@
       ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(health.oddsUpdatedAt))
       : null;
     if (SPORT_ID === 'nba' && SLATES[state.slateKey]?.marketOnly) {
-      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false);
+      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false && String(quote.book).toLowerCase() === 'fanduel');
       const samples = [];
       const shownGames = new Set();
       for (const quote of quotes) {
@@ -3280,8 +3282,8 @@
         if (samples.length === 5) break;
       }
       const title = $('#homeEdgeTitle');
-      if (title) title.textContent = 'NBA player points lines';
-      status.textContent = `${quotes.length} unverified sportsbook quotes across ${state.games.length} games · The Odds API · ${asOf || 'time unavailable'} · no model predictions`;
+      if (title) title.textContent = 'FanDuel player points lines';
+      status.textContent = `${quotes.length} unverified FanDuel lines · The Odds API · ${asOf || 'time unavailable'} · no model predictions`;
       list.innerHTML = samples.map((quote) => `<article class="home-edge-card home-research-card">
         <div class="home-edge-player"><strong>${esc(quote.player_name)}</strong><span>${esc(quote.book)} · ${esc(quote.market)}</span></div>
         <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number(quote.line).toFixed(1)} <small>pts</small></strong><span>Over ${esc(oddsText(quote.over_odds))} · Under ${esc(oddsText(quote.under_odds))}</span></div>

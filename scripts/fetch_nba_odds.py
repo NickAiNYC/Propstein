@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""fetch_nba_odds.py - The Odds API NBA schedule + player-prop lines for PropWire.
+"""fetch_nba_odds.py - The Odds API NBA schedule + FanDuel player-points lines.
 
 WHAT IT WRITES (per US-Eastern date, viewer/):
   nba_games_<date>.json  bare array, real schedule from the free /events call
-  nba_odds_<date>.json   provenance-stamped feed of real sportsbook prop lines
+  nba_odds_<date>.json   provenance-stamped FanDuel player-points lines
 
 HONESTY RULES (same gate as fetch_nba.py):
   * No ODDS_API_KEY -> exit 2, writes nothing. Nothing is ever synthesised.
@@ -96,6 +96,8 @@ def normalize_quotes(game, event_odds, observed_at):
     """Pair Over/Under outcomes per (book, player, line). Skips unpaired sides."""
     quotes = []
     for book in event_odds.get("bookmakers", []):
+        if book.get("key") != "fanduel":
+            continue
         for mk in book.get("markets", []):
             if mk["key"] not in MARKETS:
                 continue
@@ -244,9 +246,11 @@ def selftest():
     assert game["game_id"] == "nba-20261028-BOS-LAL"
     assert et_date_key("2026-11-02T04:30:00Z") == "2026-11-01"  # post-DST-fallback EST
     eo = {"id": "e1", "bookmakers": [
-        {"key": "a", "title": "Book A", "markets": [{"key": "player_points", "outcomes": [
+        {"key": "fanduel", "title": "FanDuel", "markets": [{"key": "player_points", "outcomes": [
             {"name": "Over", "description": "Test Player", "price": -110, "point": 24.5},
             {"name": "Under", "description": "Test Player", "price": -110, "point": 24.5},
+            {"name": "Over", "description": "Test Player", "price": 100, "point": 25.5},
+            {"name": "Under", "description": "Test Player", "price": -120, "point": 25.5},
             {"name": "Over", "description": "Lonely Player", "price": -120, "point": 10.5}]}]},
         {"key": "b", "title": "Book B", "markets": [{"key": "player_points", "outcomes": [
             {"name": "Over", "description": "Test Player", "price": 100, "point": 25.5},
@@ -254,6 +258,7 @@ def selftest():
     qs = normalize_quotes(game, eo, "2026-10-28T12:00:00Z")
     assert len(qs) == 2, qs  # unpaired side dropped
     assert len({q["quote_id"] for q in qs}) == 2
+    assert all(q["book"] == "FanDuel" for q in qs)
     assert all(q["verified"] is False and q["_fixture"] is False for q in qs)
     assert consensus_lines(qs) == {"odds-nba-test-player:points": 25.0}
     assert estimate_credits(18) == 18

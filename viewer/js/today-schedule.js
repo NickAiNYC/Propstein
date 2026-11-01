@@ -139,6 +139,7 @@
     const market = sport === 'nba' ? 'points' : 'receiving_yards';
     const projection = Number(sport === 'nba' ? row.proj_pts : row.proj_yards);
     const candidates = quotes.filter((quote) => quote.game_id === game.game_id && quote.market === market
+      && (sport !== 'nba' || String(quote.book).toLowerCase() === 'fanduel')
       && (String(quote.player_id) === String(row.player_id) || normalizedName(quote.player_name) === normalizedName(row.player_display_name))
       && !/synthetic|fixture/i.test(`${quote.book || ''} ${quote.source || ''}`)
       && /^https:\/\//.test(quote.source_url || '')
@@ -174,7 +175,7 @@
   function marketQuoteRow(quote, photos) {
     const row = { player_display_name: quote.player_name, player_id: quote.player_id };
     return `<div class="today-prop-row">
-      <div class="today-prop-summary">${playerPhoto(row, photos)}<div class="today-prop-player"><strong>${escapeHtml(quote.player_name)}</strong><span>${escapeHtml(quote.book)} · sportsbook quote, unverified</span></div><div class="today-prop-projection"><b>${Number(quote.line).toFixed(1)}</b><small>PTS LINE</small></div></div>
+      <div class="today-prop-summary">${playerPhoto(row, photos)}<div class="today-prop-player"><strong>${escapeHtml(quote.player_name)}</strong><span>FanDuel line · unverified</span></div><div class="today-prop-projection"><b>${Number(quote.line).toFixed(1)}</b><small>PTS LINE</small></div></div>
       ${lineBoxes(quote, Number.NaN)}
     </div>`;
   }
@@ -204,10 +205,10 @@
         : [];
       rows.sort((a, b) => Number(b.proj_yards ?? b.proj_pts ?? 0) - Number(a.proj_yards ?? a.proj_pts ?? 0));
       const marketQuotes = sport === 'nba' && match && !rows.length
-        ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false)
+        ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false && String(quote.book).toLowerCase() === 'fanduel')
         : [];
       panel.innerHTML = marketQuotes.length
-        ? `<div class="today-prop-heading"><strong>${marketQuotes.length} player-points lines</strong><span>Unverified sportsbook quotes · no model predictions or qualified edges</span></div><div class="today-prop-list">${marketQuotes.map((quote) => marketQuoteRow(quote, extras.photos)).join('')}</div>`
+        ? `<div class="today-prop-heading"><strong>${marketQuotes.length} FanDuel player-points lines</strong><span>Unverified lines · no model predictions or qualified edges</span></div><div class="today-prop-list">${marketQuotes.map((quote) => marketQuoteRow(quote, extras.photos)).join('')}</div>`
         : rows.length
         ? `<div class="today-prop-heading"><strong>${rows.length} player props</strong><span>Model estimates · line snapshots, not picks</span></div><div class="today-prop-list">${rows.map((row) => projectionRow(row, sport, match.game, dateKey, extras.photos, extras.quotes)).join('')}</div>`
         : '<p class="today-prop-message">No player-points lines or PropStein projections are available for this matchup yet.</p>';
@@ -254,9 +255,9 @@
           const count = match && Array.isArray(match.slate)
             ? match.slate.filter((row) => row.game_id === match.game.game_id && !row._fixture && (row.status === 'ACT' || row.status === 'ACTIVE') && !row.excl_reason).length : 0;
           const marketCount = sport === 'nba' && match && !count
-            ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false).length : 0;
+            ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false && String(quote.book).toLowerCase() === 'fanduel').length : 0;
           const label = gamesEl.querySelector(`[data-game-index="${index}"] [data-prop-count]`);
-          if (label && (count || marketCount)) label.textContent = marketCount ? `PLAYER LINES (${marketCount})` : `PLAYER PROPS (${count})`;
+          if (label && (count || marketCount)) label.textContent = marketCount ? `FANDUEL LINES (${marketCount})` : `PLAYER PROPS (${count})`;
         });
       }).catch(() => {});
     } catch (error) {

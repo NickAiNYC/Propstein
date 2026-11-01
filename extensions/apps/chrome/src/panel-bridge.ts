@@ -57,6 +57,7 @@ export function createChromePanelBridge(): PanelBridge {
       requestSitePermission: unavailable as PanelBridge["requestSitePermission"],
       openDemoPage: unavailable as PanelBridge["openDemoPage"],
       updateSettings: unavailable as PanelBridge["updateSettings"],
+      exportAudit: unavailable as PanelBridge["exportAudit"],
       onMessage: () => () => undefined,
     };
   }
@@ -94,6 +95,7 @@ export function createChromePanelBridge(): PanelBridge {
     requestSitePermission: (origin: string) => requestSitePermissionInPage(origin),
     openDemoPage: () => send<{ ok: boolean }>({ type: "OPEN_DEMO_PAGE" }),
     updateSettings: (settings: SniperSettings) => send<{ ok: boolean }>({ type: "UPDATE_SETTINGS", settings }),
+    exportAudit: () => send<{ records?: unknown[]; error?: string }>({ type: "GET_AUDIT" }),
     onMessage: (handler) => {
       const listener = (msg: unknown) => {
         if (msg && typeof msg === "object" && "type" in msg) handler(msg as Record<string, unknown>);

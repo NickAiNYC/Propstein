@@ -26,8 +26,8 @@ def publish(day: str) -> None:
     if not odds.get("quotes") or odds.get("total_quotes") != len(odds["quotes"]):
         raise ValueError("No paired, published player prop quotes")
     game_ids = {g["game_id"] for g in games}
-    if any(q.get("game_id") not in game_ids or q.get("verified") is not False for q in odds["quotes"]):
-        raise ValueError("NBA odds reference missing game or claim verification")
+    if any(q.get("game_id") not in game_ids or q.get("verified") is not False or q.get("book", "").lower() != "fanduel" for q in odds["quotes"]):
+        raise ValueError("NBA odds reference missing game, claim verification, or include a non-FanDuel book")
     (VIEWER / f"nba_slate_{day}.json").write_text("[]\n", encoding="utf-8")
     (VIEWER / f"nba_injuries_{day}.json").write_text(json.dumps({
         "_fixture": False,
