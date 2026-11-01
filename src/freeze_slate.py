@@ -215,7 +215,8 @@ def freeze_slate(
     week: int = 7,
     game_id: Optional[str] = None,
     snapshot_type: str = "pre_kickoff",
-    created_at: Optional[str] = None
+    created_at: Optional[str] = None,
+    game_ids: Optional[set[str]] = None,
 ) -> Tuple[List[Dict[str, Any]], Path, Path]:
     """
     Creates immutable, versioned snapshot records for the specified slate or game.
@@ -241,6 +242,11 @@ def freeze_slate(
         slate_rows = [p for p in slate_rows if p.get("game_id") == game_id]
         if not slate_rows:
             raise ValueError(f"No players found for game_id: {game_id}")
+    if game_ids is not None:
+        slate_rows = [p for p in slate_rows if p.get("game_id") in game_ids]
+        found = {p.get("game_id") for p in slate_rows}
+        if found != game_ids:
+            raise ValueError(f"Missing slate rows for games: {sorted(game_ids - found)}")
 
     m = ReceivingModel(
         rec_params=None,
@@ -383,42 +389,36 @@ def freeze_slate(
         snap_rec["content_hash"] = compute_canonical_hash(snap_rec)
         snapshots.append(snap_rec)
 
-    # 1. Append-only JSONL storage (Never overwrite existing lines)
+    # Validate and publish the viewer bundle before appending to the journal.
+    # A rejected payload must never leave an untracked frozen decision behind.
     jsonl_path = SNAPSHOTS_DIR / f"snapshots_{season}_w{week}.jsonl"
-    with open(jsonl_path, "a", encoding="utf-8") as f:
-        for s in snapshots:
-            f.write(json.dumps(s) + "\n")
-
-    # 2. Viewer static bundle (for frontend / Vercel display)
     viewer_json_path = VIEWER_DIR / f"snapshots_{season}_w{week}.json"
     existing_viewer: List[Dict[str, Any]] = []
     if viewer_json_path.exists():
-        try:
-            with open(viewer_json_path, "r", encoding="utf-8") as f:
-                existing_viewer = json.load(f)
-        except Exception:
-            existing_viewer = []
+        with open(viewer_json_path, "r", encoding="utf-8") as f:
+            existing_viewer = json.load(f)
+        if not isinstance(existing_viewer, list):
+            raise ValueError("existing viewer snapshot bundle must be a list")
 
     # Merge by unique snapshot_id
     existing_ids = {s["snapshot_id"] for s in existing_viewer}
     combined_viewer = existing_viewer + [s for s in snapshots if s["snapshot_id"] not in existing_ids]
 
-    try:
-        from src.contracts.slate import SlateRow
-        from src.contracts.gate import validate_and_publish
-        ok, manifest = validate_and_publish(
-            schema_cls=SlateRow,
-            raw_data=combined_viewer,
-            target_path=viewer_json_path,
-            source_feed=f"freeze_slate_{slate_tag}",
-        )
-        if not ok:
-            print(f"[freeze_slate] FAIL-CLOSED: Snapshot failed contract validation. Production file preserved.", file=sys.stderr)
-    except Exception as exc:
-        temp_path = viewer_json_path.with_suffix(".tmp")
-        with open(temp_path, "w", encoding="utf-8") as f:
-            json.dump(combined_viewer, f, indent=2)
-        os.replace(temp_path, viewer_json_path)
+    from src.contracts.snapshot import SnapshotRow
+    from src.contracts.gate import validate_and_publish
+    ok, _manifest = validate_and_publish(
+        schema_cls=SnapshotRow,
+        raw_data=combined_viewer,
+        target_path=viewer_json_path,
+        source_feed=f"freeze_slate_{slate_key}",
+    )
+    if not ok:
+        raise ValueError("snapshot contract rejected the freeze; journal was not appended")
+    with open(jsonl_path, "a", encoding="utf-8") as f:
+        for s in snapshots:
+            f.write(json.dumps(s) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
 
     return snapshots, jsonl_path, viewer_json_path
 
