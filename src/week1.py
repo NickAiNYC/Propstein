@@ -24,6 +24,7 @@ import pandas as pd
 from features import build_panel
 from model import ReceivingModel, prob_to_american, ev_per_unit, kelly_fraction
 from slate import (build_slate, load_injuries, injury_exclusions,
+                   availability_eligible, confirmed_inactive_ids,
                    questionable_flags, week1_eligible,
                    W1_BIAS_REC, W1_BIAS_YDS, W1_MIN_EDGE, W1_KELLY_CAP)
 from agent import MIN_EDGE, KELLY_CAP, MIN_BOOKS, Pick, log_picks
@@ -45,7 +46,10 @@ def project(season: int, week: int, include_all: bool = False) -> tuple[pd.DataF
     out = injury_exclusions(inj)
     quest = questionable_flags(inj)
 
-    slate = week1_eligible(slate, out) if week == 1 else slate.assign(excl_reason="")
+    inactive = confirmed_inactive_ids(season, week)
+    slate = week1_eligible(slate, out) if week == 1 else availability_eligible(slate, out, inactive)
+    if week == 1:
+        slate.loc[slate.player_id.isin(inactive), "excl_reason"] = "official inactive"
     slate["questionable"] = slate.player_id.isin(quest).astype(int)
 
     p = model.predict_params(slate)

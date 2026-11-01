@@ -27,7 +27,7 @@
     "gametime": "13:00",
     "away_team": "ATL",
     "home_team": "TB",
-    "spread_line": 2.5,
+    "spread_line": 1.5,
     "total_line": 43.5,
     "roof": "outdoors",
     "wind": null
@@ -61,7 +61,7 @@
     "away_team": "IND",
     "home_team": "JAX",
     "spread_line": 10.0,
-    "total_line": 46.5,
+    "total_line": 45.5,
     "roof": "outdoors",
     "wind": null
   },
@@ -94,7 +94,7 @@
     "away_team": "TEN",
     "home_team": "CIN",
     "spread_line": 13.5,
-    "total_line": 46.5,
+    "total_line": 45.5,
     "roof": "outdoors",
     "wind": null
   },
