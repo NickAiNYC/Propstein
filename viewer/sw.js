@@ -1,12 +1,12 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v206-nba-market-lines';
+const CACHE_NAME = 'propstein-v207-access-proof';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v206',
-  '/app.js?v=2026_v206',
-  '/js/today-schedule.js?v=2026_v206',
+  '/style.css?v=2026_v207',
+  '/app.js?v=2026_v207',
+  '/js/today-schedule.js?v=2026_v207',
   '/js/sports/ufc.js?v=2026_v200',
   '/ufc.css?v=2026_v200',
   '/js/ufc-fighter.js?v=2026_v199',

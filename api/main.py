@@ -1581,7 +1581,7 @@ async def create_checkout_session(
     x_propwire_key: Optional[str] = Header(None, alias="X-PropWire-API-Key"),
 ):
     """
-    Create a $29/mo (or $290/yr) Stripe Checkout Session for Sniper PRO.
+    Create a checkout session only when the paid-signup evidence gate is open.
 
     P2 hardening (v175): authenticated callers only — 401 BEFORE any Stripe
     API call. user_id is derived server-side from the session token (payload
@@ -1589,6 +1589,11 @@ async def create_checkout_session(
     endpoint is rate-limited to 3 requests/min per principal+IP.
     """
     principal = _billing_principal(request, authorization, x_propstein_key, x_propwire_key)
+    # The public performance record freezes new paid signups while live
+    # closing-line alpha remains unproven. Existing customers can still use
+    # the billing portal; only new checkout sessions are blocked by default.
+    if os.environ.get("PROPSTEIN_PAID_SIGNUPS_ENABLED") != "1":
+        raise HTTPException(503, "Paid signups are frozen pending prospective performance evidence")
     client_ip = (request.client.host if request.client else "unknown") or "unknown"
     if _billing_rate_limited(f"{principal}:{client_ip}"):
         raise HTTPException(429, "Rate limit exceeded: max 3 checkout sessions per minute")
