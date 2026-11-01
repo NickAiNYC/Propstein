@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-31T23:50:38Z",
+  "as_of": "2026-11-01T14:54:08Z",
   "slate_week": 8,
   "season": 2026,
-  "total_active_injuries": 121,
-  "total_practice_entries": 199,
+  "total_active_injuries": 132,
+  "total_practice_entries": 188,
   "source": "nflverse injuries_2026.parquet",
   "impacted_beneficiaries": {},
   "injuries": [
@@ -806,9 +806,9 @@
       "opponent": "SEA",
       "game_id": "2026_08_CHI_SEA",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040126",
@@ -819,7 +819,7 @@
       "position": "TE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040236",
@@ -828,8 +828,8 @@
       "opponent": "SEA",
       "game_id": "2026_08_CHI_SEA",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Thumb",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -839,8 +839,8 @@
       "opponent": "SEA",
       "game_id": "2026_08_CHI_SEA",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Toe",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2995,8 +2995,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "DOUBTFUL",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3006,8 +3006,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "QB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Elbow",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -3028,8 +3028,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3039,8 +3039,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3050,8 +3050,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3083,8 +3083,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Back",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3094,8 +3094,8 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Toe",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3116,9 +3116,9 @@
       "opponent": "CHI",
       "game_id": "2026_08_CHI_SEA",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Knee",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0039165",
@@ -3129,7 +3129,7 @@
       "position": "RB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039309",
@@ -3140,7 +3140,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039815",
@@ -3151,7 +3151,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040061",

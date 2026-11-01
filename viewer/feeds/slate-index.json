@@ -1,6 +1,6 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-10-31T23:50:10Z",
+  "generated_at": "2026-11-01T14:53:33Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
@@ -51,7 +51,7 @@
       }
     },
     "nba": {
-      "default_slate": "2026-10-31",
+      "default_slate": null,
       "slates": {
         "2026-10-22": {
           "season": 2026,
@@ -101,22 +101,22 @@
         "2026-10-31": {
           "season": 2026,
           "date": "2026-10-31",
-          "shortLabel": "Oct 31 Slate",
-          "state": "Slate \u00b7 2026-10-31",
+          "shortLabel": "Oct 31 Audit",
+          "state": "Historical audit \u00b7 2026-10-31",
           "slate": "nba_slate_2026-10-31.json",
           "games": "nba_games_2026-10-31.json",
           "picks": null,
           "injuries": "nba_injuries_2026-10-31.json",
           "odds": "nba_odds_2026-10-31.json",
           "snapshots": null,
-          "historical": false,
+          "historical": true,
           "timezone": "America/New_York",
           "marketOnly": true
         }
       }
     },
     "ufc": {
-      "default_card": "2026-10-31",
+      "default_card": "2026-11-07",
       "cards": {
         "2026-10-31": {
           "date": "2026-10-31",
@@ -125,6 +125,15 @@
           "card": "ufc_card_2026-10-31.json",
           "status": "ufc_status_2026-10-31.json",
           "snapshots": "ufc_snapshots_2026-10-31.json",
+          "historical": true
+        },
+        "2026-11-07": {
+          "date": "2026-11-07",
+          "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
+          "fights": 14,
+          "card": "ufc_card_2026-11-07.json",
+          "status": "ufc_status_2026-11-07.json",
+          "snapshots": "ufc_snapshots_2026-11-07.json",
           "historical": false
         }
       }
