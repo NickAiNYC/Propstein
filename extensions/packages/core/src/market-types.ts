@@ -171,6 +171,10 @@ export interface SignalSnapshot {
 export interface DriveContext {
   driveId: string;
   eventId: string;
+  /** Must come from a separate game-state feed, except on the demo fixture. */
+  provenance?: "independent-feed" | "synthetic-fixture";
+  /** Timestamp supplied by that feed, never the sportsbook DOM observation. */
+  sourceTimestamp?: string;
   startedAt?: string;
   /** False once the drive is known to have ended. */
   isActive: boolean;

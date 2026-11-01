@@ -184,6 +184,22 @@ export function evaluateSignal(input: SignalEvaluationInput): SignalSnapshot {
       reasons.push("no live drive context available to validate the possession");
       return snapshot("STALE", true, "NO_DRIVE_CONTEXT", freshness);
     }
+    const context = input.driveContext;
+    if (context.provenance !== "independent-feed"
+      && !(observed.source === "demobook" && context.provenance === "synthetic-fixture")) {
+      reasons.push("drive context is not from an independent game-state feed");
+      return snapshot("UNVERIFIED", true, "DRIVE_SOURCE_UNVERIFIED", freshness);
+    }
+    const driveSourceMs = Date.parse(context.sourceTimestamp ?? "");
+    if (!Number.isFinite(driveSourceMs) || driveSourceMs > nowMs || context.maxDataAgeMs === undefined
+      || context.maxDataAgeMs <= 0 || nowMs - driveSourceMs > context.maxDataAgeMs) {
+      reasons.push("independent drive-state timestamp is missing, future-dated, or stale");
+      return snapshot("STALE", true, "UPSTREAM_DATA_STALE", freshness);
+    }
+    if (context.eventId !== observed.eventId) {
+      reasons.push("independent drive-state event does not match sportsbook event");
+      return snapshot("UNVERIFIED", true, "DRIVE_EVENT_MISMATCH", freshness);
+    }
     if (!input.driveContext.isActive) {
       reasons.push(`drive ${input.driveContext.driveId} has ended — signals tied to it are invalid even if their old price remains visible`);
       return snapshot("STALE", true, "DRIVE_ENDED", freshness);
@@ -204,6 +220,11 @@ export function evaluateSignal(input: SignalEvaluationInput): SignalSnapshot {
   if (freshness.isStale || freshness.sourceDataStale) {
     reasons.push(...freshness.reasons);
     return snapshot("STALE", true, "QUOTE_EXPIRED", freshness);
+  }
+
+  if (observed.source !== "demobook" && model.confidence !== "calibrated") {
+    reasons.push("live market model is not prospectively calibrated");
+    return snapshot("MODEL_UNAVAILABLE", true, "MODEL_UNCALIBRATED", freshness);
   }
 
   const evaluation = evaluateEv(normalized, model, config);

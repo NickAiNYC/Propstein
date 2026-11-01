@@ -45,7 +45,11 @@ function observed(overrides: Partial<ObservedMarket> = {}): ObservedMarket {
 
 const MODEL: ModelEvaluation = { probability: 0.44, modelVersion: "DRIVE-REC-V1", confidence: "uncalibrated" };
 const MATCH = { status: "MATCHED" as const, key: { league: "NFL", eventId: "2026_09_NE_KC", playerId: "nfl_travis_kelce", marketType: "drive_reception_1plus" as const }, reasons: [] };
-const DRIVE = { driveId: "d4", eventId: "2026_09_NE_KC", isActive: true };
+const DRIVE = {
+  driveId: "d4", eventId: "2026_09_NE_KC", isActive: true,
+  provenance: "synthetic-fixture" as const,
+  sourceTimestamp: new Date(T0).toISOString(), maxDataAgeMs: 120_000,
+};
 
 function makeRegistry() {
   clock = T0;
@@ -83,7 +87,7 @@ test("CRITICAL: when the drive ends, EVERY signal on that drive becomes invalid 
   reg.observe(KEY, observed({ playerName: "Travis Kelce" }), { model: MODEL, match: MATCH, driveContext: DRIVE });
   reg.observe("demobook|2026_09_NE_KC|nfl_rashee_rice|drive_reception_1plus|YES|", observed({ playerName: "Rashee Rice", playerId: "nfl_rashee_rice" }), { model: { ...MODEL, probability: 0.5 }, match: { ...MATCH, key: { ...MATCH.key, playerId: "nfl_rashee_rice" } }, driveContext: DRIVE });
   // A signal on ANOTHER drive must survive.
-  reg.observe("demobook|2026_09_NE_KC|nfl_hunter_henry|drive_reception_1plus|YES|", observed({ playerName: "Hunter Henry", playerId: "nfl_hunter_henry", driveId: "d3" }), { model: { ...MODEL, probability: 0.5 }, match: { ...MATCH, key: { ...MATCH.key, playerId: "nfl_hunter_henry" } }, driveContext: { driveId: "d3", eventId: "2026_09_NE_KC", isActive: true } });
+  reg.observe("demobook|2026_09_NE_KC|nfl_hunter_henry|drive_reception_1plus|YES|", observed({ playerName: "Hunter Henry", playerId: "nfl_hunter_henry", driveId: "d3" }), { model: { ...MODEL, probability: 0.5 }, match: { ...MATCH, key: { ...MATCH.key, playerId: "nfl_hunter_henry" } }, driveContext: { ...DRIVE, driveId: "d3" } });
 
   const invalidated = reg.driveEnded("d4");
   assert.equal(invalidated.length, 2);

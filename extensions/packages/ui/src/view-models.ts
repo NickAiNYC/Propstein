@@ -83,7 +83,7 @@ export function toSignalCardViewModel(s: SignalSnapshot): SignalCardViewModel {
     modelProbability: ev ? formatPercent(ev.modelProbability, 1) : "—",
     estimatedEv: ev ? formatEvPerUnit(ev.evPerUnit) : "—",
     evTone,
-    source: "VISIBLE PAGE",
+    source: m.source === "demobook" ? "SYNTHETIC DEMO PAGE" : "VISIBLE PAGE · UNVERIFIED",
     marketStatus:
       m.marketStatus === "OPEN"
         ? `OPEN (OBSERVED${provenanceTag ? ", DEMO" : ""})`

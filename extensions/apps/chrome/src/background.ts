@@ -21,7 +21,9 @@ import {
   type ObservedMarket,
   type SignalSnapshot,
   type DriveContext,
+  type MarketChangeEvent,
 } from "@propstein/core";
+import { appendAudit, auditRecord, exportAudit, journalReady } from "./trial-audit.ts";
 import {
   isTrustedExtensionSender,
   isTrustedBridgeSender,
@@ -139,7 +141,7 @@ function currentPanelState(statusOverride?: PanelState["status"]): PanelState {
     monitoring: monitoring.monitoring,
     activeTabUrl: trackedUrl,
     activeTabId: monitoring.tabId,
-    contentTabReady: trackedPlatform !== undefined,
+    contentTabReady: trackedPlatform === "demobook",
     adapterPlatform: monitoring.platform,
     adapterReason: monitoring.adapterReason,
     signalCount: SIGNAL_REGISTRY.snapshots().filter((s) => !s.withdrawn).length,
@@ -179,20 +181,27 @@ function modelForSnapshot(snap: SignalSnapshot) {
  * the old drive's signals are withdrawn as DRIVE ENDED rather than silently
  * overwritten (spec §15 critical test).
  */
-function applyMarketEvents(events: Array<{ kind: string; signalKey?: string; market?: ObservedMarket }>): void {
-  // Pass 1: adopt the live drive context from ANY market in the batch, so the
-  // whole batch is interpreted against the board's CURRENT drive (a drive
-  // transition replaces the market set atomically).
+async function applyMarketEvents(events: MarketChangeEvent[]): Promise<void> {
+  // A sportsbook drive ID is not an independent possession feed. Only the
+  // synthetic DemoBook fixture may provide its own simulated drive context.
+  // Real markets have no context until a separate feed is wired and verified.
   for (const ev of events) {
     const m = ev.market;
-    if (m?.driveId && m.eventId) {
-      monitoring.driveContext = { driveId: m.driveId, eventId: m.eventId, isActive: true };
+    if (m?.source === "demobook" && m.provenance === "synthetic-fixture" && m.driveId && m.eventId) {
+      monitoring.driveContext = {
+        driveId: m.driveId, eventId: m.eventId, isActive: true,
+        provenance: "synthetic-fixture", sourceTimestamp: m.sourceTimestamp,
+        maxDataAgeMs: 15_000,
+      };
     }
   }
   for (const ev of events) {
+    let result: SignalSnapshot | undefined;
     if (ev.kind === "NAVIGATED") {
       // SPA navigation: withdraw everything and let re-detection rebuild.
       for (const snap of SIGNAL_REGISTRY.snapshots()) SIGNAL_REGISTRY.remove(snap.signalKey);
+      monitoring.driveContext = null;
+      await appendAudit(auditRecord(ev.kind, new Date().toISOString(), ev));
       continue;
     }
     if (ev.kind === "REMOVED" && ev.signalKey) {
@@ -206,21 +215,26 @@ function applyMarketEvents(events: Array<{ kind: string; signalKey?: string; mar
       } else {
         SIGNAL_REGISTRY.remove(ev.signalKey);
       }
+      await appendAudit(auditRecord(ev.kind, new Date().toISOString(), ev, existing));
       continue;
     }
     const market = ev.market;
-    if (!market || !ev.signalKey) continue;
+    if (!market || !ev.signalKey) {
+      await appendAudit(auditRecord("SUPPRESSED_INVALID_EVENT", new Date().toISOString(), ev));
+      continue;
+    }
     const signalKey = ev.signalKey;
     const previous = SIGNAL_REGISTRY.get(signalKey);
     const normalized = previous?.normalized ?? normalizeObservedMarket(market);
     const match = MODEL.match(normalized);
     const model = MODEL.evaluate(normalized);
-    SIGNAL_REGISTRY.observe(signalKey, market, {
+    result = SIGNAL_REGISTRY.observe(signalKey, market, {
       match,
       ...(model !== undefined ? { model } : {}),
       ...(monitoring.driveContext ? { driveContext: monitoring.driveContext } : {}),
       visible: true,
     });
+    await appendAudit(auditRecord(ev.kind, new Date().toISOString(), ev, result));
   }
   // Safety net: any live signal still bound to a drive other than the current
   // one is invalid (covers batches where REMOVED events were not emitted).
@@ -245,13 +259,24 @@ SIGNAL_REGISTRY.onEvent(async (e) => {
 // Freshness ticker: re-evaluate signals each second so quotes visibly expire.
 setInterval(async () => {
   if (!monitoring.monitoring) return;
-  reevaluateAll(SIGNAL_REGISTRY, {
+  const before = new Map(SIGNAL_REGISTRY.snapshots().map((s) => [s.signalKey, `${s.state}:${s.withdrawalReason ?? ""}`]));
+  const refreshed = reevaluateAll(SIGNAL_REGISTRY, {
     modelLookup: (snap) => (snap.normalized ? MODEL.evaluate(snap.normalized) : undefined),
     matchLookup: (snap) => (snap.normalized ? MODEL.match(snap.normalized) : undefined),
     // Preserve the live drive context on re-evaluation — without it every
     // drive-scoped signal would fail the possession gate and go STALE.
     ...(monitoring.driveContext ? { driveContext: monitoring.driveContext } : {}),
   });
+  try {
+    for (const snap of refreshed) {
+      if (before.get(snap.signalKey) !== `${snap.state}:${snap.withdrawalReason ?? ""}`) {
+        await appendAudit(auditRecord("STATE_CHANGED", new Date().toISOString(), undefined, snap));
+      }
+    }
+  } catch {
+    await stopMonitoring("audit journal unavailable — monitoring stopped");
+    return;
+  }
   await broadcastSnapshots();
   await broadcastPanelState();
 }, 1000);
@@ -273,6 +298,11 @@ async function stopMonitoring(reason?: string): Promise<void> {
 }
 
 async function startMonitoring(): Promise<{ ok: boolean; reason?: string }> {
+  try {
+    await journalReady();
+  } catch {
+    return { ok: false, reason: "audit journal unavailable — monitoring blocked" };
+  }
   // Target the last content tab the user was viewing — never an extension
   // page (the panel itself). Fall back to the active tab when no tab event
   // has been recorded yet (e.g. the service worker started after the page).
@@ -294,6 +324,11 @@ async function startMonitoring(): Promise<{ ok: boolean; reason?: string }> {
     await broadcastPanelState("MARKET_UNSUPPORTED");
     return { ok: false, reason: "unsupported site" };
   }
+  if (platform !== "demobook") {
+    monitoring = { ...monitoring, adapterReason: `${platform} adapter disabled; no verified live market, independent drive feed, or calibrated model` };
+    await broadcastPanelState("MARKET_UNSUPPORTED");
+    return { ok: false, reason: monitoring.adapterReason ?? "real-book trial unavailable" };
+  }
   const perm = await ensureSitePermission(permissionsApi, origin!);
   if (!perm.granted) {
     await broadcast({ type: "PERMISSION_REQUIRED", origin: origin! });
@@ -301,8 +336,6 @@ async function startMonitoring(): Promise<{ ok: boolean; reason?: string }> {
     return { ok: false, reason: perm.reason };
   }
   GRANTED_ORIGINS.add(origin!);
-  await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ["content-bridge.js"] });
-  await chrome.tabs.sendMessage(tab.id, { type: "SNIPE_START", correlationId: `start-${Date.now()}` });
   monitoring = {
     monitoring: true,
     tabId: tab.id,
@@ -311,6 +344,13 @@ async function startMonitoring(): Promise<{ ok: boolean; reason?: string }> {
     adapterReason: null,
     driveContext: null,
   };
+  try {
+    await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ["content-bridge.js"] });
+    await chrome.tabs.sendMessage(tab.id, { type: "SNIPE_START", correlationId: `start-${Date.now()}` });
+  } catch {
+    await stopMonitoring("content bridge could not start");
+    return { ok: false, reason: "content bridge could not start" };
+  }
   await broadcastPanelState();
   return { ok: true };
 }
@@ -427,17 +467,31 @@ chrome.runtime.onMessage.addListener((msg: unknown, sender: never, sendResponse:
       sendResponse({ error: "untrusted sender" });
       return;
     }
+    const bridgeTabId = (sender as { tab?: { id?: number } }).tab?.id;
+    if (!monitoring.monitoring || bridgeTabId !== monitoring.tabId) {
+      sendResponse({ error: "message is not from the monitored tab" });
+      return;
+    }
     if (message.type === "MARKET_EVENTS") {
       const validated = validateMarketEventBatch(message);
       if (validated.ok) {
-        applyMarketEvents(validated.events.events as Array<{ kind: string; signalKey?: string; market?: ObservedMarket }>);
-        void broadcastSnapshots();
-        void broadcastPanelState();
-        sendResponse({ received: true });
+        applyMarketEvents(validated.events.events.map((e) => ({ ...e, kind: e.kind as MarketChangeEvent["kind"], at: new Date().toISOString() }))).then(async () => {
+          await broadcastSnapshots();
+          await broadcastPanelState();
+          sendResponse({ received: true });
+        }).catch(async () => {
+          await stopMonitoring("audit journal unavailable — monitoring stopped");
+          sendResponse({ error: "audit journal unavailable" });
+        });
+        return true;
       } else {
         sendResponse({ error: validated.reason });
       }
       return;
+    }
+    if (message.type === "BRIDGE_STATUS" && message.status !== "OK") {
+      monitoring.adapterReason = typeof message.detail === "string" ? message.detail.slice(0, 500) : "adapter degraded";
+      void broadcastPanelState("MARKET_UNSUPPORTED");
     }
     sendResponse({ received: true });
     return;
@@ -479,6 +533,10 @@ chrome.runtime.onMessage.addListener((msg: unknown, sender: never, sendResponse:
         const session = await getSession();
         sendResponse({ panelState: currentPanelState(), session, snapshots: SIGNAL_REGISTRY.snapshots() });
       })();
+      return true;
+    }
+    case "GET_AUDIT": {
+      exportAudit().then((records) => sendResponse({ records })).catch(() => sendResponse({ error: "audit export failed" }));
       return true;
     }
     case "OPEN_DEMO_PAGE": {

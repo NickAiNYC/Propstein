@@ -57,7 +57,10 @@ const MODEL: ModelEvaluation = {
   confidence: "uncalibrated",
 };
 
-const DRIVE: DriveContext = { driveId: "d4", eventId: "2026_09_NE_KC", isActive: true };
+const DRIVE: DriveContext = {
+  driveId: "d4", eventId: "2026_09_NE_KC", isActive: true,
+  provenance: "synthetic-fixture", sourceTimestamp: "2026-10-30T18:44:00.000Z", maxDataAgeMs: 15_000,
+};
 
 function norm(m: ObservedMarket): NormalizedMarket {
   return normalizeObservedMarket(m);
@@ -74,6 +77,31 @@ test("quoteAgeMs measures observation age exactly", () => {
 test("quoteAgeMs is infinite for unparseable timestamps", () => {
   assert.equal(quoteAgeMs("not-a-date", NOW), Number.POSITIVE_INFINITY);
   assert.equal(quoteAgeMs(undefined, NOW), Number.POSITIVE_INFINITY);
+  assert.equal(quoteAgeMs("2026-10-30T18:44:02.000Z", NOW), Number.POSITIVE_INFINITY);
+});
+
+test("sportsbook drive ID alone cannot validate a live possession", () => {
+  const m = observed({ source: "fanduel", provenance: "visible-page" });
+  const s = evaluateSignal({ signalKey: "real", observed: m, normalized: norm(m), match: MATCHED,
+    model: { ...MODEL, confidence: "calibrated" },
+    driveContext: { ...DRIVE, provenance: "synthetic-fixture" }, visible: true, nowMs: NOW });
+  assert.equal(s.withdrawalReason, "DRIVE_SOURCE_UNVERIFIED");
+});
+
+test("independent feed must match event and carry a fresh source timestamp", () => {
+  const m = observed({ source: "fanduel", provenance: "visible-page" });
+  const base = { signalKey: "real", observed: m, normalized: norm(m), match: MATCHED,
+    model: { ...MODEL, confidence: "calibrated" as const }, visible: true, nowMs: NOW };
+  assert.equal(evaluateSignal({ ...base, driveContext: { ...DRIVE, provenance: "independent-feed", sourceTimestamp: undefined } }).withdrawalReason, "UPSTREAM_DATA_STALE");
+  assert.equal(evaluateSignal({ ...base, driveContext: { ...DRIVE, provenance: "independent-feed", eventId: "other" } }).withdrawalReason, "DRIVE_EVENT_MISMATCH");
+});
+
+test("real-book uncalibrated model cannot produce an alert", () => {
+  const m = observed({ source: "fanduel", provenance: "visible-page" });
+  const s = evaluateSignal({ signalKey: "real", observed: m, normalized: norm(m), match: MATCHED,
+    model: MODEL, driveContext: { ...DRIVE, provenance: "independent-feed" }, visible: true, nowMs: NOW });
+  assert.equal(s.withdrawalReason, "MODEL_UNCALIBRATED");
+  assert.equal(s.state, "MODEL_UNAVAILABLE");
 });
 
 test("drive markets expire at the tight 3s engineering default", () => {
@@ -254,7 +282,7 @@ test("drive mismatch between observation and live context → withdrawn", () => 
   const m = observed();
   const s = evaluateSignal({
     signalKey: "k", observed: m, normalized: norm(m), match: MATCHED, model: MODEL,
-    driveContext: { driveId: "d5", eventId: "2026_09_NE_KC", isActive: true },
+    driveContext: { ...DRIVE, driveId: "d5" },
     visible: true, nowMs: NOW,
   });
   assert.equal(s.withdrawalReason, "DRIVE_MISMATCH");
