@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import shutil
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -15,7 +14,26 @@ from scripts.freeze_sunday_early import target
 from src.prospective_board import capture_board, verify_journal
 
 
-ROOT = Path(__file__).resolve().parent.parent
+def write_slate_fixture(viewer: Path, game_ids: set[str]) -> None:
+    """Keep the freeze tests independent of the daily, shrinking live slate."""
+    rows = [
+        {
+            "game_id": game_id,
+            "player_id": f"test-{index}",
+            "player_display_name": f"Test Player {index}",
+            "team": game_id.split("_")[2],
+            "opponent_team": game_id.split("_")[3],
+            "position": "WR",
+            "mu_rec": 4.0,
+            "mu_ypr": 12.0,
+            "fair_line_yards": 40.5,
+            "fair_line_rec": 3.5,
+            "proj_yards": 48.0,
+            "proj_rec": 4.0,
+        }
+        for index, game_id in enumerate(sorted(game_ids))
+    ]
+    (viewer / "slate_2026_w8.json").write_text(json.dumps(rows), encoding="utf-8")
 
 
 class SundayFreezeTests(unittest.TestCase):
@@ -38,9 +56,12 @@ class SundayFreezeTests(unittest.TestCase):
             snapshots = root / "snapshots"
             viewer.mkdir()
             snapshots.mkdir()
-            shutil.copy(ROOT / "viewer/slate_2026_w8.json", viewer / "slate_2026_w8.json")
+            write_slate_fixture(viewer, set(kickoffs))
             with patch.object(freeze, "VIEWER_DIR", viewer), patch.object(freeze, "SNAPSHOTS_DIR", snapshots):
-                frozen, source, bundle = freeze.freeze_slate(2026, 8, game_ids=set(kickoffs))
+                frozen, source, bundle = freeze.freeze_slate(
+                    2026, 8, game_ids=set(kickoffs),
+                    created_at="2026-11-01T17:20:00+00:00",
+                )
             kickoff_map = root / "kickoffs.json"
             kickoff_map.write_text(json.dumps(kickoffs), encoding="utf-8")
             journal = snapshots / "full_board.jsonl"
@@ -61,7 +82,7 @@ class SundayFreezeTests(unittest.TestCase):
             snapshots = root / "snapshots"
             viewer.mkdir()
             snapshots.mkdir()
-            shutil.copy(ROOT / "viewer/slate_2026_w8.json", viewer / "slate_2026_w8.json")
+            write_slate_fixture(viewer, {"2026_08_BAL_BUF"})
             (viewer / "snapshots_2026_w8.json").write_text("{bad json", encoding="utf-8")
             with patch.object(freeze, "VIEWER_DIR", viewer), patch.object(freeze, "SNAPSHOTS_DIR", snapshots):
                 with self.assertRaises(json.JSONDecodeError):

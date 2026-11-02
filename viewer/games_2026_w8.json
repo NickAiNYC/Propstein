@@ -18,7 +18,7 @@
     "home_team": "DAL",
     "spread_line": 7.0,
     "total_line": 54.5,
-    "roof": null,
+    "roof": "closed",
     "wind": null
   },
   {
@@ -28,7 +28,7 @@
     "away_team": "ATL",
     "home_team": "TB",
     "spread_line": 2.5,
-    "total_line": 43.5,
+    "total_line": 42.5,
     "roof": "outdoors",
     "wind": null
   },
@@ -61,7 +61,7 @@
     "away_team": "IND",
     "home_team": "JAX",
     "spread_line": 10.0,
-    "total_line": 46.5,
+    "total_line": 45.5,
     "roof": "outdoors",
     "wind": null
   },
@@ -105,7 +105,7 @@
     "away_team": "LAC",
     "home_team": "LA",
     "spread_line": 6.5,
-    "total_line": 45.5,
+    "total_line": 46.5,
     "roof": "dome",
     "wind": null
   },
@@ -115,7 +115,7 @@
     "gametime": "16:25",
     "away_team": "KC",
     "home_team": "DEN",
-    "spread_line": -1.5,
+    "spread_line": 1.5,
     "total_line": 41.5,
     "roof": "outdoors",
     "wind": null

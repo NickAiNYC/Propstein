@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T08:05:39Z",
+  "generated_at": "2026-11-01T18:45:54Z",
   "rules": "draw/NC/cancel/scratch = void (push); CLV vs lock snapshot only",
   "summary": {
     "n_decisions": 0,
