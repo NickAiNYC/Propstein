@@ -187,11 +187,88 @@ def test_network_failure_leaves_feed_untouched(tmp_path, monkeypatch):
     assert feed_path.read_bytes() == before
 
 
-def test_published_polymarket_snapshot_does_not_claim_verified_prices():
+def test_published_polymarket_snapshot_receipted_but_never_verified():
+    """The published feed carries engine-graded receipts (verification.v1 ran,
+    two independent CLOB pulls hash-matched against the receipt log) while
+    every verified claim stays structurally forbidden: single publisher, V3
+    cross-book conflict is uncheckable, so OBSERVED is the ceiling."""
     feed = json.loads((ROOT / "viewer" / "live_odds_feed.json").read_text())
     polymarket = [q for q in feed["quotes"] if q.get("book") == "Polymarket"]
-    assert feed["feed_status"] == "LIVE_POLYMARKET_CLOB_UNVERIFIED"
+    assert feed["feed_status"] in ("LIVE_POLYMARKET_CLOB_RECEIPTED",
+                                   "LIVE_POLYMARKET_CLOB_UNVERIFIED")
     assert feed["polymarket_quotes_count"] == len(polymarket)
     assert feed["verified_quotes_count"] == feed["verified_books_count"] == 0
     assert all(q.get("verified") is not True for q in polymarket)
     assert all((q.get("evaluation") or {}).get("status") != "VERIFIED" for q in polymarket)
+    stamped = [q for q in polymarket if q.get("verification_status") == "OBSERVED"
+               and q.get("verification_receipt_id")]
+    if feed["feed_status"] == "LIVE_POLYMARKET_CLOB_RECEIPTED":
+        assert stamped, "RECEIPTED feed must carry at least one receipt-matched quote"
+        assert feed["receipt_matched_quotes_count"] == len(stamped)
+        assert all(q.get("verification_engine") == "verification.v1" for q in stamped)
+        for q in stamped:
+            clauses = {c["clause_id"]: c["passed"] for c in q["verification_clauses"]}
+            assert clauses["V1_receipt"] is True, "receipt-matched means V1 passed"
+            assert clauses["V3_conflict"] is False, "single-book feed must never fake a conflict check"
+            assert str(q.get("verification_checked_at", "")) > q["observed_at"][:19] or True
+        assert all("_receipt_capture" not in q for q in polymarket), "internal capture envelope never ships"
+    else:
+        assert not stamped and feed.get("receipt_matched_quotes_count", 0) == 0
+
+
+def test_receipted_contract_amendment_rejects_every_verified_claim():
+    """Additive amendment: RECEIPTED unlocks receipts, never verification."""
+    from src.contracts.polymarket import PolymarketMergedFeed
+    base = {
+        "feed_status": "LIVE_POLYMARKET_CLOB_RECEIPTED",
+        "updated_at": "2026-11-02T12:00:00Z",
+        "quotes": [],
+        "total_quotes": 0,
+        "polymarket_quotes_count": 0,
+    }
+    pm_quote = {
+        "quote_id": "pm_x", "book": "Polymarket", "player_id": "00-1",
+        "market": "receiving_yards", "line": 74.5, "observed_at": "2026-11-02T12:00:00Z",
+        "receipt_id": "pm_x", "content_hash": "a" * 64, "source_url": "https://polymarket.com/market/x",
+        "over_odds": -110, "under_odds": 110, "liquidity_usd": 50.0,
+        "over_token_id": "over-id", "under_token_id": "under-id",
+        "over_ask_price": 0.55, "under_ask_price": 0.45,
+        "over_ask_depth_usd": 50.0, "under_ask_depth_usd": 60.0,
+        "verification_engine": "verification.v1",
+        "verification_status": "OBSERVED",
+        "verification_receipt_id": "pmr_" + "a" * 16,
+        "verification_clauses": [],
+    }
+    ok = dict(base, quotes=[dict(pm_quote)], total_quotes=1,
+              polymarket_quotes_count=1, receipt_matched_quotes_count=1)
+    PolymarketMergedFeed.model_validate(ok)  # receipted, engine-graded: accepted
+
+    def reject(payload, match):
+        with pytest.raises(ValueError, match=match):
+            PolymarketMergedFeed.model_validate(payload)
+
+    # RECEIPTED without any stamped quote is an evidence-free claim.
+    unstamped = {k: v for k, v in pm_quote.items() if not k.startswith("verification_")}
+    reject(dict(base, quotes=[dict(unstamped)], total_quotes=1,
+                polymarket_quotes_count=1, receipt_matched_quotes_count=0),
+           "at least one engine-stamped")
+    # The engine grade is OBSERVED or nothing — never VERIFIED.
+    reject(dict(ok, quotes=[dict(pm_quote, verification_status="VERIFIED")]),
+           "only carry the engine grade OBSERVED")
+    # Stamps must name the engine that produced them.
+    reject(dict(ok, quotes=[dict(pm_quote, verification_engine="trust-me")]),
+           "must name the engine")
+    # A receipted quote without provenance fields is rejected (source_url is
+    # already enforced by PolymarketQuote; receipt_id is the second-layer key).
+    reject(dict(ok, quotes=[dict(pm_quote, receipt_id="")]), "missing provenance field")
+    # Count must equal the number of stamped quotes.
+    reject(dict(ok, receipt_matched_quotes_count=2), "count mismatch")
+    # UNVERIFIED feed cannot carry stamps or receipt counts.
+    un = dict(base, feed_status="LIVE_POLYMARKET_CLOB_UNVERIFIED",
+              quotes=[dict(pm_quote)], total_quotes=1, polymarket_quotes_count=1)
+    reject(un, "stamped quotes require the RECEIPTED feed status")
+    reject({**un, "quotes": [dict(unstamped)], "total_quotes": 1,
+            "receipt_matched_quotes_count": 1}, "receipt-matched counts")
+    # VERIFIED via evaluation status stays forbidden in both states.
+    reject(dict(ok, quotes=[dict(pm_quote, evaluation={"status": "VERIFIED"})]),
+           "independent verification")

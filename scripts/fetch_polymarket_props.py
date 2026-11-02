@@ -45,11 +45,15 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
 VIEWER = ROOT / "viewer"
+DATA_DIR = ROOT / "data"
 GAMMA = "https://gamma-api.polymarket.com"
 CLOB = "https://clob.polymarket.com"
 BOOK = "Polymarket"
 FEED_PATH = VIEWER / "live_odds_feed.json"
 SLATE_INDEX = VIEWER / "feeds" / "slate-index.json"
+RECEIPT_LOG_PATH = DATA_DIR / "polymarket_receipt_log.json"
+RECEIPT_LOG_MAX_ENTRIES = 400
+VERIFICATION_ENGINE = "verification.v1"
 
 # Polymarket stat label -> our market id. v1 scope: the two O/U stat types
 # the compound model prices (receiving yards, receptions). Anytime TD and
@@ -362,6 +366,163 @@ def index_slate(rows: list[dict]) -> dict[str, dict]:
     return {_norm_name(r.get("player_display_name") or ""): r for r in rows}
 
 
+# ── receipt machinery (the independent receipt check the feed lacked) ──────
+
+def canonical_quote_payload(market: dict, over_book: dict, under_book: dict) -> dict:
+    """The quote-DEFINING projection of a CLOB observation.
+
+    Receipts hash THIS projection, not the raw HTTP body: Gamma/CLOB responses
+    carry volatile envelope fields (sequence numbers, internal timestamps), so
+    hashing raw bytes would make two honest pulls of the same resting quote
+    hash differently. The canonical projection holds exactly the fields a
+    trader executes on — market identity plus both outcome tokens' best ask
+    price and displayed depth — with sorted keys so two independent pulls of
+    an unchanged quote hash byte-identically. That equality IS the independent
+    receipt check: ingestion pull #1 logs it, verification pull #2 re-derives
+    it, and only the engine sees both hashes.
+    """
+    return {
+        "kind": "polymarket_clob_quote.v1",
+        "market_id": str(market.get("id") or ""),
+        "question": str(market.get("question") or ""),
+        "slug": str(market.get("slug") or ""),
+        "over_token_id": str(over_book.get("token_id") or ""),
+        "under_token_id": str(under_book.get("token_id") or ""),
+        "over_ask_price": float(over_book["ask_price"]),
+        "under_ask_price": float(under_book["ask_price"]),
+        "over_ask_depth_usd": float(over_book["ask_depth_usd"]),
+        "under_ask_depth_usd": float(under_book["ask_depth_usd"]),
+    }
+
+
+def canonical_hash(payload: dict) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def load_receipt_log() -> list[dict]:
+    try:
+        entries = json.loads(RECEIPT_LOG_PATH.read_text(encoding="utf-8"))
+        return entries if isinstance(entries, list) else []
+    except Exception:
+        return []
+
+
+def append_receipts(entries: list[dict], write: bool = True) -> None:
+    if not entries or not write:
+        return
+    log = load_receipt_log() + [e for e in entries if isinstance(e, dict)]
+    RECEIPT_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    RECEIPT_LOG_PATH.write_text(
+        json.dumps(log[-RECEIPT_LOG_MAX_ENTRIES:], indent=2), encoding="utf-8"
+    )
+
+
+def receipt_entry(market_id: str, payload_hash: str, captured_at: str, source_url: str) -> dict:
+    """One append-only receipt-log row (verification.v1 ReceiptRecord shape
+    plus provenance extras)."""
+    return {
+        "receipt_id": f"pmr_{payload_hash[:16]}",
+        "market_id": market_id,
+        "book_id": "polymarket",
+        "raw_payload_hash": payload_hash,
+        "captured_at": captured_at,
+        "source_url": source_url,
+        "payload_kind": "polymarket_clob_quote.v1",
+    }
+
+
+def verify_quotes(quotes: list[dict], books_by_token: dict | None = None,
+                  now: datetime | None = None, write_log: bool = True) -> tuple[list[dict], int]:
+    """Independent verification pass — the receipt check the feed never had.
+
+    Pass 1 (ingestion) logged a receipt per quote from its own CLOB pull. This
+    pass re-pulls the same outcome token books from the CLOB, re-derives the
+    canonical payload, and lets the FROZEN verification.v1 engine decide:
+      V1  pass-2 hash matches a LOGGED receipt for (market, book) — i.e. two
+          independent pulls saw identical executable content (this pull, or a
+          prior run's pull for a quote that has been resting);
+      V2  age vs the kickoff-aware staleness regime;
+      V3  cross-book divergence — structurally UNCHECKABLE with a single
+          two-sided publisher (min_sharp_books=2, frozen), so the engine
+          ceiling here is OBSERVED: receipt-matched, never VERIFIED.
+    Any engine outcome is stamped verbatim; nothing here may soften it.
+    Network failure on the second pull -> quotes stay unstamped (fail-closed).
+    """
+    if not quotes:
+        return quotes, 0
+    sys.path.insert(0, str(ROOT))
+    from src.contracts.verification import ReceiptRecord, QuoteObservation, verify_quote
+
+    if books_by_token is None:
+        tokens: list[str] = []
+        for q in quotes:
+            for t in (q.get("over_token_id"), q.get("under_token_id")):
+                if t and t not in tokens:
+                    tokens.append(t)
+        try:
+            books_by_token = fetch_token_books(tokens)
+        except Exception as exc:
+            print(f"[polymarket] verify pull failed ({exc}) — quotes stay unstamped (fail-closed)")
+            return quotes, 0
+
+    now = now or datetime.now(timezone.utc)
+    receipts = []
+    for e in load_receipt_log():
+        try:
+            receipts.append(ReceiptRecord(
+                receipt_id=e["receipt_id"], market_id=e["market_id"],
+                book_id=e["book_id"], raw_payload_hash=e["raw_payload_hash"],
+                captured_at=e["captured_at"]))
+        except Exception:
+            continue  # a malformed log row is not evidence; skip it
+
+    pass2_receipts: list[dict] = []
+    matched = 0
+    for q in quotes:
+        cap = q.get("_receipt_capture")
+        if not cap:
+            continue
+        ob = books_by_token.get(q.get("over_token_id"))
+        ub = books_by_token.get(q.get("under_token_id"))
+        if ob is None or ub is None:
+            continue
+        payload2 = dict(cap["payload"])
+        payload2.update({
+            "over_token_id": str(ob["token_id"]), "under_token_id": str(ub["token_id"]),
+            "over_ask_price": float(ob["ask_price"]), "under_ask_price": float(ub["ask_price"]),
+            "over_ask_depth_usd": float(ob["ask_depth_usd"]), "under_ask_depth_usd": float(ub["ask_depth_usd"]),
+        })
+        h2 = canonical_hash(payload2)
+        try:
+            observation = QuoteObservation(
+                source="polymarket-clob", book_id="polymarket",
+                market_id=cap["market_id"],
+                fetched_at=cap["captured_at"],
+                raw_payload_hash=h2, side="over",
+                over_odds=int(q["over_odds"]), under_odds=int(q["under_odds"]),
+                book_line=float(q["line"]),
+            )
+            decision = verify_quote(observation=observation, now=now, receipts=receipts)
+        except Exception as exc:
+            print(f"[polymarket] verify engine refused {q.get('quote_id')}: {exc}")
+            continue
+        q["verification_engine"] = VERIFICATION_ENGINE
+        q["verification_status"] = decision.status.value
+        q["verification_receipt_id"] = decision.receipt_id
+        q["verification_clauses"] = [c.model_dump(mode="json") for c in decision.clauses]
+        q["verification_checked_at"] = now.isoformat()
+        if decision.receipt_id:
+            matched += 1
+        pass2_receipts.append(receipt_entry(
+            cap["market_id"], h2, now.isoformat(), cap["source_url"]))
+    append_receipts(pass2_receipts, write=write_log)
+    print(f"[polymarket] verify pass: {matched}/{len(quotes)} quotes receipt-matched "
+          f"(engine ceiling OBSERVED — single publisher, V3 uncheckable)")
+    return quotes, matched
+
+
 def collect_quotes(min_liquidity: float = 10.0) -> list[dict]:
     events = fetch_events()
     slate_idx = index_slate(load_slate())
@@ -400,6 +561,13 @@ def collect_quotes(min_liquidity: float = 10.0) -> list[dict]:
             continue
         q = build_quote(market, event, row, stat, books)
         if q:
+            payload = canonical_quote_payload(market, books[0], books[1])
+            q["_receipt_capture"] = {
+                "market_id": f"polymarket:{market.get('id') or ''}",
+                "payload": payload,
+                "captured_at": q["observed_at"],
+                "source_url": q["source_url"],
+            }
             quotes.append(q)
             matched += 1
     print(f"[polymarket] prop events: {len(events)} | matched: {matched} | "
@@ -425,20 +593,28 @@ def merge_feed(quotes: list[dict], dry_run: bool = False) -> bool:
         # stamps remain the true fetch window, microseconds apart.
         q = dict(q)
         q["observed_at"] = (base + timedelta(microseconds=i)).isoformat()
+        # internal capture envelope never ships to the public feed
+        q.pop("_receipt_capture", None)
         merged.append(q)
     keep.extend(merged)
     monitored = feed.get("monitored_books") or []
     if BOOK not in monitored:
         monitored = monitored + [BOOK]
     pm_n = len(merged)
+    # Engine-derived evidence level: RECEIPTED only when the frozen
+    # verification.v1 engine stamped quotes OBSERVED with a matched receipt.
+    # VERIFIED counts stay structurally zero — single publisher, V3
+    # uncheckable (min_sharp_books=2). A receipt is evidence, not a claim.
+    receipt_matched = [q for q in merged
+                       if q.get("verification_status") == "OBSERVED" and q.get("verification_receipt_id")]
     feed["quotes"] = keep
     feed["updated_at"] = base.isoformat()
     feed["monitored_books"] = monitored
     feed["total_quotes"] = len(keep)
     feed["polymarket_quotes_count"] = pm_n
     feed["polymarket_observed_at"] = base.isoformat()
-    # Hashes prove local snapshot consistency, not provider verification.
-    feed["feed_status"] = "LIVE_POLYMARKET_CLOB_UNVERIFIED"
+    feed["feed_status"] = "LIVE_POLYMARKET_CLOB_RECEIPTED" if receipt_matched else "LIVE_POLYMARKET_CLOB_UNVERIFIED"
+    feed["receipt_matched_quotes_count"] = len(receipt_matched)
     feed["verified_books_count"] = 0
     feed["verified_quotes_count"] = 0
     rows = load_slate()
@@ -502,6 +678,37 @@ def selftest() -> int:
 
     check("name index: punctuation-insensitive match",
           _norm_name("D'Andre Swift") == _norm_name("DAndre Swift"))
+
+    # ── receipt machinery (offline) ──
+    payload = canonical_quote_payload(mk, books[0], books[1])
+    h1 = canonical_hash(payload)
+    check("canonical hash: stable across key order",
+          canonical_hash(dict(reversed(list(payload.items())))) == h1)
+    check("canonical hash: 64-hex", len(h1) == 64)
+    cap = {"market_id": "polymarket:6374549", "payload": payload,
+           "captured_at": "2026-11-02T12:00:00+00:00",
+           "source_url": "https://polymarket.com/market/nfl-puka-nacua-74pt5"}
+    q2 = dict(q, _receipt_capture=cap)
+    log_entry = receipt_entry(cap["market_id"], h1, cap["captured_at"], cap["source_url"])
+    import tempfile
+    globals()["RECEIPT_LOG_PATH"] = Path(tempfile.mkdtemp()) / "log.json"
+    append_receipts([log_entry])
+    same = {"over-1": books[0], "under-1": books[1]}
+    moved = {"over-1": dict(books[0], ask_price=0.57), "under-1": dict(books[1], ask_price=0.43)}
+    now = datetime(2026, 11, 2, 12, 0, 5, tzinfo=timezone.utc)
+    stamped, m_same = verify_quotes([dict(q2)], books_by_token=same, now=now, write_log=False)
+    s = stamped[0]
+    check("verify: resting quote -> OBSERVED with matched receipt",
+          s["verification_status"] == "OBSERVED" and s["verification_receipt_id"] == log_entry["receipt_id"]
+          and s["verification_engine"] == "verification.v1" and m_same == 1,
+          f"{s['verification_status']}/{s['verification_receipt_id']}")
+    clauses = {c["clause_id"]: c["passed"] for c in s["verification_clauses"]}
+    check("verify: V1+V2 pass, V3 honestly uncheckable",
+          clauses["V1_receipt"] is True and clauses["V2_staleness"] is True and clauses["V3_conflict"] is False)
+    stamped_moved, m_moved = verify_quotes([dict(q2)], books_by_token=moved, now=now, write_log=False)
+    sm = stamped_moved[0]
+    check("verify: moved price -> OBSERVED, receipt_missing (fail-closed)",
+          sm["verification_status"] == "OBSERVED" and sm["verification_receipt_id"] is None and m_moved == 0)
     print("polymarket selftest: ALL PASS" if ok else "polymarket selftest: FAILURES")
     return 0 if ok else 1
 
@@ -521,6 +728,22 @@ def main() -> int:
     except (URLError, TimeoutError, OSError, ValueError) as exc:
         print(f"[polymarket] network/parse failure ({exc}) — feed untouched (fail-closed)")
         return 0
+    # Receipt machinery: log pass-1 receipts, then run the independent
+    # verification pass (second CLOB pull) through the frozen engine. Both
+    # are fail-closed — on any failure the quotes ship unstamped and the
+    # feed stays LIVE_POLYMARKET_CLOB_UNVERIFIED.
+    if not args.dry_run:
+        append_receipts([
+            receipt_entry(q["_receipt_capture"]["market_id"],
+                          canonical_hash(q["_receipt_capture"]["payload"]),
+                          q["_receipt_capture"]["captured_at"],
+                          q["_receipt_capture"]["source_url"])
+            for q in quotes if "_receipt_capture" in q
+        ])
+    try:
+        quotes, _matched = verify_quotes(quotes, write_log=not args.dry_run)
+    except Exception as exc:
+        print(f"[polymarket] verify pass failure ({exc}) — quotes ship unstamped (fail-closed)")
     try:
         merge_feed(quotes, dry_run=args.dry_run)
     except Exception as exc:  # never corrupt the feed on a bad merge

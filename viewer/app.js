@@ -705,6 +705,11 @@
       : 0;
     if (status === 'FIXTURE' || adapter.fixturesOnly === true) return 'FIXTURE';
     if (verifiedQuotes > 0 && !status.includes('UNVERIFIED')) return 'VERIFIED';
+    // Engine-graded middle state: every stamped quote passed the receipt
+    // clause (two independent CLOB pulls hash-matched against the receipt
+    // log) but the cross-book conflict clause stays uncheckable on a
+    // single-publisher feed. Honest evidence — never rendered as VERIFIED.
+    if (status.includes('RECEIPTED')) return 'RECEIPT-MATCHED';
     return 'UNVERIFIED';
   }
 
@@ -732,7 +737,11 @@
     const researchSource = researchCount ? String(state.livePicks.source || 'Source unspecified') : 'No current research scan';
     if ($('#settingsFeedProvider')) $('#settingsFeedProvider').textContent = marketFeedSourceLabel();
     if ($('#settingsResearchSource')) $('#settingsResearchSource').textContent = researchSource;
-    if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent = `${verified} feed-verified quotes${verified ? '' : ' · independent audit pending'}`;
+    const receiptMatched = (state.odds?.quotes || []).filter((q) => q && q.verification_status === 'OBSERVED' && q.verification_receipt_id).length;
+    if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent =
+      verified > 0 ? `${verified} feed-verified quotes`
+        : receiptMatched > 0 ? `${receiptMatched} receipt-matched quotes · single-book feed — cross-book audit unlocks with a second sharp book`
+        : '0 feed-verified quotes · independent audit pending';
     const blockers = [];
     if (SLATES[state.slateKey]?.historical || health.dataKind === 'fixture') {
       blockers.push('historical/fixture slate');

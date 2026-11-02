@@ -61,7 +61,10 @@ def _feed_quote_violations(path: Path):
     if pm_quotes:
         # Mixed live feed: Polymarket quotes are real observations and MUST
         # carry the full receipt chain; the synthetic baseline stays demo.
-        if status != "LIVE_POLYMARKET_CLOB_UNVERIFIED":
+        # v1.1 (2026-11-02): the receipt machinery exists, so the feed may
+        # self-identify as RECEIPTED (engine-graded OBSERVED receipts from two
+        # independent CLOB pulls) — still never as anything VERIFIED.
+        if status not in ("LIVE_POLYMARKET_CLOB_UNVERIFIED", "LIVE_POLYMARKET_CLOB_RECEIPTED"):
             violations.append(f"{path}: mixed feed must self-identify honestly (got {status!r})")
         if data.get("verified_books_count") != 0 or data.get("verified_quotes_count") != 0:
             violations.append(f"{path}: local Polymarket hashes must not count as verified prices")
