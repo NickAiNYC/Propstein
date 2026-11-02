@@ -13,7 +13,7 @@ test('stale homepage shows fair-line research when observed lines are unavailabl
   const status = registry.get('#homeEdgeStatus').textContent;
   const cards = registry.get('#homeEdgeList').innerHTML;
   assert.equal(title, 'Model fair lines');
-  assert.match(status, /Live qualification paused/);
+  assert.match(status, /No verified plays/);
   assert.equal((cards.match(/class="home-edge-card home-research-card"/g) || []).length, 5);
   assert.match(cards, /MODEL FAIR · NO LIVE PRICE/);
   assert.match(cards, /no current edge or stake is available/);

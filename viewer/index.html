@@ -51,14 +51,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ufc.css?v=2026_v200">
-  <link rel="stylesheet" href="/style.css?v=2026_v207">
+  <link rel="stylesheet" href="/style.css?v=2026_v212">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v179" defer></script>
-  <script src="/app.js?v=2026_v207" defer></script>
+  <script src="/app.js?v=2026_v212" defer></script>
   <script src="/js/sports/ufc.js?v=2026_v200" defer></script>
   <script src="/js/today-schedule.js?v=2026_v207" defer></script>
-  <script src="/js/front-page.js?v=2026_v198" defer></script>
+  <script src="/js/front-page.js?v=2026_v210" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#slateBoard">Skip to slate</a>
@@ -177,7 +177,6 @@
 
         <!-- Hidden compatibility mobile elements -->
         <button type="button" id="mobileMenuBtn" class="pw-mobile-menu-btn" aria-label="Open Settings" style="display:none;" hidden></button>
-        <button type="button" id="frontSearchBtn" class="front-search-btn" aria-label="Search players and teams" title="Search players and teams (⌘/Ctrl K)">⌕</button>
         <button type="button" id="frontMenuBtn" class="front-menu-btn" aria-haspopup="dialog" aria-controls="frontMenuDialog">Menu <span aria-hidden="true">☰</span></button>
       </div>
     </div>
@@ -197,7 +196,7 @@
             <circle cx="7" cy="7" r="4.5"/>
             <path d="M10.5 10.5L14 14"/>
           </svg>
-          <input type="search" id="searchInput" class="pw-search-input" placeholder="Search player or team..." autocomplete="off">
+          <input type="search" id="searchInput" class="pw-search-input" placeholder="Search player, team, or prop..." autocomplete="off">
           <kbd class="pw-kbd pw-desktop-only">/</kbd>
         </div>
       </div>
@@ -291,6 +290,11 @@
   </dialog>
 
   <main class="shell page" id="slateBoard">
+    <div class="snapshot-age-pill" id="snapshotAgePill" role="status" hidden></div>
+    <div class="front-inline-search">
+      <label for="frontInlineSearch">FIND A PLAYER PROP</label>
+      <input type="search" id="frontInlineSearch" placeholder="Search player, team, or prop..." autocomplete="off" aria-label="Search player, team, or prop">
+    </div>
     <section class="home-edge-preview" id="homeEdgePreview" aria-labelledby="homeEdgeTitle" aria-live="polite">
       <div class="home-edge-heading">
         <div><p class="today-schedule-eyebrow">PLAYER PROP BOARD</p><h2 id="homeEdgeTitle">Loading player research</h2></div>
@@ -298,6 +302,11 @@
       </div>
       <p class="home-edge-status" id="homeEdgeStatus">Loading data and checking price status…</p>
       <div class="home-edge-list" id="homeEdgeList"></div>
+      <button type="button" id="homeEdgeShowAll" class="home-edge-show-all" aria-expanded="false" hidden></button>
+      <div class="home-edge-fallback" id="homeEdgeFallback" hidden>
+        <span id="homeEdgeFallbackText">No verified plays right now. Review the settled public audit while the next slate is prepared.</span>
+        <button type="button" id="homeEdgeAudit">View verified receipt ledger ↗</button>
+      </div>
     </section>
     <section class="today-schedule" id="todaySchedule" aria-live="polite">
       <div class="today-schedule-heading">

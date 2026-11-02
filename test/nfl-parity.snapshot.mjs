@@ -125,6 +125,7 @@ const NFL_DOM_ALLOWLIST = new Set([
   'slateSelector', 'mobileSlateSelector', 'modeTopBtn', 'topCount',
   // Feed-health failure-mode UI
   'dataQualityBanner', 'dqRetryBtn',
+  'snapshotAgePill',
 ]);
 
 async function dumpLedger(P, lsStore) {

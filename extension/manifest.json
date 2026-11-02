@@ -9,7 +9,7 @@
     "storage"
   ],
   "host_permissions": [
-    "https://propwire.vercel.app/*"
+    "https://propstein.vercel.app/*"
   ],
   "background": {
     "service_worker": "background.js"

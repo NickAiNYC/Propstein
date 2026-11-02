@@ -8,7 +8,7 @@ import {
 import { z } from "zod";
 import crypto from "crypto";
 
-const API_BASE_URL = process.env.PropWire_API_URL || "https://propwire.vercel.app/api/v1";
+const API_BASE_URL = process.env.PropWire_API_URL || "https://propstein.vercel.app/api/v1";
 const API_KEY = process.env.PropWire_API_KEY;
 
 // Deterministic RFC-8785 serializer for local client-side hash verification

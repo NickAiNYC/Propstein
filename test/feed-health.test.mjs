@@ -122,6 +122,24 @@ test('stale odds breach the per-sport threshold and downgrade the banner to warn
   assert.match(banner.innerHTML, /ODDS STALE/);
   assert.match(banner.innerHTML, /treat prices as historical/i);
   assert.ok(banner.className.includes('warn'));
+  const snapshot = els.get('snapshotAgePill');
+  assert.equal(snapshot.hidden, false);
+  assert.match(snapshot.textContent, /Snapshot Mode · Captured Oct 21, 11:32 PM EDT/);
+});
+
+test('snapshot pill appears after 30 minutes without changing the execution staleness threshold', async () => {
+  const { sandbox } = buildSandbox();
+  const els = attachLocalDom(sandbox);
+  const P = loadApp(sandbox);
+  await P.loadSlate('2026_w7');
+  P.state.feedHealth.oddsUpdatedAt = new Date(FROZEN_MS - 20 * 60_000).toISOString();
+  P.updateFeedHealthUI();
+  assert.equal(els.get('snapshotAgePill').hidden, true);
+  P.state.feedHealth.oddsUpdatedAt = new Date(FROZEN_MS - 31 * 60_000).toISOString();
+  P.updateFeedHealthUI();
+  assert.equal(els.get('snapshotAgePill').hidden, false);
+  assert.match(els.get('snapshotAgePill').textContent, /Snapshot Mode · Captured/);
+  assert.equal(P.feedHealthStates().oddsFreshness, 'ok');
 });
 
 test('unverified NFL feed never renders a LIVE or VERIFIED status label', async () => {
@@ -154,7 +172,7 @@ test('stale news watcher mirrors the dead-man switch semantics (NFL live)', asyn
 
 test('fixture datasets suppress staleness signals (static by design)', async () => {
   const { sandbox } = buildSandbox({ seedLocalStorage: { propwire_active_sport: 'nba' } });
-  attachLocalDom(sandbox);
+  const els = attachLocalDom(sandbox);
   const P = loadApp(sandbox);
   // Fixture updated_at is fixed in the past relative to any real clock —
   // staleness must stay 'ok' for fixture data while transport errors would
@@ -163,6 +181,7 @@ test('fixture datasets suppress staleness signals (static by design)', async () 
   const states = P.feedHealthStates();
   assert.equal(states.dataKind, 'fixture');
   assert.equal(states.oddsFreshness, 'ok');
+  assert.match(els.get('snapshotAgePill').textContent, /Demo fixture · Synthetic sample data/);
 });
 
 test('ledger trust boundary: fixture entries are blocked; trusted NFL entries preserve schema', async () => {

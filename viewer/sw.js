@@ -1,16 +1,16 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v207-access-proof';
+const CACHE_NAME = 'propstein-v212-snapshot-age';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v207',
-  '/app.js?v=2026_v207',
+  '/style.css?v=2026_v212',
+  '/app.js?v=2026_v212',
   '/js/today-schedule.js?v=2026_v207',
   '/js/sports/ufc.js?v=2026_v200',
   '/ufc.css?v=2026_v200',
   '/js/ufc-fighter.js?v=2026_v199',
-  '/js/front-page.js?v=2026_v198',
+  '/js/front-page.js?v=2026_v210',
   '/league-logos/nba.png',
   '/league-logos/nfl.png',
   '/league-logos/ufc.svg',
