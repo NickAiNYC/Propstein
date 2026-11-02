@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import glob
 import os
+from datetime import datetime, timezone
 
 import numpy as np
 import pandas as pd
@@ -25,6 +26,56 @@ REC_POSITIONS = ("WR", "TE", "RB")
 # tuned on 2016-2021 only, held out 2022+.
 FORM_SPAN = 5
 DEF_SPAN = 8
+
+CONTEXT_OBSERVATION_FIELDS = (
+    "spread_observed_at",
+    "total_observed_at",
+    "weather_observed_at",
+)
+
+
+class UnverifiedGameContextError(ValueError):
+    """Pregame context has no proof that it existed at the pricing cutoff."""
+
+
+def _aware_utc(value: object, field: str) -> datetime:
+    if not isinstance(value, str):
+        raise UnverifiedGameContextError(f"{field} requires a timestamped source")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise UnverifiedGameContextError(f"{field} is not a valid ISO timestamp") from exc
+    if parsed.tzinfo is None:
+        raise UnverifiedGameContextError(f"{field} must include a timezone")
+    return parsed.astimezone(timezone.utc)
+
+
+def assert_context_known_at_cutoff(df: pd.DataFrame, games: pd.DataFrame) -> None:
+    """Fail closed until every game context value has pre-cutoff provenance.
+
+    The historical nflverse games.csv has no source capture times for its
+    closing spread, total, or weather. Those values must not enter a new
+    fitted model or a prospective projection as if they were pregame inputs.
+    """
+    if "pricing_cutoff_timestamp" not in df.columns:
+        raise UnverifiedGameContextError("pricing_cutoff_timestamp is required for every pricing row")
+    missing = [name for name in CONTEXT_OBSERVATION_FIELDS if name not in games.columns]
+    if missing:
+        raise UnverifiedGameContextError(
+            f"game context lacks observed-at provenance: {', '.join(missing)}"
+        )
+    by_game = games.set_index("game_id")
+    for game_id, cutoff_value in df[["game_id", "pricing_cutoff_timestamp"]].itertuples(index=False, name=None):
+        if game_id not in by_game.index:
+            raise UnverifiedGameContextError(f"no game context for {game_id}")
+        cutoff = _aware_utc(cutoff_value, "pricing_cutoff_timestamp")
+        source = by_game.loc[game_id]
+        for field in CONTEXT_OBSERVATION_FIELDS:
+            observed = _aware_utc(source[field], field)
+            if observed > cutoff:
+                raise UnverifiedGameContextError(
+                    f"{field} for {game_id} was observed after pricing cutoff"
+                )
 
 
 # ----------------------------------------------------------------------------
@@ -74,12 +125,13 @@ def load_games() -> pd.DataFrame:
     g = g[g.game_type == "REG"].copy()
     keep = ["game_id", "season", "week", "gameday", "gametime", "away_team", "home_team",
             "away_score", "spread_line", "total_line", "roof", "temp", "wind"]
-    return g[keep]
+    return g[keep + [c for c in CONTEXT_OBSERVATION_FIELDS if c in g.columns]]
 
 
 def attach_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
     """Join market context. spread_line is HOME-relative in nflverse:
     positive means the home team is favoured by that many points."""
+    assert_context_known_at_cutoff(df, games)
     long = []
     for _, side in (("home", "home"), ("away", "away")):
         pass
@@ -120,6 +172,18 @@ def _shifted_ewma(s: pd.Series, span: int) -> pd.Series:
 
 def _shifted_expanding_mean(s: pd.Series) -> pd.Series:
     return s.shift(1).expanding(min_periods=1).mean()
+
+
+def _prior_week_position_median(df: pd.DataFrame, value: str) -> pd.Series:
+    """Position fallback using only rows from strictly earlier NFL weeks."""
+    fallback = pd.Series(np.nan, index=df.index, dtype=float)
+    for _, position_rows in df.groupby("position"):
+        history: list[float] = []
+        for _, week_rows in position_rows.groupby(["season", "week"], sort=True):
+            if history:
+                fallback.loc[week_rows.index] = float(np.median(history))
+            history.extend(float(v) for v in week_rows[value].dropna())
+    return fallback
 
 
 def add_player_form(df: pd.DataFrame) -> pd.DataFrame:
@@ -237,10 +301,10 @@ def build_panel(seasons: tuple[int, ...] | None = None,
     for p in REC_POSITIONS:
         df[f"pos_{p}"] = (df.position == p).astype(int)
 
-    # Position-level fallbacks for players with thin history.
-    pos_med = df.groupby("position")[["f_adot", "f_catch_rate", "f_ypr"]].transform("median")
+    # Position fallbacks use only strictly earlier weeks. A full-panel median
+    # would let later box scores leak into historical training rows.
     for c in ("f_adot", "f_catch_rate", "f_ypr"):
-        df[c] = df[c].fillna(pos_med[c])
+        df[c] = df[c].fillna(_prior_week_position_median(df, c))
     df["f_tgt_sd"] = df["f_tgt_sd"].fillna(df["f_targets"].fillna(0) * 0.6)
     for c in FEATURES:
         if c in df.columns:

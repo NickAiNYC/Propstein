@@ -11,6 +11,7 @@ async function setup() {
   const { sandbox, lsStore, registry } = buildSandbox();
   const P = loadApp(sandbox);
   await P.loadSlate('2026_w7');
+  P.state.featureContextLocked = false; // exercise downstream quote gates in isolation
   const quote = attachSyntheticQuote(P);
   P.state.filters.market = 'receiving_yards';
   P.state.portfolio = [];
@@ -26,6 +27,16 @@ test('unverified quote is blocked in both the decision and mutation paths', asyn
   P.logBet(quote.player_id);
   assert.equal(P.state.portfolio.length, 0);
   assert.equal(lsStore.get('propwire_portfolio_ledger_v2'), undefined);
+});
+
+test('NFL execution defaults locked when no cutoff proof is present', async () => {
+  const { sandbox } = buildSandbox();
+  const P = loadApp(sandbox);
+  await P.loadSlate('2026_w7');
+  const quote = attachSyntheticQuote(P);
+  P.state.userTier = 'sharp';
+  const row = P.state.slate.find((item) => item.player_id === quote.player_id);
+  assert.equal(P.executionDecision(row).code, 'feature_cutoff_unverified');
 });
 
 test('stale odds block an otherwise verified and entitled quote', async () => {
@@ -75,4 +86,36 @@ test('confirmation rechecks the guard and fails closed if the quote becomes stal
   P.state.feedHealth.oddsUpdatedAt = '2026-10-01T00:00:00Z';
   assert.equal(P.confirmExecution(quote.player_id), false);
   assert.equal(P.state.portfolio.length, 0);
+});
+
+test('a provenance lock from the manifest overrides a built-in slate and cannot be dismissed', async () => {
+  const { sandbox, registry } = buildSandbox();
+  const originalFetch = sandbox.fetch;
+  sandbox.fetch = (path) => String(path).startsWith('feeds/slate-index.json')
+    ? Promise.resolve({ ok: true, status: 200, json: async () => ({
+        schema_version: 'slate-index.v1',
+        sports: { nfl: { default_slate: '2026_w7', slates: {
+          '2026_w7': {
+            actionLocked: true,
+            modelContextStatus: 'BLOCKED_UNTIMESTAMPED',
+            shortLabel: 'W7 Research',
+            state: 'Model refresh blocked: untimestamped game context',
+          },
+        } } },
+      }) })
+    : originalFetch(path);
+  const P = loadApp(sandbox);
+  await P.initSlateIndex();
+  assert.equal(P.adapter.slates['2026_w7'].actionLocked, true);
+  assert.equal(P.adapter.slates['2026_w7'].picks, null);
+  assert.equal(P.adapter.slates['2026_w7'].odds, null);
+  await P.loadSlate('2026_w7');
+  assert.equal(P.state.featureContextLocked, true);
+  const row = P.state.slate[0];
+  assert.equal(P.executionDecision(row).code, 'feature_cutoff_unverified');
+  P.state.dataQualityBannerDismissed = true;
+  P.updateFeedHealthUI();
+  assert.equal(registry.get('#dataQualityBanner').hidden, false);
+  assert.match(registry.get('#dataQualityBanner').innerHTML, /MODEL CONTEXT BLOCKED/);
+  assert.doesNotMatch(registry.get('#dataQualityBanner').innerHTML, /dq-dismiss-btn/);
 });
