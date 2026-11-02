@@ -1,0 +1,31 @@
+name: Daily NBA FanDuel Market Slate
+
+on:
+  schedule:
+    # 12:00 PM Eastern in EDT and EST; the local-time guard skips the other run.
+    - cron: '0 16 * * *'
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+jobs:
+  eastern-noon:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.clock.outputs.should_run }}
+    steps:
+      - name: Check Eastern time
+        id: clock
+        run: |
+          if [ "${{ github.event_name }}" = 'workflow_dispatch' ] || [ "$(TZ=America/New_York date +%H)" = '12' ]; then
+            echo 'should_run=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'should_run=false' >> "$GITHUB_OUTPUT"
+          fi
+
+  refresh:
+    needs: eastern-noon
+    if: needs.eastern-noon.outputs.should_run == 'true'
+    uses: ./.github/workflows/daily_update.yml
+    with:
+      nba_only: true
+    secrets: inherit

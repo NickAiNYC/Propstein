@@ -2314,7 +2314,15 @@
     const numOr = (value, fallback) => (Number.isFinite(Number(value)) ? Number(value) : fallback);
     return {
       oddsStaleSeconds: numOr(th.odds_stale_max_age_seconds, 21600),
-      newsStaleSeconds: numOr(th.deadman_switch_max_age_seconds, 300)
+      newsStaleSeconds: numOr(th.deadman_switch_max_age_seconds, 300),
+      // Display-only window for the data-quality banner: how long the news
+      // heartbeat may go silent before the feed counts as "abandoned" to a
+      // human reader. This is deliberately WIDER than the 300s dead-man
+      // switch, which remains the autonomous-dispatch latch (executionDecision,
+      // mobile pill, sniper cron) and is NOT relaxed here — a scheduled
+      // commit-based poller cannot physically satisfy a 5-minute window, and
+      // pretending otherwise would green-wash a suppressed dispatch state.
+      newsFeedStaleSeconds: numOr(th.news_feed_stale_max_age_seconds, 86400)
     };
   }
 
@@ -2337,6 +2345,12 @@
     const newsFreshness = health.news === 'error' ? 'error'
       : newsAge === null ? 'unknown'
         : newsAge > thresholds.newsStaleSeconds ? 'stale' : 'ok';
+    // Banner-layer freshness: the SAME age evaluated against the wide
+    // feed-abandonment window. Dispatch gating below keeps using
+    // newsFreshness (dead-man) — never this value.
+    const newsFeedFreshness = health.news === 'error' ? 'error'
+      : newsAge === null ? 'unknown'
+        : newsAge > thresholds.newsFeedStaleSeconds ? 'stale' : 'ok';
     // Staleness semantics apply to LIVE feeds only: fixture datasets are
     // static by design (fixed updated_at), so their age is not a health
     // signal. Transport failures still surface for every data kind.
@@ -2345,6 +2359,7 @@
       ...health,
       oddsFreshness: fixtureStatic && oddsFreshness !== 'error' ? 'ok' : oddsFreshness,
       newsFreshness: fixtureStatic && newsFreshness !== 'error' ? 'ok' : newsFreshness,
+      newsFeedFreshness: fixtureStatic && newsFeedFreshness !== 'error' ? 'ok' : newsFeedFreshness,
       oddsAgeSeconds: oddsAge,
       thresholds
     };
@@ -2427,8 +2442,8 @@
       items.push(`<strong>ODDS STALE</strong><span>Last update ${ageLabel} (limit ${Math.round(health.thresholds.oddsStaleSeconds / 60)}m) — treat prices as historical.</span>`);
       if (tone === 'ok') tone = 'warn';
     }
-    if (health.newsFreshness === 'stale') {
-      items.push('<strong>NEWS FEED STALE</strong><span>News watcher exceeded the dead-man threshold — automated sniper dispatch is suppressed.</span>');
+    if (health.newsFeedFreshness === 'stale') {
+      items.push('<strong>NEWS FEED STALE</strong><span>News watcher heartbeat older than 24h — the feed looks abandoned and automated sniper dispatch is suppressed.</span>');
       if (tone === 'ok') tone = 'warn';
     }
 
@@ -3346,10 +3361,6 @@
       && state.odds.quotes.some((quote) => quoteState(quote) === 'verified');
     if (!fresh) {
       const research = (Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : []).filter((pick) => matches(pick.player, pick.team, pick.market, pick.book));
-      const scanAt = state.livePicks?.generated_at;
-      const scanTime = scanAt && !Number.isNaN(Date.parse(scanAt))
-        ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(scanAt))
-        : null;
       const modelRows = research.length ? [] : state.slate
         .filter((row) => Number.isFinite(Number(fairValue(row))) && Number(fairValue(row)) > 0 && matches(row.player_display_name, row.team, state.filters.market))
         .sort((a, b) => projectionValue(b) - projectionValue(a))
@@ -3358,8 +3369,10 @@
       if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
       setShowAll(research.length);
       if (fallback) fallback.hidden = false;
+      // Keep the short homepage status copy; detail remains in Settings.
+      const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
       status.textContent = research.length
-        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(5, research.length)} of ${research.length} observed lines · waiting for independent price verification · scan ${scanTime || 'unknown'}`
+        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(5, research.length)} of ${research.length} research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
         : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
       list.innerHTML = research.length
         ? research.slice(0, homeEdgeExpanded ? undefined : 5).map((pick) => {

@@ -271,30 +271,40 @@ def release_team_lock(team: str, state: Dict[str, Any]) -> Dict[str, Any]:
     return state
 
 
-def poll_sleeper_feed(state: Dict[str, Any], webhook_url: str = "") -> Dict[str, Any]:
-    """Polls public Sleeper API endpoint for NFL injury status changes."""
+def poll_sleeper_feed(state: Dict[str, Any], webhook_url: str = "") -> Tuple[Dict[str, Any], bool]:
+    """Polls public Sleeper API endpoint for NFL injury status changes.
+
+    Returns (state, fetch_ok). The heartbeat (last_polled_at) is written even
+    when the fetch fails — the timestamp measures the watcher's pulse, not the
+    upstream API's health. fetch_ok lets a scheduled one-shot run fail loudly
+    via --fail-on-fetch-error, so CI goes red instead of publishing a
+    green-but-blind heartbeat.
+    """
     url = "https://api.sleeper.app/v1/players/nfl"
     now_iso = datetime.now(timezone.utc).isoformat()
     state["last_polled_at"] = now_iso
     state["poll_count"] = state.get("poll_count", 0) + 1
     state["is_alive"] = True
+    fetch_ok = False
 
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "PROP-WIRE-News-Watcher/1.0"})
         with urllib.request.urlopen(req, timeout=12) as resp:
             if resp.status == 200:
+                fetch_ok = True
                 print(f"[POLL] Sleeper feed checked successfully at {now_iso} (poll #{state['poll_count']})")
     except Exception as exc:
-        print(f"[WARN] Live poll exception (using cached/heartbeat): {exc}")
+        print(f"[WARN] Live poll exception (heartbeat still recorded): {exc}")
 
     save_watcher_state(state)
-    return state
+    return state, fetch_ok
 
 
 def main():
     parser = argparse.ArgumentParser(description="PropWire High-Frequency News Watcher & Safety Latch")
     parser.add_argument("--poll-interval", type=int, default=30, help="Polling interval in seconds (default 30)")
     parser.add_argument("--once", action="store_true", help="Run single poll and exit")
+    parser.add_argument("--fail-on-fetch-error", action="store_true", help="Exit non-zero when the scheduled one-shot poll cannot reach the upstream feed (keeps CI honest; only applies with --once)")
     parser.add_argument("--simulate-event", nargs=3, metavar=("PLAYER_ID", "STATUS", "TEAM"), help="Simulate a news downgrade event")
     parser.add_argument("--release-team", type=str, help="Human release of team lock (e.g. NE)")
     parser.add_argument("--status", action="store_true", help="Display current watcher and lock status")
@@ -324,14 +334,17 @@ def main():
         return 0
 
     if args.once:
-        poll_sleeper_feed(state, webhook_url=args.webhook)
+        _, fetch_ok = poll_sleeper_feed(state, webhook_url=args.webhook)
+        if args.fail_on_fetch_error and not fetch_ok:
+            sys.stderr.write("[ERROR] Fetch failed and --fail-on-fetch-error is set; exiting non-zero.\n")
+            return 1
         return 0
 
     print(f"[START] PropWire News Watcher running. Interval: {args.poll_interval}s.")
     try:
         while True:
             poll_sleeper_feed(state, webhook_url=args.webhook)
-            time.sleep(args.poll_interval)
+            time.sleep(args.poll_interval)  # persistent-host mode: transient fetch errors never kill the loop
     except KeyboardInterrupt:
         print("\n[STOP] News Watcher stopped by user.")
         return 0
