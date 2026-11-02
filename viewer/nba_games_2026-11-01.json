@@ -1,0 +1,46 @@
+[
+ {
+  "game_id": "nba-20261101-BOS-ORL",
+  "gameday": "2026-11-01",
+  "gametime": "15:40",
+  "gametime_et": "15:40",
+  "tipoff_utc": "2026-11-01T20:40:00Z",
+  "away_team": "BOS",
+  "home_team": "ORL",
+  "odds_event_id": "e8559eaac12af915cfe6597644620c13",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261101-BKN-IND",
+  "gameday": "2026-11-01",
+  "gametime": "17:10",
+  "gametime_et": "17:10",
+  "tipoff_utc": "2026-11-01T22:10:00Z",
+  "away_team": "BKN",
+  "home_team": "IND",
+  "odds_event_id": "fc3e945a5be88d3f933456bc512c956d",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261101-LAC-GSW",
+  "gameday": "2026-11-01",
+  "gametime": "20:40",
+  "gametime_et": "20:40",
+  "tipoff_utc": "2026-11-02T01:40:00Z",
+  "away_team": "LAC",
+  "home_team": "GSW",
+  "odds_event_id": "094b083ace229ca31ff360a80e35a1a8",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261101-TOR-LAL",
+  "gameday": "2026-11-01",
+  "gametime": "21:10",
+  "gametime_et": "21:10",
+  "tipoff_utc": "2026-11-02T02:10:00Z",
+  "away_team": "TOR",
+  "home_team": "LAL",
+  "odds_event_id": "31fc89cbf3846e545e8e41a543a71d24",
+  "_fixture": false
+ }
+]

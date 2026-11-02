@@ -18,6 +18,11 @@ name: Daily Data Autopilot
 # the schedule. The extra EST Sunday run below preserves the 12:45 ET check.
 
 on:
+  workflow_call:
+    inputs:
+      nba_only:
+        type: boolean
+        default: false
   schedule:
     # Daily baseline: 11:00 UTC (07:00 ET morning rollover) and 21:00 UTC (17:00 ET afternoon check)
     - cron: '0 11 * * *'
@@ -39,7 +44,7 @@ on:
   workflow_dispatch:
     inputs:
       nba_only:
-        description: 'Refresh NBA schedule and unverified FanDuel points lines only (max 10 credits)'
+        description: 'Refresh today’s NBA schedule and unverified FanDuel points lines only (max 20 credits)'
         type: boolean
         default: false
 
@@ -97,8 +102,14 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
-          PYTHONPATH=. python scripts/fetch_nba_odds.py --dates 2026-10-31 --max-credits 10
-          python scripts/publish_nba_market_slate.py 2026-10-31
+          NBA_DATE=$(TZ=America/New_York date +%F)
+          echo "Refreshing NBA market slate for $NBA_DATE Eastern"
+          PYTHONPATH=. python scripts/fetch_nba_odds.py --dates "$NBA_DATE" --max-credits 20
+          if [ -f "viewer/nba_games_$NBA_DATE.json" ]; then
+            python scripts/publish_nba_market_slate.py "$NBA_DATE"
+          else
+            echo "No NBA games scheduled for $NBA_DATE Eastern."
+          fi
 
       - name: Commit and push refreshed slate (if changed)
         if: steps.window.outputs.should_run == 'true'

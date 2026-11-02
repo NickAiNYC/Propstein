@@ -51,7 +51,7 @@
       }
     },
     "nba": {
-      "default_slate": null,
+      "default_slate": "2026-11-01",
       "slates": {
         "2026-10-22": {
           "season": 2026,
@@ -110,6 +110,21 @@
           "odds": "nba_odds_2026-10-31.json",
           "snapshots": null,
           "historical": true,
+          "timezone": "America/New_York",
+          "marketOnly": true
+        },
+        "2026-11-01": {
+          "season": 2026,
+          "date": "2026-11-01",
+          "shortLabel": "Nov 1 Slate",
+          "state": "Slate \u00b7 2026-11-01",
+          "slate": "nba_slate_2026-11-01.json",
+          "games": "nba_games_2026-11-01.json",
+          "picks": null,
+          "injuries": "nba_injuries_2026-11-01.json",
+          "odds": "nba_odds_2026-11-01.json",
+          "snapshots": null,
+          "historical": false,
           "timezone": "America/New_York",
           "marketOnly": true
         }
