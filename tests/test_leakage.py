@@ -62,6 +62,7 @@ DECISION_PATH_MODULES = [
     "src/settlement_engine.py",
     "src/grade_clv.py",
     "src/contracts/quant.py",
+    "src/contracts/verification.py",
     "src/contracts/gate.py",
     "src/contracts/odds.py",
     "src/contracts/slate.py",

@@ -29,6 +29,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, Field
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 SRC_DIR = os.path.join(BASE_DIR, "src")
@@ -856,23 +857,21 @@ async def post_verify_receipt(request: Request):
         except Exception as e:
             print(f"[verify-receipt] Error parsing audit report: {e}")
 
-    # Fallback to demo entry if report is initializing
+    # VERIFICATION LAYER (Phase 2): the demo fallback has been removed. It
+    # fabricated a "CRYPTOGRAPHICALLY_PROVEN" lifecycle for ANY unknown hash —
+    # exactly the fake-trust pattern the master prompt bans on reachable
+    # routes. Report missing/unreadable -> 503 (data unavailable); unknown
+    # hash -> 404 (honest not-found). Neither case mints trust.
+    if not report_path.exists():
+        raise HTTPException(
+            503,
+            "verification data unavailable: CLV audit report not found — refusing to fabricate a receipt lifecycle",
+        )
     if not record:
-        record = {
-            "player": "Tucker Kraft",
-            "team": "GB",
-            "market": "rec_yds",
-            "side": "OVER",
-            "line": 34.5,
-            "odds": -110,
-            "close_line": 37.5,
-            "close_odds": -115,
-            "clv_yards": 3.0,
-            "clv_prob_pct": 5.4,
-            "actual_yards": 48.0,
-            "outcome": "WIN",
-            "settlement_receipt": target_hash if len(target_hash) == 16 else "8e038b2029e5b60d"
-        }
+        raise HTTPException(
+            404,
+            "receipt not found: no entry, closing, settlement, or ledger-root hash matches the supplied receipt_hash",
+        )
 
     # Reconstruct 64-character SHA-256 digests for RFC-8785 compliance
     from src.crypto_utils import canonical_json_sha256
@@ -978,6 +977,108 @@ async def post_verify_receipt(request: Request):
         },
     }
 
+# ---------------------------------------------------------------------------
+# VERIFICATION LAYER (Phase 2): POST /api/v1/verify-quote + context freshness
+# Deterministic trust-spine verification for a single quote observation.
+# Pure compute over the request body: no demo fallback, no LLM, and no clock
+# inside the decision itself (the clock is an explicit input; `now` defaults
+# to the server clock only when the caller omits it).
+# See src/contracts/verification.py (verification.v1).
+# ---------------------------------------------------------------------------
+
+from src.contracts.verification import (  # noqa: E402
+    ContextFeedKind,
+    ContextFreshnessConfig,
+    ReceiptRecord,
+    VerificationConfig,
+    VERIFICATION_CONTRACTS_VERSION,
+    PeerQuote,
+    QuoteObservation,
+    evaluate_context_freshness,
+    verify_quote,
+)
+
+
+class VerifyQuoteRequest(BaseModel):
+    """Request body for POST /api/v1/verify-quote. All datetimes must be
+    timezone-aware UTC; pydantic rejects naive values with 422 (fail closed on
+    ambiguous inputs)."""
+
+    observation: QuoteObservation
+    receipts: list[ReceiptRecord] = Field(default_factory=list)
+    peers: list[PeerQuote] = Field(default_factory=list)
+    now: datetime | None = Field(
+        default=None,
+        description="Evaluation instant; omit to use the server clock. Pass explicitly for reproducible results.",
+    )
+    kickoff: datetime | None = Field(
+        default=None,
+        description="Game kickoff (UTC); drives the time-to-kickoff-aware staleness regime",
+    )
+    config: VerificationConfig | None = Field(
+        default=None,
+        description="Optional threshold overrides; defaults mirror the frozen verification.v1 config",
+    )
+
+
+class ContextFreshnessRequest(BaseModel):
+    """Request body for POST /api/v1/context-freshness."""
+
+    kind: ContextFeedKind
+    last_checked_at: datetime | None = None
+    now: datetime | None = None
+    config: ContextFreshnessConfig | None = None
+
+
+@app.post("/api/v1/verify-quote")
+async def post_verify_quote(payload: VerifyQuoteRequest):
+    """Verify one quote observation against supplied receipts and sharp peers.
+
+    Returns the full VerificationDecision (status, per-clause reasoning with
+    actual values and thresholds, conflict snapshot, config echo). This is the
+    contract-test surface for the trust spine: callers can reproduce any
+    decision byte-for-byte by pinning `now`.
+    """
+    now_dt = payload.now or datetime.now(timezone.utc)
+    try:
+        decision = verify_quote(
+            observation=payload.observation,
+            now=now_dt,
+            kickoff=payload.kickoff,
+            config=payload.config,
+            receipts=payload.receipts,
+            peers=payload.peers,
+        )
+    except ValueError as exc:
+        # Fail closed on integrity violations (future-dated observations,
+        # naive datetimes): 422, never a silently downgraded status.
+        raise HTTPException(422, f"verification rejected the input: {exc}") from exc
+    return {
+        "contracts_version": VERIFICATION_CONTRACTS_VERSION,
+        "generated_at": now_dt.astimezone(timezone.utc).isoformat(),
+        "decision": decision.model_dump(mode="json"),
+    }
+
+
+@app.post("/api/v1/context-freshness")
+async def post_context_freshness(payload: ContextFreshnessRequest):
+    """Evaluate injury/news/lineup feed freshness. Unknown last-check times
+    fail closed (is_fresh=False) — unknown does not mean fresh."""
+    now_dt = payload.now or datetime.now(timezone.utc)
+    try:
+        freshness = evaluate_context_freshness(
+            kind=payload.kind,
+            last_checked_at=payload.last_checked_at,
+            now=now_dt,
+            config=payload.config,
+        )
+    except ValueError as exc:
+        raise HTTPException(422, f"freshness evaluation rejected the input: {exc}") from exc
+    return {
+        "contracts_version": VERIFICATION_CONTRACTS_VERSION,
+        "generated_at": now_dt.astimezone(timezone.utc).isoformat(),
+        "freshness": freshness.model_dump(mode="json"),
+    }
 
 
 # ---------------------------------------------------------------------------
