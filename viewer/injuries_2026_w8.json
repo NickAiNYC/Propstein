@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-11-02T02:45:42Z",
+  "as_of": "2026-11-02T20:38:59Z",
   "slate_week": 8,
   "season": 2026,
-  "total_active_injuries": 132,
+  "total_active_injuries": 138,
   "total_practice_entries": 188,
-  "source": "nflverse injuries_2026.parquet",
+  "source": "nflverse injuries_2026.parquet; NFL.com confirmed inactives",
   "impacted_beneficiaries": {},
   "injuries": [
     {
@@ -1104,8 +1104,9 @@
       "game_id": "2026_08_ARI_DAL",
       "position": "WR",
       "injury_type": "Ribs",
-      "report_status": "OUT",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0038547",
@@ -1115,8 +1116,9 @@
       "game_id": "2026_08_ARI_DAL",
       "position": "TE",
       "injury_type": "Groin",
-      "report_status": "QUESTIONABLE",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0038625",
@@ -1555,8 +1557,9 @@
       "game_id": "2026_08_IND_JAX",
       "position": "WR",
       "injury_type": "Concussion",
-      "report_status": "OUT",
-      "practice_status": "Full Participation in Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0040128",
@@ -2457,8 +2460,9 @@
       "game_id": "2026_08_NE_MIA",
       "position": "WR",
       "injury_type": "Ankle",
-      "report_status": "QUESTIONABLE",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/patriots-rule-out-wr-a-j-brown-ankle-knee-rb-treveyon-henderson-illness-for-sunday-vs-dolphins"
     },
     {
       "player_id": "00-0035678",
@@ -2523,8 +2527,9 @@
       "game_id": "2026_08_NE_MIA",
       "position": "RB",
       "injury_type": "Illness",
-      "report_status": "QUESTIONABLE",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/patriots-rule-out-wr-a-j-brown-ankle-knee-rb-treveyon-henderson-illness-for-sunday-vs-dolphins"
     },
     {
       "player_id": "00-0041088",
@@ -2611,8 +2616,9 @@
       "game_id": "2026_08_LV_NYJ",
       "position": "RB",
       "injury_type": "Quadricep",
-      "report_status": "QUESTIONABLE",
-      "practice_status": "Limited Participation in Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0039794",
@@ -2930,8 +2936,9 @@
       "game_id": "2026_08_CLE_PIT",
       "position": "WR",
       "injury_type": "Calf",
-      "report_status": "QUESTIONABLE",
-      "practice_status": "Limited Participation in Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0038558",
@@ -3271,8 +3278,9 @@
       "game_id": "2026_08_ATL_TB",
       "position": "WR",
       "injury_type": "Foot",
-      "report_status": "OUT",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0041502",
@@ -3348,8 +3356,9 @@
       "game_id": "2026_08_TEN_CIN",
       "position": "RB",
       "injury_type": "Knee",
-      "report_status": "OUT",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0040503",
@@ -3370,8 +3379,9 @@
       "game_id": "2026_08_TEN_CIN",
       "position": "WR",
       "injury_type": "Shoulder",
-      "report_status": "OUT",
-      "practice_status": "Did Not Participate In Practice"
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     },
     {
       "player_id": "00-0031588",
@@ -3526,6 +3536,78 @@
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
       "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0036876",
+      "player_name": "Kylen Granson",
+      "team": "TEN",
+      "opponent": "CIN",
+      "game_id": "2026_08_TEN_CIN",
+      "position": null,
+      "injury_type": "Confirmed inactive",
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
+    },
+    {
+      "player_id": "00-0041104",
+      "player_name": "Demond Claiborne",
+      "team": "MIN",
+      "opponent": "DET",
+      "game_id": "2026_08_MIN_DET",
+      "position": null,
+      "injury_type": "Confirmed inactive",
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
+    },
+    {
+      "player_id": "00-0033439",
+      "player_name": "Pharaoh Brown",
+      "team": "IND",
+      "opponent": "JAX",
+      "game_id": "2026_08_IND_JAX",
+      "position": null,
+      "injury_type": "Confirmed inactive",
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
+    },
+    {
+      "player_id": "00-0040581",
+      "player_name": "Dont'e Thornton Jr.",
+      "team": "LV",
+      "opponent": "NYJ",
+      "game_id": "2026_08_LV_NYJ",
+      "position": null,
+      "injury_type": "Confirmed inactive",
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
+    },
+    {
+      "player_id": "00-0040894",
+      "player_name": "Malik Benson",
+      "team": "LV",
+      "opponent": "NYJ",
+      "game_id": "2026_08_LV_NYJ",
+      "position": null,
+      "injury_type": "Confirmed inactive",
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
+    },
+    {
+      "player_id": "00-0033375",
+      "player_name": "Tim Patrick",
+      "team": "NYJ",
+      "opponent": "LV",
+      "game_id": "2026_08_LV_NYJ",
+      "position": null,
+      "injury_type": "Confirmed inactive",
+      "report_status": "INACTIVE",
+      "practice_status": "Confirmed inactive by NFL.com",
+      "source_url": "https://fantasy-www.nfl.com/news/nfl-week-8-inactives-players-ruled-out-sunday-2026-season"
     }
   ]
 }
