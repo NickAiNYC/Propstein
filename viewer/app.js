@@ -3310,6 +3310,10 @@
     const ageMs = asOf && Number.isFinite(asOf.getTime()) ? Date.now() - asOf.getTime() : Infinity;
     const stale = ageMs < 0 || ageMs > 6 * 60 * 60 * 1000;
     const stamp = asOf && Number.isFinite(asOf.getTime()) ? asOf.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }) : 'unknown time';
+    const slateDate = SLATES[state.slateKey]?.date || state.slateKey;
+    const slateDateLabel = /^\d{4}-\d{2}-\d{2}$/.test(String(slateDate))
+      ? new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${slateDate}T12:00:00Z`))
+      : 'Today';
     if ($('#allCount')) $('#allCount').textContent = String(all.length);
     if ($('#actionableCount')) $('#actionableCount').textContent = '0';
     if ($('#resultCount')) $('#resultCount').textContent = `${rows.length} unverified FanDuel lines · no NBA model predictions`;
@@ -3330,11 +3334,12 @@
         <div class="nba-market-sides"><span class="nba-market-over">↑ OVER ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span class="nba-market-under">↓ UNDER ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
       </article>`;
     }).join('');
-    box.innerHTML = `<div class="nba-market-head"><div><strong>October 31 FanDuel player points</strong><p>${stale ? 'STALE · ' : ''}FanDuel via The Odds API · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
+    box.innerHTML = `<div class="nba-market-head"><div><strong>${esc(slateDateLabel)} FanDuel player points</strong><p>${stale ? 'STALE · ' : ''}FanDuel via The Odds API · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
       <p class="nba-market-disclaimer">FanDuel lines only. No NBA model predictions or qualified edges are available; these prices may change.</p>
       ${rows.length ? `<div class="nba-market-list">${quotesHtml}</div>` : `<p>${state.filters.market === 'points' ? 'No player points lines match this filter.' : 'Only player points quotes are available for this date.'}</p>`}`;
   }
 
+  const HOME_EDGE_LIMIT = 8;
   let homeEdgeExpanded = false;
   $('#homeEdgeShowAll')?.addEventListener('click', () => {
     homeEdgeExpanded = !homeEdgeExpanded;
@@ -3360,7 +3365,7 @@
     const matches = (...values) => !search || search.split(/\s+/).every((term) => values.map((value) => String(value || '').toLowerCase().replaceAll('_', ' ')).join(' ').includes(term));
     const setShowAll = (count) => {
       if (!showAll) return;
-      showAll.hidden = count <= 5;
+      showAll.hidden = count <= HOME_EDGE_LIMIT;
       showAll.setAttribute('aria-expanded', String(homeEdgeExpanded));
       showAll.textContent = homeEdgeExpanded ? 'Show fewer lines ↑' : `Show all ${count} lines ↓`;
     };
@@ -3384,7 +3389,7 @@
       status.textContent = `${quotes.length} unverified FanDuel lines · The Odds API · ${asOf || 'time unavailable'} · no model predictions`;
       setShowAll(samples.length);
       if (fallback) fallback.hidden = false;
-      list.innerHTML = samples.slice(0, homeEdgeExpanded ? undefined : 5).map((quote) => `<article class="home-edge-card home-research-card">
+      list.innerHTML = samples.slice(0, homeEdgeExpanded ? undefined : HOME_EDGE_LIMIT).map((quote) => `<article class="home-edge-card home-research-card">
         <div class="home-edge-player"><strong>${esc(quote.player_name)}</strong><span>${previewBookPill(quote.book)} ${esc(previewMarketLabel(quote.market))}</span></div>
         <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number(quote.line).toFixed(1)} <small>pts</small></strong><span>Over ${esc(oddsText(quote.over_odds))} · Under ${esc(oddsText(quote.under_odds))}</span></div>
         <p class="home-research-note">Market line only · price and availability must be checked at the book.</p>
@@ -3395,22 +3400,24 @@
       && health.news === 'ok' && health.newsFreshness === 'ok'
       && state.odds.quotes.some((quote) => quoteState(quote) === 'verified');
     if (!fresh) {
-      const research = (Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : []).filter((pick) => matches(pick.player, pick.team, pick.market, pick.book));
+      const research = (Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : [])
+        .filter((pick) => matches(pick.player, pick.team, pick.market, pick.book))
+        .sort((a, b) => num(b.ev_per_unit) - num(a.ev_per_unit) || num(b.edge) - num(a.edge));
       const modelRows = research.length ? [] : state.slate
         .filter((row) => Number.isFinite(Number(fairValue(row))) && Number(fairValue(row)) > 0 && matches(row.player_display_name, row.team, state.filters.market))
         .sort((a, b) => projectionValue(b) - projectionValue(a))
-        .slice(0, 5);
+        .slice(0, HOME_EDGE_LIMIT);
       const title = $('#homeEdgeTitle');
-      if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
+      if (title) title.textContent = research.length ? `Top ${Math.min(HOME_EDGE_LIMIT, research.length)} model signals` : modelRows.length ? 'Model fair lines' : 'Player prop research';
       setShowAll(research.length);
       if (fallback) fallback.hidden = false;
       // Keep the short homepage status copy; detail remains in Settings.
       const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
       status.textContent = research.length
-        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(5, research.length)} of ${research.length} research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
+        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
         : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
       list.innerHTML = research.length
-        ? research.slice(0, homeEdgeExpanded ? undefined : 5).map((pick) => {
+        ? research.slice(0, homeEdgeExpanded ? undefined : HOME_EDGE_LIMIT).map((pick) => {
           const line = Number(pick.line);
           const odds = Number(pick.odds);
           return `<article class="home-edge-card home-research-card">
@@ -3434,7 +3441,7 @@
     const plays = state.slate.map((row) => ({ row, evaluation: evaluateRow(row) }))
       .filter(({ row, evaluation }) => evaluation.actionable && evaluation.state === 'verified' && matches(row.player_display_name, row.team, market, evaluation.book))
       .sort((a, b) => b.evaluation.ev - a.evaluation.ev)
-      .slice(0, 3);
+      .slice(0, HOME_EDGE_LIMIT);
     status.textContent = `${plays.length ? `Top ${plays.length} verified ${plays.length === 1 ? 'edge' : 'edges'}` : 'No qualified edges'} · odds as of ${asOf || 'time unavailable'}`;
     if (!plays.length) {
       if (fallback) fallback.hidden = false;
