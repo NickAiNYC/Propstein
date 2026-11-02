@@ -14,6 +14,8 @@ from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 from pydantic import BaseModel, ValidationError
 
+from src.contracts.quant import artifact_header
+
 
 def compute_sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
@@ -31,12 +33,23 @@ def validate_and_publish(
     config_hash: Optional[str] = None,
     allow_partial: bool = False,
     min_rows: int = 1,
+    model_version: str = "ingestion-only",
+    data_cutoff: Optional[datetime] = None,
+    commit_sha: Optional[str] = None,
 ) -> Tuple[bool, Dict[str, Any]]:
     """
     Validate raw payload against Pydantic contract before touching production files.
     - If valid: writes atomically (.tmp -> os.replace) and emits a provenance .manifest.json.
     - If invalid: leaves production artifact completely untouched, writes structured failure
       to data/quarantine/{stem}_invalid_{ts}.json, and returns (False, error_manifest).
+
+    Foundation freeze (Phase 1): both manifests now carry the ArtifactHeader
+    fields — run_id, commit_sha, data_cutoff_timestamp, model_version,
+    contracts_version — per system contract §1. commit_sha resolves from
+    PROPSTEIN_COMMIT_SHA or `git rev-parse HEAD` and RAISES if neither is
+    available: artifacts with anonymous provenance fail closed. data_cutoff
+    defaults to the write instant (correct for ingestion whose cutoff IS the
+    capture time); model writers must pass their true cutoff.
     """
     target_path = Path(target_path).resolve()
     base_dir = target_path.parent
@@ -48,6 +61,17 @@ def validate_and_publish(
     run_id = f"run_{uuid.uuid4().hex[:12]}"
     now_utc = datetime.now(timezone.utc).isoformat()
     ts_compact = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+
+    # Foundation freeze: header provenance resolved once, shared by both the
+    # publish manifest and the quarantine record. Raises (fail-closed) when
+    # the commit sha cannot be resolved — see docstring.
+    header = artifact_header(
+        model_version=model_version,
+        data_cutoff=data_cutoff,
+        commit_sha=commit_sha,
+        run_id=run_id,
+        generator=f"validate_and_publish:{schema_cls.__name__}",
+    )
 
     # Determine rows seen
     if isinstance(raw_data, list):
@@ -70,6 +94,7 @@ def validate_and_publish(
             target_path=target_path,
             quarantine_dir=quarantine_dir,
             run_id=run_id,
+            header=header,
             now_utc=now_utc,
             ts_compact=ts_compact,
             source_feed=source_feed,
@@ -100,6 +125,7 @@ def validate_and_publish(
             target_path=target_path,
             quarantine_dir=quarantine_dir,
             run_id=run_id,
+            header=header,
             now_utc=now_utc,
             ts_compact=ts_compact,
             source_feed=source_feed,
@@ -119,9 +145,9 @@ def validate_and_publish(
 
     os.replace(temp_file, target_path)
 
-    # PROVENANCE MANIFEST
+    # PROVENANCE MANIFEST (with ArtifactHeader fields — foundation freeze)
     manifest = {
-        "run_id": run_id,
+        **header.model_dump(mode="json"),
         "schema_version": "propstein_contract_v1",
         "schema_class": schema_cls.__name__,
         "source_feed": source_feed,
@@ -148,6 +174,7 @@ def _fail_closed(
     target_path: Path,
     quarantine_dir: Path,
     run_id: str,
+    header: Any,
     now_utc: str,
     ts_compact: str,
     source_feed: str,
@@ -164,7 +191,7 @@ def _fail_closed(
     preview = raw_str[:5000]
 
     failure_manifest = {
-        "run_id": run_id,
+        **header.model_dump(mode="json"),
         "schema_version": "propstein_contract_v1",
         "source_feed": source_feed,
         "timestamp": now_utc,
@@ -180,7 +207,10 @@ def _fail_closed(
     }
 
     with open(quarantine_file, "w", encoding="utf-8") as f:
-        json.dump(failure_manifest, f, indent=2)
+        # default=str: pydantic v2 error dicts embed the original exception
+        # objects in ctx (e.g. a ValueError) — the quarantine record must
+        # always be writable, even when the payload error is exotic.
+        json.dump(failure_manifest, f, indent=2, default=str)
 
     print(
         f"🚨 [DataContract FAIL-CLOSED] Blocked invalid payload for {target_path.name}! "
