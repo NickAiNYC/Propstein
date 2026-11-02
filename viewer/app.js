@@ -3300,18 +3300,17 @@
       && state.odds.quotes.some((quote) => quoteState(quote) === 'verified');
     if (!fresh) {
       const research = Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : [];
-      const scanAt = state.livePicks?.generated_at;
-      const scanTime = scanAt && !Number.isNaN(Date.parse(scanAt))
-        ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(scanAt))
-        : null;
       const modelRows = research.length ? [] : state.slate
         .filter((row) => Number.isFinite(Number(fairValue(row))) && Number(fairValue(row)) > 0)
         .sort((a, b) => projectionValue(b) - projectionValue(a))
         .slice(0, 5);
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
+      // One plain line above the board (owner copy); the long detail
+      // (source, Polymarket CLOB count, scan time) stays in the Settings panel.
+      const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
       status.textContent = research.length
-        ? `Showing ${Math.min(5, research.length)} of ${research.length} ${String(state.livePicks.source || 'source-unspecified')} research lines · ${(state.odds.quotes || []).filter((quote) => String(quote.book).toLowerCase() === 'polymarket').length} Polymarket CLOB quotes · qualification paused (no independent quote audit) · scan ${scanTime || 'unknown'}`
+        ? `Showing ${Math.min(5, research.length)} of ${research.length} research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
         : `Live qualification paused · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
       list.innerHTML = research.length
         ? research.slice(0, 5).map((pick) => {
