@@ -42,7 +42,7 @@ Built for edge detection, not hype: the model is probabilistic, walk-forward val
 
 The viewer frontend and precomputed slate data are deployed globally via Vercel:
 
-- **Live Production URL**: [https://propstein.vercel.app](https://propstein.vercel.app)
+- **Live Production URL**: [propstein.vercel.app](https://propstein.vercel.app)
 - **Vercel Project**: [`propstein`](https://vercel.com/nicks-projects-ec56abd4/propstein)
 - **Deployment root**: repository root (`.`). The root [`vercel.json`](vercel.json) publishes `viewer/`.
 - **Operational model**: static assets are versioned, service workers are fail-closed, and edge caching is tuned for speed and reliability.
@@ -75,8 +75,13 @@ api/main.py       FastAPI service, billing, and entitlement layer
 ## Quick Start
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt        # intent spec (floor ranges)
+pip install -r requirements.lock       # reproducible set — what CI runs the suite against
 ```
+
+`requirements.txt` declares intent; `requirements.lock` is the exact pinned
+set CI installs and the full test suite is validated against (refresh protocol
+in the lock header).
 
 Then run the weekly model:
 

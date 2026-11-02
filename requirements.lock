@@ -1,0 +1,87 @@
+# ── PropStein Python dependency lock ────────────────────────────────────────
+# Generated 2026-11-02 from requirements.txt by a clean-venv resolve
+# (CPython 3.12, linux-64):  pip install -r requirements.txt && pip freeze --all
+# Validated against the full suite on this exact set: 355 passed / 2 skipped
+# (notably under pandas 3.x / numpy 2.5 — newer majors than dev used).
+#
+# Protocol (fail-closed):
+#   • CI installs THIS file, never the open ranges in requirements.txt.
+#   • requirements.txt stays the intent spec (floor ranges); this lock is the
+#     reproducible reality. tests/test_dependency_lock.py pins the two together
+#     in the same pytest run as the rest of the suite — a range bump without a
+#     lock refresh fails CI.
+#   • To refresh: fresh venv → `pip install -r requirements.txt` → run the full
+#     pytest suite against it → `pip freeze --all | grep -v 'pip=='` → replace
+#     the pins below (keep this header) in the same PR.
+#   • pytest / pip-audit are CI-only tools and are intentionally NOT locked
+#     here; install them beside the lock in the job that needs them.
+#   • Platform note: locked for CPython 3.12 on linux (CI) and macOS (dev);
+#     Windows is not a supported target.
+annotated-doc==0.0.5
+annotated-types==0.8.0
+anyio==4.16.0
+certifi==2026.10.23
+charset-normalizer==3.5.2
+click==8.5.0
+cloudpickle==3.1.2
+distro==1.9.0
+eval_type_backport==0.4.0
+fastapi==0.162.0
+formulaic==1.2.2
+h11==0.16.0
+httpcore2==2.16.0
+httpcore==1.0.9
+httptools==0.9.0
+httpx2==2.16.0
+httpx==0.28.1
+idna==3.20
+interface_meta==2.0.1
+joblib==1.6.0
+jsonpatch==1.39
+jsonpointer==3.7
+langchain-core==1.7.3
+langchain-protocol==0.0.20
+langgraph-checkpoint==4.3.1
+langgraph-prebuilt==1.1.1
+langgraph-sdk==0.4.11
+langgraph==1.2.19
+langsmith==0.14.17
+narwhals==2.28.0
+numpy==2.5.4
+opentelemetry-api==1.45.2
+orjson==3.13.0
+ormsgpack==1.13.0
+packaging==26.3
+pandas==3.1.0
+patsy==1.0.3
+psycopg2-binary==2.9.13
+pyarrow==26.0.0
+pydantic==2.14.2
+pydantic_core==2.50.2
+python-dateutil==4.0.0
+python-dotenv==1.2.4
+PyYAML==6.0.3
+redis==8.1.0
+requests-toolbelt==1.0.0
+requests==2.34.2
+scikit-learn==1.9.1
+scipy==1.18.1
+sniffio==1.3.1
+starlette==1.10.0
+statsmodels==0.15.0
+stripe==16.1.0
+tenacity==9.2.1
+threadpoolctl==3.7.0
+truststore==0.10.5
+typing-inspection==0.4.4
+typing_extensions==4.16.0
+tzdata==2026.6
+urllib3==2.8.0
+uuid_utils==0.19.0
+uvicorn==0.54.0
+uvloop==0.23.0
+watchfiles==1.3.0
+websockets==17.4
+wrapt==2.5.2
+xxhash==4.0.2
+zstandard==0.25.0

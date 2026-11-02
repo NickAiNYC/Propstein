@@ -7,7 +7,7 @@
 
 ## Test Strategy
 
-Node's built-in test runner provides domain, adapter, feed-health, rendering, migration, and execution-boundary coverage. `npm run check:production` is the release gate: syntax-check production browser files, run the full suite, and verify cache/security/deployment invariants. Python tests remain a required CI gap until dependencies are locked and installed there.
+Node's built-in test runner provides domain, adapter, feed-health, rendering, migration, and execution-boundary coverage. `npm run check:production` is the release gate: syntax-check production browser files, run the full suite, and verify cache/security/deployment invariants. The Python suite runs in CI against the **locked** dependency set (`requirements.lock`); `tests/test_dependency_lock.py` fails the same CI run if the lock and `requirements.txt` intent spec ever drift apart.
 
 ## Gate
 
@@ -15,7 +15,7 @@ Node's built-in test runner provides domain, adapter, feed-health, rendering, mi
 |---|---|---|
 | Node suite | `node --test` | **100/100 green** @ 2026-10-27 (post-#13 main `d8b1d8a` and rebased `refactor/phase2-readability` @ 1f2f7d7) |
 | Syntax | `node --check viewer/app.js` | part of `npm run check` |
-| Python suite | `pytest` | 17 tests, **deferred in this workspace** — locked deps not installed (P1: run in CI, see docs/TECH-DEBT.md Next Actions) |
+| Python suite | `pytest test/ tests/` | **365 passed / 2 skipped** @ 2026-11-02 — CI installs `requirements.lock` (P0 closed, see Dependency Lock below) |
 
 Rule: no behavior-visible change ships with the Node gate red. NFL parity goldens
 (`test/nfl-parity.snapshot.mjs`) must stay untouched unless the diff is an
@@ -29,6 +29,13 @@ earned, documented whitelist delta.
 | `viewer/sw.js` | Market data excluded from cache; release version matches HTML | `test/commercial-readiness.test.mjs` | Real offline-browser integration |
 | `vercel.json` | Security headers and no-store data policy | `test/commercial-readiness.test.mjs` | Headers must also be probed after deployment |
 | `api/main.py` | Fail-closed entitlement markers, CORS allowlist, header-only admin secret | `test/commercial-readiness.test.mjs` | FastAPI integration tests need Python dependencies |
+
+## Dependency Lock (closed 2026-11-02)
+
+- `requirements.txt` = intent spec (floor ranges). `requirements.lock` = the reproducible reality: a clean-venv freeze of that spec, 68 exact pins, **suite-validated before locking** (355 passed / 2 skipped at lock time — notably under pandas 3.1 / numpy 2.5, newer majors than dev used).
+- CI installs the lock, never the ranges (`ci.yml`: both Python jobs). `pip-audit` audits the exact locked set.
+- `tests/test_dependency_lock.py` (in the normal pytest run) pins lock↔spec consistency and the validated quant-stack majors — a range bump without a lock refresh, or a silent major rollover, fails CI.
+- Refresh protocol is in the lock header: fresh venv → install spec → run the **full** suite → freeze → replace pins in the same PR.
 
 ## What the suite pins (17 files: 16 `.mjs` + `decision-gates.test.cjs`)
 
@@ -73,9 +80,10 @@ switches, 390px viewport fits (`scrollWidth == clientWidth`).
 
 - `npm ci`
 - `npm run check:production`
+- `pip install -r requirements.lock pytest` + `PYTHONPATH=. pytest test/ tests/` (locked set; includes the lock-consistency tests)
+- `pip-audit` against the locked set (`continue-on-error` advisory)
 - Vercel preview build
 - Post-deploy header and feed-cache probe (to add)
-- Python compile and test suite (to add after lockfile/tooling decision)
 
 ## Baseline history
 
@@ -86,6 +94,7 @@ switches, 390px viewport fits (`scrollWidth == clientWidth`).
 | 2026-10-27 | main @ d8b1d8a (PR #13 merged) | 100/90+10 | commercial-readiness/execution-trust-boundary/decision-gates tests joined the suite |
 | 2026-10-27 | `refactor/phase2-readability` @ 1f2f7d7 (rebased on d8b1d8a) | 100/100 | phase-2 re-verified on new main; app.js conflict resolved (theme block kept live) |
 | 2026-10-27 | `feat/public-pages` @ 5c657e1 (PR #14) | 107/107 | +7 public-pages tests |
+| 2026-11-02 | `feat/python-lockfile` | pytest 365 passed / 2 skipped | +10 dependency-lock consistency tests; CI now installs `requirements.lock` |
 
 Number-of-record note: the quality plan text references a "93-test" suite; the
 measured gate at the phase-2 base was 90 and is 100 post-#13. Treat the
