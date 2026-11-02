@@ -6,6 +6,15 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+#: The feed's evidence-level vocabulary — the ONLY statuses a live Polymarket
+#: CLOB feed may carry (single source of truth: publication gates such as
+#: scripts/check_odds_freshness.py mirror this tuple instead of re-spelling
+#: it). Additive amendments may APPEND stronger evidence levels; they may
+#: never remove or weaken these. VERIFIED is structurally unreachable on this
+#: single-publisher feed (V3 uncheckable, min_sharp_books=2 frozen) and is
+#: deliberately absent.
+LIVE_FEED_STATUSES = ("LIVE_POLYMARKET_CLOB_UNVERIFIED", "LIVE_POLYMARKET_CLOB_RECEIPTED")
+
 
 class PolymarketQuote(BaseModel):
     model_config = ConfigDict(extra="allow")
@@ -76,8 +85,7 @@ class PolymarketMergedFeed(BaseModel):
         #       uncheckable, so OBSERVED is the engine ceiling here: receipt
         #       evidence, never a VERIFIED claim. VERIFIED stays forbidden until
         #       a second sharp book exists (min_sharp_books=2, frozen).
-        if self.feed_status not in ("LIVE_POLYMARKET_CLOB_UNVERIFIED",
-                                    "LIVE_POLYMARKET_CLOB_RECEIPTED"):
+        if self.feed_status not in LIVE_FEED_STATUSES:
             raise ValueError("Polymarket feed status must identify its evidence level (unverified or receipted)")
         if self.verified_books_count or self.verified_quotes_count:
             raise ValueError("Polymarket feed cannot claim verified counts (single publisher, V3 uncheckable)")

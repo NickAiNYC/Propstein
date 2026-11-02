@@ -440,14 +440,19 @@ def verify_quotes(quotes: list[dict], books_by_token: dict | None = None,
     Pass 1 (ingestion) logged a receipt per quote from its own CLOB pull. This
     pass re-pulls the same outcome token books from the CLOB, re-derives the
     canonical payload, and lets the FROZEN verification.v1 engine decide:
-      V1  pass-2 hash matches a LOGGED receipt for (market, book) — i.e. two
-          independent pulls saw identical executable content (this pull, or a
-          prior run's pull for a quote that has been resting);
+      V1  a stamp requires the two CURRENT pulls to agree hash-for-hash AND
+          that agreed content to be receipt-logged: admissible receipts are
+          pre-filtered to the published (pass-1) content hash, so a pass-2
+          book that diverged (price moved between the pulls) finds no
+          admissible receipt and fails closed — it can never inherit an older
+          receipt for the moved content onto the published quote;
       V2  age vs the kickoff-aware staleness regime;
       V3  cross-book divergence — structurally UNCHECKABLE with a single
           two-sided publisher (min_sharp_books=2, frozen), so the engine
           ceiling here is OBSERVED: receipt-matched, never VERIFIED.
-    Any engine outcome is stamped verbatim; nothing here may soften it.
+    Any engine outcome is stamped verbatim; nothing here may soften it. This
+    pass curates which receipts are EVIDENCE (content the feed actually
+    published); it never assigns or overrides a status.
     Network failure on the second pull -> quotes stay unstamped (fail-closed).
     """
     if not quotes:
@@ -488,6 +493,12 @@ def verify_quotes(quotes: list[dict], books_by_token: dict | None = None,
         ub = books_by_token.get(q.get("under_token_id"))
         if ob is None or ub is None:
             continue
+        # The published quote IS the pass-1 capture; a receipt is admissible
+        # evidence only for THAT content. (Review finding #2 on PR #84: the
+        # pass-2 hash used to be matched against the entire log, so a quote
+        # whose price moved A -> B between the two pulls could inherit an
+        # older B receipt and ship receipt-matched.)
+        h1 = canonical_hash(cap["payload"])
         payload2 = dict(cap["payload"])
         payload2.update({
             "over_token_id": str(ob["token_id"]), "under_token_id": str(ub["token_id"]),
@@ -495,6 +506,14 @@ def verify_quotes(quotes: list[dict], books_by_token: dict | None = None,
             "over_ask_depth_usd": float(ob["ask_depth_usd"]), "under_ask_depth_usd": float(ub["ask_depth_usd"]),
         })
         h2 = canonical_hash(payload2)
+        # Evidence discipline, engine stays the sole decision-maker: with the
+        # receipts filtered to the published content, a diverged pass-2 book
+        # (h2 != h1) can match nothing and V1 fails closed; agreeing pulls
+        # (h2 == h1) match exactly the receipts for the agreed content.
+        admissible = [r for r in receipts if r.raw_payload_hash == h1]
+        if h2 != h1:
+            print(f"[polymarket] verify: {q.get('quote_id')} moved between pulls "
+                  f"(pass-1 {h1[:12]} vs pass-2 {h2[:12]}) - receipt withheld (fail-closed)")
         try:
             observation = QuoteObservation(
                 source="polymarket-clob", book_id="polymarket",
@@ -504,7 +523,7 @@ def verify_quotes(quotes: list[dict], books_by_token: dict | None = None,
                 over_odds=int(q["over_odds"]), under_odds=int(q["under_odds"]),
                 book_line=float(q["line"]),
             )
-            decision = verify_quote(observation=observation, now=now, receipts=receipts)
+            decision = verify_quote(observation=observation, now=now, receipts=admissible)
         except Exception as exc:
             print(f"[polymarket] verify engine refused {q.get('quote_id')}: {exc}")
             continue
@@ -709,6 +728,19 @@ def selftest() -> int:
     sm = stamped_moved[0]
     check("verify: moved price -> OBSERVED, receipt_missing (fail-closed)",
           sm["verification_status"] == "OBSERVED" and sm["verification_receipt_id"] is None and m_moved == 0)
+    # Review finding #2 (PR #84): a moved pass-2 book must not inherit an
+    # OLDER receipt for the moved content onto the published quote. Seed the
+    # log with a prior run's receipt for the moved price, then verify again.
+    payload_b = dict(payload, over_ask_price=0.57, under_ask_price=0.43)
+    h_b = canonical_hash(payload_b)
+    append_receipts([receipt_entry(cap["market_id"], h_b,
+                                   "2026-11-02T11:00:00+00:00", cap["source_url"])])
+    stamped_moved2, m_moved2 = verify_quotes([dict(q2)], books_by_token=moved, now=now, write_log=False)
+    sm2 = stamped_moved2[0]
+    check("verify: older receipt for the moved price cannot stamp the published quote",
+          sm2["verification_status"] == "OBSERVED" and sm2["verification_receipt_id"] is None
+          and m_moved2 == 0
+          and {c["clause_id"]: c["passed"] for c in sm2["verification_clauses"]}["V1_receipt"] is False)
     print("polymarket selftest: ALL PASS" if ok else "polymarket selftest: FAILURES")
     return 0 if ok else 1
 

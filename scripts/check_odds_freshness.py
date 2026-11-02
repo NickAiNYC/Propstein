@@ -5,9 +5,21 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+# The feed's evidence-level vocabulary is owned by the frozen feed contract
+# (mirrored here so this gate can never drift from what publication actually
+# validates). A receipt match is strictly STRONGER evidence than bare
+# ingestion: a feed must never be blocked for carrying it. VERIFIED stays
+# unreachable on this single-publisher feed and out of this allowlist.
+from src.contracts.polymarket import LIVE_FEED_STATUSES  # noqa: E402
 
 VIEWER = Path(__file__).resolve().parent.parent / "viewer"
 
@@ -42,8 +54,10 @@ def check(viewer: Path = VIEWER, now: datetime | None = None,
     actual_hash = hashlib.sha256(feed_bytes).hexdigest()
     if manifest.get("sha256") != actual_hash or manifest.get("status") != "PASS_ATOMIC_PUBLISHED":
         raise ValueError("odds feed does not match its passing provenance manifest")
-    if feed.get("feed_status") != "LIVE_POLYMARKET_CLOB_UNVERIFIED":
-        raise ValueError("odds feed has no current Polymarket CLOB status")
+    if feed.get("feed_status") not in LIVE_FEED_STATUSES:
+        raise ValueError(
+            f"odds feed status {feed.get('feed_status')!r} is not a live Polymarket CLOB "
+            f"evidence level (allowed: {', '.join(LIVE_FEED_STATUSES)})")
     if int(feed.get("polymarket_quotes_count") or 0) < 1:
         raise ValueError("odds feed has no observed Polymarket quotes")
     age_hours = (now - parse_time(feed["updated_at"])).total_seconds() / 3600
@@ -51,6 +65,10 @@ def check(viewer: Path = VIEWER, now: datetime | None = None,
         raise ValueError(f"odds feed timestamp is in the future by {-age_hours:.2f} hours")
     if age_hours > max_age_hours:
         raise ValueError(f"odds feed is {age_hours:.2f} hours old (limit {max_age_hours:g} hours)")
+    if feed.get("feed_status") == "LIVE_POLYMARKET_CLOB_RECEIPTED":
+        matched = int(feed.get("receipt_matched_quotes_count") or 0)
+        return (f"Odds feed age {max(0, age_hours):.2f} hours; manifest hash matches; "
+                f"{matched} quotes receipt-matched (engine ceiling OBSERVED, not VERIFIED).")
     return f"Odds feed age {max(0, age_hours):.2f} hours; manifest hash matches; source remains unverified."
 
 
