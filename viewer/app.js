@@ -860,6 +860,7 @@
     } catch (e) {
       console.warn('Live odds polling error:', e);
     } finally {
+      updateFeedHealthUI();
       if (refreshBtn) {
         setTimeout(() => refreshBtn.classList.remove('is-spinning'), 600);
       }
@@ -1169,14 +1170,7 @@
     if (mobileSearchBtn) {
       mobileSearchBtn.addEventListener('click', () => {
         triggerHaptic('light');
-        const cmdRow = $('.pw-command-row');
-        if (cmdRow) {
-          cmdRow.classList.toggle('active');
-          const searchInput = $('#searchInput');
-          if (cmdRow.classList.contains('active') && searchInput) {
-            searchInput.focus();
-          }
-        }
+        $('#frontInlineSearch')?.focus();
       });
     }
 
@@ -1888,7 +1882,7 @@
       switch (e.key) {
         case '/': // Focus Search
           e.preventDefault();
-          const searchInput = document.getElementById('searchInput');
+          const searchInput = document.getElementById('frontInlineSearch') || document.getElementById('searchInput');
           if (searchInput) {
             searchInput.focus();
             searchInput.select();
@@ -2402,6 +2396,29 @@
     const banner = elById('dataQualityBanner');
     if (!banner) return;
     const health = feedHealthStates();
+    const snapshotPill = elById('snapshotAgePill');
+    if (snapshotPill) {
+      const feedTime = [health.oddsUpdatedAt, state.odds.generated_at,
+        ...(state.odds.quotes || []).map((quote) => quote.observed_at)]
+        .map((value) => Date.parse(String(value || '')))
+        .find((value) => Number.isFinite(value));
+      const ageSeconds = Number.isFinite(feedTime) ? Math.max(0, (Date.now() - feedTime) / 1000) : null;
+      const captured = Number.isFinite(feedTime)
+        ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(feedTime))
+        : null;
+      if (health.dataKind === 'fixture') {
+        snapshotPill.textContent = 'Demo fixture · Synthetic sample data';
+      } else if (health.odds === 'error') {
+        snapshotPill.textContent = 'Snapshot unavailable · Odds feed offline';
+      } else if (!captured) {
+        snapshotPill.textContent = 'Snapshot time unavailable · Prices unverified';
+      } else if (ageSeconds > 1800) {
+        snapshotPill.textContent = `Snapshot Mode · Captured ${captured}`;
+      } else {
+        snapshotPill.textContent = '';
+      }
+      snapshotPill.hidden = !snapshotPill.textContent;
+    }
     const items = [];
     let tone = 'ok';
     if (health.dataKind === 'fixture') {
@@ -2927,6 +2944,7 @@
       state.filters.gameId = $('#gameFilter').value === 'ALL' ? '' : $('#gameFilter').value;
     }
     renderBoard();
+    renderHomeEdgePreview();
   }
 
   function clearFilters() {
@@ -2994,8 +3012,8 @@
       if (team && row.team !== team) return false;
       if (gameId && row.game_id !== gameId) return false;
       if (search) {
-        const haystack = `${row.player_display_name} ${row.team} ${row.opponent_team}`.toLowerCase();
-        if (!haystack.includes(search)) return false;
+        const haystack = `${row.player_display_name} ${state.filters.market.replaceAll('_', ' ')} ${row.team} ${row.opponent_team}`.toLowerCase();
+        if (!search.split(/\s+/).every((term) => haystack.includes(term))) return false;
       }
       if (intent === 'surge') {
         return adapter.intentFilters.surge(row, beneficiaryFor(row));
@@ -3144,7 +3162,7 @@
       // market cleared itself. Only a fresh, verified feed with genuinely
       // zero qualified rows earns the anti-tout efficiency message.
       const health = feedHealthStates();
-      const feedsDegraded = health.dataKind !== 'fixture' && (
+      const feedsDegraded = health.dataKind === 'fixture' || (
         health.odds !== 'ok' || health.oddsFreshness !== 'ok' ||
         health.news !== 'ok' || health.newsFreshness !== 'ok' ||
         !state.odds.quotes.some((quote) => quoteState(quote) === 'verified'));
@@ -3282,29 +3300,57 @@
       ${rows.length ? `<div class="nba-market-list">${quotesHtml}</div>` : `<p>${state.filters.market === 'points' ? 'No player points lines match this filter.' : 'Only player points quotes are available for this date.'}</p>`}`;
   }
 
+  let homeEdgeExpanded = false;
+  $('#homeEdgeShowAll')?.addEventListener('click', () => {
+    homeEdgeExpanded = !homeEdgeExpanded;
+    renderHomeEdgePreview();
+  });
+  const previewMarketLabel = (market) => String(market || 'Player Prop').replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+  const previewBookPill = (book) => {
+    const meta = bookMeta(book);
+    const knownFallback = resolveBookId(book) === 'betonline' ? { name: 'BetOnline', short: 'BOL', color: '#ed7b36' } : null;
+    const name = meta?.name || knownFallback?.name || previewMarketLabel(book || 'Book unavailable');
+    const short = meta?.short || knownFallback?.short || name;
+    return `<span class="home-book-pill" style="--book-accent:${meta?.color || knownFallback?.color || '#8daec2'}" title="${esc(name)}">${esc(short)}</span>`;
+  };
   function renderHomeEdgePreview() {
     const list = $('#homeEdgeList');
     const status = $('#homeEdgeStatus');
     if (!list || !status) return;
+    const showAll = $('#homeEdgeShowAll');
+    const fallback = $('#homeEdgeFallback');
+    const fallbackText = $('#homeEdgeFallbackText');
+    if (fallbackText) fallbackText.textContent = 'No verified plays right now. Review the settled public audit while the next slate is prepared.';
+    const search = String(state.filters.search || '').trim();
+    const matches = (...values) => !search || search.split(/\s+/).every((term) => values.map((value) => String(value || '').toLowerCase().replaceAll('_', ' ')).join(' ').includes(term));
+    const setShowAll = (count) => {
+      if (!showAll) return;
+      showAll.hidden = count <= 5;
+      showAll.setAttribute('aria-expanded', String(homeEdgeExpanded));
+      showAll.textContent = homeEdgeExpanded ? 'Show fewer lines ↑' : `Show all ${count} lines ↓`;
+    };
+    if (fallback) fallback.hidden = true;
+    setShowAll(0);
     const health = feedHealthStates();
     const asOf = health.oddsUpdatedAt && !Number.isNaN(Date.parse(health.oddsUpdatedAt))
       ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(health.oddsUpdatedAt))
       : null;
     if (SPORT_ID === 'nba' && SLATES[state.slateKey]?.marketOnly) {
-      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false && String(quote.book).toLowerCase() === 'fanduel');
+      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false && String(quote.book).toLowerCase() === 'fanduel' && matches(quote.player_name, quote.team, quote.market, quote.book));
       const samples = [];
       const shownGames = new Set();
       for (const quote of quotes) {
         if (shownGames.has(quote.game_id)) continue;
         shownGames.add(quote.game_id);
         samples.push(quote);
-        if (samples.length === 5) break;
       }
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = 'FanDuel player points lines';
       status.textContent = `${quotes.length} unverified FanDuel lines · The Odds API · ${asOf || 'time unavailable'} · no model predictions`;
-      list.innerHTML = samples.map((quote) => `<article class="home-edge-card home-research-card">
-        <div class="home-edge-player"><strong>${esc(quote.player_name)}</strong><span>${esc(quote.book)} · ${esc(quote.market)}</span></div>
+      setShowAll(samples.length);
+      if (fallback) fallback.hidden = false;
+      list.innerHTML = samples.slice(0, homeEdgeExpanded ? undefined : 5).map((quote) => `<article class="home-edge-card home-research-card">
+        <div class="home-edge-player"><strong>${esc(quote.player_name)}</strong><span>${previewBookPill(quote.book)} ${esc(previewMarketLabel(quote.market))}</span></div>
         <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number(quote.line).toFixed(1)} <small>pts</small></strong><span>Over ${esc(oddsText(quote.over_odds))} · Under ${esc(oddsText(quote.under_odds))}</span></div>
         <p class="home-research-note">Market line only · price and availability must be checked at the book.</p>
       </article>`).join('') || '<p class="home-edge-empty">No paired player-points lines were returned for this date.</p>';
@@ -3314,32 +3360,33 @@
       && health.news === 'ok' && health.newsFreshness === 'ok'
       && state.odds.quotes.some((quote) => quoteState(quote) === 'verified');
     if (!fresh) {
-      const research = Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : [];
+      const research = (Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : []).filter((pick) => matches(pick.player, pick.team, pick.market, pick.book));
       const modelRows = research.length ? [] : state.slate
-        .filter((row) => Number.isFinite(Number(fairValue(row))) && Number(fairValue(row)) > 0)
+        .filter((row) => Number.isFinite(Number(fairValue(row))) && Number(fairValue(row)) > 0 && matches(row.player_display_name, row.team, state.filters.market))
         .sort((a, b) => projectionValue(b) - projectionValue(a))
         .slice(0, 5);
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
-      // One plain line above the board (owner copy); the long detail
-      // (source, Polymarket CLOB count, scan time) stays in the Settings panel.
+      setShowAll(research.length);
+      if (fallback) fallback.hidden = false;
+      // Keep the short homepage status copy; detail remains in Settings.
       const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
       status.textContent = research.length
-        ? `Showing ${Math.min(5, research.length)} of ${research.length} research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
-        : `Live qualification paused · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
+        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(5, research.length)} of ${research.length} research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
+        : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
       list.innerHTML = research.length
-        ? research.slice(0, 5).map((pick) => {
+        ? research.slice(0, homeEdgeExpanded ? undefined : 5).map((pick) => {
           const line = Number(pick.line);
           const odds = Number(pick.odds);
           return `<article class="home-edge-card home-research-card">
-            <div class="home-edge-player"><strong>${esc(pick.player || 'Unknown player')}</strong><span>${esc(String(pick.market || 'player prop').replaceAll('_', ' '))}</span></div>
-            <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${esc(pick.book || 'Book unavailable')}</span></div>
+            <div class="home-edge-player"><strong>${esc(pick.player || 'Unknown player')}</strong><span>${esc(previewMarketLabel(pick.market))}</span></div>
+            <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${previewBookPill(pick.book)}</span></div>
             <p class="home-research-note">Research only · price and availability must be checked at the book.</p>
           </article>`;
         }).join('')
         : modelRows.length
           ? modelRows.map((row) => `<article class="home-edge-card home-research-card">
-            <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(state.filters.market.replaceAll('_', ' '))}</span></div>
+            <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
             <div class="home-edge-line"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span><strong>${Number(fairValue(row)).toFixed(1)} <small>${esc(marketDef().unit || 'units')}</small></strong><span>Projection ${Number(projectionValue(row)).toFixed(1)}</span></div>
             <p class="home-research-note">Research only · no current edge or stake is available.</p>
           </article>`).join('')
@@ -3350,11 +3397,13 @@
     if (title) title.textContent = 'Verified player props';
     const market = state.filters.market;
     const plays = state.slate.map((row) => ({ row, evaluation: evaluateRow(row) }))
-      .filter(({ evaluation }) => evaluation.actionable && evaluation.state === 'verified')
+      .filter(({ row, evaluation }) => evaluation.actionable && evaluation.state === 'verified' && matches(row.player_display_name, row.team, market, evaluation.book))
       .sort((a, b) => b.evaluation.ev - a.evaluation.ev)
       .slice(0, 3);
     status.textContent = `${plays.length ? `Top ${plays.length} verified ${plays.length === 1 ? 'edge' : 'edges'}` : 'No qualified edges'} · odds as of ${asOf || 'time unavailable'}`;
     if (!plays.length) {
+      if (fallback) fallback.hidden = false;
+      if (fallbackText) fallbackText.textContent = 'Fresh, verified quotes are available, but 0 edges passed the model gate. Review the settled public audit.';
       list.innerHTML = '<p class="home-edge-empty">No verified price clears the model gate right now. Check again after the next feed update.</p>';
       return;
     }
@@ -3365,8 +3414,8 @@
       const winProb = Math.max(0, Math.min(1, implied + evaluation.edge));
       const odds = evaluation.odds > 0 ? `+${evaluation.odds}` : String(evaluation.odds);
       return `<article class="home-edge-card">
-        <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(market.replaceAll('_', ' '))}</span></div>
-        <div class="home-edge-line"><span class="home-edge-direction ${evaluation.side === 'UNDER' ? 'under' : 'over'}">${evaluation.side === 'UNDER' ? '↓ UNDER' : '↑ OVER'}</span><strong>${evaluation.line.toFixed(1)} <small>${esc(odds)}</small></strong><span>${esc(evaluation.book)}</span></div>
+        <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(market))}</span></div>
+        <div class="home-edge-line"><span class="home-edge-direction ${evaluation.side === 'UNDER' ? 'under' : 'over'}">${evaluation.side === 'UNDER' ? '↓ UNDER' : '↑ OVER'}</span><strong>${evaluation.line.toFixed(1)} <small>${esc(odds)}</small></strong><span>${previewBookPill(evaluation.book)}</span></div>
         <div class="home-edge-metrics"><span><small>MODEL WIN</small><strong>${(winProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(evaluation.edge * 100).toFixed(1)}%</strong></span><span><small>EV</small><strong>+${(evaluation.ev * 100).toFixed(1)}%</strong></span></div>
       </article>`;
     }).join('');

@@ -22,12 +22,29 @@
   });
   exploreButton.addEventListener('click', () => setBoardOpen(!document.body.classList.contains('front-board-open'), true));
   document.getElementById('homeEdgeOpenBoard')?.addEventListener('click', () => setBoardOpen(true, true));
+  const inlineSearch = document.getElementById('frontInlineSearch');
+  const boardSearch = document.getElementById('searchInput');
+  inlineSearch?.addEventListener('input', () => {
+    const query = inlineSearch.value.toLowerCase();
+    const market = /receiving yards|\byards\b/.test(query) ? 'receiving_yards'
+      : /\breceptions?\b/.test(query) ? 'receptions'
+      : /\bpoints?\b/.test(query) ? 'points'
+      : /anytime (touchdown|td)|\btouchdowns?\b/.test(query) ? 'anytime_td' : null;
+    if (market) document.querySelector(`#marketChipGroup [data-market="${market}"]`)?.click();
+    if (boardSearch) {
+      boardSearch.value = inlineSearch.value;
+      boardSearch.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    if (inlineSearch.value.trim() && !document.body.classList.contains('front-board-open')) setBoardOpen(true);
+  });
+  boardSearch?.addEventListener('input', () => {
+    if (inlineSearch && inlineSearch.value !== boardSearch.value) inlineSearch.value = boardSearch.value;
+  });
+  document.getElementById('homeEdgeAudit')?.addEventListener('click', () => document.getElementById('clvReportBtn')?.click());
   function openSearch() {
-    setBoardOpen(true);
-    document.querySelector('.pw-command-row')?.classList.add('active');
-    document.getElementById('searchInput')?.focus();
+    inlineSearch?.focus();
+    inlineSearch?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  document.getElementById('frontSearchBtn')?.addEventListener('click', openSearch);
   document.addEventListener('keydown', (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();

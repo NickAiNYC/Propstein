@@ -15384,9 +15384,18 @@ body {
 
 /* Player drawer: one primary bento row, compact status, and separated ruler lanes. */
 .detail-header-copy { min-width: 0; flex: 1; }
-.pw-topbar-right > #frontSearchBtn { display: inline-flex !important; }
-.front-search-btn { align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid rgba(143,205,239,.28); border-radius: 10px; background: #17191c; color: #b7e5ff; font: 25px/1 var(--pw-font-sans, sans-serif); cursor: pointer; }
-.front-search-btn:hover, .front-search-btn:focus-visible { border-color: #80c6f6; }
+.front-inline-search { position: sticky; top: 0; z-index: 20; display: grid; gap: 5px; margin: 12px 0 0; padding: 10px 12px; border: 1px solid rgba(128,198,246,.22); border-radius: 12px; background: rgba(18,20,24,.96); box-shadow: 0 8px 22px rgba(0,0,0,.22); }
+.snapshot-age-pill { display: inline-flex; align-items: center; min-height: 30px; margin: 12px 0 0; padding: 6px 10px; border: 1px solid rgba(243,188,100,.38); border-radius: 999px; background: rgba(65,43,19,.6); color: #f6d7a3; font: 700 10px/1.25 var(--pw-font-mono,monospace); }
+.snapshot-age-pill[hidden] { display: none; }
+.front-board-open .pw-command-row { display: none !important; }
+.front-inline-search label { color: #9cbbcd; font: 700 9px/1.1 var(--pw-font-mono,monospace); letter-spacing: .12em; }
+.front-inline-search input { width: 100%; min-height: 40px; padding: 8px 12px; border: 1px solid rgba(128,198,246,.25); border-radius: 8px; outline: none; background: #22252a; color: #f4f8fb; font: 500 14px/1.2 var(--pw-font-sans,sans-serif); }
+.front-inline-search input:focus { border-color: #80c6f6; box-shadow: 0 0 0 2px rgba(128,198,246,.15); }
+.home-edge-show-all { display: block; width: 100%; min-height: 44px; margin-top: 10px; border: 1px solid rgba(128,198,246,.25); border-radius: 10px; background: #22262d; color: #b7e5ff; font: 700 12px/1.2 var(--pw-font-sans,sans-serif); cursor: pointer; }
+.home-edge-show-all[hidden], .home-edge-fallback[hidden] { display: none; }
+.home-edge-fallback { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding: 12px; border: 1px solid rgba(128,198,246,.2); border-radius: 10px; background: #1c222a; color: #b8c7d3; font: 500 12px/1.4 var(--pw-font-sans,sans-serif); }
+.home-edge-fallback button { min-height: 38px; padding: 7px 10px; border: 1px solid rgba(128,198,246,.38); border-radius: 8px; background: #273543; color: #d2efff; font: 700 11px/1.2 var(--pw-font-sans,sans-serif); cursor: pointer; }
+.home-book-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 30px; padding: 3px 6px; border: 1px solid var(--book-accent); border-radius: 5px; color: var(--book-accent); background: rgba(0,0,0,.28); font: 800 10px/1 var(--pw-font-mono,monospace); vertical-align: middle; }
 .detail-header-summary { margin: 6px 0 0; color: #9fb2c0; font: 500 11px/1.35 var(--pw-font-mono, monospace); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .detail-header-watch { flex: 0 0 40px; width: 40px; min-height: 40px; padding: 0; justify-content: center; font-size: 25px; line-height: 1; }
 .detail-title-row .pw-avatar { width: 56px; height: 56px; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; background: radial-gradient(circle at 50% 80%, var(--team-glow, rgba(128,198,246,.35)), #16181d 72%); }
