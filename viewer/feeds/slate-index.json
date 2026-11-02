@@ -1,6 +1,6 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-11-02T20:38:57Z",
+  "generated_at": "2026-11-02T23:42:23Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
@@ -41,23 +41,23 @@
         "2026_w8": {
           "season": 2026,
           "week": 8,
-          "shortLabel": "W8 Research",
-          "state": "Model refresh blocked: untimestamped game context",
+          "shortLabel": "W8 Live",
+          "state": "Upcoming slate \u00b7 Oct 29-Nov 2",
           "slate": "slate_2026_w8.json",
           "games": "games_2026_w8.json",
-          "picks": null,
-          "livePicks": null,
+          "picks": "current_picks_2026_w8.json",
+          "livePicks": "live_picks_2026_w8.json",
           "injuries": "injuries_2026_w8.json",
-          "odds": null,
+          "odds": "live_odds_feed.json",
           "snapshots": "snapshots_2026_w8.json",
           "historical": false,
-          "modelContextStatus": "BLOCKED_UNTIMESTAMPED",
-          "actionLocked": true
+          "modelContextStatus": "AVAILABLE",
+          "actionLocked": false
         }
       }
     },
     "nba": {
-      "default_slate": null,
+      "default_slate": "2026-11-02",
       "slates": {
         "2026-10-22": {
           "season": 2026,
@@ -131,6 +131,21 @@
           "odds": "nba_odds_2026-11-01.json",
           "snapshots": null,
           "historical": true,
+          "timezone": "America/New_York",
+          "marketOnly": true
+        },
+        "2026-11-02": {
+          "season": 2026,
+          "date": "2026-11-02",
+          "shortLabel": "Nov 2 Slate",
+          "state": "Slate \u00b7 2026-11-02",
+          "slate": "nba_slate_2026-11-02.json",
+          "games": "nba_games_2026-11-02.json",
+          "picks": null,
+          "injuries": "nba_injuries_2026-11-02.json",
+          "odds": "nba_odds_2026-11-02.json",
+          "snapshots": null,
+          "historical": false,
           "timezone": "America/New_York",
           "marketOnly": true
         }
