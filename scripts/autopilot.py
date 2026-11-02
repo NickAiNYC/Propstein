@@ -15,10 +15,10 @@ PIPELINE (run mode, in order)
   2. Resolve the ACTIVE NFL week from the real schedule: the week owning the
      next kickoff at-or-after (now - 4h). The 4h grace keeps the board on the
      in-progress week through Monday night, then rolls to the next week.
-  3. Run src/week1.py --season S --week W (retrains on all data through W-1,
-     regenerates fair lines/projections). With ODDS_API_KEY set in the env,
-     add --odds so scored picks are generated too; without it the run stays
-     in the documented honest fallback (fair lines only).
+  3. Run src/week1.py only when game context has source capture times and
+     each player pricing row passes the cutoff guard. The standard nflverse
+     games.csv lacks those fields, so the model is blocked and old projections
+     are never copied forward as a new week's output.
   4. Generate the viewer files for the week, matching the committed w7
      schemas exactly: games_/slate_/injuries_/snapshots_/current_picks_wN.
   5. Regenerate viewer/feeds/slate-index.json — the manifest the viewer
@@ -36,7 +36,9 @@ PIPELINE (run mode, in order)
 
 FAIL-CLOSED RULES
   * No network and no cached feeds -> exit non-zero, write nothing.
-  * week1.py failure -> abort; the workflow surfaces the failure visibly.
+  * Missing game-context capture times -> skip model, lock cached active slate,
+    publish a paused subscriber board, continue independent feed refreshes.
+  * An attempted week1.py failure -> abort; the workflow surfaces it visibly.
   * Missing provider keys never fabricate data: odds stay in their current
     verified/manual state; NBA slates only come from real balldontlie files.
   * Every generated file is provenance-stamped (_fixture flags, generated_at).
@@ -44,7 +46,7 @@ FAIL-CLOSED RULES
 USAGE
   python3 scripts/autopilot.py --plan            # print what would happen
   python3 scripts/autopilot.py --run             # execute the pipeline
-  python3 scripts/autopilot.py --run --skip-model  # manifest/build-hash only
+  python3 scripts/autopilot.py --run --skip-model  # independent feeds, locked research slate
   python3 scripts/autopilot.py --selftest        # offline pure-function checks
 
 EXIT CODES: 0 ok (including idempotent no-op) · 1 pipeline error ·
@@ -330,6 +332,14 @@ def write_snapshots_stub(season: int, week: int) -> Path:
     return dest
 
 
+def ensure_schedule_only_slate(season: int, week: int) -> Path:
+    """Expose a real schedule without inventing projections for a blocked week."""
+    dest = VIEWER / f"slate_{season}_w{week}.json"
+    if not dest.exists():
+        dest.write_text("[]\n", encoding="utf-8")
+    return dest
+
+
 def run_model(season: int, week: int) -> bool:
     """Run src/week1.py for the week. Returns True on success."""
     cmd = [sys.executable, "week1.py", "--season", str(season), "--week", str(week)]
@@ -344,6 +354,15 @@ def run_model(season: int, week: int) -> bool:
         print((result.stderr or result.stdout or "")[-2000:], file=sys.stderr)
         return False
     return sync_week_files(season, week)
+
+
+def game_context_has_capture_times() -> bool:
+    """Check the minimum provenance columns before attempting a new model run."""
+    import csv
+
+    with (DATA / "games.csv").open(newline="", encoding="utf-8") as stream:
+        fields = set(csv.DictReader(stream).fieldnames or [])
+    return {"spread_observed_at", "total_observed_at", "weather_observed_at"} <= fields
 
 
 def sync_week_files(season: int, week: int) -> bool:
@@ -427,7 +446,7 @@ def fetch_nba_odds_days(now: datetime) -> None:
 # Slate-index manifest — how the viewer discovers new weeks without code edits
 # ---------------------------------------------------------------------------
 
-def scan_nfl_slates(now: datetime) -> dict:
+def scan_nfl_slates(now: datetime, blocked_slate_key: str | None = None) -> dict:
     slates = {}
     for path in sorted(VIEWER.glob("games_*_w*.json")):
         match = GAMES_FILE_RE.fullmatch(path.name)
@@ -448,6 +467,7 @@ def scan_nfl_slates(now: datetime) -> dict:
         except ValueError:
             is_past = False
         key = f"{season}_w{week}"
+        context_blocked = key == blocked_slate_key
         span = week_span_label([
             {"kickoff": datetime.strptime(g["gameday"], "%Y-%m-%d").replace(tzinfo=ET)}
             for g in games
@@ -455,18 +475,21 @@ def scan_nfl_slates(now: datetime) -> dict:
         slates[key] = {
             "season": season,
             "week": week,
-            "shortLabel": f"W{week} {'Audit' if is_past else 'Live'}",
-            "state": f"{'Historical audit' if is_past else 'Upcoming slate'} · {span}",
+            "shortLabel": f"W{week} {'Audit' if is_past else 'Research' if context_blocked else 'Live'}",
+            "state": ("Model refresh blocked: untimestamped game context"
+                      if context_blocked else f"{'Historical audit' if is_past else 'Upcoming slate'} · {span}"),
             "slate": f"slate_{season}_w{week}.json",
             "games": f"games_{season}_w{week}.json",
-            "picks": f"current_picks_{season}_w{week}.json",
+            "picks": None if context_blocked else f"current_picks_{season}_w{week}.json",
             "livePicks": (f"live_picks_{season}_w{week}.json"
-                          if not is_past and (VIEWER / f"live_picks_{season}_w{week}.json").exists()
+                          if not context_blocked and not is_past and (VIEWER / f"live_picks_{season}_w{week}.json").exists()
                           else None),
             "injuries": None if is_past else f"injuries_{season}_w{week}.json",
-            "odds": None if is_past else "live_odds_feed.json",
+            "odds": None if is_past or context_blocked else "live_odds_feed.json",
             "snapshots": f"snapshots_{season}_w{week}.json",
             "historical": is_past,
+            "modelContextStatus": "BLOCKED_UNTIMESTAMPED" if context_blocked else "AVAILABLE",
+            "actionLocked": context_blocked,
         }
     return slates
 
@@ -555,8 +578,8 @@ def fetch_ufc(now: datetime) -> None:
         print(f"  [warn] UFC pipeline skipped: {exc}", file=sys.stderr)
 
 
-def write_manifest(now: datetime) -> Path:
-    nfl = scan_nfl_slates(now)
+def write_manifest(now: datetime, blocked_slate_key: str | None = None) -> Path:
+    nfl = scan_nfl_slates(now, blocked_slate_key=blocked_slate_key)
     nba = scan_nba_slates(now)
     ufc = scan_ufc_cards(now)
     manifest = {
@@ -724,8 +747,11 @@ def main() -> int:
 
     if args.plan:
         print(f"[plan] refresh feeds for season {season}")
-        print(f"[plan] run src/week1.py --season {season} --week {week}"
-              f"{' --odds' if os.environ.get('ODDS_API_KEY') else ' (no ODDS_API_KEY: fair lines only)'}")
+        if game_context_has_capture_times() and not args.skip_model:
+            print(f"[plan] run src/week1.py --season {season} --week {week}"
+                  f"{' --odds' if os.environ.get('ODDS_API_KEY') else ' (no ODDS_API_KEY: fair lines only)'}")
+        else:
+            print("[plan] model blocked or skipped; refresh independent feeds and lock subscriber board")
         print(f"[plan] write viewer/games_{season}_w{week}.json")
         print(f"[plan] write viewer/slate_{season}_w{week}.json (from slate_projections)")
         print(f"[plan] write viewer/current_picks_{season}_w{week}.json")
@@ -737,19 +763,20 @@ def main() -> int:
         return 0
 
     refresh_feeds(season)
-    if not args.skip_model:
+    context_blocked = not game_context_has_capture_times()
+    if context_blocked:
+        print("[autopilot] model BLOCKED: game spread, total, and weather lack capture times; "
+              "refreshing independent feeds only")
+    elif not args.skip_model:
         if not run_model(season, week):
             print("[autopilot] model run failed - aborting (fail closed)", file=sys.stderr)
             return 1
-    elif not (SRC / "slate_projections.json").exists():
-        print("[autopilot] --skip-model but no cached week1.py output in src/ "
-              "- run once without --skip-model first (fail closed)", file=sys.stderr)
-        return 1
     else:
-        if not sync_week_files(season, week):
-            return 1
+        print("[autopilot] model skipped; cached projections are not copied to a new week")
     games_path = write_games(season, week, games)
     injuries_path = write_injuries(season, week, games)
+    if context_blocked or args.skip_model:
+        ensure_schedule_only_slate(season, week)
     write_snapshots_stub(season, week)
     fetch_nba_days(now)
     fetch_nba_odds_days(now)
@@ -781,16 +808,34 @@ def main() -> int:
     if not slate_ok and args.skip_model:
         print(f"[autopilot] slate_{season}_w{week}.json missing and model skipped "
               f"- manifest will omit this week", file=sys.stderr)
-    manifest_path = write_manifest(now)
-    # Generate pre-kickoff zero-fluff board for email & terminal subscribers
-    try:
-        from scripts.pre_kickoff_board import generate_board
-        board_data = generate_board(f'{season}_w{week}')
-        (VIEWER / 'todays_board.html').write_text(board_data['html'], encoding='utf-8')
-        (VIEWER / 'todays_board.txt').write_text(board_data['text'], encoding='utf-8')
-        print(f'[autopilot] wrote viewer/todays_board.html and .txt ({board_data["item_count"]} items)')
-    except Exception as exc:
-        print(f'  [warn] pre-kickoff board generation skipped: {exc}', file=sys.stderr)
+    manifest_path = write_manifest(
+        now,
+        blocked_slate_key=f"{season}_w{week}" if context_blocked or args.skip_model else None,
+    )
+    # A cached picks file must never become today's subscriber board when the
+    # model was blocked or intentionally skipped.
+    if context_blocked or args.skip_model:
+        reason = ("Game context has no pre-pricing capture timestamps"
+                  if context_blocked else "No current model run was requested")
+        message = (f"PropStein NFL {season} Week {week}: research board paused. "
+                   f"{reason}; no picks are published.\n")
+        (VIEWER / "todays_board.txt").write_text(message, encoding="utf-8")
+        (VIEWER / "todays_board.html").write_text(
+            "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\">"
+            "<title>PropStein board paused</title><body><main><h1>Research board paused</h1>"
+            f"<p>{message.strip()}</p></main></body></html>\n",
+            encoding="utf-8",
+        )
+        print("[autopilot] pre-kickoff board blocked: no current model run")
+    else:
+        try:
+            from scripts.pre_kickoff_board import generate_board
+            board_data = generate_board(f'{season}_w{week}')
+            (VIEWER / 'todays_board.html').write_text(board_data['html'], encoding='utf-8')
+            (VIEWER / 'todays_board.txt').write_text(board_data['text'], encoding='utf-8')
+            print(f'[autopilot] wrote viewer/todays_board.html and .txt ({board_data["item_count"]} items)')
+        except Exception as exc:
+            print(f'  [warn] pre-kickoff board generation skipped: {exc}', file=sys.stderr)
 
     bumped = bump_build_hash_week(week)
 

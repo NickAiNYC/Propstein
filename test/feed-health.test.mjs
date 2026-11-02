@@ -106,7 +106,7 @@ test('slate feed outage shows SLATE FEED OFFLINE with an honest empty-board expl
   assert.match(banner.innerHTML, /empty because data is missing, not because the market is efficient/i);
 });
 
-test('stale odds breach the per-sport threshold and downgrade the banner to warn (NFL live)', async () => {
+test('stale odds and unverified model context keep the banner in error state (NFL live)', async () => {
   const { sandbox } = buildSandbox();
   const els = attachLocalDom(sandbox);
   const P = loadApp(sandbox);
@@ -120,8 +120,9 @@ test('stale odds breach the per-sport threshold and downgrade the banner to warn
   assert.equal(states.thresholds.oddsStaleSeconds, 21600);
   const banner = els.get('dataQualityBanner');
   assert.match(banner.innerHTML, /ODDS STALE/);
+  assert.match(banner.innerHTML, /MODEL CONTEXT BLOCKED/);
   assert.match(banner.innerHTML, /treat prices as historical/i);
-  assert.ok(banner.className.includes('warn'));
+  assert.ok(banner.className.includes('error'));
   const snapshot = els.get('snapshotAgePill');
   assert.equal(snapshot.hidden, false);
   assert.match(snapshot.textContent, /Snapshot Mode · Captured Oct 21, 11:32 PM EDT/);

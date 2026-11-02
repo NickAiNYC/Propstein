@@ -220,6 +220,9 @@ export function attachSyntheticQuote(P, { market = 'receiving_yards' } = {}) {
 
 /** Harness-only trusted state for exercising the allowed mutation path. */
 export function authorizeSyntheticExecution(P, quote) {
+  // Harness-only: isolate the downstream quote/entitlement guard after the
+  // production NFL feature-time lock has been exercised separately.
+  P.state.featureContextLocked = false;
   P.state.userTier = 'sharp';
   quote.verified = true;
   quote.source_url = 'https://example.test/quotes/harness';
@@ -250,7 +253,7 @@ export function loadApp(sandbox) {
     state, SLATES, SPORT_ID, adapter, loadSlate, evaluateRow, filteredRows,
     renderAll, renderBoard, renderHomeEdgePreview, fairValue, projectionValue, logBet, openExecutionSlip, confirmExecution, setView,
     setPlayMode, breakerFor,
-    sportSwitcherItems, switchToSport, defaultBootSlate,
+    sportSwitcherItems, switchToSport, defaultBootSlate, initSlateIndex,
     feedHealthStates, updateFeedHealthUI, feedVerificationLabel, updateFeedVerificationUI, marketFeedSourceLabel, detectBookDiscrepancy, executionDecision, stampProvenance,
     renderSportChrome, renderDetailModal,
     quantMath: { americanToDecimal, impliedProbability, devig, pRecOver, pYardsOver, compoundYardsCdf, regularizedGammaP, logGamma },

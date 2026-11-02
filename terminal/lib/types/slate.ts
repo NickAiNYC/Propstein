@@ -27,17 +27,17 @@ export interface QualifiedPlaySummary {
   book_id: string;
   source_id: string;
   /** Percentage points. From evaluation.prob_edge * 100 in the feed artifact. */
-  edge_pct: number;
-  /** Model fair probability of the quoted side at the book line (display arithmetic). */
-  fair_prob: number;
+  edge_pct: number | null;
+  /** From a frozen Python pricing artifact only. Null when absent. */
+  fair_prob: number | null;
   fair_line: number;
   /** Expected value per unit staked. From evaluation.expected_return. */
-  ev_per_unit: number;
-  /** Kelly fraction displayed from the standard formula on the artifact's fair probability. */
-  kelly_fraction: number;
+  ev_per_unit: number | null;
+  /** From a frozen Python pricing artifact only. Null when absent. */
+  kelly_fraction: number | null;
   verification_status: VerificationStatus;
   gate_reasoning: GateClause[];
-  quote_age_seconds: number;
+  quote_age_seconds: number | null;
   fetched_at: string; // ISO
 }
 
@@ -71,6 +71,9 @@ export function deriveCardState(play: QualifiedPlaySummary): CardState {
     return "BLOCKED_DATA";
   }
   if (play.verification_status === "OBSERVED") return "BLOCKED_DATA";
+
+  // A VERIFIED quote without a frozen, explicit gate decision is still locked.
+  if (play.gate_reasoning.length === 0) return "BLOCKED_GATE";
 
   // Structural — the model said no.
   if (play.gate_reasoning.some((c) => c.severity === "hard" && !c.passed)) {

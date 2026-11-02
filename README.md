@@ -2,6 +2,8 @@
 
 PropStein is a distributional prop model and operational terminal for NFL receiving markets. It prices outcomes with a compound negative-binomial / gamma framework, runs weekly slate logic, and logs closing-line value with a disciplined risk gate.
 
+**Historical context gate:** New model fits and weekly projections are blocked while the nflverse game spread, total, and weather inputs lack observation timestamps. The existing frozen artifacts remain available for research, but they are not evidence that these context values were known at pricing time. The weekly model command below will fail closed until timestamped context and per-row pricing cutoffs are supplied. See [Feature cutoff gate](docs/FEATURE_CUTOFF_GATE.md).
+
 Built for edge detection, not hype: the model is probabilistic, walk-forward validated, and intentionally conservative. No LLM sits in the decision path; the language model reasons after the numbers are fixed.
 
 ## Why PropStein

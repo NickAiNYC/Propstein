@@ -27,6 +27,9 @@ export default async function SlatePage({
       .map((s) => s.last_success_at)
       .sort()
       .pop() ?? null;
+  const primaryBlocked = data.sources.some(
+    (s) => s.tier === "primary" && s.status !== "VERIFIED"
+  );
 
   return (
     <div className="mx-auto max-w-3xl space-y-4 px-4 py-6">
@@ -52,14 +55,20 @@ export default async function SlatePage({
         </div>
       )}
 
+      {!conflict && primaryBlocked && (
+        <div role="alert" className="rounded border border-semantic-observed/50 bg-semantic-observed/[0.06] p-3 text-xs text-semantic-observed">
+          Feed not independently verified. Research lines may be shown below; all execution is locked.
+          Last good verified snapshot: {lastGood ?? "none"}.
+        </div>
+      )}
+
       <TopQualifiedPlay play={data.plays[0] ?? null} />
       <FeedHealthPanel sources={data.sources} />
       <PlaysTable plays={data.plays} />
 
       <footer className="pt-2 text-[10px] leading-relaxed text-text-tertiary">
-        Deterministic pipeline — no LLM in the decision path. Fair lines, edges, EV and stakes
-        come from the frozen Python model artifacts under viewer/; this surface only reads
-        them. Verification, staleness and drift thresholds are config-driven.
+        Research display only. The Python model artifacts supply the numbers; this surface
+        does not price, size, or verify a quote. No LLM participates in the decision path.
       </footer>
     </div>
   );

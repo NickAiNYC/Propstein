@@ -901,7 +901,22 @@
       const registry = adapter.slates; // adapter is frozen; the slates map is extensible
       let merged = 0;
       for (const [key, cfg] of Object.entries(entry.slates)) {
-        if (!cfg || typeof cfg !== 'object' || !key || (key in registry)) continue;
+        if (!cfg || typeof cfg !== 'object' || !key) continue;
+        if (key in registry) {
+          // Built-in slate keys still need a live fail-closed lock from the
+          // manifest. Never let a frozen registry entry bypass it.
+          if (cfg.actionLocked === true && cfg.modelContextStatus === 'BLOCKED_UNTIMESTAMPED') {
+            registry[key] = {
+              ...registry[key],
+              shortLabel: typeof cfg.shortLabel === 'string' ? cfg.shortLabel : registry[key].shortLabel,
+              state: typeof cfg.state === 'string' ? cfg.state : registry[key].state,
+              picks: null, livePicks: null, odds: null,
+              actionLocked: true,
+              modelContextStatus: cfg.modelContextStatus
+            };
+          }
+          continue;
+        }
         if (typeof cfg.slate !== 'string' || typeof cfg.games !== 'string') continue;
         registry[key] = {
           season: Number.isFinite(Number(cfg.season)) ? Number(cfg.season) : null,
@@ -919,6 +934,8 @@
           historical: cfg.historical === true,
           timezone: typeof cfg.timezone === 'string' ? cfg.timezone : undefined,
           marketOnly: cfg.marketOnly === true,
+          actionLocked: cfg.actionLocked === true,
+          modelContextStatus: typeof cfg.modelContextStatus === 'string' ? cfg.modelContextStatus : null,
           fromManifest: true
         };
         merged += 1;
@@ -2214,6 +2231,10 @@
     const config = SLATES[slateKey];
     if (!config) return;
     state.slateKey = slateKey;
+    // No shipped NFL model artifact proves that game spread, total, and
+    // weather were captured before each pricing cutoff. Manifest metadata
+    // cannot certify that retrospectively, so lock NFL execution by default.
+    state.featureContextLocked = SPORT_ID === 'nfl';
     const initialMode = config.historical ? 'all' : 'actionable';
     state.filters = { search: '', market: state.filters.market, position: 'ALL', team: '', gameId: '', playMode: initialMode, intent: 'all' };
     if ($('#searchInput')) $('#searchInput').value = '';
@@ -2387,6 +2408,7 @@
     );
     const deny = (code, message) => ({ allowed: false, code, message, mode: 'research' });
 
+    if (SPORT_ID === 'nfl' && state.featureContextLocked !== false) return deny('feature_cutoff_unverified', 'Model context has no pre-pricing capture timestamps. Execution is locked.');
     if (SLATES[state.slateKey]?.historical || health.dataKind === 'fixture') return deny('historical', 'Historical and fixture slates are research-only.');
     if (state.userTier === 'free') return deny('unauthorized', 'Sign in with an active membership to review executable prices.');
     if (result.state === 'none') return deny('no_quote', 'No sportsbook quote is available for this projection.');
@@ -2430,6 +2452,10 @@
     }
     const items = [];
     let tone = 'ok';
+    if (state.featureContextLocked) {
+      items.push('<strong>MODEL CONTEXT BLOCKED</strong><span>Spread, total, and weather lack pre-pricing capture timestamps. Cached projections are research only; execution is locked.</span>');
+      tone = 'error';
+    }
     if (health.dataKind === 'fixture') {
       items.push('<strong>RESEARCH FIXTURES</strong><span>Sample data for demonstration — not actionable, not a research record. Synthetic values; not sportsbook quotes.</span>');
       tone = 'fixture';
@@ -2483,7 +2509,7 @@
       if (boardEl) boardEl.classList.remove('is-feed-stale');
     }
 
-    if (!items.length || state.dataQualityBannerDismissed) {
+    if (!items.length || (state.dataQualityBannerDismissed && !state.featureContextLocked)) {
       banner.hidden = true;
       banner.innerHTML = '';
       banner.className = 'data-quality-banner';
@@ -2494,7 +2520,7 @@
     banner.innerHTML = items.map((item) => `<div class="dq-item">${item}</div>`).join('')
       + '<div class="dq-actions">'
       + '<button type="button" id="dqRetryBtn" class="dq-retry-btn" title="Refresh feed" aria-label="Refresh feed">↻</button>'
-      + '<button type="button" id="dqDismissBtn" class="dq-dismiss-btn" title="Dismiss banner" aria-label="Dismiss banner">×</button>'
+      + (state.featureContextLocked ? '' : '<button type="button" id="dqDismissBtn" class="dq-dismiss-btn" title="Dismiss banner" aria-label="Dismiss banner">×</button>')
       + '</div>';
     const retry = document.getElementById('dqRetryBtn');
     if (retry) retry.addEventListener('click', () => window.location.reload());
@@ -6901,6 +6927,7 @@
     if (dqDismiss) {
       event.preventDefault();
       event.stopPropagation();
+      if (state.featureContextLocked) return;
       state.dataQualityBannerDismissed = true;
       const b = elById('dataQualityBanner');
       if (b) b.hidden = true;
