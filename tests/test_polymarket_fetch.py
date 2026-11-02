@@ -7,6 +7,7 @@ merge semantics — no network access required.
 import importlib.util
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -161,6 +162,73 @@ def test_merge_feed_is_idempotent_and_fails_closed(tmp_path, monkeypatch):
     prior = feed_path.read_bytes()
     assert pm.merge_feed([dict(quote, under_ask_price=1.2)]) is False
     assert feed_path.read_bytes() == prior
+
+
+def test_verification_stamp_requires_the_two_current_pulls_to_agree(tmp_path, monkeypatch):
+    """Review finding #2 on PR #84: a changed price must not inherit an older
+    receipt. In the verification pass the second pull's hash used to be checked
+    against the ENTIRE receipt log with no requirement that it equal the
+    current first pull's hash — so if price A moved to B between the pulls and
+    an older B receipt existed, the published A quote shipped receipt-matched.
+    The engine may stamp only when the two CURRENT pulls agree hash-for-hash;
+    the fetcher enforces that by admitting receipts for the published (pass-1)
+    content only, and the frozen engine still renders the decision."""
+    monkeypatch.setattr(pm, "RECEIPT_LOG_PATH", tmp_path / "receipt_log.json")
+    market = {"id": "6374549", "question": "Puka Nacua: Receiving Yards O/U 74.5",
+              "slug": "nfl-puka-nacua-74pt5"}
+    books_a = ({"token_id": "over-1", "ask_price": 0.55, "ask_depth_usd": 91.0},
+               {"token_id": "under-1", "ask_price": 0.45, "ask_depth_usd": 91.0})
+    books_b = ({"token_id": "over-1", "ask_price": 0.57, "ask_depth_usd": 91.0},
+               {"token_id": "under-1", "ask_price": 0.43, "ask_depth_usd": 91.0})
+    payload_a = pm.canonical_quote_payload(market, *books_a)
+    h_a = pm.canonical_hash(payload_a)
+    h_b = pm.canonical_hash(pm.canonical_quote_payload(market, *books_b))
+    assert h_a != h_b
+    market_id = "polymarket:6374549"
+    # The log holds a prior run's receipt for the MOVED price B plus this
+    # run's ingestion receipt for the published price A.
+    pm.append_receipts([
+        pm.receipt_entry(market_id, h_b, "2026-11-02T11:00:00+00:00",
+                         "https://polymarket.com/market/nfl-puka-nacua-74pt5"),
+        pm.receipt_entry(market_id, h_a, "2026-11-02T12:00:00+00:00",
+                         "https://polymarket.com/market/nfl-puka-nacua-74pt5"),
+    ])
+    quote = {
+        "quote_id": "pm_x", "book": "Polymarket", "player_id": "00-0039075",
+        "market": "receiving_yards", "line": 74.5,
+        "over_odds": -122, "under_odds": 122,
+        "over_token_id": "over-1", "under_token_id": "under-1",
+        "observed_at": "2026-11-02T12:00:00+00:00",
+    }
+    cap = {"market_id": market_id, "payload": payload_a,
+           "captured_at": "2026-11-02T12:00:00+00:00",
+           "source_url": "https://polymarket.com/market/nfl-puka-nacua-74pt5"}
+    now = datetime(2026, 11, 2, 12, 0, 5, tzinfo=timezone.utc)
+
+    # Diverged pulls: published A, pass-2 B, an older B receipt in the log —
+    # exactly the reviewer's reproduction. No stamp, V1 fails closed.
+    stamped, matched = pm.verify_quotes(
+        [dict(quote, _receipt_capture=cap)],
+        books_by_token={"over-1": books_b[0], "under-1": books_b[1]},
+        now=now, write_log=False)
+    s = stamped[0]
+    assert s["verification_status"] == "OBSERVED"
+    assert s["verification_receipt_id"] is None
+    assert matched == 0
+    clauses = {c["clause_id"]: c["passed"] for c in s["verification_clauses"]}
+    assert clauses["V1_receipt"] is False
+
+    # Agreeing pulls still stamp (positive control: this run's A receipt).
+    stamped, matched = pm.verify_quotes(
+        [dict(quote, _receipt_capture=cap)],
+        books_by_token={"over-1": books_a[0], "under-1": books_a[1]},
+        now=now, write_log=False)
+    s = stamped[0]
+    assert s["verification_status"] == "OBSERVED"
+    assert s["verification_receipt_id"] is not None
+    assert matched == 1
+    clauses = {c["clause_id"]: c["passed"] for c in s["verification_clauses"]}
+    assert clauses["V1_receipt"] is True
 
 
 def test_selftest_entrypoint_passes():

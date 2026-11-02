@@ -38,3 +38,18 @@ sharp book exists (the ODDS_API_KEY path). The feed's evidence level is
 published as `feed_status` (`LIVE_POLYMARKET_CLOB_RECEIPTED` /
 `..._UNVERIFIED`) with `receipt_matched_quotes_count`; verified counts stay
 structurally zero.
+
+### Stamp binding: receipts certify the published content (v1.2, 2026-11-03)
+
+A receipt certifies CONTENT, and the content it must certify is the quote the
+feed publishes — the pass-1 capture. Only receipts whose canonical hash equals
+the published quote's pass-1 hash are admissible evidence to the engine, so a
+stamp requires the two CURRENT pulls to agree hash-for-hash. If the price
+moves A→B between the ingestion pull and the verification pull, the pass-2 B
+book cannot stamp the published A quote — even when an older B receipt sits in
+the log (the moved book merely re-seeing its own earlier price). The engine
+still renders every decision; the fetcher only curates which receipts count
+as evidence. The `odds_freshness.yml` publication gate accepts both evidence
+levels (`..._UNVERIFIED` and `..._RECEIPTED`, mirroring the frozen
+`PolymarketMergedFeed` vocabulary) so a receipt-matched feed is published,
+never blocked.
