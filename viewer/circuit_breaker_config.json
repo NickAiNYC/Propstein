@@ -1,5 +1,5 @@
 {
-  "config_version": "2026.10.24-1",
+  "config_version": "2026.11.02-1",
   "description": "Shared quantitative circuit breaker parameters for the PropWire terminal & cron runner, namespaced per sport and versioned. NFL values are the exact calibrated pre-refactor values (proven byte-identical by test/nfl-parity.snapshot.mjs). Each sport owns its own block; do NOT copy NFL yardage thresholds to another sport. Blocks without backtest evidence must carry \"calibrated\": false and \"calibration\": \"uncalibrated_tuning_parameters\" and will surface a visible research-only badge in the UI.",
   "sports": {
     "nfl": {
@@ -10,7 +10,8 @@
         "high_edge_caution_hurdle": 0.15,
         "cooldown_minutes": 15,
         "deadman_switch_max_age_seconds": 300,
-        "odds_stale_max_age_seconds": 21600
+        "odds_stale_max_age_seconds": 21600,
+        "news_feed_stale_max_age_seconds": 86400
       },
       "markets": {
         "receiving_yards": {
@@ -53,7 +54,8 @@
         "high_edge_caution_hurdle": 0.2,
         "cooldown_minutes": 15,
         "deadman_switch_max_age_seconds": 300,
-        "odds_stale_max_age_seconds": 21600
+        "odds_stale_max_age_seconds": 21600,
+        "news_feed_stale_max_age_seconds": 86400
       },
       "markets": {
         "points": {

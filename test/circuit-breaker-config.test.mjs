@@ -61,7 +61,10 @@ test('viewer resolves breaker parameters from config with fallback', async () =>
   assert.equal(yards.pctHurdle, 0.12);
   assert.equal(yards.highEdge, 0.15);
   assert.equal(yards.calibrated, true);
-  assert.equal(yards.configVersion, '2026.10.24-1');
+  // 2026.11.02-1 adds the banner-layer news_feed_stale_max_age_seconds (24h
+  // display window). The 300s dead-man dispatch latch is untouched and stays
+  // pinned above — only the version pin moves with the announced change.
+  assert.equal(yards.configVersion, '2026.11.02-1');
 
   const td = P.breakerFor('anytime_td');
   assert.equal(td.driftHurdle, 1.0);
