@@ -44,3 +44,23 @@ jobs:
           fi
           git commit -m "chore(data): refresh Polymarket odds snapshot [skip ci]"
           git push
+
+      # v205: by default a failed run only emails the repo owner and leaves a red
+      # X in the Actions history. This optional step POSTs a failure notice to a
+      # webhook of the owner's choice (Discord uses the "content" field, Slack
+      # uses "text"; both keys are sent so either receiver works). It is a safe
+      # no-op until the owner sets the ALARM_WEBHOOK_URL repository secret.
+      - name: Notify on failure (webhook, optional)
+        if: failure()
+        env:
+          ALARM_WEBHOOK_URL: ${{ secrets.ALARM_WEBHOOK_URL }}
+        run: |
+          if [ -z "${ALARM_WEBHOOK_URL:-}" ]; then
+            echo "ALARM_WEBHOOK_URL secret not configured; alarm visible only in Actions history and owner email."
+            exit 0
+          fi
+          MESSAGE="PropStein odds freshness alarm: feed stale (>6h), empty (no observed CLOB quotes), or manifest mismatch. See https://github.com/NickAiNYC/Propstein/actions/workflows/odds_freshness.yml"
+          curl -fsS -X POST "$ALARM_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{\"content\": \"$MESSAGE\", \"text\": \"$MESSAGE\"}" \
+            || echo "WARN: webhook POST failed; alarm still recorded in Actions history."
