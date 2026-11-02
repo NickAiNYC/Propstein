@@ -79,6 +79,14 @@ const CASES = [
       /secondary source/i.test(html) &&
       html.includes("not used for action"),
   },
+  {
+    name: "real route excludes synthetic quotes and never promotes legacy verification",
+    url: "/slate",
+    assert: (html) =>
+      !html.includes("Synthetic Book") &&
+      !html.includes('aria-label="Quote verified by hash audit"') &&
+      html.includes("all execution is locked"),
+  },
 ];
 
 const child = startServer();
