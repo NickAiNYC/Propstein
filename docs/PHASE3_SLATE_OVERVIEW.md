@@ -48,7 +48,10 @@ fail closed everywhere else.
 - Drift/conflict: per-market `drift_hurdle` from the same breaker config — same player + market quoted across books beyond the hurdle = CONFLICT.
 - News freshness soft clause: 300s, pinned by the breaker messaging copy ("stale >5m").
 - EV: `evaluation.expected_return`; edge: `evaluation.prob_edge`; fair line: quote `fair_line` — all straight from the frozen artifacts.
-- Fair probability (display) = de-vigged market probability of the best side + the artifact's `prob_edge`. Kelly (display) = standard formula on that fair probability and the book price. The model's `actionable_stake` remains the authoritative stake.
+- Fair probability and Kelly are displayed only when they are present in a frozen Python pricing artifact. The terminal does not derive them from odds or `prob_edge`. Missing values display as unavailable.
+- A legacy quote-level `verified` boolean is insufficient for `VERIFIED`. The terminal keeps such quotes blocked until a Python `verification.v1` decision with an independent receipt and complete gate clauses is attached. The current feed does not carry that decision.
+- The feed manifest's SHA-256 must match the feed's exact bytes before any quotes are shown. Synthetic fixture quotes are excluded from the real route. A missing or mismatched manifest leaves the primary feed `STALE` and the board empty.
+- A fresh news poll is context only; it does not certify quote provenance or unlock an action.
 
 ## Verification
 
@@ -68,4 +71,5 @@ npm run test:e2e      # Playwright (requires: npx playwright install chromium)
 - Limit-likelihood flags / best-price routing — deferred until the soft-book routing model exists.
 - CI wiring for the terminal workspace (Next install + build + Playwright with browser cache) — Phase 8 hardening.
 - Deployment wiring (own Vercel project) — when the surface is production-ready.
+- Python verification and gate artifacts in the live feed. Until those are wired, the real Slate Overview is a blocked research surface, with no qualified play.
 - Phase 1 (`feat/phase1-foundation-freeze`) and Phase 2 (`feat/phase2-verification-layer`) branches still need rebase onto current main + push — queued separately.

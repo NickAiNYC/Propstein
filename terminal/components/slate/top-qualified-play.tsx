@@ -37,7 +37,7 @@ export function TopQualifiedPlay({ play }: { play: QualifiedPlaySummary | null }
       <header className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h2 id="top-play-heading" className="text-[11px] uppercase tracking-wider text-text-secondary">
-            Top Qualified Play
+            {state === "QUALIFIED" ? "Top Qualified Play" : "Top Research Line"}
           </h2>
           <p className="mt-1 truncate text-sm text-text-primary">
             <span className="font-medium">{play.player_name}</span>
@@ -62,11 +62,11 @@ export function TopQualifiedPlay({ play }: { play: QualifiedPlaySummary | null }
               <p className="mt-0.5 text-[11px] text-text-secondary">
                 {state === "BLOCKED_DATA"
                   ? state === "BLOCKED_DATA" && play.verification_status === "OBSERVED"
-                    ? "Quote not verified — action locked until hash audit confirms."
+                    ? "Quote not verified — action locked until an independent receipt and Python gate decision are available."
                     : `${play.verification_status.toLowerCase()} feed — action locked until quote is VERIFIED.`
                   : failing
                     ? `Gate failed: ${failing.label} (${failing.actual} ${failing.operator} ${failing.threshold})`
-                    : "Gate failed."}
+                    : "Gate reasoning unavailable from the Python model artifact. Action locked."}
               </p>
             </>
           ) : (
@@ -76,7 +76,7 @@ export function TopQualifiedPlay({ play }: { play: QualifiedPlaySummary | null }
               </div>
               <div className="flex items-baseline gap-2">
                 <TabularNumber className={`text-5xl font-semibold tracking-tight ${s.accent}`}>
-                  {play.edge_pct >= 0 ? "+" : ""}{play.edge_pct.toFixed(1)}%
+                  {play.edge_pct === null ? "—" : `${play.edge_pct >= 0 ? "+" : ""}${play.edge_pct.toFixed(1)}%`}
                 </TabularNumber>
                 {state === "WATCH" && (
                   <span className="text-[10px] text-semantic-observed">watch only</span>
@@ -95,12 +95,12 @@ export function TopQualifiedPlay({ play }: { play: QualifiedPlaySummary | null }
           <div>
             <dt className="text-text-tertiary">EV/u</dt>
             <dd><TabularNumber className="text-sm text-text-primary">
-              {play.ev_per_unit >= 0 ? "+" : ""}{play.ev_per_unit.toFixed(3)}
+              {play.ev_per_unit === null ? "—" : `${play.ev_per_unit >= 0 ? "+" : ""}${play.ev_per_unit.toFixed(3)}`}
             </TabularNumber></dd>
           </div>
           <div>
             <dt className="text-text-tertiary">Kelly</dt>
-            <dd><TabularNumber className="text-sm text-text-primary">{(play.kelly_fraction * 100).toFixed(1)}%</TabularNumber></dd>
+            <dd><TabularNumber className="text-sm text-text-primary">{play.kelly_fraction === null ? "—" : `${(play.kelly_fraction * 100).toFixed(1)}%`}</TabularNumber></dd>
           </div>
         </dl>
       </div>
@@ -113,7 +113,7 @@ export function TopQualifiedPlay({ play }: { play: QualifiedPlaySummary | null }
       </ul>
 
       <footer className="mt-3 flex items-center justify-between text-[10px] text-text-tertiary">
-        <span>Quote age {play.quote_age_seconds}s · {play.source_id}</span>
+        <span>Quote age {play.quote_age_seconds === null ? "unknown" : `${play.quote_age_seconds}s`} · {play.source_id}</span>
         {locked && <span className={s.accent}>Action locked</span>}
       </footer>
     </section>

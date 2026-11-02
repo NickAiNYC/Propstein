@@ -44,7 +44,7 @@ export function PlaysTable({ plays }: { plays: QualifiedPlaySummary[] }) {
                 </td>
                 <td className="py-1.5 text-right">
                   <TabularNumber className="text-text-primary">
-                    {p.edge_pct >= 0 ? "+" : ""}{p.edge_pct.toFixed(1)}%
+                    {p.edge_pct === null ? "—" : `${p.edge_pct >= 0 ? "+" : ""}${p.edge_pct.toFixed(1)}%`}
                   </TabularNumber>
                 </td>
                 <td className="py-1.5 text-right">
