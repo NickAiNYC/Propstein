@@ -34,7 +34,7 @@ jobs:
           pip install -r requirements.txt pytest
       - name: Contract + verification + logging + leakage suites (blocking)
         run: |
-          PYTHONPATH=. pytest tests/test_contracts_quant.py tests/test_verification_layer.py tests/test_structured_logging.py tests/test_leakage.py -q --tb=short
+          PYTHONPATH=. pytest tests/test_contracts_quant.py tests/test_verification_layer.py tests/test_structured_logging.py tests/test_leakage.py tests/test_feature_cutoff.py -q --tb=short
 
   regression-tests:
     runs-on: ubuntu-latest
