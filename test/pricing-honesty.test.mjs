@@ -43,6 +43,6 @@ test('paid CTAs respect the public signup freeze', async () => {
 
 test('homepage status line is the short owner-approved honesty copy', async () => {
   const app = await read('../viewer/app.js');
-  assert.match(app, /research lines\. \$\{verifiedQuotes\} verified\. Qualification paused: waiting on independent quote receipt/);
+  assert.match(app, /model-ranked research lines\. \$\{verifiedQuotes\} verified\. Qualification paused: waiting on independent quote receipt/);
   assert.doesNotMatch(app, /source-unspecified\} research lines ·/, 'long detail line must stay out of the homepage status');
 });
