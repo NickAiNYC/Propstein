@@ -133,23 +133,49 @@ test('unverified NFL feed never renders a LIVE or VERIFIED status label', async 
   assert.equal(P.feedVerificationLabel(), 'UNVERIFIED');
 });
 
-test('stale news watcher mirrors the dead-man switch semantics (NFL live)', async () => {
+test('abandoned news feed (>24h) fires the banner; dead-man latch stays independent (NFL live)', async () => {
   const { sandbox } = buildSandbox();
   const els = attachLocalDom(sandbox);
   const P = loadApp(sandbox);
+  // 72h-old heartbeat: the feed is genuinely abandoned. BOTH layers must
+  // fire — the wide display window (banner) and the 300s dispatch dead-man.
   sandbox.fetch = localFetcher({
     'news_watcher_state.json': () => ({
       ok: true, status: 200,
-      json: async () => ({ version: '1.1.0', last_polled_at: '2026-10-21T12:00:00Z', poll_count: 1, is_alive: false, teams_locked: {}, players_pending: {} }),
+      json: async () => ({ version: '1.1.0', last_polled_at: '2026-10-19T12:00:00Z', poll_count: 1, is_alive: false, teams_locked: {}, players_pending: {} }),
     }),
   });
   await P.loadSlate('2026_w7');
   const states = P.feedHealthStates();
+  assert.equal(states.newsFeedFreshness, 'stale');
   assert.equal(states.newsFreshness, 'stale');
   assert.equal(states.thresholds.newsStaleSeconds, 300);
+  assert.equal(states.thresholds.newsFeedStaleSeconds, 86400);
   const banner = els.get('dataQualityBanner');
   assert.match(banner.innerHTML, /NEWS FEED STALE/);
   assert.match(banner.innerHTML, /sniper dispatch is suppressed/i);
+});
+
+test('recent heartbeat (<24h, > dead-man) clears the banner without un-suppressing dispatch (NFL live)', async () => {
+  const { sandbox } = buildSandbox();
+  const els = attachLocalDom(sandbox);
+  const P = loadApp(sandbox);
+  // 30-minute-old heartbeat: this is the steady state of the scheduled
+  // commit-based poller (news_watcher.yml). The feed is alive, so the
+  // human-facing banner must NOT fire — while the 300s autonomous-dispatch
+  // dead-man stays tripped (no persistent sub-5-min watcher exists).
+  sandbox.fetch = localFetcher({
+    'news_watcher_state.json': () => ({
+      ok: true, status: 200,
+      json: async () => ({ version: '1.1.0', last_polled_at: '2026-10-22T11:30:00Z', poll_count: 42, is_alive: true, teams_locked: {}, players_pending: {} }),
+    }),
+  });
+  await P.loadSlate('2026_w7');
+  const states = P.feedHealthStates();
+  assert.equal(states.newsFeedFreshness, 'ok');
+  assert.equal(states.newsFreshness, 'stale', 'dead-man dispatch latch must stay tripped by the 300s window');
+  const banner = els.get('dataQualityBanner');
+  assert.doesNotMatch(banner.innerHTML, /NEWS FEED STALE/);
 });
 
 test('fixture datasets suppress staleness signals (static by design)', async () => {

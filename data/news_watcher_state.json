@@ -1,18 +1,10 @@
 {
   "version": "1.1.0",
-  "last_polled_at": "2026-10-22T02:46:01.340029+00:00",
-  "poll_count": 1,
+  "last_polled_at": "2026-11-02T12:26:52.010099+00:00",
+  "poll_count": 2,
   "is_alive": true,
   "source": "Sleeper NFL Status API / Beat Feed",
   "teams_locked": {},
-  "players_pending": {
-    "00-0035676": {
-      "player_id": "00-0035676",
-      "player_name": "A.J. Brown",
-      "team": "NE",
-      "status": "OUT",
-      "flagged_at": "2026-10-22T02:46:09.626529+00:00"
-    }
-  },
+  "players_pending": {},
   "active_staged_matrices": {}
 }
