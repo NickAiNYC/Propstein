@@ -1092,6 +1092,19 @@
   }
 
   function bindControls() {
+    $('#topModelStripGrid')?.addEventListener('click', (event) => {
+      const card = event.target.closest('[data-top-model-player]');
+      if (!card) return;
+      const query = card.dataset.topModelPlayer || '';
+      const inlineSearch = $('#frontInlineSearch');
+      const boardSearch = $('#searchInput');
+      if (inlineSearch) inlineSearch.value = query;
+      if (boardSearch) {
+        boardSearch.value = query;
+        boardSearch.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      $('#homeEdgeOpenBoard')?.click();
+    });
     const proBar = $('.front-pro-bar');
     if (proBar) proBar.addEventListener('click', (event) => {
       const button = event.target.closest('[data-pro-view]');
@@ -3081,6 +3094,7 @@
 
   function renderBoard() {
     renderHomeEdgePreview();
+    renderTopModelStrip();
     if (SPORT_ID === 'nba' && state.slate.length === 0 && SLATES[state.slateKey]?.marketOnly) {
       renderNbaMarketOnly();
       return;
@@ -3313,6 +3327,73 @@
     const short = meta?.short || knownFallback?.short || name;
     return `<span class="home-book-pill" style="--book-accent:${meta?.color || knownFallback?.color || '#8daec2'}" title="${esc(name)}">${esc(short)}</span>`;
   };
+  function renderTopModelStrip() {
+    const strip = $('#topModelStrip');
+    const grid = $('#topModelStripGrid');
+    const title = $('#topModelStripTitle');
+    const stateLabel = $('#topModelStripState');
+    const note = $('#topModelStripNote');
+    if (!strip || !grid || !title || !stateLabel || !note) return;
+    if (SPORT_ID === 'nba' && SLATES[state.slateKey]?.marketOnly) {
+      strip.hidden = true;
+      return;
+    }
+    const health = feedHealthStates();
+    const hasFreshReceipts = !SLATES[state.slateKey]?.historical && health.dataKind !== 'fixture'
+      && health.odds === 'ok' && health.oddsFreshness === 'ok'
+      && health.news === 'ok' && health.newsFreshness === 'ok'
+      && state.odds.quotes.some((quote) => quoteState(quote) === 'verified');
+    let items = [];
+    if (hasFreshReceipts) {
+      items = state.slate.map((row) => ({ row, evaluation: evaluateRow(row) }))
+        .filter(({ evaluation }) => evaluation.actionable && evaluation.state === 'verified')
+        .sort((a, b) => b.evaluation.edge - a.evaluation.edge)
+        .slice(0, 5)
+        .map(({ row, evaluation }) => ({
+          player: row.player_display_name,
+          market: state.filters.market,
+          side: evaluation.side,
+          projection: projectionValue(row),
+          line: evaluation.line,
+          odds: evaluation.odds,
+          edge: evaluation.edge,
+          book: evaluation.book,
+          verified: true
+        }));
+    } else {
+      items = (Array.isArray(state.livePicks?.picks) ? state.livePicks.picks : [])
+        .filter((pick) => Number.isFinite(Number(pick.projection)) && Number.isFinite(Number(pick.line)))
+        .sort((a, b) => Math.abs(Number(b.projection) - Number(b.line)) - Math.abs(Number(a.projection) - Number(a.line)))
+        .slice(0, 5)
+        .map((pick) => ({ ...pick, verified: false }));
+    }
+    if (!items.length) {
+      strip.hidden = true;
+      return;
+    }
+    strip.hidden = false;
+    title.textContent = `${hasFreshReceipts ? 'TOP MODEL EDGES' : 'TOP MODEL DELTAS'} (N=${items.length})`;
+    stateLabel.textContent = hasFreshReceipts ? 'RECEIPT VERIFIED' : 'UNVERIFIED SNAPSHOT';
+    stateLabel.classList.toggle('verified', hasFreshReceipts);
+    note.textContent = hasFreshReceipts
+      ? 'Fresh receipt-verified prices ranked by de-vigged probability edge.'
+      : 'Observed historical lines ranked by model-to-line distance. Research only; these are not live recommendations.';
+    grid.innerHTML = items.map((item, index) => {
+      const projection = Number(item.projection);
+      const line = Number(item.line);
+      const odds = Number(item.odds);
+      const delta = projection - line;
+      const side = String(item.side || (delta >= 0 ? 'OVER' : 'UNDER')).toUpperCase();
+      const edge = Number(item.edge);
+      return `<button type="button" class="top-model-card${item.verified ? ' verified' : ''}" data-top-model-player="${esc(item.player)}">
+        <span class="top-model-rank">#${index + 1}</span>
+        <span class="top-model-player"><strong>${esc(item.player)}</strong><small>${esc(previewMarketLabel(item.market))} · ${previewBookPill(item.book)}</small></span>
+        <span class="top-model-number projection"><small>MODEL</small><strong>${projection.toFixed(1)}</strong></span>
+        <span class="top-model-number"><small>${item.verified ? `${side} LINE` : 'OBSERVED LINE'}</small><strong>${line.toFixed(1)} <em>${Number.isFinite(odds) ? oddsText(odds) : '—'}</em></strong></span>
+        <span class="top-model-number ${item.verified && edge > 0 ? 'positive-edge' : ''}"><small>${item.verified ? 'EDGE' : 'MODEL Δ'}</small><strong>${item.verified && Number.isFinite(edge) ? `+${(edge * 100).toFixed(1)}%` : `${delta > 0 ? '+' : ''}${delta.toFixed(1)}`}</strong></span>
+      </button>`;
+    }).join('');
+  }
   function renderHomeEdgePreview() {
     const list = $('#homeEdgeList');
     const status = $('#homeEdgeStatus');
@@ -3369,6 +3450,7 @@
       if (title) title.textContent = research.length ? 'Observed player lines' : modelRows.length ? 'Model fair lines' : 'Player prop research';
       setShowAll(research.length);
       if (fallback) fallback.hidden = false;
+      if (fallbackText) fallbackText.textContent = 'Displaying last quantitative model baseline. Live bookmaker quote matching paused.';
       // Keep the short homepage status copy; detail remains in Settings.
       const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
       status.textContent = research.length

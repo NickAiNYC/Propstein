@@ -51,11 +51,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ufc.css?v=2026_v200">
-  <link rel="stylesheet" href="/style.css?v=2026_v213">
+  <link rel="stylesheet" href="/style.css?v=2026_v216">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v179" defer></script>
-  <script src="/app.js?v=2026_v213" defer></script>
+  <script src="/app.js?v=2026_v216" defer></script>
   <script src="/js/sports/ufc.js?v=2026_v200" defer></script>
   <script src="/js/today-schedule.js?v=2026_v207" defer></script>
   <script src="/js/front-page.js?v=2026_v210" defer></script>
@@ -295,6 +295,14 @@
       <label for="frontInlineSearch">FIND A PLAYER PROP</label>
       <input type="search" id="frontInlineSearch" placeholder="Search player, team, or prop..." autocomplete="off" aria-label="Search player, team, or prop">
     </div>
+    <section class="top-model-strip" id="topModelStrip" aria-labelledby="topModelStripTitle" hidden>
+      <div class="top-model-strip-head">
+        <div><p class="today-schedule-eyebrow">MODEL RANKING</p><h2 id="topModelStripTitle">Top model deltas</h2></div>
+        <span id="topModelStripState">RESEARCH ONLY</span>
+      </div>
+      <p class="top-model-strip-note" id="topModelStripNote"></p>
+      <div class="top-model-strip-grid" id="topModelStripGrid"></div>
+    </section>
     <section class="home-edge-preview" id="homeEdgePreview" aria-labelledby="homeEdgeTitle" aria-live="polite">
       <div class="home-edge-heading">
         <div><p class="today-schedule-eyebrow">PLAYER PROP BOARD</p><h2 id="homeEdgeTitle">Loading player research</h2></div>
