@@ -36,3 +36,10 @@ ODDS_API_KEY*
 research/drive-rec-v2/vendor_trial_2dv/raw_discovery/
 data/ufc_history.json
 data/ufc_athletes.json
+
+# Next.js terminal workspace (terminal/) build output
+.next/
+next-env.d.ts
+playwright-report/
+test-results/
+*.tsbuildinfo
