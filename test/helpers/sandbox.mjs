@@ -242,6 +242,7 @@ export function loadApp(sandbox) {
     ['viewer/js/sports/registry.js', path.join(VIEWER, 'js', 'sports', 'registry.js')],
     ['viewer/js/sports/nfl.js', path.join(VIEWER, 'js', 'sports', 'nfl.js')],
     ['viewer/js/sports/nba.js', path.join(VIEWER, 'js', 'sports', 'nba.js')],
+    ['viewer/js/quant-math.js', path.join(VIEWER, 'js', 'quant-math.js')],
   ];
   const source = fs.readFileSync(path.join(VIEWER, 'app.js'), 'utf8');
   const hook = `
@@ -252,6 +253,7 @@ export function loadApp(sandbox) {
     sportSwitcherItems, switchToSport, defaultBootSlate,
     feedHealthStates, updateFeedHealthUI, feedVerificationLabel, updateFeedVerificationUI, marketFeedSourceLabel, detectBookDiscrepancy, executionDecision, stampProvenance,
     renderSportChrome, renderDetailModal,
+    quantMath: { americanToDecimal, impliedProbability, devig, pRecOver, pYardsOver, compoundYardsCdf, regularizedGammaP, logGamma },
     storage: { loadPortfolio, savePortfolio, loadWatchlist, saveWatchlist, migrateLegacyStorage, MIGRATION_FLAG, STORE, migrationResult }
   };
 })();`;

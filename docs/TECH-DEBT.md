@@ -17,7 +17,7 @@
 | Python dependency lock and CI test job | `requirements.txt`, CI | reproducibility | High | Medium | P1 | **Closed 2026-11-02** (`requirements.lock` + lock-consistency tests in the suite; CI installs the lock) |
 | Browser E2E/accessibility regression suite | viewer | quality | Medium | Medium | P1 | Open |
 | Duplicate root/public/viewer assets | repository | maintainability | Medium | Medium | P1 | Open |
-| Monolithic browser application | `viewer/app.js` | maintainability | Medium | Large | P2 | In progress (phase-2 pass 1 done; phases 3/4 queued) |
+| Monolithic browser application | `viewer/app.js` | maintainability | Medium | Large | P2 | In progress (phase-2 pass 1 done; **phase-3 pass 1 done 2026-11-02: §22 quant math extracted to `viewer/js/quant-math.js` behind golden characterization tests**; T1–T8 queued) |
 
 ## Smell Inventory
 
@@ -63,8 +63,34 @@ consolidated into this `docs/` set with the phase-2 PR (root copies removed).
 | 2026-10-27 | 7 | Explicit CORS origins; header-only admin credentials. | Wildcard credentialed CORS and query-string secrets are unacceptable in production. |
 | 2026-10-27 | 2 | Cache-bump convention: user-visible viewer-asset changes bump the cache triple coherently (index `?v=` ×5, sw cache name + precache, build-hash) in the same PR; comments-only JS deltas do not require a bump. | Prevents the v134/v135-style cross-PR cache-line conflicts while still forcing client refresh for real changes. |
 | 2026-10-27 | restyle | Dark-lock + baby-blue brand (FanDuel calibration): the terminal is dark-only. PR #13's light/dark toggle is removed; app.js §11 dark-locks at boot and clears stale `propwire-theme` keys. The `[data-theme="light"]` CSS hooks stay dormant — restoring light = re-add the toggle + revert §11. Brand accent lime → baby blue (`#7dd3fc` family), slate-gray surfaces unified to navy (`#0f131a` family), primary text → white; semantic emerald/amber/red untouched. Cache v143 → v144 + build-hash 2026-w7-v9 in the same PR. | One presentation removes the three-cascade palette fight (`:root` ×3) and the maintenance surface of a half-used light theme; brand vs semantic color separation is now explicit. |
-
 | 2026-11-02 | dep-lock | `requirements.txt` is the intent spec; `requirements.lock` (clean-venv freeze, suite-validated at lock time) is what CI installs. Lock↔spec consistency and the validated quant-stack majors are pinned by `tests/test_dependency_lock.py` inside the normal pytest run. | Reproducible CI + fail-closed drift detection without giving up the documented floor ranges. |
+
+## Phase-3 pass 1 record (2026-11-02, branch `feat/appjs-quant-math-extraction`)
+
+Target: §22 (odds & distribution math) — NOT one of the named T1–T8 targets,
+but the section with the best effort/risk profile: pure functions, no state,
+no DOM, and the highest-value thing to make independently testable (it IS
+the frozen model). Discipline followed (per the phase constraint):
+
+1. **Characterize first**: fixtures generated from the live pre-extraction
+   implementation (`scripts/generate_quant_goldens.mjs`), asserted with exact
+   double equality — 8 golden tests green BEFORE the move, green after.
+2. **Extract**: `viewer/js/quant-math.js` — `window.PropWireMath` (same
+   fail-fast namespace pattern as the sport registry), `createQuantMath({
+   alpha, k })` binds the adapter's model constants. Formulas byte-identical.
+3. **Wire**: script tag before app.js; app.js §22 destructures the module
+   surface; `targetLine` stays in app.js (reads `state` — the module must
+   never see mutable state). Cache triple bumped coherently: index `?v=`
+   2026_v213→v214 (style.css + app.js + new quant-math.js), sw CACHE_NAME
+   v213-snapshot-age→v214-quant-math + precache entry, build-hash
+   2026-w8-v31→v32.
+4. **Extend the net**: +3 module tests (standalone load in a bare VM with no
+   app.js/adapters; app.js binds the exact module export objects; null-model
+   constants yield NaN, never a plausible probability).
+
+Gate: 143 pass marks (132 + 11 new golden/module tests), same 7 pre-existing
+extensions failures, NFL parity goldens byte-untouched. app.js shrank by
+~120 lines; the model is now testable without booting the app.
 
 ## Phase-2 pass record (2026-10-27, branch `refactor/phase2-readability`)
 
