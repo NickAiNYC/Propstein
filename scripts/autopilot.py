@@ -230,7 +230,7 @@ def write_games(season: int, week: int, games: list[dict]) -> Path:
 
 
 def write_injuries(season: int, week: int, games: list[dict]) -> Path:
-    """Generate the injuries viewer file straight from the nflverse parquet.
+    """Generate injuries from nflverse plus source-attributed official inactives.
 
     Provenance-honest: only rows the feed actually contains; when the week's
     report has not been published yet the file ships an explicit empty list
@@ -274,6 +274,34 @@ def write_injuries(season: int, week: int, games: list[dict]) -> Path:
     except Exception as exc:
         print(f"  [warn] injuries parquet unavailable ({exc}) - writing empty report", file=sys.stderr)
         source = "unavailable"
+    official_path = VIEWER / f"official_inactives_{season}_w{week}.json"
+    if official_path.exists():
+        official = json.loads(official_path.read_text(encoding="utf-8"))
+        if official.get("season") != season or official.get("week") != week or not official.get("source_url"):
+            raise ValueError("official inactive report has invalid slate or provenance")
+        by_id = {str(row.get("player_id")): row for row in injuries}
+        for player in official.get("players", []):
+            player_id = str(player["player_id"])
+            team = player["team"]
+            game = kickoff_by_team.get(team, {})
+            row = by_id.get(player_id)
+            if row is None:
+                row = {
+                    "player_id": player_id,
+                    "player_name": player["player_name"],
+                    "team": team,
+                    "opponent": (game.get("home_team") if game.get("away_team") == team
+                                 else game.get("away_team")) or None,
+                    "game_id": game.get("game_id"),
+                    "position": None,
+                    "injury_type": "Confirmed inactive",
+                }
+                injuries.append(row)
+                by_id[player_id] = row
+            row["report_status"] = "INACTIVE"
+            row["practice_status"] = "Confirmed inactive by NFL.com"
+            row["source_url"] = player.get("source_url", official["source_url"])
+        source += "; NFL.com confirmed inactives"
     now = datetime.now(timezone.utc)
     payload = {
         "as_of": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
