@@ -9,6 +9,32 @@ permissions:
   contents: read
 
 jobs:
+  # Foundation freeze (Phase 1): the quant decision contracts, structured
+  # logging, and the leakage suite run as their own BLOCKING job so the
+  # freeze stays visible even if the broad pytest invocation is ever
+  # narrowed. Master prompt §0: leakage tests block deploy.
+  foundation-freeze:
+    name: Foundation freeze — contracts + logging + leakage (blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.12
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest
+      - name: Contract + logging + leakage suites (blocking)
+        run: |
+          PYTHONPATH=. pytest tests/test_contracts_quant.py tests/test_structured_logging.py tests/test_leakage.py -q --tb=short
+
   regression-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 5

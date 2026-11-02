@@ -58,6 +58,20 @@ def resolve_file(path_env: str, default_filename: str) -> str:
 
 app = FastAPI(title="NFL Receiving Props Agent", version="0.2.0")
 
+# ---------------------------------------------------------------------------
+# Foundation freeze (Phase 1): structured JSON logging + request IDs.
+# Every log line is one JSON object; every request is correlated by
+# X-Request-ID (honor-or-generate, echoed on the response). Additive only —
+# no route, payload, or behavior change. See src/observability/logging.py.
+# ---------------------------------------------------------------------------
+from src.observability.logging import (  # noqa: E402
+    RequestContextMiddleware,
+    configure_logging,
+)
+
+configure_logging()
+app.add_middleware(RequestContextMiddleware)
+
 allowed_origins = [
     origin.strip()
     for origin in os.environ.get(
