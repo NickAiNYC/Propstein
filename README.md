@@ -83,7 +83,8 @@ pip install -r requirements.lock       # reproducible set — what CI runs the s
 set CI installs and the full test suite is validated against (refresh protocol
 in the lock header).
 
-Then run the weekly model:
+Then run the weekly model (season/week are arguments — rolling to 2027 is a
+data exercise, see [docs/SEASON-ROLLOVER.md](docs/SEASON-ROLLOVER.md)):
 
 ```bash
 python src/week1.py --season 2026 --week 1
