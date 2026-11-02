@@ -30,7 +30,8 @@ PIPELINE (run mode, in order)
      unresolved hit the search API; every URL is verified before it ships;
      fail-open, a cosmetic layer must never abort the data pipeline).
   7. Bump the build-hash WEEK segment in the terminal pages
-     (2026-w7-v15 -> 2026-w8-v15). UI version counters (asset busters, SW
+     (2026-w7-v15 -> 2026-w8-v15; season-preserving, works for any year —
+     see bump_build_hash_week). UI version counters (asset busters, SW
      cache name) are NOT touched by automation — those are manual releases.
 
 FAIL-CLOSED RULES
@@ -77,7 +78,11 @@ ET = ZoneInfo("America/New_York")
 NFLVERSE_BASE = "https://github.com/nflverse/nfldata/raw/master/data/games.csv"
 RELEASES = "https://github.com/nflverse/nflverse-data/releases/download"
 
-BUILD_HASH_RE = re.compile(r"2026-w(\d+)-v(\d+)")
+# Season-agnostic since 2026-11-02 (2027-ready): the year is CAPTURED and
+# preserved, only the week segment is rewritten. The pre-fix regex pinned
+# "2026" literally, so on a 2027 page ("2027-w1-v9") the week bump would
+# silently no-op and the cache-bump convention would drift.
+BUILD_HASH_RE = re.compile(r"(\d{4})-w(\d+)-v(\d+)")
 GAMES_FILE_RE = re.compile(r"games_(\d{4})_w(\d+)\.json$")
 NBA_GAMES_FILE_RE = re.compile(r"nba_games_(\d{4}-\d{2}-\d{2})\.json$")
 
@@ -598,6 +603,12 @@ def write_manifest(now: datetime, blocked_slate_key: str | None = None) -> Path:
 # ---------------------------------------------------------------------------
 
 def bump_build_hash_week(week: int) -> list[str]:
+    """Bump the WEEK segment of every build-hash on the viewer pages.
+
+    Season-preserving: each match keeps its own year (group 1), so the same
+    code rolls 2026-w8 → 2026-w9 today and 2027-w1 → 2027-w2 next season
+    without a code change. Returns the changed page paths.
+    """
     changed = []
     pages = [VIEWER / "index.html", VIEWER / "audit.html", VIEWER / "verify.html",
              VIEWER / "ledger.html", VIEWER / "ledger" / "index.html"]
@@ -605,7 +616,7 @@ def bump_build_hash_week(week: int) -> list[str]:
         if not page.exists():
             continue
         text = page.read_text(encoding="utf-8")
-        new = BUILD_HASH_RE.sub(lambda m: f"2026-w{week}-v{m.group(2)}", text)
+        new = BUILD_HASH_RE.sub(lambda m: f"{m.group(1)}-w{week}-v{m.group(3)}", text)
         if new != text:
             page.write_text(new, encoding="utf-8")
             changed.append(str(page.relative_to(ROOT)))
@@ -664,10 +675,15 @@ def selftest() -> int:
         failures.append("default_for should pick newest live slate")
     if default_for({"2026_w7": {"historical": True}}) is not None:
         failures.append("default_for should be None when only historical slates exist")
-    # build-hash bump regex
+    # build-hash bump regex — season-agnostic (2027-ready)
     sample = "build 2026-w7-v15"
-    if BUILD_HASH_RE.sub(lambda m: f"2026-w8-v{m.group(2)}", sample) != "build 2026-w8-v15":
-        failures.append("build-hash bump regex broken")
+    if BUILD_HASH_RE.sub(lambda m: f"{m.group(1)}-w8-v{m.group(3)}", sample) != "build 2026-w8-v15":
+        failures.append("build-hash bump regex broken (2026 case)")
+    if BUILD_HASH_RE.sub(lambda m: f"{m.group(1)}-w3-v{m.group(3)}", "build 2027-w1-v9") != "build 2027-w3-v9":
+        failures.append("build-hash bump regex broken (2027 season preservation)")
+    # the production substitution helper itself: week-only, season-preserving
+    if bump_build_hash_week.__doc__ is None or "Season-preserving" not in bump_build_hash_week.__doc__:
+        failures.append("bump_build_hash_week lost its season-preserving contract")
     # v155: player-photo builder pure logic (offline)
     try:
         try:
@@ -743,7 +759,7 @@ def main() -> int:
         print(f"[plan] ensure viewer/snapshots_{season}_w{week}.json")
         print(f"[plan] regenerate viewer/feeds/slate-index.json")
         print(f"[plan] refresh viewer/feeds/player_photos.json (incremental, ESPN)")
-        print(f"[plan] bump build-hash week segment -> 2026-w{week}-v*")
+        print(f"[plan] bump build-hash week segment -> <season>-w{week}-v* (season-preserving)")
         return 0
 
     refresh_feeds(season)

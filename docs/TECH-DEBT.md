@@ -14,10 +14,10 @@
 | Signed user session and subject-bound entitlement | `api/main.py` | security | Critical | Medium | P0 | Open |
 | Durable transactional ledger | API/ledger | data integrity | Critical | Large | P0 | Open |
 | Production error and feed-age monitoring | frontend/API | operability | High | Medium | P0 | Open |
-| Python dependency lock and CI test job | `requirements.txt`, CI | reproducibility | High | Medium | P1 | Open |
+| Python dependency lock and CI test job | `requirements.txt`, CI | reproducibility | High | Medium | P1 | **Closed 2026-11-02** (`requirements.lock` + lock-consistency tests in the suite; CI installs the lock) |
 | Browser E2E/accessibility regression suite | viewer | quality | Medium | Medium | P1 | Open |
 | Duplicate root/public/viewer assets | repository | maintainability | Medium | Medium | P1 | Open |
-| Monolithic browser application | `viewer/app.js` | maintainability | Medium | Large | P2 | In progress (phase-2 pass 1 done; phases 3/4 queued) |
+| Monolithic browser application | `viewer/app.js` | maintainability | Medium | Large | P2 | In progress (phase-2 pass 1 done; **phase-3 pass 1 done 2026-11-02: §22 quant math extracted to `viewer/js/quant-math.js` behind golden characterization tests**; T1–T8 queued) |
 
 ## Smell Inventory
 
@@ -63,6 +63,34 @@ consolidated into this `docs/` set with the phase-2 PR (root copies removed).
 | 2026-10-27 | 7 | Explicit CORS origins; header-only admin credentials. | Wildcard credentialed CORS and query-string secrets are unacceptable in production. |
 | 2026-10-27 | 2 | Cache-bump convention: user-visible viewer-asset changes bump the cache triple coherently (index `?v=` ×5, sw cache name + precache, build-hash) in the same PR; comments-only JS deltas do not require a bump. | Prevents the v134/v135-style cross-PR cache-line conflicts while still forcing client refresh for real changes. |
 | 2026-10-27 | restyle | Dark-lock + baby-blue brand (FanDuel calibration): the terminal is dark-only. PR #13's light/dark toggle is removed; app.js §11 dark-locks at boot and clears stale `propwire-theme` keys. The `[data-theme="light"]` CSS hooks stay dormant — restoring light = re-add the toggle + revert §11. Brand accent lime → baby blue (`#7dd3fc` family), slate-gray surfaces unified to navy (`#0f131a` family), primary text → white; semantic emerald/amber/red untouched. Cache v143 → v144 + build-hash 2026-w7-v9 in the same PR. | One presentation removes the three-cascade palette fight (`:root` ×3) and the maintenance surface of a half-used light theme; brand vs semantic color separation is now explicit. |
+| 2026-11-02 | dep-lock | `requirements.txt` is the intent spec; `requirements.lock` (clean-venv freeze, suite-validated at lock time) is what CI installs. Lock↔spec consistency and the validated quant-stack majors are pinned by `tests/test_dependency_lock.py` inside the normal pytest run. | Reproducible CI + fail-closed drift detection without giving up the documented floor ranges. |
+
+## Phase-3 pass 1 record (2026-11-02, branch `feat/appjs-quant-math-extraction`)
+
+Target: §22 (odds & distribution math) — NOT one of the named T1–T8 targets,
+but the section with the best effort/risk profile: pure functions, no state,
+no DOM, and the highest-value thing to make independently testable (it IS
+the frozen model). Discipline followed (per the phase constraint):
+
+1. **Characterize first**: fixtures generated from the live pre-extraction
+   implementation (`scripts/generate_quant_goldens.mjs`), asserted with exact
+   double equality — 8 golden tests green BEFORE the move, green after.
+2. **Extract**: `viewer/js/quant-math.js` — `window.PropWireMath` (same
+   fail-fast namespace pattern as the sport registry), `createQuantMath({
+   alpha, k })` binds the adapter's model constants. Formulas byte-identical.
+3. **Wire**: script tag before app.js; app.js §22 destructures the module
+   surface; `targetLine` stays in app.js (reads `state` — the module must
+   never see mutable state). Cache triple bumped coherently: index `?v=`
+   2026_v213→v214 (style.css + app.js + new quant-math.js), sw CACHE_NAME
+   v213-snapshot-age→v214-quant-math + precache entry, build-hash
+   2026-w8-v31→v32.
+4. **Extend the net**: +3 module tests (standalone load in a bare VM with no
+   app.js/adapters; app.js binds the exact module export objects; null-model
+   constants yield NaN, never a plausible probability).
+
+Gate: 143 pass marks (132 + 11 new golden/module tests), same 7 pre-existing
+extensions failures, NFL parity goldens byte-untouched. app.js shrank by
+~120 lines; the model is now testable without booting the app.
 
 ## Phase-2 pass record (2026-10-27, branch `refactor/phase2-readability`)
 
@@ -166,7 +194,7 @@ Reserve at least 15% of each release for reliability/security debt. P0 trust, au
 - [ ] Move ledger and settlement records to a durable transactional datastore with backups and restore drills (owner: backend, P0).
 - [ ] Add production error reporting, RED metrics, and symptom alerts for feed age, entitlement failures, and API latency (owner: operations, P0).
 - [x] ~~Complete legal review: Terms, Privacy, responsible-gaming language, age/region requirements, and marketing claims (owner: business/legal, P0).~~ — boilerplate shipped 2026-10-27: generated pages at `/legal/terms/`, `/legal/privacy/`, `/legal/responsible-gaming/` (site-wide footer links, sitemap, tests). **Not legal advice** — owner must fill `[STATE]`/`[CONTACT EMAIL]`/`[HOSTING PROVIDER]` placeholders and have counsel review before relying on them.
-- [ ] Install locked Python dependencies in CI and run the Python test suite (owner: engineering, P1).
+- [x] ~~Install locked Python dependencies in CI and run the Python test suite~~ (owner: engineering, P1) — closed 2026-11-02: `requirements.lock` (68 pins, clean-venv freeze of the spec, full-suite-validated before locking), CI installs the lock in both Python jobs, `tests/test_dependency_lock.py` pins lock↔spec consistency + validated majors, `pip-audit` audits the locked set. Refresh protocol lives in the lock header + docs/TESTING.md §Dependency Lock.
 - [ ] Record actual traffic, latency, and storage numbers before Phase 8 (owner: operations, P1).
 - [ ] B1: real cross-book ingestion — start with a data-provider decision (owner: engineering, **P0, blocked on provider selection**). Full schema + capture cadence + API contract now speced in **docs/B1-LINE-HISTORY-SPEC.md** (decision table §2, DDL §3, rollout §7) — the spec exists so the decision can be made in one sitting and capture starts same-day; every week uncaptured is history that cannot be backfilled.
 - [ ] B4 v2: game pages + per-week regeneration of the public pages (owner: engineering, P1 — after PR #14 lands); pricing page needs product input.

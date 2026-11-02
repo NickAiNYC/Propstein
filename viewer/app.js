@@ -13,7 +13,7 @@
   //   §8  Odds polling pipeline                  §19 Portfolio & CLV dialogs
   //   §9  Boot & control binding                 §20 Detail analytics markups
   //   §10 Gestures, sheet & keyboard nav         §21 Detail modal & scenarios
-  //   §11 View state & sport chrome              §22 Odds & distribution math
+  //   §11 View state & sport chrome              §22 Odds math (→ js/quant-math.js)
   // Invariants worth keeping while editing:
   //   • `state` (§4) is the only mutable store; DOM writes flow through the
   //     render*/update* functions (§13) — never paint from stale locals.
@@ -705,6 +705,11 @@
       : 0;
     if (status === 'FIXTURE' || adapter.fixturesOnly === true) return 'FIXTURE';
     if (verifiedQuotes > 0 && !status.includes('UNVERIFIED')) return 'VERIFIED';
+    // Engine-graded middle state: every stamped quote passed the receipt
+    // clause (two independent CLOB pulls hash-matched against the receipt
+    // log) but the cross-book conflict clause stays uncheckable on a
+    // single-publisher feed. Honest evidence — never rendered as VERIFIED.
+    if (status.includes('RECEIPTED')) return 'RECEIPT-MATCHED';
     return 'UNVERIFIED';
   }
 
@@ -732,7 +737,11 @@
     const researchSource = researchCount ? String(state.livePicks.source || 'Source unspecified') : 'No current research scan';
     if ($('#settingsFeedProvider')) $('#settingsFeedProvider').textContent = marketFeedSourceLabel();
     if ($('#settingsResearchSource')) $('#settingsResearchSource').textContent = researchSource;
-    if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent = `${verified} feed-verified quotes${verified ? '' : ' · independent audit pending'}`;
+    const receiptMatched = (state.odds?.quotes || []).filter((q) => q && q.verification_status === 'OBSERVED' && q.verification_receipt_id).length;
+    if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent =
+      verified > 0 ? `${verified} feed-verified quotes`
+        : receiptMatched > 0 ? `${receiptMatched} receipt-matched quotes · single-book feed — cross-book audit unlocks with a second sharp book`
+        : '0 feed-verified quotes · independent audit pending';
     const blockers = [];
     if (SLATES[state.slateKey]?.historical || health.dataKind === 'fixture') {
       blockers.push('historical/fixture slate');
@@ -8498,25 +8507,19 @@
     return parts.join(' ');
   }
 
-  // ── §22. Odds & distribution math utilities ───────────────────────────
-
-  function americanToDecimal(odds) {
-    const value = num(odds, NaN);
-    if (!value || Math.abs(value) === 0 || !Number.isFinite(value)) return 0;
-    return value > 0 ? value / 100 + 1 : 100 / Math.abs(value) + 1;
+  // ── §22. Odds & distribution math — extracted to /js/quant-math.js ──────
+  // The frozen model now lives in its own PURE module (window.PropWireMath,
+  // loaded before app.js — same fail-fast pattern as the sport registry in
+  // §1). Numerics are byte-identical to the §22 code this replaces, pinned
+  // by test/quant-math.golden.mjs with exact double equality (fixtures were
+  // generated from the pre-extraction implementation before the move).
+  // What stays HERE: targetLine — it reads state.filters.market and the
+  // active gate policy, and the pure module must never see mutable state.
+  if (!window.PropWireMath) {
+    throw new Error('PropWire: /js/quant-math.js must load before app.js');
   }
-
-  function impliedProbability(odds) {
-    const dec = americanToDecimal(odds);
-    return dec > 0 ? 1 / dec : 0;
-  }
-
-  function devig(overOdds, underOdds) {
-    const overRaw = impliedProbability(overOdds);
-    const underRaw = impliedProbability(underOdds);
-    const sum = overRaw + underRaw;
-    return sum > 0 ? { over: overRaw / sum, under: underRaw / sum } : { over: 0.5, under: 0.5 };
-  }
+  const { americanToDecimal, impliedProbability, devig, regularizedGammaP, logGamma } = window.PropWireMath;
+  const { pRecOver, pYardsOver, compoundYardsCdf } = window.PropWireMath.createQuantMath({ alpha: MODEL_ALPHA, k: MODEL_K });
 
   function targetLine(row, quote, side, activePolicy) {
     if (!activePolicy || !finite(row.mu_rec) || !finite(row.mu_ypr)) return NaN;
@@ -8546,76 +8549,8 @@
     }
     return NaN;
   }
-
-  function pRecOver(mu, line) {
-    const r = 1 / MODEL_ALPHA;
-    const p = r / (r + mu);
-    const maximum = Math.floor(line);
-    let cdf = 0;
-    let term = Math.pow(p, r);
-    cdf += term;
-    for (let k = 1; k <= maximum; k += 1) {
-      term *= ((k - 1 + r) / k) * (1 - p);
-      cdf += term;
-    }
-    return Math.max(0, Math.min(1, 1 - cdf));
-  }
-
-  function pYardsOver(muRec, muYpr, line) {
-    return Math.max(0, Math.min(1, 1 - compoundYardsCdf(muRec, muYpr, line)));
-  }
-
-  function compoundYardsCdf(muRec, muYpr, line) {
-    if (line <= 0) return 0;
-    const r = 1 / MODEL_ALPHA;
-    const p = r / (r + muRec);
-    const scale = muYpr / MODEL_K;
-    if (!(scale > 0)) return 1;
-    let cdf = Math.pow(p, r);
-    let nbProbability = cdf;
-    for (let n = 1; n <= 36; n += 1) {
-      nbProbability *= ((n - 1 + r) / n) * (1 - p);
-      cdf += nbProbability * regularizedGammaP(n * MODEL_K, line / scale);
-    }
-    return Math.max(0, Math.min(1, cdf));
-  }
-
-  function regularizedGammaP(shape, value) {
-    if (value <= 0) return 0;
-    if (shape <= 0) return 1;
-    if (value < shape + 1) {
-      let sum = 1 / shape;
-      let term = sum;
-      for (let n = 1; n < 100; n += 1) {
-        term *= value / (shape + n);
-        sum += term;
-        if (term < sum * 1e-12) break;
-      }
-      return sum * Math.exp(-value + shape * Math.log(value) - logGamma(shape));
-    }
-    let a0 = 1, a1 = value, b0 = 0, b1 = 1, factor = 1, fraction = 0;
-    for (let n = 1; n < 100; n += 1) {
-      const coefficient = n - shape;
-      a0 = (a1 + a0 * coefficient) * factor;
-      b0 = (b1 + b0 * coefficient) * factor;
-      const scaled = n * factor;
-      a1 = value * a0 + scaled * a1;
-      b1 = value * b0 + scaled * b1;
-      if (a1 !== 0) { factor = 1 / a1; fraction = b1 * factor; }
-    }
-    return 1 - Math.exp(-value + shape * Math.log(value) - logGamma(shape)) * fraction;
-  }
-
-  function logGamma(value) {
-    const coefficients = [57.1562356658629235, -59.5979603554754912, 14.1360979747417471, -0.4919138160960292, 0.00003399464998481189, 0.00004652362892704858, -0.00009837447530487956, 0.0001580887032249125, -0.00021026444172410488, 0.00021743961811521265, -0.0001643181065367639, 0.00008441822398385275, -0.000026190838401581408, 0.0000036899182659531625];
-    if (value <= 0) return 0;
-    let y = value;
-    let temporary = value + 5.2421875;
-    temporary = (value + 0.5) * Math.log(temporary) - temporary;
-    let series = 0.9999999999999971;
-    coefficients.forEach((coefficient) => { y += 1; series += coefficient / y; });
-    return temporary + Math.log(2.5066282746310005 * series / value);
-  }
+  // (pRecOver, pYardsOver, compoundYardsCdf, regularizedGammaP, logGamma
+  // formerly lived here — they are now window.PropWireMath, bound above.)
 
   // Listen for Chrome Extension Context Menu broadcasts
   if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {

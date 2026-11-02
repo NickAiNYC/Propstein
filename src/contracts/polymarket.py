@@ -55,6 +55,7 @@ class PolymarketMergedFeed(BaseModel):
     polymarket_quotes_count: int = Field(gt=0)
     verified_books_count: int = Field(default=0, ge=0)
     verified_quotes_count: int = Field(default=0, ge=0)
+    receipt_matched_quotes_count: int = Field(default=0, ge=0)
 
     @model_validator(mode="after")
     def check_quotes(self):
@@ -64,14 +65,45 @@ class PolymarketMergedFeed(BaseModel):
         if len(polymarket) != self.polymarket_quotes_count:
             raise ValueError("polymarket_quotes_count mismatch")
         # A local content hash records what we saw; it cannot verify an
-        # independently executable provider price. This publisher has no
-        # independent receipt check, so the mixed feed must remain unverified.
-        if self.feed_status != "LIVE_POLYMARKET_CLOB_UNVERIFIED":
-            raise ValueError("Polymarket feed must identify unverified CLOB observations")
+        # independently executable provider price. Two feed states exist:
+        #
+        #   LIVE_POLYMARKET_CLOB_UNVERIFIED  — no receipt machinery ran (the
+        #       default of the universe; ingestion only).
+        #   LIVE_POLYMARKET_CLOB_RECEIPTED   — the verification.v1 engine ran
+        #       (two independent CLOB pulls hash-matched against the append-only
+        #       receipt log) and graded quotes OBSERVED. With a single two-sided
+        #       publisher the V3 cross-book conflict check is structurally
+        #       uncheckable, so OBSERVED is the engine ceiling here: receipt
+        #       evidence, never a VERIFIED claim. VERIFIED stays forbidden until
+        #       a second sharp book exists (min_sharp_books=2, frozen).
+        if self.feed_status not in ("LIVE_POLYMARKET_CLOB_UNVERIFIED",
+                                    "LIVE_POLYMARKET_CLOB_RECEIPTED"):
+            raise ValueError("Polymarket feed status must identify its evidence level (unverified or receipted)")
         if self.verified_books_count or self.verified_quotes_count:
-            raise ValueError("unverified Polymarket feed cannot claim verified counts")
+            raise ValueError("Polymarket feed cannot claim verified counts (single publisher, V3 uncheckable)")
         for quote in polymarket:
             PolymarketQuote.model_validate(quote)
             if quote.get("verified") is True or str((quote.get("evaluation") or {}).get("status", "")).upper() == "VERIFIED":
                 raise ValueError("Polymarket observation cannot claim independent verification")
+            vstatus = str(quote.get("verification_status") or "").upper()
+            if vstatus and vstatus != "OBSERVED":
+                raise ValueError("Polymarket observation can only carry the engine grade OBSERVED (receipt-matched, conflict-uncheckable)")
+            if vstatus and quote.get("verification_engine") != "verification.v1":
+                raise ValueError("verification stamps must name the engine that produced them")
+        stamped = [q for q in polymarket
+                   if str(q.get("verification_status") or "").upper() == "OBSERVED" and q.get("verification_receipt_id")]
+        if self.feed_status == "LIVE_POLYMARKET_CLOB_RECEIPTED":
+            if not stamped:
+                raise ValueError("RECEIPTED feed requires at least one engine-stamped OBSERVED quote with a matched receipt")
+            if self.receipt_matched_quotes_count != len(stamped):
+                raise ValueError("receipt_matched_quotes_count mismatch")
+            for quote in stamped:
+                for key in ("receipt_id", "content_hash", "source_url"):
+                    if not str(quote.get(key) or "").strip():
+                        raise ValueError(f"receipted quote is missing provenance field: {key}")
+        else:
+            if stamped:
+                raise ValueError("stamped quotes require the RECEIPTED feed status")
+            if self.receipt_matched_quotes_count:
+                raise ValueError("unverified Polymarket feed cannot claim receipt-matched counts")
         return self
