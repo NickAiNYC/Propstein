@@ -5,17 +5,42 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { buildSandbox, loadApp } from './helpers/sandbox.mjs';
 
+/** ULP-aware pin for the transcendental outputs (see header): engines may
+ *  differ by a few last-bit roundings in exp/ln series; real math drift is
+ *  never that small. */
+function assertUlpsEqual(actual, expected, label) {
+  assert.ok(Number.isFinite(actual) && Number.isFinite(expected),
+    `${label}: non-finite — actual ${actual}, expected ${expected}`);
+  const ulps = Math.abs(actual - expected) /
+    (Math.max(Math.abs(expected), Number.EPSILON) * Number.EPSILON);
+  assert.ok(ulps <= 8,
+    `${label}: ${actual} !~= ${expected} (${ulps.toFixed(1)} ULPs apart, tolerance 8)`);
+}
+
 /**
  * QUANT MATH GOLDENS (2026-11-02) — characterization pins for the §22
  * odds & distribution math ("the frozen model").
  *
- * Every expectation below was generated from the live pre-extraction
- * implementation (scripts/generate_quant_goldens.mjs, app.js @ main) and is
- * asserted with exact double equality — JSON round-trips doubles losslessly,
- * so any bit-level numeric drift in a refactor, dependency bump, or engine
- * change fails here. If a delta is EARNED (e.g. a recalibrated model), the
- * whitelist procedure is: regenerate fixtures, document the calibration
- * change in the PR, and update this table in the same commit.
+ * Two pinning tiers, because not all double math is engine-stable:
+ *
+ *  - BIT-EXACT (assert.equal): americanToDecimal / impliedProbability /
+ *    devig and the constants. These are IEEE-754 basic ops — correctly
+ *    rounded on every engine — so exact equality is a real pin.
+ *
+ *  - ULP-TOLERANT (assertUlpsEqual, ≤ 8 ULPs): pRecOver, pYardsOver,
+ *    compoundYardsCdf, regularizedGammaP, logGamma. These run exp/ln
+ *    series that are NOT correctly rounded, and engines legitimately
+ *    disagree in the last bit: CI's Node v22.23.4 vs the generator
+ *    build (Node v24) diverged by exactly 1 ULP on pRecOver(1.2, 0.5)
+ *    — same commit, same code, 24 of 25 grid cases bit-identical. 8
+ *    ULPs still catches any real math drift: a wrong formula, branch,
+ *    or constant lands orders of magnitude away, never at 1e-15.
+ *
+ * The goldens themselves were generated from the live pre-extraction
+ * implementation (scripts/generate_quant_goldens.mjs, app.js @ main).
+ * If a delta is EARNED (e.g. a recalibrated model), the whitelist
+ * procedure is: regenerate fixtures, document the calibration change
+ * in the PR, and update this table in the same commit.
  *
  * The NFL model constants (alpha=0.1097, k=1.555) come from the sport
  * adapter; they are asserted first so a silent constants change cannot hide
@@ -145,7 +170,7 @@ test('pRecOver matches the frozen goldens on the mu × line grid', () => {
   const { sandbox } = buildSandbox();
   const M = loadApp(sandbox).quantMath;
   REC_GRID.forEach(([mu, line], i) => {
-    assert.equal(M.pRecOver(mu, line), REC_EXPECTED[i], `pRecOver(${mu}, ${line}) [case ${i}]`);
+    assertUlpsEqual(M.pRecOver(mu, line), REC_EXPECTED[i], `pRecOver(${mu}, ${line}) [case ${i}]`);
   });
 });
 
@@ -153,8 +178,8 @@ test('pYardsOver and compoundYardsCdf match the frozen goldens and complement ex
   const { sandbox } = buildSandbox();
   const M = loadApp(sandbox).quantMath;
   YDS_GRID.forEach(([muRec, muYpr, line], i) => {
-    assert.equal(M.pYardsOver(muRec, muYpr, line), YDS_EXPECTED[i], `pYardsOver(${muRec}, ${muYpr}, ${line}) [case ${i}]`);
-    assert.equal(M.compoundYardsCdf(muRec, muYpr, line), YDS_CDF_EXPECTED[i], `compoundYardsCdf(${muRec}, ${muYpr}, ${line}) [case ${i}]`);
+    assertUlpsEqual(M.pYardsOver(muRec, muYpr, line), YDS_EXPECTED[i], `pYardsOver(${muRec}, ${muYpr}, ${line}) [case ${i}]`);
+    assertUlpsEqual(M.compoundYardsCdf(muRec, muYpr, line), YDS_CDF_EXPECTED[i], `compoundYardsCdf(${muRec}, ${muYpr}, ${line}) [case ${i}]`);
     // pYardsOver is defined as max(0, min(1, 1 - cdf)) — on this in-range grid
     // the complement identity must hold bit-exactly.
     if (YDS_EXPECTED[i] > 0 && YDS_EXPECTED[i] < 1) {
@@ -167,7 +192,7 @@ test('regularizedGammaP matches the frozen goldens across both series branches',
   const { sandbox } = buildSandbox();
   const M = loadApp(sandbox).quantMath;
   for (const [[shape, value], expected] of GAMMA_CASES) {
-    assert.equal(M.regularizedGammaP(shape, value), expected, `regularizedGammaP(${shape}, ${value})`);
+    assertUlpsEqual(M.regularizedGammaP(shape, value), expected, `regularizedGammaP(${shape}, ${value})`);
   }
 });
 
@@ -175,7 +200,7 @@ test('logGamma matches the frozen goldens (Lanczos, incl. the logGamma(1)≈2.4e
   const { sandbox } = buildSandbox();
   const M = loadApp(sandbox).quantMath;
   for (const [value, expected] of LOGGAMMA_CASES) {
-    assert.equal(M.logGamma(value), expected, `logGamma(${value})`);
+    assertUlpsEqual(M.logGamma(value), expected, `logGamma(${value})`);
   }
 });
 
@@ -198,17 +223,17 @@ test('the extracted module is standalone (loads with no app.js/adapters) and mat
     assert.equal(M.americanToDecimal(input), expected, `module americanToDecimal(${JSON.stringify(input)})`);
   }
   for (const [[shape, value], expected] of GAMMA_CASES) {
-    assert.equal(M.regularizedGammaP(shape, value), expected, `module regularizedGammaP(${shape}, ${value})`);
+    assertUlpsEqual(M.regularizedGammaP(shape, value), expected, `module regularizedGammaP(${shape}, ${value})`);
   }
   for (const [value, expected] of LOGGAMMA_CASES) {
-    assert.equal(M.logGamma(value), expected, `module logGamma(${value})`);
+    assertUlpsEqual(M.logGamma(value), expected, `module logGamma(${value})`);
   }
   const bound = M.createQuantMath({ alpha: 0.1097, k: 1.555 });
   REC_GRID.forEach(([mu, line], i) => {
-    assert.equal(bound.pRecOver(mu, line), REC_EXPECTED[i], `module pRecOver(${mu}, ${line}) [case ${i}]`);
+    assertUlpsEqual(bound.pRecOver(mu, line), REC_EXPECTED[i], `module pRecOver(${mu}, ${line}) [case ${i}]`);
   });
   YDS_GRID.forEach(([muRec, muYpr, line], i) => {
-    assert.equal(bound.pYardsOver(muRec, muYpr, line), YDS_EXPECTED[i], `module pYardsOver(${muRec}, ${muYpr}, ${line}) [case ${i}]`);
+    assertUlpsEqual(bound.pYardsOver(muRec, muYpr, line), YDS_EXPECTED[i], `module pYardsOver(${muRec}, ${muYpr}, ${line}) [case ${i}]`);
   });
 });
 
