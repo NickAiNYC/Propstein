@@ -15121,6 +15121,15 @@ body.coming-soon-active .pw-filterbar { padding-bottom: 0 !important; }
 .front-menu-actions button { display: flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 10px 13px; border: 0; border-radius: 9px; background: transparent; color: #d9e8f2; font: 600 13px/1.2 var(--pw-font-sans, sans-serif); text-align: left; cursor: pointer; }
 .front-menu-actions button:hover, .front-menu-actions button:focus-visible { background: rgba(101, 191, 242, .13); color: #fff; }
 .front-menu-actions button span { color: #8bcff6; }
+.front-menu-actions a { display: flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 10px 13px; border-radius: 9px; color: #a9ddfa; font: 600 13px/1.2 var(--pw-font-sans, sans-serif); text-decoration: none; }
+.front-menu-actions a:hover, .front-menu-actions a:focus-visible { background: rgba(101, 191, 242, .13); color: #fff; }
+.front-menu-actions a span { color: #8bcff6; }
+.pricing-community-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 14px 0; padding: 14px; border: 1px solid rgba(128, 198, 246, .22); border-radius: 12px; background: linear-gradient(110deg, rgba(48, 83, 111, .22), rgba(12, 19, 28, .65)); }
+.pricing-community-row strong { color: #e5f4ff; font-size: 13px; }
+.pricing-community-row p { margin: 4px 0 0; color: #a8bac9; font-size: 12px; line-height: 1.4; }
+.pricing-community-row a { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 8px; min-height: 44px; padding: 10px 13px; border: 1px solid rgba(128, 198, 246, .5); border-radius: 9px; color: #b8e5ff; font: 700 12px/1.2 var(--pw-font-sans, sans-serif); text-decoration: none; }
+.pricing-community-row a:hover, .pricing-community-row a:focus-visible { border-color: #80c6f6; background: rgba(128, 198, 246, .12); color: #fff; }
+@media (max-width: 600px) { .pricing-community-row { align-items: stretch; flex-direction: column; } .pricing-community-row a { justify-content: center; } }
 .front-explore-btn { display: flex; align-items: center; justify-content: space-between; width: min(100%, 560px); margin: 2px 0 24px; padding: 15px 18px; border: 1px solid rgba(134, 206, 246, .23); border-radius: 13px; background: linear-gradient(110deg, #172636, #0d1723); color: #d7efff; font: 700 12px/1 var(--pw-font-sans, sans-serif); cursor: pointer; }
 .front-explore-btn:hover { border-color: #7bd1ff; }
 .front-explore-btn span { color: #8bcff6; font-size: 16px; }
