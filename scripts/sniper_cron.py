@@ -257,7 +257,7 @@ def main():
                 "edge_pct": round(edge * 100, 1),
                 "expected_return": round(expected_return * 100, 1),
                 "book": quote.get("book"),
-                "review_url": f"https://propwire.vercel.app/?inspect={quote.get('player_id')}&market={quote.get('market')}"
+                "review_url": f"https://propstein.com/?inspect={quote.get('player_id')}&market={quote.get('market')}"
             }
             alerts.append(alert_payload)
             cooldowns[k] = now_ms

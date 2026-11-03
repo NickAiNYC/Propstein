@@ -67,5 +67,5 @@ export function resolveApiBaseUrl(overrides: { env?: string; stored?: string } =
   if (fromEnv && /^https?:\/\//.test(fromEnv)) return fromEnv.replace(/\/$/, "");
   const fromStored = overrides.stored?.trim();
   if (fromStored && /^https?:\/\//.test(fromStored)) return fromStored.replace(/\/$/, "");
-  return "https://propstein.vercel.app";
+  return "https://propstein.com";
 }

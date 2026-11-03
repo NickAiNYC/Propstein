@@ -13,7 +13,7 @@
     "http://127.0.0.1:4173/*"
   ],
   "optional_host_permissions": [
-    "https://propstein.vercel.app/*",
+    "https://propstein.com/*",
     "https://sportsbook.draftkings.com/*",
     "https://sportsbook.fanduel.com/*",
     "https://polymarket.com/*"

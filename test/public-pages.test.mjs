@@ -85,7 +85,7 @@ test('legal pages: CSP-safe, disclaimed, linked site-wide, RG helpline present',
 test('sitemap urls are 1:1 with generated pages + core shell', () => {
   const xml = fs.readFileSync(V('sitemap.xml'), 'utf8');
   const locs = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) =>
-    m[1].replace(/https:\/\/(?:propwire|propstein)\.vercel\.app/, ''));
+    m[1].replace('https://propstein.com', ''));
   const gen = walk(V('nfl/players')).concat(walk(V('nfl/props')))
     .concat(walk(V('legal')))
     .concat([V('performance/index.html'), V('methodology/index.html')])
@@ -102,7 +102,7 @@ test('sitemap urls are 1:1 with generated pages + core shell', () => {
 
 test('robots.txt points at the sitemap', () => {
   const txt = fs.readFileSync(V('robots.txt'), 'utf8');
-  assert.match(txt, /Sitemap: https:\/\/(?:propwire|propstein)\.vercel\.app\/sitemap\.xml/);
+  assert.match(txt, /Sitemap: https:\/\/propstein\.com\/sitemap\.xml/);
   assert.match(txt, /Allow: \//);
 });
 

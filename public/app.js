@@ -2519,7 +2519,7 @@
               event: 'PROP_WIRE_TEST_PING',
               timestamp: new Date().toISOString(),
               message: 'PropWire Autonomous Market Sniper Connected!',
-              terminal: 'https://propwire.vercel.app'
+              terminal: 'https://propstein.com'
             })
           });
           toast('✓ Test payload dispatched to webhook endpoint');

@@ -11,7 +11,7 @@ PropStein uses a **two-service deployment topology** on Railway backed by the sa
 flowchart LR
     NBA["nba_api Live PBP (Rotated Proxies)"] -->|5s Poll| Worker["propstein-worker (live_nba_sniper_worker.py)"]
     Worker -->|Railway Private Network POST /api/sniper/simulate-substitution| Web["propstein-web (FastAPI + LangGraph Spine)"]
-    Web -->|SSE /api/sniper/stream| UI["PropStein Terminal (propstein.vercel.app)"]
+    Web -->|SSE /api/sniper/stream| UI["PropStein Terminal (propstein.com)"]
 ```
 
 ---

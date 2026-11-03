@@ -100,8 +100,8 @@ def generate_board(slate_key: str = "2026_w7") -> Dict[str, Any]:
             f"{it['fair_line']:<6} {it['proj_volume']:<6} {it['book']}"
         )
     text_lines.append("=" * 60)
-    text_lines.append("Research terminal: https://propstein.vercel.app")
-    text_lines.append("To inspect model distributions: https://propstein.vercel.app/methodology/")
+    text_lines.append("Research terminal: https://propstein.com")
+    text_lines.append("To inspect model distributions: https://propstein.com/methodology/")
 
     # Build HTML format
     rows_html = "".join([
@@ -150,7 +150,7 @@ def generate_board(slate_key: str = "2026_w7") -> Dict[str, Any]:
       </tbody>
     </table>
     <div class="footer">
-      Live terminal: <a href="https://propstein.vercel.app">propstein.vercel.app</a> &middot; Methodology: <a href="https://propstein.vercel.app/methodology/">propstein.vercel.app/methodology/</a>
+      Live terminal: <a href="https://propstein.com">propstein.com</a> &middot; Methodology: <a href="https://propstein.com/methodology/">propstein.com/methodology/</a>
     </div>
   </div>
 </body>

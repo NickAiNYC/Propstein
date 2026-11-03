@@ -159,7 +159,7 @@ def calculate_clv(entry_odds: float, closing_odds: float) -> dict[str, float]:
     }
 
 
-def build_verifiable_receipt(row: dict[str, Any], base_url: str = "https://propstein.vercel.app") -> dict[str, Any]:
+def build_verifiable_receipt(row: dict[str, Any], base_url: str = "https://propstein.com") -> dict[str, Any]:
     """
     Pure, idempotent transformer turning a stored `arb_history` row into a
     self-contained, hash-verifiable public Sniper Receipt object.

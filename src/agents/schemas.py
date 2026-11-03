@@ -152,7 +152,7 @@ class MarketMovePayload(BaseModel):
     orderbook_spread_cents: float = 2.0
     orderbook_depth_usd: float = 5000.0
     token_id: Optional[str] = None
-    deep_link: str = "https://propstein.vercel.app"
+    deep_link: str = "https://propstein.com"
     is_live: bool = False
     source_hash: str
     fetched_at: datetime
