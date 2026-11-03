@@ -39,7 +39,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Probe stats.nba.com reachability
+        id: probe
+        run: |
+          # NBA's official feeds block datacenter IPs (empirically confirmed
+          # 2026-11-03: stats.nba.com blackholes cloud hosts incl. Actions
+          # runners; cdn.nba.com Akamai-403s them — DECISIONS.md D7). Probe
+          # cheaply: one offseason-day call, zero box-score follow-ups.
+          RESULT=$(PYTHONPATH=. python3 - <<'PY'
+          from nba_model.data.nbacom import NbaComProvider
+          from nba_model.data.providers import ProviderNetworkError, RateLimitError
+          try:
+              NbaComProvider().fetch_range(["2026-07-01"])  # offseason: 1 call, 0 games
+              print("ok")
+          except (ProviderNetworkError, RateLimitError):
+              print("blocked")
+          PY
+          )
+          echo "result=$RESULT" >> "$GITHUB_OUTPUT"
+          if [ "$RESULT" != "ok" ]; then
+            echo "::notice::stats.nba.com is unreachable from datacenter IPs. The free path runs from residential IPs: scripts/nba_model_local_worker.py (cron/launchd on your machine) or a self-hosted runner. Nothing was fetched; nothing will be committed. See src/nba_model/DECISIONS.md D7."
+          fi
+
       - name: Set up Python
+        if: steps.probe.outputs.result == 'ok'
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.12'
@@ -47,11 +70,13 @@ jobs:
           cache-dependency-path: requirements.lock
 
       - name: Install locked dependencies
+        if: steps.probe.outputs.result == 'ok'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.lock
 
       - name: Run the NBA model pipeline (prepare + publish)
+        if: steps.probe.outputs.result == 'ok'
         run: |
           set -euo pipefail
           END=$(TZ=America/New_York date -d 'yesterday' +%F)
@@ -76,6 +101,7 @@ jobs:
           fi
 
       - name: Stage artifacts for the viewer feed
+        if: steps.probe.outputs.result == 'ok'
         run: |
           mkdir -p viewer/feeds/nba_model
           cp src/nba_model/out/nba_board_*.json viewer/feeds/nba_model/ 2>/dev/null || true
@@ -85,6 +111,7 @@ jobs:
           ls -la viewer/feeds/nba_model/
 
       - name: Commit and push refreshed artifacts (if changed)
+        if: steps.probe.outputs.result == 'ok'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

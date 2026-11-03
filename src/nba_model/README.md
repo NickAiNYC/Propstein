@@ -68,8 +68,14 @@ Politeness: 1.2 s spacing, one 60 s 429 backoff, then fail closed — a
 blocked run is RED, never silently empty. The daily ingestion worker is
 `.github/workflows/nba_model_daily.yml` (GitHub Actions cron → artifacts
 committed to `viewer/feeds/nba_model/` → Vercel serves them statically:
-no paid API, no database). Sandbox/dev machines that cannot reach
-stats.nba.com simply fail closed; the runner is the validation venue.
+no paid API, no database). **Residential-IP requirement (confirmed
+2026-11-03):** NBA's official feeds block datacenter IPs — GitHub-hosted
+runners included (the workflow probes and skips with a notice when
+blocked). Run the pipeline from a residential line via
+`scripts/nba_model_local_worker.py` (cron/launchd on your machine) or a
+self-hosted runner; machines that cannot reach stats.nba.com fail
+closed — RED, never silently empty. Evidence and details:
+`src/nba_model/DECISIONS.md` D7.
 
 ### Licensed alternative (D1, still wired)
 
