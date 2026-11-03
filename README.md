@@ -112,8 +112,34 @@ API returns 403 — tier comes from auth.)
 5. **Auth (optional at first)**: add Supabase env vars; swap the demo
    `/api/tier` toggle for `getTier()` reading the Supabase session claim.
 
+## Rollout plan — 2.0 is preview-only (deliberately NOT merged)
+
+- `main` keeps serving the v1 site in production. PR #99 stays open.
+- The 2.0 terminal runs on **preview deployments only** (Vercel → PR #99
+  checks → preview URL), optionally pointed at a real Supabase database
+  (env var scoped to Preview, not Production) for testing against real
+  data.
+- Merge criteria: access control verified against real auth, quote status
+  honest under real ingest, freshness labeling true, and the v1 public
+  performance pages either restored or deliberately superseded.
+
+## Preservation map — nothing is lost
+
+| artifact | where it lives |
+| --- | --- |
+| v1 static site (incl. performance pages, ledger, audit, per-player pages) | `archive/v1-static/` (hidden: not routed, not deployed — see `archive/v1-static/RESTORE.md`) |
+| v1 complete tree (backend + site + workflows) | branch `v1-static-archive` = tag `v1.0.0` (commit `25327c48`) |
+| quant research | `research/` — kept live at the repo root, untouched |
+| Live Sniper extension | `extension/` + `extensions/` — restored, with its own CI workflow |
+| v1 cron workflows (daily_update, nba_daily, freezes, news_watcher, odds_freshness) | preserved in git at `v1-static-archive`; superseded on 2.0 by `ingest.yml` |
+
 ## Honesty notes
 
+- Props come from the **bundled v1 Week 8 snapshot** (`worker/data/live_odds_feed.json`),
+  re-upserted **daily** (not live): `/api/props` declares
+  `dataSource: "bundled_v1_snapshot"` + `lastObservedAt` + `verifiedCount`,
+  and the props panel renders a `static v1 snapshot · not live` badge. A
+  real odds feed must land before props are treated as live.
 - `verified` mirrors the upstream feed's own `verified` flag — nothing
   upstream means nothing here. In the bundled Week 8 snapshot that is
   **0 verified, 9 receipt-matched (OBSERVED), 1 PASS**: receipt-matched
@@ -129,5 +155,6 @@ API returns 403 — tier comes from auth.)
   only when panels have data; empty database shows "no feed yet", a
   failed poll shows "feed unreachable".
 
-*v1 static site is preserved on branch `v1-static-archive` and tag
-`v1.0.0`; `main` serves v1 until this branch is reviewed and merged.*
+*v1 is preserved three ways: branch `v1-static-archive`, tag `v1.0.0`, and
+`archive/v1-static/` in-repo. `main` serves v1 until PR #99 is reviewed,
+tested against a real database, and deliberately merged.*

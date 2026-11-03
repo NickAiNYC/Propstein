@@ -111,6 +111,14 @@ export function PropsPanel({
       <header className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
           prop edges <span className="text-zinc-600">· slate {resp?.slate ?? "—"}</span>
+          {resp?.dataSource === "bundled_v1_snapshot" ? (
+            <span
+              className="ml-2 rounded-full border border-zinc-700 bg-zinc-900 px-2 py-0.5 font-mono text-[10px] font-normal normal-case tracking-normal text-zinc-400"
+              title={`Static v1 snapshot quotes — last observed ${resp.lastObservedAt ? new Date(resp.lastObservedAt).toLocaleString() : "—"} · ${resp.verifiedCount ?? 0} verified. Not a live odds feed.`}
+            >
+              static v1 snapshot · not live
+            </span>
+          ) : null}
         </h2>
         <div className="flex items-center gap-2">
           {!pro && resp ? (

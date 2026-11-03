@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#18181b">
+  <meta name="build-hash" content="2026-w8-v30">
+  <title>Verified Sniper Receipt · PropStein Quant Terminal</title>
+  <meta name="description" content="Public cryptographic CLV attestation with SHA-256 hash lock. No LLM in decision path — pure distributional Bayesian prop pricing.">
+  <link rel="canonical" href="https://propstein.vercel.app/verify">
+  
+  <!-- Twitter & OpenGraph Sharing Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@PropSteinApp">
+  <meta name="twitter:title" id="ogMetaTitle" content="⚡ Verified CLV Sniper Receipt | PropStein Quant Terminal">
+  <meta name="twitter:description" id="ogMetaDesc" content="No LLM in Decision Path · Cryptographically Verified SHA-256 Receipt · Model ECE < 1.2%">
+  <meta name="twitter:image" content="https://propstein.vercel.app/og-image.png?v=2026_v179">
+  <meta property="og:title" content="⚡ Verified CLV Sniper Receipt | PropStein Quant Terminal">
+  <meta property="og:description" content="No LLM in Decision Path · Cryptographically Verified SHA-256 Receipt · Model ECE < 1.2%">
+  <meta property="og:image" content="https://propstein.vercel.app/og-image.png?v=2026_v179">
+  <meta property="og:url" content="https://propstein.vercel.app/verify">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2027_icon2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2027_icon2">
+  <link rel="shortcut icon" href="/favicon-32x32.png?v=2027_icon2">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2027_icon2">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2027_icon2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png?v=2027_icon2">
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png?v=2027_icon2">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-180x180-precomposed.png?v=2027_icon2">
+  <link rel="manifest" href="/site.webmanifest?v=2027_icon2">
+  <link rel="stylesheet" href="/style.css?v=2026_v189">
+  
+  <link rel="stylesheet" href="/verify-landing.css?v=2026_v189">
+</head>
+<body>
+
+  <div class="verify-page-shell">
+    <!-- Top Nav -->
+    <header class="verify-top-nav">
+      <a href="/" class="verify-brand-group">
+        <img src="/propstein-logo.png?v=2026_v179" alt="PropStein" class="verify-logo-img pw-brand-dark-only" height="26">
+        <img src="/propstein-logo-dark.png?v=2026_v179" alt="" aria-hidden="true" class="verify-logo-img pw-brand-light-only" height="26">
+        <span class="verify-brand-title">PropStein</span>
+        <span class="verify-status-badge">● PUBLIC ATTESTATION</span>
+      </a>
+      <a href="/" class="verify-nav-cta">Open Live Terminal ↗</a>
+    </header>
+
+    <!-- Hero Receipt Card -->
+    <main class="verify-hero-card" id="receiptCard">
+      <div class="verify-claim-pill">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1.5l5.5 2v4.2c0 3.5-2.3 5.8-5.5 6.8-3.2-1-5.5-3.3-5.5-6.8V3.5L8 1.5z"/><path d="M5.6 8.1l1.7 1.7 3.3-3.4"/></svg>
+        <span>No LLM in Decision Path — Verified SHA-256 Receipt</span>
+      </div>
+
+      <div class="verify-player-title-row">
+        <div>
+          <div class="verify-player-name" id="receiptPlayer">Giannis Antetokounmpo (MIL)</div>
+          <div class="verify-prop-detail" id="receiptPropDetail">POINTS OVER 31.5 · Q2 4:12 (29 Oct, 2026)</div>
+        </div>
+        <div class="verify-clv-hero-badge" id="receiptClvBadge">+5.8% CLV BEAT</div>
+      </div>
+
+      <!-- Quantitative Grid -->
+      <div class="verify-grid">
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Entry Line</span>
+          <span class="verify-grid-val" id="receiptEntryLine">31.5 (-110)</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Closing Line</span>
+          <span class="verify-grid-val" id="receiptCloseLine">33.0 (-125)</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Realized CLV</span>
+          <span class="verify-grid-val is-lime" id="receiptClvVal">+5.8% (+1.5 pts)</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Model Fair Line</span>
+          <span class="verify-grid-val" id="receiptFairLine">34.9 pts</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Alert Edge</span>
+          <span class="verify-grid-val is-lime" id="receiptEdgeVal">+6.3%</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">P(Fair) / P(Imp)</span>
+          <span class="verify-grid-val" id="receiptProbs">64.0% / 52.4%</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Kelly Stake</span>
+          <span class="verify-grid-val" id="receiptKelly">2.5% Bankroll</span>
+        </div>
+        <div class="verify-grid-cell">
+          <span class="verify-grid-lbl">Status</span>
+          <span class="verify-grid-val" id="receiptStatus">GRADED · WON</span>
+        </div>
+      </div>
+
+      <!-- Hash Attestation Box -->
+      <div class="verify-hash-box">
+        <div><strong>Receipt Hash:</strong> <code id="receiptHash">sha256:d8a4f1082c47a98e102f6b8910e52701b2a3c4d5e6f708192a3b4c5d6e7f809</code></div>
+        <div><strong>Source Hash:</strong> <code id="sourceHash">sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</code></div>
+        <div><strong>Engine:</strong> <code id="modelVersion">propwire-dist-v2.4</code> (Compound Negative Binomial / Gamma)</div>
+        <div class="verify-verif-stamp">✓ Cryptographically verified against historical ledger snapshot.</div>
+      </div>
+    </main>
+
+    <!-- Why PropStein Beats the Market (The Math Section) -->
+    <div class="verify-section-hdr">The Mathematical Advantage</div>
+    <div class="verify-pillars-grid">
+      <div class="verify-pillar-card">
+        <div class="verify-pillar-icon">📐</div>
+        <div class="verify-pillar-title">Deterministic Pricing Core</div>
+        <div class="verify-pillar-desc">No LLM guesses numbers. Fair values are computed from compound Negative Binomial and Gamma probability density functions with empirical calibration error ECE &lt; 1.2%.</div>
+      </div>
+      <div class="verify-pillar-card">
+        <div class="verify-pillar-icon">⚡</div>
+        <div class="verify-pillar-title">5-Second Live PBP Spine</div>
+        <div class="verify-pillar-desc">When a player subs out with foul trouble or injury, PropStein recalculates usage redistribution immediately against cached sportsbook & Polymarket orderbooks.</div>
+      </div>
+      <div class="verify-pillar-card">
+        <div class="verify-pillar-icon">📈</div>
+        <div class="verify-pillar-title">Cross-Venue Polymarket Arb</div>
+        <div class="verify-pillar-desc">Simultaneously compares traditional books (DK/FD) against Polymarket orderbook liquidity to exploit 30-60 second mispricing windows.</div>
+      </div>
+    </div>
+
+    <!-- Live Social Proof Scoreboard -->
+    <div class="verify-social-proof">
+      <div>
+        <div class="verify-stat-num" id="statGraded">8</div>
+        <div class="verify-stat-lbl">Graded Alerts This Week</div>
+      </div>
+      <div>
+        <div class="verify-stat-num" id="statBeatRate">87.5%</div>
+        <div class="verify-stat-lbl">CLV Beat Rate</div>
+      </div>
+      <div>
+        <div class="verify-stat-num" id="statAvgClv">+5.8%</div>
+        <div class="verify-stat-lbl">Mean Closing Line Value</div>
+      </div>
+      <div>
+        <div class="verify-stat-num" id="statRoi">+6.7%</div>
+        <div class="verify-stat-lbl">Simulated Flat ROI</div>
+      </div>
+    </div>
+
+    <!-- Blurred Live Terminal Teaser -->
+    <div class="verify-section-hdr">Live In-Game Opportunities Detected Now</div>
+    <div class="verify-teaser-wrap">
+      <div class="verify-teaser-hdr">
+        <span>PROPSTEIN SNIPER FEED · LIVE</span>
+        <span class="verify-live-pill">● 3 ACTIVE ARBS</span>
+      </div>
+      <div class="verify-teaser-list">
+        <div class="verify-teaser-item">
+          <span>Giannis Antetokounmpo (MIL) · PTS Over 31.5</span>
+          <span>DraftKings @ -110 · Edge: +6.3% · Fair 34.9</span>
+        </div>
+        <div class="verify-teaser-item">
+          <span>Tyrese Maxey (PHI) · PTS Over 26.5</span>
+          <span>Polymarket CLOB @ $0.55 · Edge: +7.0% · Fair 29.8</span>
+        </div>
+        <div class="verify-teaser-item">
+          <span>Jayson Tatum (BOS) · PTS Over 28.5</span>
+          <span>FanDuel @ -108 · Edge: +5.9% · Fair 31.4</span>
+        </div>
+      </div>
+      <div class="verify-lock-overlay">
+        <div class="verify-gate-title">Live Terminal Gated</div>
+        <div class="verify-gate-sub">Unlock real-time live substitution alerts, spatial court tracking, and Polymarket orderbook arbitrage.</div>
+        <a href="/?checkout=pro" class="verify-lock-btn">Unlock Live Sniper PRO ($29/mo)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Bottom CTA -->
+  <div class="verify-sticky-cta">
+    <div class="verify-cta-inner">
+      <div class="verify-cta-text">
+        <strong>Beat the market with verified mathematical edge.</strong>
+        <p>One good arb pays for the month ($29/mo). Cancel anytime with 1-tap customer portal.</p>
+      </div>
+      <div class="verify-cta-actions">
+        <a href="/" class="verify-btn-free">Try Free Terminal</a>
+        <a href="/?checkout=pro" class="verify-btn-pro">Upgrade to PRO ($29/mo)</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/verify-landing.js?v=2026_v179" defer></script>
+</body>
+</html>

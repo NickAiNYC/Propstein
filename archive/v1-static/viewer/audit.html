@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en" class="dark" style="color-scheme: dark;">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#18181b">
+  <meta name="build-hash" content="2026-w8-v30">
+  <meta name="description" content="PropStein NFL receiving props research terminal.">
+  <title>PropStein · NFL Receiving Props</title>
+
+  <!-- Standard Desktop & Android Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2027_icon2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2027_icon2">
+  <link rel="shortcut icon" href="/favicon-32x32.png?v=2027_icon2">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2027_icon2">
+
+  <!-- iOS Home Screen Icons (180x180 PNG + non-transparent #0b0e14 + cache-busted) -->
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2027_icon2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png?v=2027_icon2">
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png?v=2027_icon2">
+  <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/apple-touch-icon-180x180-precomposed.png?v=2027_icon2">
+
+  <!-- OpenGraph / Social preview (1200x630) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PropStein · Public CLV Audit Report">
+  <meta property="og:description" content="Audited performance, closing line value alpha, and distribution calibration reports.">
+  <meta property="og:image" content="https://propstein.vercel.app/og-image.png?v=2026_v179">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PropStein · Public CLV Audit Report">
+  <meta name="twitter:description" content="Audited performance, closing line value alpha, and distribution calibration reports.">
+  <meta name="twitter:image" content="https://propstein.vercel.app/og-image.png?v=2026_v179">
+
+  <!-- iOS Standalone Quant Terminal Mode (Hides Safari URL Bar when opened from Home Screen) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PropStein">
+  <meta name="application-name" content="PropStein">
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/site.webmanifest?v=2027_icon2">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=2026_v223">
+  <script src="/js/sports/registry.js?v=2026_v179" defer></script>
+  <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
+  <script src="/js/sports/nba.js?v=2026_v179" defer></script>
+  <script src="/app.js?v=2026_v208" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#slateBoard">Skip to slate</a>
+
+  <header class="pw-terminal-chrome">
+    <!-- TIER 1: Global Terminal Header (56px desktop) -->
+    <div class="pw-topbar">
+      <!-- Left: Brand + Live Status Dot -->
+      <div class="pw-topbar-left">
+        <a href="#slateBoard" class="pw-brand" aria-label="PropStein home">
+          <img src="/propstein-logo.png?v=2026_v179" alt="PropStein" class="pw-brand-img pw-brand-dark-only" height="52">
+          <img src="/propstein-logo-dark.png?v=2026_v179" alt="" aria-hidden="true" class="pw-brand-img pw-brand-light-only" height="52">
+        </a>
+        <div class="pw-telemetry-pod" aria-label="System telemetry">
+        <div class="pw-live-status-dot" id="mobileStatusPill" title="Live Odds Feed Active · Tap for Telemetry">
+          <span class="polling-dot pulse"></span>
+          <span class="pw-live-label pw-desktop-only" id="mobileStatusText">LIVE</span>
+        </div>
+        <div class="pw-divider pw-desktop-only"></div>
+        <!-- Compact Availability Trigger (Desktop Only) -->
+        <button type="button" id="availabilityToggle" class="pw-alert-pill pw-desktop-only" title="Click to view availability &amp; vacated volume" aria-expanded="false" aria-controls="injuryDetails">
+          <span class="pw-alert-dot"></span>
+          <span class="pw-alert-count" id="injuryAlertCount">7 Injury Alerts</span>
+          <span class="pw-alert-preview" id="injuryAlertPreview">Doubs OUT · Evans OUT · A.J. Brown LIM</span>
+          <span class="pw-alert-chevron" id="injuryAlertChevron">▾</span>
+        </button>
+        </div>
+      </div>
+
+      <!-- Right: Mobile Options & Desktop Actions -->
+      <div class="pw-topbar-right">
+        <!-- Slate Selector (Mobile & Desktop) -->
+        <select id="slateSelector" class="pw-select pw-select-slate" aria-label="Select Slate">
+          <option value="2026_w7">W7 Live</option>
+          <option value="2026_w1">W1 Audit</option>
+        </select>
+
+        <!-- Compact Injury Alert Pill (Mobile & Desktop) -->
+        <button type="button" class="pw-injury-header-pill" id="slimInjuryBanner" title="Click to view availability &amp; vacated volume">
+          <span class="slim-injury-dot"></span>
+          <span class="slim-injury-text" id="slimInjuryText">7 Alerts</span>
+        </button>
+        <button type="button" class="slim-injury-dismiss" id="dismissInjuryBannerBtn" aria-label="Dismiss alert banner" aria-hidden="true" hidden></button>
+
+        <!-- Interactive Risk Policy Controls (Desktop only) -->
+        <div class="pw-risk-group pw-desktop-only" id="headerRiskSteppers">
+          <div class="pw-stepper" title="Gate: Minimum statistical edge required before recommendation">
+            <span class="pw-stepper-label">Gate</span>
+            <button type="button" class="pw-step-btn" id="gateMinus" aria-label="Decrease gate">−</button>
+            <span id="gateVal" class="pw-stepper-val">10%</span>
+            <button type="button" class="pw-step-btn" id="gatePlus" aria-label="Increase gate">+</button>
+          </div>
+          <span class="pw-risk-sep">|</span>
+          <div class="pw-stepper" title="Kelly Cap: Maximum bankroll allocation per play">
+            <span class="pw-stepper-label">Kelly Cap</span>
+            <button type="button" class="pw-step-btn" id="capMinus" aria-label="Decrease Kelly cap">−</button>
+            <span id="capVal" class="pw-stepper-val">3.0%</span>
+            <button type="button" class="pw-step-btn" id="capPlus" aria-label="Increase Kelly cap">+</button>
+          </div>
+        </div>
+
+        <!-- Live Odds Polling Countdown & Status Widget (Desktop only) -->
+        <div class="live-polling-widget pw-desktop-only" id="livePollingWidget" title="Live Odds Ingestion Engine · Bovada API Active · Click to poll now">
+          <span class="polling-dot pulse"></span>
+          <span class="polling-timer" id="pollingTimerText">Updated 14s ago · Next 46s</span>
+          <button type="button" class="polling-refresh-btn" id="manualPollBtn" aria-label="Poll fresh quotes now" title="Poll fresh quotes now">
+            <svg class="poll-refresh-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M13.5 8A5.5 5.5 0 118 2.5c2 0 3.8.8 4.7 2.2M13.5 1.5v3.5H10"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Receipt Status Pill (Desktop only) -->
+        <div class="pw-receipt-badge pw-desktop-only" title="All 64 quotes verified via SHA-256 content receipt">
+          <span class="pw-receipt-dot"></span>
+          <span id="marketState">64/64 Verified</span>
+        </div>
+
+        <!-- Programmable Market Alerts Sniper (Desktop) -->
+        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Programmable Sniper Alerts (Push &amp; Webhook)">
+          <span class="sniper-icon-symbol">🎯</span>
+          <span>Sniper</span>
+          <span class="sniper-active-badge" id="sniperActiveBadge" hidden>LIVE</span>
+        </button>
+
+        <!-- Commercial Pricing / Membership Tiers (Mobile & Desktop) -->
+        <button type="button" id="pricingBtn" class="pw-btn-nav pw-btn-upgrade" title="Research access and evidence">
+          <span class="pro-text-desktop pw-desktop-only" style="color:#B6F36B; font-weight:700; letter-spacing:0.5px;">ACCESS</span>
+          <span class="pro-text-mobile pw-mobile-only" style="color:#B6F36B; font-weight:700; letter-spacing:0.5px;">ACCESS</span>
+        </button>
+
+        <!-- Desktop Action Buttons -->
+        <button type="button" id="clvReportBtn" class="pw-btn-nav pw-desktop-only" title="Week 7 Public CLV Validation Report">CLV Report</button>
+        <button type="button" id="portfolioBtn" class="pw-btn-nav pw-btn-ledger pw-desktop-only" title="Personal CLV Ledger &amp; Portfolio">
+          <span>Ledger</span>
+          <span class="portfolio-count-badge" id="portfolioCountBadge" hidden>0</span>
+        </button>
+        <button type="button" id="exportBtn" class="pw-btn-icon pw-desktop-only" aria-label="Export CSV" title="Export CSV">↓</button>
+
+        <!-- Mobile Menu / Hamburger Button -->
+        <button type="button" id="mobileMenuBtn" class="pw-mobile-menu-btn pw-mobile-only" aria-label="Open Settings &amp; Risk Policy" title="Settings &amp; Risk Policy">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon" width="16" height="16">
+            <line x1="3" y1="5" x2="17" y2="5"/>
+            <line x1="3" y1="10" x2="17" y2="10"/>
+            <line x1="3" y1="15" x2="17" y2="15"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- TIER 2: Filter & Matchup Control Bar -->
+    <div class="pw-filterbar">
+      <!-- Search Input (100% width on mobile) -->
+      <div class="pw-search-wrap command-search-wrap">
+        <svg class="pw-search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.5"/>
+          <path d="M10.5 10.5L14 14"/>
+        </svg>
+        <input type="search" id="searchInput" class="pw-search-input" placeholder="Search player or team..." autocomplete="off">
+        <kbd class="pw-kbd pw-desktop-only">/</kbd>
+      </div>
+
+      <!-- Single Horizontal Scrolling Chip Row (Mode, Market, Pos, More) -->
+      <div class="pw-chip-scroll-row" id="mobileFilterStrip" role="toolbar" aria-label="Filter chips">
+        <!-- Active vs All Mode Switcher -->
+        <div class="chip-segment-group" role="radiogroup" aria-label="Dataset Mode">
+          <button type="button" class="chip-pill active" data-mode="actionable" id="modeActionableBtn" role="radio" aria-checked="true" title="Show plays clearing edge gate">
+            <span>ACTIVE</span>
+            <span class="chip-count-pill" id="actionableCount">33</span>
+          </button>
+          <button type="button" class="chip-pill" data-mode="top" id="modeTopBtn" role="radio" aria-checked="false" title="Show Top Model Volume Plays">
+            <span>TOP</span>
+            <span class="chip-count-pill" id="topCount">25</span>
+          </button>
+          <button type="button" class="chip-pill" data-mode="all" id="modeAllBtn" role="radio" aria-checked="false" title="Show all modeled player projections">
+            <span>ALL</span>
+            <span class="chip-count-pill" id="allCount">390</span>
+          </button>
+        </div>
+
+        <div class="chip-divider"></div>
+
+        <!-- Prop Market Chips -->
+        <div class="chip-segment-group" role="radiogroup" aria-label="Market">
+          <button type="button" class="chip-pill active" data-market="receiving_yards" role="radio" aria-checked="true">Yards</button>
+          <button type="button" class="chip-pill" data-market="receptions" role="radio" aria-checked="false">Rec</button>
+          <button type="button" class="chip-pill" data-market="anytime_td" role="radio" aria-checked="false">TD</button>
+        </div>
+
+        <div class="chip-divider"></div>
+
+        <!-- Position Chips -->
+        <div class="chip-segment-group" role="radiogroup" aria-label="Position">
+          <button type="button" class="chip-pill active" data-pos="ALL" role="radio" aria-checked="true">All</button>
+          <button type="button" class="chip-pill" data-pos="WR" role="radio" aria-checked="false">WR</button>
+          <button type="button" class="chip-pill" data-pos="TE" role="radio" aria-checked="false">TE</button>
+          <button type="button" class="chip-pill" data-pos="RB" role="radio" aria-checked="false">RB</button>
+        </div>
+
+        <div class="chip-divider"></div>
+
+        <!-- Mobile Sniper Trigger Chip -->
+        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure Sniper Alerts" title="Configure Sniper Alerts">
+          <span>SNIPER</span>
+          <span class="sniper-mobile-dot" id="mobileSniperDot" hidden></span>
+        </button>
+
+        <!-- More Filters Bottom Sheet Trigger (Signal & Matchups) -->
+        <button type="button" class="chip-pill chip-more-btn" id="moreFiltersBtn" aria-label="More Filters">
+          <span id="moreFiltersLabel">FILTERS</span>
+          <span class="chip-chevron">▾</span>
+        </button>
+      </div>
+
+      <!-- Desktop View Switcher -->
+      <div class="pw-segmented pw-view-toggle view-switch pw-desktop-only" role="group" aria-label="View layout switcher">
+        <button type="button" data-view="table" class="pw-seg-btn active">Table</button>
+        <button type="button" data-view="cards" class="pw-seg-btn">Grid</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell page" id="slateBoard">
+    <!-- Structured Injury & Vacated-Volume Card Grid Drawer -->
+    <div class="injury-drawer-wrap" id="availabilityDetails" hidden></div>
+
+    <!-- Hidden compatibility elements -->
+    <span id="slateState" hidden>Upcoming slate</span>
+    <span id="resultCount" hidden>33 actionable</span>
+
+    <!-- First-Run Quantitative Briefing Onboarding Modal (Dismissible) -->
+    <div class="first-run-briefing-modal" id="firstRunBriefing" hidden>
+      <div class="first-run-briefing-card" role="dialog" aria-modal="true" aria-labelledby="briefingTitle">
+        <div class="first-run-header">
+          <div class="first-run-title" id="briefingTitle">
+            <span style="color:#B6F36B; font-weight:800; font-size:11px; border:1px solid rgba(182,243,107,0.35); border-radius:3px; padding:1px 4px; letter-spacing:0.5px;">QUANT</span>
+            <span>PropStein Quantitative Briefing</span>
+          </div>
+          <button type="button" class="first-run-dismiss" id="dismissBriefingBtn" aria-label="Dismiss briefing">✕</button>
+        </div>
+        <p class="first-run-intro">Empirical NFL prop terminal. Zero tout picks, zero marketing locks—transparent math, real-time odds tracking, and strict CLV accountability.</p>
+        <div class="first-run-grid">
+          <div class="first-run-step">
+            <div class="first-run-step-num">Step 1 · Identify Edge</div>
+            <div class="first-run-step-title">Poisson/Gamma Distribution Fair Lines</div>
+            <div class="first-run-step-desc">Negative Binomial target distributions paired with calibrated Gamma shape per catch estimate fair lines and un-vigged probabilities.</div>
+          </div>
+          <div class="first-run-step">
+            <div class="first-run-step-num">Step 2 · Audit Risk</div>
+            <div class="first-run-step-title">Verified Spreads &amp; Correlations</div>
+            <div class="first-run-step-desc">Sportsbook quotes fail closed without SHA-256 verification. Target redistribution engine tracks same-team volume cannibalization.</div>
+          </div>
+          <div class="first-run-step">
+            <div class="first-run-step-num">Step 3 · Conscious Execution</div>
+            <div class="first-run-step-title">One-Tap Human Confirm &amp; CLV Audit</div>
+            <div class="first-run-step-desc">Tap + or swipe to stage tickets in your personal CLV ledger. Zero auto-betting corruption: your record reflects genuine human execution.</div>
+          </div>
+        </div>
+        <div class="first-run-modal-footer">
+          <label class="first-run-persist-label">
+            <input type="checkbox" id="dontShowBriefingAgain" checked>
+            <span>Don't show this briefing on launch</span>
+          </label>
+          <button type="button" class="first-run-enter-btn" id="enterTerminalBtn">Enter Terminal &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="data-board" aria-label="Player slate">
+      <noscript>
+        <div style="padding: 14px 18px; margin-bottom: 16px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: #f59e0b; font-family: var(--sans); font-size: 13px;">
+          <strong>JavaScript Required:</strong> PropStein is a client-side quantitative terminal. 390 projected receivers across 15 Week 7 matchups are rendered dynamically from static JSON data feeds (<code>slate_2026_w7.json</code>). Please enable JavaScript to access live odds comparison, Kelly calculations, and personal CLV tracking.
+        </div>
+      </noscript>
+      <div class="table-scroll desktop-table-container" id="tableView" tabindex="0" aria-label="Scrollable player table">
+        <table class="slate-table">
+          <thead id="slateHead"></thead>
+          <tbody id="slateRows">
+            <tr class="skeleton-row"><td><div class="skeleton-block" style="width:140px; height:18px;"></div></td><td><div class="skeleton-block" style="width:65px; height:18px;"></div></td><td class="td-num"><div class="skeleton-block" style="width:85px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:125px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:80px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:55px; height:18px; margin-left:auto;"></div></td></tr>
+            <tr class="skeleton-row"><td><div class="skeleton-block" style="width:120px; height:18px;"></div></td><td><div class="skeleton-block" style="width:65px; height:18px;"></div></td><td class="td-num"><div class="skeleton-block" style="width:90px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:115px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:75px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:55px; height:18px; margin-left:auto;"></div></td></tr>
+            <tr class="skeleton-row"><td><div class="skeleton-block" style="width:150px; height:18px;"></div></td><td><div class="skeleton-block" style="width:65px; height:18px;"></div></td><td class="td-num"><div class="skeleton-block" style="width:80px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:130px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:85px; height:18px; margin-left:auto;"></div></td><td class="td-num"><div class="skeleton-block" style="width:55px; height:18px; margin-left:auto;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-grid" id="cardView">
+        <div class="skeleton-card"><div class="skeleton-block" style="width:55%; height:20px; margin-bottom:8px;"></div><div class="skeleton-block" style="width:40%; height:14px; margin-bottom:12px;"></div><div class="skeleton-block" style="width:100%; height:48px; border-radius:6px;"></div></div>
+        <div class="skeleton-card"><div class="skeleton-block" style="width:60%; height:20px; margin-bottom:8px;"></div><div class="skeleton-block" style="width:35%; height:14px; margin-bottom:12px;"></div><div class="skeleton-block" style="width:100%; height:48px; border-radius:6px;"></div></div>
+        <div class="skeleton-card"><div class="skeleton-block" style="width:50%; height:20px; margin-bottom:8px;"></div><div class="skeleton-block" style="width:45%; height:14px; margin-bottom:12px;"></div><div class="skeleton-block" style="width:100%; height:48px; border-radius:6px;"></div></div>
+      </div>
+      <div class="empty-state" id="emptyState" hidden>No player records match these filters.</div>
+    </section>
+
+    <section class="trust-line" aria-label="Data integrity status">
+      <div><span class="status-dot grey"></span><strong>Price check</strong> <span id="priceCheckText">Syncing fresh quotes…</span></div>
+      <div><strong>Verification Receipt</strong> SHA-256 hashes detect price changes; unverified quotes fail closed.</div>
+      <div id="clvStatus"><strong>CLV Audit</strong> 8 verified records · Root #178e29974bf8748c.</div>
+    </section>
+
+    <!-- Terminal Compliance & Responsible Gaming Footer -->
+    <footer class="terminal-compliance-footer" role="contentinfo" aria-label="Compliance and Responsible Gaming">
+      <div class="compliance-pills">
+        <span class="compliance-badge-21" title="Must be 21 years of age or older">21+</span>
+        <a class="compliance-pill" href="tel:18004262537" title="National Problem Gambling Helpline">
+          <span>Call 1-800-GAMBLER</span>
+        </a>
+        <a class="compliance-pill" href="https://www.ncpgambling.org/" target="_blank" rel="noopener noreferrer">
+          <span>NCPG Helpline &amp; Resources ↗</span>
+        </a>
+      </div>
+      <p class="compliance-disclaimer">
+        PropStein is an independent quantitative research terminal and computational decision-support tool. PropStein does not accept wagers, place bets, operate as a sportsbook, or provide financial or investment advice. All model expectations, de-vigged fair values, and Closing Line Value (CLV) metrics are statistical estimates derived from historical distribution models and verified sportsbook data feeds. Odds and availability subject to change. If you or someone you know has a gambling problem, crisis counseling and referral services can be accessed by calling 1-800-GAMBLER (1-800-426-2537).
+      </p>
+    </footer>
+  </main>
+
+  <!-- Player Inspector Modal (Full-Height Bottom Sheet on Mobile) -->
+  <dialog class="detail-dialog" id="detailDialog" aria-labelledby="detailTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow" id="detailMeta">Player detail</div>
+          <h2 id="detailTitle">Player</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close player detail">×</button>
+      </div>
+      <div class="dialog-body" id="detailContent"></div>
+    </form>
+  </dialog>
+
+  <!-- Settings & Risk Policy Bottom Sheet (Mobile Menu Trigger) -->
+  <dialog class="detail-dialog settings-dialog" id="settingsDialog" aria-labelledby="settingsTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow">Terminal Configuration</div>
+          <h2 id="settingsTitle">Settings &amp; Risk Policy</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close settings">×</button>
+      </div>
+      <div class="dialog-body settings-body" id="settingsContent">
+        <!-- Execution Gate & Kelly Cap Steppers (44px touch targets) -->
+        <div class="settings-section">
+          <h3>Risk &amp; Execution Gate</h3>
+          <p class="settings-desc">Plays must clear the minimum edge threshold before entering Active recommendations.</p>
+          <div class="settings-stepper-card">
+            <div class="settings-stepper-row">
+              <div class="settings-stepper-meta">
+                <span class="settings-stepper-title">Execution Gate</span>
+                <span class="settings-stepper-sub">Min edge required</span>
+              </div>
+              <div class="touch-stepper">
+                <button type="button" class="touch-step-btn" id="modalGateMinus" aria-label="Decrease gate">−</button>
+                <span id="modalGateVal" class="touch-step-val">10%</span>
+                <button type="button" class="touch-step-btn" id="modalGatePlus" aria-label="Increase gate">+</button>
+              </div>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-stepper-row">
+              <div class="settings-stepper-meta">
+                <span class="settings-stepper-title">Kelly Cap</span>
+                <span class="settings-stepper-sub">Max bankroll fraction</span>
+              </div>
+              <div class="touch-stepper">
+                <button type="button" class="touch-step-btn" id="modalCapMinus" aria-label="Decrease Kelly cap">−</button>
+                <span id="modalCapVal" class="touch-step-val">3.0%</span>
+                <button type="button" class="touch-step-btn" id="modalCapPlus" aria-label="Increase Kelly cap">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bankroll Sizing -->
+        <div class="settings-section">
+          <h3>Bankroll Sizing</h3>
+          <p class="settings-desc">Recommended dollar stakes are computed from this bankroll baseline.</p>
+          <div class="settings-input-card">
+            <label class="settings-bankroll-label" for="settingsBankrollInput">Bankroll $</label>
+            <input type="number" id="settingsBankrollInput" class="settings-bankroll-input" min="100" max="1000000" step="100" value="5000">
+          </div>
+        </div>
+
+        <!-- Commercial Membership Tier Switcher -->
+        <div class="settings-section">
+          <h3>Membership Tier (Gating Engine)</h3>
+          <p class="settings-desc">Switch membership tier to evaluate the hard edge value gate.</p>
+          <div class="tier-switcher-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
+            <button type="button" class="tier-pill-btn" data-set-tier="free">
+              <span class="tier-pill-name" style="display:block; font-weight:700; font-size:12px;">Observer</span>
+              <span class="tier-pill-price" style="display:block; font-size:10px; color:#94a3b8;">Free</span>
+            </button>
+            <button type="button" class="tier-pill-btn active" data-set-tier="sharp">
+              <span class="tier-pill-name" style="display:block; font-weight:700; font-size:12px; color:#B6F36B;">Sharp</span>
+              <span class="tier-pill-price" style="display:block; font-size:10px; color:#94a3b8;">$29/mo</span>
+            </button>
+            <button type="button" class="tier-pill-btn" data-set-tier="quant">
+              <span class="tier-pill-name" style="display:block; font-weight:700; font-size:12px;">Quant</span>
+              <span class="tier-pill-price" style="display:block; font-size:10px; color:#94a3b8;">$99/mo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Slate Selection -->
+        <div class="settings-section">
+          <h3>Dataset Slate</h3>
+          <div class="settings-select-card">
+            <select id="mobileSlateSelector" class="settings-select" aria-label="Mobile Slate Selector">
+              <option value="2026_w7">NFL · Week 7 upcoming</option>
+              <option value="2026_w1">NFL · Week 1 audit</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Live Feed & Verification Status -->
+        <div class="settings-section">
+          <h3>Data Feed &amp; Verification</h3>
+          <div class="settings-info-card">
+            <div class="settings-info-row">
+              <span>Feed Provider</span>
+              <b>Bovada API (Fresh)</b>
+            </div>
+            <div class="settings-info-row">
+              <span>Verification</span>
+              <b class="text-accent">64/64 SHA-256 Receipts</b>
+            </div>
+            <div class="settings-info-row">
+              <span>Settlement Audit</span>
+              <b>Root #178e29974bf8748c</b>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-actions">
+          <button type="button" id="settingsBriefingBtn" class="settings-action-btn secondary" style="margin-bottom:8px;">Quantitative Briefing (How It Works)</button>
+          <button type="button" id="settingsOpenAuditBtn" class="settings-action-btn">View Public CLV Audit Report</button>
+          <button type="button" id="settingsExportBtn" class="settings-action-btn secondary">Export Slate CSV</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- More Filters Bottom Sheet (Signal Archetypes & Game Matchups) -->
+  <dialog class="detail-dialog more-filters-dialog" id="moreFiltersDialog" aria-labelledby="moreFiltersTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow">Advanced Filters</div>
+          <h2 id="moreFiltersTitle">Signal &amp; Matchup Filter</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close filters">×</button>
+      </div>
+      <div class="dialog-body more-filters-body">
+        <div class="filter-sheet-section">
+          <h4>Player Signal Archetype</h4>
+          <div class="signal-sheet-chips" id="signalSheetChips" role="radiogroup" aria-label="Signal Archetype">
+            <button type="button" class="signal-chip-btn active" data-intent="all">All Signals</button>
+            <button type="button" class="signal-chip-btn" data-intent="edge">Highest Edge (&gt;10%)</button>
+            <button type="button" class="signal-chip-btn" data-intent="surge">Role Surges (Injury Vacancies)</button>
+            <button type="button" class="signal-chip-btn" data-intent="volume">High Floor (7+ Targets)</button>
+            <button type="button" class="signal-chip-btn" data-intent="deep">Deep Threats (12+ aDOT)</button>
+          </div>
+        </div>
+
+        <div class="filter-sheet-section">
+          <h4>Game Matchups</h4>
+          <div class="matchup-sheet-chips prime-chips" id="matchupSheetChips"></div>
+        </div>
+
+        <div class="filter-sheet-actions">
+          <button type="button" id="resetMoreFiltersBtn" class="filter-reset-btn">Reset to All</button>
+          <button type="button" id="applyMoreFiltersBtn" class="filter-apply-btn">Done</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Personal CLV Ledger Dialog -->
+  <dialog class="detail-dialog portfolio-dialog" id="portfolioDialog" aria-labelledby="portfolioTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow">Personal CLV Ledger</div>
+          <h2 id="portfolioTitle">Portfolio &amp; CLV Scorecard</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close portfolio dialog">×</button>
+      </div>
+      <div class="dialog-body" id="portfolioContent"></div>
+    </form>
+  </dialog>
+
+  <!-- Programmable Sniper Market Alerts Dialog -->
+  <dialog class="detail-dialog sniper-dialog" id="sniperDialog" aria-labelledby="sniperTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow">Autonomous Market Telemetry</div>
+          <h2 id="sniperTitle">🎯 Sniper Market Alerts</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close sniper dialog">×</button>
+      </div>
+      <div class="dialog-body" id="sniperContent"></div>
+    </form>
+  </dialog>
+
+  <!-- Public CLV Audit Report Dialog -->
+  <dialog class="detail-dialog clv-dialog" id="clvDialog" aria-labelledby="clvReportTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow" id="clvReportEyebrow">Validation &amp; Audit Report</div>
+          <h2 id="clvReportTitle">Week 7 Public CLV Validation Report</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close CLV report">×</button>
+      </div>
+      <div class="dialog-body" id="clvReportContent"></div>
+    </form>
+  </dialog>
+
+  <!-- Commercial Pricing & Subscription Tier Dialog -->
+  <dialog class="detail-dialog pricing-dialog" id="pricingDialog" aria-labelledby="pricingTitle">
+    <form method="dialog" class="dialog-shell">
+      <div class="dialog-sheet-handle" aria-hidden="true"></div>
+      <div class="dialog-header">
+        <div>
+          <div class="eyebrow">Research Access</div>
+          <h2 id="pricingTitle">Access &amp; Evidence</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close pricing">×</button>
+      </div>
+      <div class="dialog-body" id="pricingContent">
+        <div class="pricing-tier-grid">
+          <div class="pricing-tier-card featured" data-tier="free">
+            <div class="tier-featured-pill">OPEN RESEARCH ACCESS</div>
+            <div class="tier-badge highlight">Observer</div>
+            <div class="tier-price">$0 <span>/ mo</span></div>
+            <p class="tier-tagline">Model fair lines and public performance research.</p>
+            <ul class="tier-feature-list">
+              <li>Full slate model fair lines</li>
+              <li>Quote status and source timestamps</li>
+              <li>Public calibration and CLV record</li>
+              <li>Research calculations, clearly marked when unverified</li>
+            </ul>
+            <button type="button" class="tier-cta-btn secondary" disabled>Current access: Observer</button>
+          </div>
+
+          <div class="pricing-tier-card" data-tier="sharp">
+            <div class="tier-badge">Sharp (Pro)</div>
+            <div class="tier-price">Paused</div>
+            <p class="tier-tagline">New paid access is frozen while live edge remains unproven.</p>
+            <ul class="tier-feature-list">
+              <li>Research tools remain available in Observer mode</li>
+              <li>Edge and Kelly outputs are estimates, not validated picks</li>
+              <li>No actionable live Sniper alerts are offered</li>
+            </ul>
+            <button type="button" class="tier-cta-btn secondary" disabled>Paid signups frozen</button>
+          </div>
+
+          <div class="pricing-tier-card" data-tier="quant">
+            <div class="tier-badge">Quant (API)</div>
+            <div class="tier-price">Waitlist</div>
+            <p class="tier-tagline">Programmatic access is under evaluation and is not for sale.</p>
+            <ul class="tier-feature-list">
+              <li>Public snapshots show their own timestamps</li>
+              <li>Public Polymarket refresh runs every 4 hours — same as every tier; no faster ingestion exists at any tier</li>
+              <li>API scope and cadence will be published before launch</li>
+            </ul>
+            <button type="button" class="tier-cta-btn secondary" disabled>Quant waitlisted</button>
+          </div>
+        </div>
+
+        <div class="pricing-community-row">
+          <div><strong>PropStein on Whop</strong><p>Join the free community for updates and the waitlist. No paid picks are offered.</p></div>
+          <a href="https://whop.com/propstein" target="_blank" rel="noopener noreferrer">Join free community <span aria-hidden="true">↗</span></a>
+        </div>
+
+        <div class="pricing-guarantee-box">
+          <p><strong>Paid signups frozen; Beat-Close Guarantee suspended.</strong> The current public record does not establish a live betting edge. Paid access stays closed until at least 300 prospectively graded board decisions show positive closing-line value with a 95% confidence interval above zero. See the <a href="/performance/">public performance record</a> for the latest results.</p>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 4-Tab Native Mobile Bottom Navigation Bar (44px+ touch targets) -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <button type="button" class="bottom-nav-item active" id="bottomNavSlate" aria-label="View Player Slate">
+      <svg class="prop-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"/><path d="M6 15V9h4v6"/></svg>
+      <span>Slate</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bottomNavWatchlist" aria-label="View Watchlist">
+      <svg class="prop-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="8 1.5 10.2 6 15 6.7 11.5 10.1 12.3 14.9 8 12.6 3.7 14.9 4.5 10.1 1 6.7 5.8 6 8 1.5"/></svg>
+      <span>Watchlist</span>
+      <span class="bottom-nav-badge" id="bottomNavWatchlistBadge" hidden>0</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bottomNavLedger" aria-label="Open Personal CLV Ledger">
+      <svg class="prop-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.5h11a1 1 0 011 1v8a1 1 0 01-1 1h-11a1 1 0 01-1-1v-8a1 1 0 011-1z"/><path d="M5.5 3.5v-1a1 1 0 011-1h4a1 1 0 011 1v1M8 7v4M6 9h4"/></svg>
+      <span>Ledger</span>
+      <span class="bottom-nav-badge" id="bottomNavBadge" hidden>0</span>
+    </button>
+    <button type="button" class="bottom-nav-item" id="bottomNavAudit" aria-label="Open Public CLV Validation Report">
+      <svg class="prop-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 1.5H3.5a1 1 0 00-1 1v11a1 1 0 001 1h9a1 1 0 001-1V6L9 1.5z"/><path d="M9 1.5V6h4.5M5 10h6M5 7.5h2M5 12.5h6"/></svg>
+      <span>Audit</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-07",
+  "event_id": "600061268",
+  "updated_at": "2026-11-03T03:58:44Z",
+  "fights": {
+    "401928118": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928116": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928114": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401911642": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928120": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401932012": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928115": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401932716": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401932011": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928113": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928117": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928119": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401928111": {
+      "status": "scheduled",
+      "events": []
+    },
+    "401932715": {
+      "status": "scheduled",
+      "events": []
+    }
+  }
+}

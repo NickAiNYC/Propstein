@@ -1,0 +1,62 @@
+{
+  "evaluation_id": "eval_2026_w1_20261020_055929",
+  "season": 2026,
+  "week": 1,
+  "decision_cutoff_enforced": "2026-10-20T05:59:29.074491+00:00",
+  "total_snapshots_evaluated": 862,
+  "excluded_future_snapshots": 0,
+  "metrics": {
+    "brier_score_model": 0.3176,
+    "brier_score_naive_baseline": 0.25,
+    "brier_skill_score_pct": -27.06,
+    "log_loss_model": 0.8319,
+    "log_loss_naive_baseline": 0.6931
+  },
+  "role_hypothesis_holdout_evidence": {
+    "established_volume": {
+      "sample_size": 64,
+      "over_rate": 0.0625,
+      "under_rate": 0.9375,
+      "push_rate": 0.0,
+      "mean_projection_error": -23.82,
+      "mean_actual": 3.97
+    },
+    "contraction": {
+      "sample_size": 30,
+      "over_rate": 0.0,
+      "under_rate": 1.0,
+      "push_rate": 0.0,
+      "mean_projection_error": -20.98,
+      "mean_actual": 0.17
+    },
+    "sustained_surge": {
+      "sample_size": 32,
+      "over_rate": 0.0625,
+      "under_rate": 0.9375,
+      "push_rate": 0.0,
+      "mean_projection_error": -25.6,
+      "mean_actual": 4.06
+    },
+    "none": {
+      "sample_size": 726,
+      "over_rate": 0.0276,
+      "under_rate": 0.9724,
+      "push_rate": 0.0014,
+      "mean_projection_error": -10.28,
+      "mean_actual": 0.54
+    },
+    "one_game_spike": {
+      "sample_size": 10,
+      "over_rate": 0.0,
+      "under_rate": 1.0,
+      "push_rate": 0.0,
+      "mean_projection_error": -11.31,
+      "mean_actual": 0.0
+    }
+  },
+  "provisional_threshold_verdict": {
+    "sustained_surge_validated": false,
+    "one_game_spike_mean_reverted": true,
+    "recommendation": "Maintain provisional label until sample size >= 100 per role tier across 8+ chronological slates."
+  }
+}

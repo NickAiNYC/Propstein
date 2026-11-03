@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-31",
+  "event_id": "600061420",
+  "updated_at": "2026-11-01T04:06:25Z",
+  "fights": {
+    "401914105": {
+      "status": "final",
+      "events": []
+    },
+    "401928105": {
+      "status": "final",
+      "events": []
+    },
+    "401914106": {
+      "status": "final",
+      "events": []
+    },
+    "401931617": {
+      "status": "final",
+      "events": []
+    },
+    "401928109": {
+      "status": "final",
+      "events": []
+    },
+    "401928106": {
+      "status": "final",
+      "events": []
+    },
+    "401931615": {
+      "status": "final",
+      "events": []
+    },
+    "401928107": {
+      "status": "final",
+      "events": []
+    },
+    "401928104": {
+      "status": "final",
+      "events": []
+    },
+    "401931555": {
+      "status": "final",
+      "events": []
+    },
+    "401931616": {
+      "status": "final",
+      "events": []
+    },
+    "401921310": {
+      "status": "final",
+      "events": []
+    }
+  }
+}

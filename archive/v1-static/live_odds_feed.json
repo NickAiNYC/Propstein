@@ -1,0 +1,339 @@
+{
+ "feed_status": "INGESTED_UNVERIFIED",
+ "feed_origin": "bundled_demonstration_fixture",
+ "feed_disclosure": "Synthetic/manual demonstration quotes. No provider response receipts are stored; these records cannot qualify or receive a stake.",
+ "updated_at": "2026-10-20T06:23:18.051353+00:00",
+ "slate": "2026-W07",
+ "verified_books_count": 0,
+ "monitored_books": [
+  "BetMGM",
+  "DraftKings",
+  "FanDuel",
+  "Pinnacle"
+ ],
+ "total_quotes": 10,
+ "qualified_count": 0,
+ "quotes": [
+  {
+   "quote_id": "syn_a_ne_chi_player_a_yds_open",
+   "book": "Synthetic Book A",
+   "player_id": "SYN-A",
+   "player_name": "Player A",
+   "team": "NE",
+   "opponent": "CHI",
+   "game_id": "2026_07_NE_CHI",
+   "position": "WR",
+   "market": "receiving_yards",
+   "line": 34.5,
+   "fair_line": 43.5,
+   "over_odds": -110,
+   "under_odds": -110,
+   "observed_at": "2026-10-20T06:23:35+00:00",
+   "source": "Synthetic Book A Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.1053,
+    "break_even_adv": 0.0814,
+    "expected_return": 0.1555,
+    "actionable_stake": 0.0,
+    "catalyst": "both",
+    "injury_context": "Romeo Doubs (Shoulder OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_b_ne_chi_player_a_rec_open",
+   "book": "Synthetic Book B",
+   "player_id": "SYN-A",
+   "player_name": "Player A",
+   "team": "NE",
+   "opponent": "CHI",
+   "game_id": "2026_07_NE_CHI",
+   "position": "WR",
+   "market": "receptions",
+   "line": 3.5,
+   "fair_line": 4.5,
+   "over_odds": 105,
+   "under_odds": -135,
+   "observed_at": "2026-10-20T06:24:36.000137+00:00",
+   "source": "Synthetic Book B Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.0825,
+    "break_even_adv": 0.0539,
+    "expected_return": 0.1105,
+    "actionable_stake": 0.0,
+    "catalyst": "football_news",
+    "injury_context": "Romeo Doubs (Shoulder OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_c_ne_chi_player_b_yds_open",
+   "book": "Synthetic Book C",
+   "player_id": "SYN-B",
+   "player_name": "Player B",
+   "team": "NE",
+   "opponent": "CHI",
+   "game_id": "2026_07_NE_CHI",
+   "position": "TE",
+   "market": "receiving_yards",
+   "line": 31.5,
+   "fair_line": 39.5,
+   "over_odds": -115,
+   "under_odds": -115,
+   "observed_at": "2026-10-20T06:25:37.000274+00:00",
+   "source": "Synthetic Book C Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.1129,
+    "break_even_adv": 0.078,
+    "expected_return": 0.1458,
+    "actionable_stake": 0.0,
+    "catalyst": "both",
+    "injury_context": "Romeo Doubs (Shoulder OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_a_ne_chi_player_b_rec_open",
+   "book": "Synthetic Book A",
+   "player_id": "SYN-B",
+   "player_name": "Player B",
+   "team": "NE",
+   "opponent": "CHI",
+   "game_id": "2026_07_NE_CHI",
+   "position": "TE",
+   "market": "receptions",
+   "line": 3.5,
+   "fair_line": 4.5,
+   "over_odds": 110,
+   "under_odds": -140,
+   "observed_at": "2026-10-20T06:26:38.000411+00:00",
+   "source": "Synthetic Book A Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.1642,
+    "break_even_adv": 0.1375,
+    "expected_return": 0.2887,
+    "actionable_stake": 0.0,
+    "catalyst": "football_news",
+    "injury_context": "Romeo Doubs (Shoulder OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_d_ne_chi_player_c_yds_open",
+   "book": "Synthetic Book D",
+   "player_id": "SYN-C",
+   "player_name": "Player C",
+   "team": "NE",
+   "opponent": "CHI",
+   "game_id": "2026_07_NE_CHI",
+   "position": "WR",
+   "market": "receiving_yards",
+   "line": 45.5,
+   "fair_line": 45.5,
+   "over_odds": -110,
+   "under_odds": -110,
+   "observed_at": "2026-10-20T06:27:39.000548+00:00",
+   "source": "Synthetic Book D Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "PASS",
+    "best_side": "OVER",
+    "prob_edge": 0.0,
+    "break_even_adv": -0.0238,
+    "expected_return": -0.0455,
+    "actionable_stake": 0.0,
+    "catalyst": "pricing",
+    "injury_context": "Teammate WR (Shoulder OUT) - synthetic context"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_a_sf_atl_player_d_yds_open",
+   "book": "Synthetic Book A",
+   "player_id": "SYN-D",
+   "player_name": "Player D",
+   "team": "SF",
+   "opponent": "ATL",
+   "game_id": "2026_07_SF_ATL",
+   "position": "TE",
+   "market": "receiving_yards",
+   "line": 48.5,
+   "fair_line": 61.0,
+   "over_odds": -112,
+   "under_odds": -112,
+   "observed_at": "2026-10-20T06:28:40.000685+00:00",
+   "source": "Synthetic Book A Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.1251,
+    "break_even_adv": 0.0968,
+    "expected_return": 0.1833,
+    "actionable_stake": 0.0,
+    "catalyst": "both",
+    "injury_context": "Mike Evans (Achilles OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_b_sf_atl_player_d_rec_open",
+   "book": "Synthetic Book B",
+   "player_id": "SYN-D",
+   "player_name": "Player D",
+   "team": "SF",
+   "opponent": "ATL",
+   "game_id": "2026_07_SF_ATL",
+   "position": "TE",
+   "market": "receptions",
+   "line": 4.5,
+   "fair_line": 6.5,
+   "over_odds": -105,
+   "under_odds": -125,
+   "observed_at": "2026-10-20T06:29:41.000822+00:00",
+   "source": "Synthetic Book B Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.1685,
+    "break_even_adv": 0.136,
+    "expected_return": 0.2654,
+    "actionable_stake": 0.0,
+    "catalyst": "football_news",
+    "injury_context": "Mike Evans (Achilles OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_c_sf_atl_player_e_yds_open",
+   "book": "Synthetic Book C",
+   "player_id": "SYN-E",
+   "player_name": "Player E",
+   "team": "SF",
+   "opponent": "ATL",
+   "game_id": "2026_07_SF_ATL",
+   "position": "RB",
+   "market": "receiving_yards",
+   "line": 32.5,
+   "fair_line": 41.5,
+   "over_odds": -115,
+   "under_odds": -115,
+   "observed_at": "2026-10-20T06:30:42.000959+00:00",
+   "source": "Synthetic Book C Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.1325,
+    "break_even_adv": 0.0976,
+    "expected_return": 0.1825,
+    "actionable_stake": 0.0,
+    "catalyst": "both",
+    "injury_context": "Mike Evans (Achilles OUT)"
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_a_ne_chi_player_f_yds_open",
+   "book": "Synthetic Book A",
+   "player_id": "SYN-F",
+   "player_name": "Player F",
+   "team": "NE",
+   "opponent": "CHI",
+   "game_id": "2026_07_NE_CHI",
+   "position": "WR",
+   "market": "receiving_yards",
+   "line": 64.5,
+   "fair_line": 61.0,
+   "over_odds": -115,
+   "under_odds": -115,
+   "observed_at": "2026-10-20T06:31:43.001096+00:00",
+   "source": "Synthetic Book A Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "UNDER",
+    "prob_edge": 0.034,
+    "break_even_adv": -0.0009,
+    "expected_return": -0.0016,
+    "actionable_stake": 0.0,
+    "catalyst": "pricing",
+    "injury_context": null
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  },
+  {
+   "quote_id": "syn_d_det_gb_player_g_yds_open",
+   "book": "Synthetic Book D",
+   "player_id": "SYN-G",
+   "player_name": "Player G",
+   "team": "DET",
+   "opponent": "GB",
+   "game_id": "2026_07_GB_DET",
+   "position": "WR",
+   "market": "receiving_yards",
+   "line": 112.5,
+   "fair_line": 113.0,
+   "over_odds": -110,
+   "under_odds": -110,
+   "observed_at": "2026-10-20T06:32:44.001233+00:00",
+   "source": "Synthetic Book D Manual Entry (UNVERIFIED - demonstration fixture)",
+   "evaluation": {
+    "is_qualified": false,
+    "status": "DATA_CHECK",
+    "best_side": "OVER",
+    "prob_edge": 0.0019,
+    "break_even_adv": -0.0219,
+    "expected_return": -0.0419,
+    "actionable_stake": 0.0,
+    "catalyst": "pricing",
+    "injury_context": null
+   },
+   "verification": {
+    "status": "UNVERIFIED",
+    "reason": "provider receipt or source URL missing"
+   }
+  }
+ ],
+ "validation_note": "Quotes lack provider receipts or source URLs. Display-only; qualification and staking are disabled."
+}

@@ -1,0 +1,24 @@
+[
+ {
+  "game_id": "nba-20261022-BOS-NYK",
+  "gameday": "2026-10-22",
+  "gametime": "19:30",
+  "gametime_et": "19:30",
+  "tipoff_utc": "2026-10-22T23:30:00Z",
+  "away_team": "BOS",
+  "home_team": "NYK",
+  "venue": "Madison Square Garden",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261022-DEN-OKC",
+  "gameday": "2026-10-22",
+  "gametime": "22:00",
+  "gametime_et": "22:00",
+  "tipoff_utc": "2026-10-23T02:00:00Z",
+  "away_team": "DEN",
+  "home_team": "OKC",
+  "venue": "Paycom Center",
+  "_fixture": true
+ }
+]

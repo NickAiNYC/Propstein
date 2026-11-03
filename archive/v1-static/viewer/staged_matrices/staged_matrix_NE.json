@@ -1,0 +1,27 @@
+{
+  "status": "UNREVIEWED",
+  "review_required": true,
+  "team": "NE",
+  "vacated_player_id": "00-0035676",
+  "vacated_player_name": "A.J. Brown",
+  "new_injury_status": "OUT",
+  "staged_at": "2026-10-22T02:46:09.626969+00:00",
+  "provisional_redistribution": {
+    "vacated_target_share_est": 0.22,
+    "target_absorption_allocation": [
+      {
+        "role": "Slot / Short Crosser",
+        "absorption_pct": 0.4
+      },
+      {
+        "role": "Tight End Seam",
+        "absorption_pct": 0.3
+      },
+      {
+        "role": "Perimeter X Backup",
+        "absorption_pct": 0.3
+      }
+    ]
+  },
+  "audit_notice": "UNREVIEWED STAGED MATRIX: Projections locked from Sniper auto-execution until manual human sign-off."
+}

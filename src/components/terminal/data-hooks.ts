@@ -66,6 +66,10 @@ export interface PropsResp {
   teaser: boolean;
   delayMinutes: number;
   exportEnabled: boolean;
+  /** "bundled_v1_snapshot" today — static quotes, not a live odds feed */
+  dataSource?: string;
+  lastObservedAt?: string | null;
+  verifiedCount?: number;
   props: PropDTO[];
 }
 

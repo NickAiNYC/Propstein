@@ -12,6 +12,10 @@ const CACHE = "public, s-maxage=60, stale-while-revalidate=300";
 //       lines delayed 15 minutes, model numbers stripped.
 // PRO:  full join-flattened feed — fair line, prob, fair odds, EV, Kelly,
 //       every book — feeds the comparison calculator and slip export.
+//
+// dataSource is always declared: today it is the bundled v1 snapshot
+// (static Week 8 quotes re-upserted daily), NOT a live odds feed. The
+// UI renders it so nothing on the page implies live lines.
 export async function GET(req: NextRequest) {
   try {
     const sp = req.nextUrl.searchParams;
@@ -53,6 +57,17 @@ export async function GET(req: NextRequest) {
     const teaser = !pro && rows.length > FREE_TEASER_ROWS;
     if (teaser) rows = rows.slice(0, FREE_TEASER_ROWS);
 
+    // honest provenance: newest observation across the slate (all rows,
+    // before teaser slicing) + how many are actually verified
+    const observedAll = await db.prop.findMany({
+      where,
+      select: { observedAt: true, verified: true },
+    });
+    const lastObservedAt = observedAll
+      .map((r) => r.observedAt)
+      .sort((a, b) => b.getTime() - a.getTime())[0];
+    const verifiedCount = observedAll.filter((r) => r.verified).length;
+
     const props = rows.map((r) => {
       const base = {
         id: r.id,
@@ -90,6 +105,11 @@ export async function GET(req: NextRequest) {
         teaser,
         delayMinutes: pro ? 0 : FREE_DELAY_MINUTES,
         exportEnabled: pro,
+        // truthful feed identity — the props served today come from the
+        // bundled v1 snapshot (see ingest.yml): static, not live quotes
+        dataSource: "bundled_v1_snapshot",
+        lastObservedAt: lastObservedAt ?? null,
+        verifiedCount,
         props,
       },
       { headers: { "Cache-Control": CACHE } },

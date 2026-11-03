@@ -1,13 +1,18 @@
 name: ingest
 
 # Propstein 2.0 zero-cost ingest pipeline.
-# games + players every 15 min (ESPN public JSON + nba_api), props hourly
-# (v1 snapshot live-odds feed). All writes are chunked atomic upserts.
+#   games + players: every 15 min — LIVE fetches (ESPN public JSON + nba_api).
+#   props: DAILY — re-reads the bundled v1 snapshot live-odds feed
+#   (worker/data/live_odds_feed.json, Week 8). This is NOT a live quote
+#   source: it is idempotent re-upsert of a static file, kept warm for
+#   preview deployments. /api/props labels this to clients as
+#   `dataSource: bundled_v1_snapshot`. Replace the snapshot read with a
+#   real odds feed before treating props as live.
 
 on:
   schedule:
-    - cron: "*/15 * * * *" # games + players
-    - cron: "5 * * * *"    # props
+    - cron: "*/15 * * * *" # games + players (live fetch)
+    - cron: "17 10 * * *"  # props (static snapshot re-upsert, daily)
   workflow_dispatch:
     inputs:
       job:
@@ -54,7 +59,8 @@ jobs:
         run: python ingest_players.py --games 12
 
   props:
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '5 * * * *'
+    # Static v1 snapshot re-upsert (see header comment) — daily, not hourly.
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '17 10 * * *'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -69,7 +75,7 @@ jobs:
       - name: Install deps
         run: pip install -r worker/requirements.txt
 
-      - name: Ingest props (v1 snapshot live-odds feed)
+      - name: Ingest props (static v1 snapshot — not live quotes)
         working-directory: worker
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}

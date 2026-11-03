@@ -1,0 +1,32 @@
+{
+  "status": "PROVISIONAL_UNVALIDATED",
+  "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=37). 95% CI includes 0. Projections are purely informational.",
+  "trigger_eval": {
+    "sample_size": 37,
+    "w_hat": 0.6742,
+    "se": 0.3957,
+    "ci_95": [
+      -0.1013,
+      1.4497
+    ],
+    "ci_includes_zero": true,
+    "win_rate_pct": 67.57
+  },
+  "board_eval": {
+    "sample_size": 320,
+    "w_hat": 0.7597,
+    "se": 0.1835,
+    "ci_95": [
+      0.4001,
+      1.1193
+    ]
+  },
+  "holdout_w1_brier_skill_score_pct": -12.51,
+  "sample_threshold_target": 300,
+  "sample_sufficient": false,
+  "action_required": {
+    "state_no_edge_on_performance": true,
+    "freeze_paid_features": true,
+    "suspend_beat_close_guarantee": true
+  }
+}

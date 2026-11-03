@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://propstein.vercel.app/sitemap.xml

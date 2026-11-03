@@ -1,0 +1,1215 @@
+{
+  "schema_version": "ufc-card.v1",
+  "sport": "ufc",
+  "generated_at": "2026-11-01T04:06:25Z",
+  "event_id": "600061420",
+  "event_name": "UFC Fight Night: Moicano vs. Nolan",
+  "date": "2026-10-31",
+  "honesty": "NO EDGE · model unbacktested vs closing lines",
+  "sources": {
+    "card": "ESPN UFC scoreboard",
+    "odds": "The Odds API (mma_mixed_martial_arts: h2h, totals; region us)"
+  },
+  "fights": [
+    {
+      "fight_id": "401914105",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "W Flyweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
+      "fighters": [
+        {
+          "id": "5130185",
+          "name": "Lucia Szabová",
+          "record": "13-0-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/svk.png",
+          "winner": true,
+          "age": 28,
+          "reach_in": null,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5130185.png"
+        },
+        {
+          "id": "4418809",
+          "name": "Tainara Lisboa",
+          "record": "7-5-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": false,
+          "age": 35,
+          "reach_in": 67.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4418809.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.5605,
+          0.4395
+        ],
+        "elo": [
+          1500.0,
+          1493.7
+        ],
+        "fights": [
+          0,
+          4
+        ],
+        "adjustments": [
+          {},
+          {
+            "age": -36.0
+          }
+        ],
+        "fair_american": [
+          -128,
+          128
+        ],
+        "p_finish": 0.4238,
+        "p_over_by_line": {
+          "1.5": 0.7155,
+          "2.5": 0.6088
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401928105",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "W Strawweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
+      "fighters": [
+        {
+          "id": "5139556",
+          "name": "Talita Alencar",
+          "record": "8-2-1",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": false,
+          "age": 36,
+          "reach_in": 58.5,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5139556.png"
+        },
+        {
+          "id": "4816066",
+          "name": "Piera Rodriguez",
+          "record": "13-2-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ven.png",
+          "winner": true,
+          "age": 33,
+          "reach_in": 63.5,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4816066.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.4013,
+          0.5987
+        ],
+        "elo": [
+          1556.4,
+          1549.9
+        ],
+        "fights": [
+          6,
+          8
+        ],
+        "adjustments": [
+          {
+            "reach": -20.0,
+            "age": -48.0
+          },
+          {
+            "reach": 20.0,
+            "age": -12.0
+          }
+        ],
+        "fair_american": [
+          149,
+          -149
+        ],
+        "p_finish": 0.3297,
+        "p_over_by_line": {
+          "1.5": 0.7787,
+          "2.5": 0.6957
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401914106",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "Middleweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 2,
+      "went_distance": false,
+      "fighters": [
+        {
+          "id": "5134399",
+          "name": "Nick Klein",
+          "record": "6-4-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": false,
+          "age": 31,
+          "reach_in": 77.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5134399.png"
+        },
+        {
+          "id": "4687604",
+          "name": "Joe Kropschot",
+          "record": "10-3-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 31,
+          "reach_in": 79.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4687604.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.3831,
+          0.6169
+        ],
+        "elo": [
+          1478.3,
+          1520.0
+        ],
+        "fights": [
+          3,
+          1
+        ],
+        "adjustments": [
+          {
+            "reach": -8.0,
+            "layoff": -25.0
+          },
+          {
+            "reach": 8.0
+          }
+        ],
+        "fair_american": [
+          161,
+          -161
+        ],
+        "p_finish": 0.6242,
+        "p_over_by_line": {
+          "1.5": 0.581,
+          "2.5": 0.4239
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401931617",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "Middleweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
+      "fighters": [
+        {
+          "id": "5143223",
+          "name": "Zach Reese",
+          "record": "11-4-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 32,
+          "reach_in": 77.0,
+          "stance": "Switch",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5143223.png"
+        },
+        {
+          "id": "3960470",
+          "name": "Mickey Gall",
+          "record": "7-8-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": false,
+          "age": 34,
+          "reach_in": 74.0,
+          "stance": "Switch",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3960470.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.728,
+          0.272
+        ],
+        "elo": [
+          1509.6,
+          1431.6
+        ],
+        "fights": [
+          10,
+          6
+        ],
+        "adjustments": [
+          {
+            "reach": 12.0
+          },
+          {
+            "reach": -12.0,
+            "age": -24.0,
+            "layoff": -25.0,
+            "weight_class_up": -20.0
+          }
+        ],
+        "fair_american": [
+          -268,
+          268
+        ],
+        "p_finish": 0.6131,
+        "p_over_by_line": {
+          "1.5": 0.5884,
+          "2.5": 0.4341
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401928109",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "Featherweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 1,
+      "went_distance": false,
+      "fighters": [
+        {
+          "id": "3955577",
+          "name": "Julian Erosa",
+          "record": "32-14-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 37,
+          "reach_in": 74.5,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3955577.png"
+        },
+        {
+          "id": "5068724",
+          "name": "JeongYeong Lee",
+          "record": "11-4-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png",
+          "winner": false,
+          "age": 30,
+          "reach_in": 73.5,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5068724.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.5323,
+          0.4677
+        ],
+        "elo": [
+          1549.2,
+          1499.7
+        ],
+        "fights": [
+          13,
+          4
+        ],
+        "adjustments": [
+          {
+            "reach": 4.0,
+            "age": -60.0
+          },
+          {
+            "reach": -4.0,
+            "layoff": -25.0
+          }
+        ],
+        "fair_american": [
+          -114,
+          114
+        ],
+        "p_finish": 0.5447,
+        "p_over_by_line": {
+          "1.5": 0.6344,
+          "2.5": 0.4973
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401928106",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "Welterweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 2,
+      "went_distance": false,
+      "fighters": [
+        {
+          "id": "5289853",
+          "name": "Rodrigo Sezinando",
+          "record": "10-2-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": true,
+          "age": 28,
+          "reach_in": 71.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5289853.png"
+        },
+        {
+          "id": "5085010",
+          "name": "Theodor Berggren",
+          "record": "8-5-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/swe.png",
+          "winner": false,
+          "age": 26,
+          "reach_in": 75.0,
+          "stance": "Switch",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5085010.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.4149,
+          0.5851
+        ],
+        "elo": [
+          1477.0,
+          1479.7
+        ],
+        "fights": [
+          1,
+          1
+        ],
+        "adjustments": [
+          {
+            "reach": -16.0,
+            "layoff": -25.0
+          },
+          {
+            "reach": 16.0
+          }
+        ],
+        "fair_american": [
+          141,
+          -141
+        ],
+        "p_finish": 0.5689,
+        "p_over_by_line": {
+          "1.5": 0.6181,
+          "2.5": 0.475
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401931615",
+      "start": "2026-10-31T21:00Z",
+      "weight_class": "Featherweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
+      "fighters": [
+        {
+          "id": "5060394",
+          "name": "Francis Marshall",
+          "record": "10-4-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": false,
+          "age": 27,
+          "reach_in": 72.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5060394.png"
+        },
+        {
+          "id": "4898914",
+          "name": "Dakota Hope",
+          "record": "12-2-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 29,
+          "reach_in": 67.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4898914.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.626,
+          0.374
+        ],
+        "elo": [
+          1527.9,
+          1478.5
+        ],
+        "fights": [
+          8,
+          1
+        ],
+        "adjustments": [
+          {
+            "reach": 20.0
+          },
+          {
+            "reach": -20.0
+          }
+        ],
+        "fair_american": [
+          -167,
+          167
+        ],
+        "p_finish": 0.4628,
+        "p_over_by_line": {
+          "1.5": 0.6894,
+          "2.5": 0.5729
+        }
+      },
+      "market": {
+        "h2h_novig": [
+          0.2129,
+          0.7871
+        ],
+        "best": [
+          {
+            "price": 500,
+            "book": "draftkings"
+          },
+          {
+            "price": -450,
+            "book": "bovada"
+          }
+        ],
+        "books": [
+          "betmgm",
+          "betrivers",
+          "bovada",
+          "draftkings"
+        ],
+        "odds_event_id": "cb8bbfa745f8248ce8453d9f561e86d7"
+      },
+      "totals": [],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401928107",
+      "start": "2026-11-01T00:00Z",
+      "weight_class": "Welterweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
+      "fighters": [
+        {
+          "id": "4629138",
+          "name": "Jean-Paul Lebosnoyani",
+          "record": "12-2-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 27,
+          "reach_in": 72.0,
+          "stance": "Switch",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4629138.png"
+        },
+        {
+          "id": "5350562",
+          "name": "Farman Hasanov",
+          "record": "5-1-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/aze.png",
+          "winner": false,
+          "age": 31,
+          "reach_in": 74.5,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5350562.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.5358,
+          0.4642
+        ],
+        "elo": [
+          1563.7,
+          1518.8
+        ],
+        "fights": [
+          3,
+          1
+        ],
+        "adjustments": [
+          {
+            "reach": -10.0
+          },
+          {
+            "reach": 10.0
+          }
+        ],
+        "fair_american": [
+          -115,
+          115
+        ],
+        "p_finish": 0.4997,
+        "p_over_by_line": {
+          "1.5": 0.6646,
+          "2.5": 0.5388
+        }
+      },
+      "market": {
+        "h2h_novig": [
+          0.7175,
+          0.2825
+        ],
+        "best": [
+          {
+            "price": -270,
+            "book": "betonlineag"
+          },
+          {
+            "price": 250,
+            "book": "betrivers"
+          }
+        ],
+        "books": [
+          "betmgm",
+          "betonlineag",
+          "betrivers",
+          "betus",
+          "bovada",
+          "draftkings",
+          "fanduel"
+        ],
+        "odds_event_id": "df9dc29c8fb008aa275d85007b3bb2e7"
+      },
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4136,
+          "model_p_over": 0.5388,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": 146,
+              "under": -172,
+              "p_over": 0.3912993439981586
+            },
+            {
+              "book": "draftkings",
+              "over": 130,
+              "under": -166,
+              "p_over": 0.4106205619018215
+            },
+            {
+              "book": "bovada",
+              "over": 125,
+              "under": -165,
+              "p_over": 0.4165029469548134
+            },
+            {
+              "book": "betus",
+              "over": 126,
+              "under": -150,
+              "p_over": 0.42444821731748733
+            }
+          ]
+        }
+      ],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401928104",
+      "start": "2026-11-01T00:00Z",
+      "weight_class": "W Bantamweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
+      "fighters": [
+        {
+          "id": "3154898",
+          "name": "Yana Santos",
+          "record": "17-9-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/rus.png",
+          "winner": false,
+          "age": 36,
+          "reach_in": 68.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3154898.png"
+        },
+        {
+          "id": "5110469",
+          "name": "Luana Santos",
+          "record": "12-2-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": true,
+          "age": 26,
+          "reach_in": 67.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5110469.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.3501,
+          0.6499
+        ],
+        "elo": [
+          1521.4,
+          1588.8
+        ],
+        "fights": [
+          8,
+          7
+        ],
+        "adjustments": [
+          {
+            "reach": 4.0,
+            "age": -48.0
+          },
+          {
+            "reach": -4.0
+          }
+        ],
+        "fair_american": [
+          186,
+          -186
+        ],
+        "p_finish": 0.3329,
+        "p_over_by_line": {
+          "1.5": 0.7766,
+          "2.5": 0.6928
+        }
+      },
+      "market": {
+        "h2h_novig": [
+          0.2566,
+          0.7434
+        ],
+        "best": [
+          {
+            "price": 300,
+            "book": "betonlineag"
+          },
+          {
+            "price": -330,
+            "book": "bovada"
+          }
+        ],
+        "books": [
+          "betmgm",
+          "betonlineag",
+          "betrivers",
+          "betus",
+          "bovada",
+          "draftkings",
+          "fanduel"
+        ],
+        "odds_event_id": "2dce4e1e4c2249c65b10dab7c8bdad6a"
+      },
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.75,
+          "model_p_over": 0.6928,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -355,
+              "under": 287,
+              "p_over": 0.7512097766355907
+            },
+            {
+              "book": "draftkings",
+              "over": -375,
+              "under": 270,
+              "p_over": 0.7449664429530201
+            },
+            {
+              "book": "bovada",
+              "over": -410,
+              "under": 280,
+              "p_over": 0.7533849129593811
+            },
+            {
+              "book": "betus",
+              "over": -355,
+              "under": 282,
+              "p_over": 0.7487714648556125
+            }
+          ]
+        }
+      ],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401931555",
+      "start": "2026-11-01T00:00Z",
+      "weight_class": "Flyweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
+      "fighters": [
+        {
+          "id": "4424224",
+          "name": "Ode' Osbourne",
+          "record": "13-10-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jam.png",
+          "winner": false,
+          "age": 34,
+          "reach_in": 73.0,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4424224.png"
+        },
+        {
+          "id": "4686725",
+          "name": "Cody Durden",
+          "record": "19-11-1",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 35,
+          "reach_in": 67.0,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4686725.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.5957,
+          0.4043
+        ],
+        "elo": [
+          1477.0,
+          1469.7
+        ],
+        "fights": [
+          13,
+          17
+        ],
+        "adjustments": [
+          {
+            "reach": 24.0,
+            "age": -24.0
+          },
+          {
+            "reach": -24.0,
+            "age": -36.0
+          }
+        ],
+        "fair_american": [
+          -147,
+          147
+        ],
+        "p_finish": 0.5279,
+        "p_over_by_line": {
+          "1.5": 0.6456,
+          "2.5": 0.5128
+        }
+      },
+      "market": {
+        "h2h_novig": [
+          0.4783,
+          0.5217
+        ],
+        "best": [
+          {
+            "price": 102,
+            "book": "betonlineag"
+          },
+          {
+            "price": -117,
+            "book": "bovada"
+          }
+        ],
+        "books": [
+          "betmgm",
+          "betonlineag",
+          "betrivers",
+          "betus",
+          "bovada",
+          "draftkings",
+          "fanduel"
+        ],
+        "odds_event_id": "0c220210154452bc3a64e0311c292811"
+      },
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.6131,
+          "model_p_over": 0.6456,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -175,
+              "under": 149,
+              "p_over": 0.6130847696095674
+            },
+            {
+              "book": "draftkings",
+              "over": -180,
+              "under": 140,
+              "p_over": 0.6067415730337079
+            },
+            {
+              "book": "betus",
+              "over": -180,
+              "under": 150,
+              "p_over": 0.6164383561643836
+            }
+          ]
+        },
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4367,
+          "model_p_over": 0.5128,
+          "books": [
+            {
+              "book": "bovada",
+              "over": 115,
+              "under": -150,
+              "p_over": 0.43668122270742354
+            }
+          ]
+        }
+      ],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401931616",
+      "start": "2026-11-01T00:00Z",
+      "weight_class": "Welterweight",
+      "sched_rounds": 3,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
+      "fighters": [
+        {
+          "id": "3960071",
+          "name": "Randy Brown",
+          "record": "20-9-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jam.png",
+          "winner": false,
+          "age": 36,
+          "reach_in": 78.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3960071.png"
+        },
+        {
+          "id": "5149961",
+          "name": "Jacobe Smith",
+          "record": "14-0-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": true,
+          "age": 30,
+          "reach_in": 72.0,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5149961.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.4438,
+          0.5562
+        ],
+        "elo": [
+          1558.4,
+          1597.6
+        ],
+        "fights": [
+          13,
+          5
+        ],
+        "adjustments": [
+          {
+            "reach": 24.0,
+            "age": -48.0
+          },
+          {
+            "reach": -24.0
+          }
+        ],
+        "fair_american": [
+          125,
+          -125
+        ],
+        "p_finish": 0.5758,
+        "p_over_by_line": {
+          "1.5": 0.6135,
+          "2.5": 0.4686
+        }
+      },
+      "market": {
+        "h2h_novig": [
+          0.2864,
+          0.7136
+        ],
+        "best": [
+          {
+            "price": 246,
+            "book": "betus"
+          },
+          {
+            "price": -265,
+            "book": "betrivers"
+          }
+        ],
+        "books": [
+          "betmgm",
+          "betonlineag",
+          "betrivers",
+          "betus",
+          "bovada",
+          "draftkings",
+          "fanduel"
+        ],
+        "odds_event_id": "3ff93a8fb39e5f3cb3bc71ed27f6cc06"
+      },
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.4567,
+          "model_p_over": 0.6135,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": 111,
+              "under": -130,
+              "p_over": 0.4560777315090225
+            },
+            {
+              "book": "bovada",
+              "over": 115,
+              "under": -150,
+              "p_over": 0.43668122270742354
+            },
+            {
+              "book": "betus",
+              "over": 110,
+              "under": -130,
+              "p_over": 0.4572564612326044
+            },
+            {
+              "book": "draftkings",
+              "over": 100,
+              "under": -130,
+              "p_over": 0.4693877551020409
+            }
+          ]
+        }
+      ],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401921310",
+      "start": "2026-11-01T00:00Z",
+      "weight_class": "Lightweight",
+      "sched_rounds": 5,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
+      "fighters": [
+        {
+          "id": "3028863",
+          "name": "Renato Moicano",
+          "record": "21-8-1",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": false,
+          "age": 37,
+          "reach_in": 72.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3028863.png"
+        },
+        {
+          "id": "5144007",
+          "name": "Tom Nolan",
+          "record": "12-1-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/aus.png",
+          "winner": true,
+          "age": 26,
+          "reach_in": 73.0,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5144007.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.3865,
+          0.6135
+        ],
+        "elo": [
+          1575.2,
+          1587.5
+        ],
+        "fights": [
+          12,
+          7
+        ],
+        "adjustments": [
+          {
+            "reach": -4.0,
+            "age": -60.0
+          },
+          {
+            "reach": 4.0
+          }
+        ],
+        "fair_american": [
+          159,
+          -159
+        ],
+        "p_finish": 0.6562,
+        "p_over_by_line": {
+          "1.5": 0.7127,
+          "2.5": 0.5212,
+          "3.5": 0.4502,
+          "4.5": 0.3687
+        }
+      },
+      "market": {
+        "h2h_novig": [
+          0.5242,
+          0.4758
+        ],
+        "best": [
+          {
+            "price": -117,
+            "book": "betrivers"
+          },
+          {
+            "price": 105,
+            "book": "betonlineag"
+          }
+        ],
+        "books": [
+          "betmgm",
+          "betonlineag",
+          "betrivers",
+          "betus",
+          "bovada",
+          "draftkings",
+          "fanduel"
+        ],
+        "odds_event_id": "75a36e7aaccd373717f328b7c297f099"
+      },
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.6366,
+          "model_p_over": 0.7127,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -195,
+              "under": 165,
+              "p_over": 0.6365876193409301
+            },
+            {
+              "book": "draftkings",
+              "over": -210,
+              "under": 160,
+              "p_over": 0.6378504672897196
+            },
+            {
+              "book": "betus",
+              "over": -195,
+              "under": 162,
+              "p_over": 0.6339496215411342
+            }
+          ]
+        },
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4367,
+          "model_p_over": 0.5212,
+          "books": [
+            {
+              "book": "bovada",
+              "over": 115,
+              "under": -150,
+              "p_over": 0.43668122270742354
+            }
+          ]
+        }
+      ],
+      "status": "final",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    }
+  ],
+  "odds_meter": {
+    "skipped": "outside 48h window or --no-odds",
+    "market_from": "2026-10-31T23:58:43Z"
+  },
+  "market_as_of": "2026-10-31T23:58:43Z",
+  "backtest": {
+    "n": 3512,
+    "brier": 0.243,
+    "log_loss": 0.679,
+    "coinflip_brier": 0.25,
+    "coinflip_log_loss": 0.6931,
+    "type": "walk-forward results-only (not closing-line CLV)"
+  }
+}

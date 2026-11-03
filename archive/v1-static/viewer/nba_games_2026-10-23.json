@@ -1,0 +1,112 @@
+[
+ {
+  "game_id": "nba-20261023-MIL-CLE",
+  "gameday": "2026-10-23",
+  "gametime": "19:00",
+  "gametime_et": "19:00",
+  "tipoff_utc": "2026-10-23T23:00:00Z",
+  "away_team": "MIL",
+  "home_team": "CLE",
+  "venue": "Rocket Mortgage FieldHouse",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-TOR-BKN",
+  "gameday": "2026-10-23",
+  "gametime": "19:30",
+  "gametime_et": "19:30",
+  "tipoff_utc": "2026-10-23T23:30:00Z",
+  "away_team": "TOR",
+  "home_team": "BKN",
+  "venue": "Barclays Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-IND-PHI",
+  "gameday": "2026-10-23",
+  "gametime": "19:00",
+  "gametime_et": "19:00",
+  "tipoff_utc": "2026-10-23T23:00:00Z",
+  "away_team": "IND",
+  "home_team": "PHI",
+  "venue": "Wells Fargo Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-ORL-MIA",
+  "gameday": "2026-10-23",
+  "gametime": "19:30",
+  "gametime_et": "19:30",
+  "tipoff_utc": "2026-10-23T23:30:00Z",
+  "away_team": "ORL",
+  "home_team": "MIA",
+  "venue": "Kaseya Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-DET-CHI",
+  "gameday": "2026-10-23",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-10-24T00:00:00Z",
+  "away_team": "DET",
+  "home_team": "CHI",
+  "venue": "United Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-SAS-HOU",
+  "gameday": "2026-10-23",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-10-24T00:00:00Z",
+  "away_team": "SAS",
+  "home_team": "HOU",
+  "venue": "Toyota Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-MEM-NOP",
+  "gameday": "2026-10-23",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-10-24T00:00:00Z",
+  "away_team": "MEM",
+  "home_team": "NOP",
+  "venue": "Smoothie King Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-UTA-SAC",
+  "gameday": "2026-10-23",
+  "gametime": "22:00",
+  "gametime_et": "22:00",
+  "tipoff_utc": "2026-10-24T02:00:00Z",
+  "away_team": "UTA",
+  "home_team": "SAC",
+  "venue": "Golden 1 Center",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-GSW-LAC",
+  "gameday": "2026-10-23",
+  "gametime": "22:00",
+  "gametime_et": "22:00",
+  "tipoff_utc": "2026-10-24T02:00:00Z",
+  "away_team": "GSW",
+  "home_team": "LAC",
+  "venue": "Intuit Dome",
+  "_fixture": true
+ },
+ {
+  "game_id": "nba-20261023-PHX-LAL",
+  "gameday": "2026-10-23",
+  "gametime": "22:30",
+  "gametime_et": "22:30",
+  "tipoff_utc": "2026-10-24T02:30:00Z",
+  "away_team": "PHX",
+  "home_team": "LAL",
+  "venue": "Crypto.com Arena",
+  "_fixture": true
+ }
+]

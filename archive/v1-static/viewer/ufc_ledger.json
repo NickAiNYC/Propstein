@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-11-01T18:45:54Z",
+  "rules": "draw/NC/cancel/scratch = void (push); CLV vs lock snapshot only",
+  "summary": {
+    "n_decisions": 0,
+    "n_settled": 0,
+    "n_void": 0,
+    "wins": 0,
+    "n_clv": 0,
+    "beat_close": 0,
+    "beat_close_ci95": null,
+    "mean_clv": null,
+    "edge_claim": "NO EDGE"
+  },
+  "cards": [
+    {
+      "event_id": "600061420",
+      "event_name": "UFC Fight Night: Moicano vs. Nolan",
+      "decisions": []
+    }
+  ]
+}

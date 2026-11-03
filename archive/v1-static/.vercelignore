@@ -1,0 +1,11 @@
+# Ignore Python backend & heavy science dependencies on Vercel edge deployment
+api/
+src/
+data/
+evaluation/
+tests/
+docs/
+.venv/
+requirements.txt
+Dockerfile
+railway.json

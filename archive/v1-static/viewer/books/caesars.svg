@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318 64" role="img" aria-label="Caesars">
+  <rect x="1" y="1" width="316" height="62" rx="14" fill="#0b0e14" stroke="#c39e6d" stroke-opacity="0.55" stroke-width="2"/>
+  <rect x="1" y="1" width="14" height="62" rx="7" fill="#c39e6d"/>
+  <text x="34" y="42" font-family="Arial, 'Helvetica Neue', Helvetica, sans-serif" font-size="26" font-weight="700" letter-spacing="0.5" fill="#c39e6d">Caesars</text>
+</svg>

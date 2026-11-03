@@ -1,0 +1,2 @@
+Data files download here via: cd src && python fetch_data.py
+Nothing in this folder is committed; nflverse is the source of truth.

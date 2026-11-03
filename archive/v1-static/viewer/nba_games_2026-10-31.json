@@ -1,0 +1,79 @@
+[
+ {
+  "game_id": "nba-20261031-POR-UTA",
+  "gameday": "2026-10-31",
+  "gametime": "15:12",
+  "gametime_et": "15:12",
+  "tipoff_utc": "2026-10-31T19:12:00Z",
+  "away_team": "POR",
+  "home_team": "UTA",
+  "odds_event_id": "d47417c3b1a2cd427cce74c9d00f1046",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261031-PHI-CHA",
+  "gameday": "2026-10-31",
+  "gametime": "18:10",
+  "gametime_et": "18:10",
+  "tipoff_utc": "2026-10-31T22:10:00Z",
+  "away_team": "PHI",
+  "home_team": "CHA",
+  "odds_event_id": "067d97a124c10ea2d206546384500c5e",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261031-ATL-NOP",
+  "gameday": "2026-10-31",
+  "gametime": "19:10",
+  "gametime_et": "19:10",
+  "tipoff_utc": "2026-10-31T23:10:00Z",
+  "away_team": "ATL",
+  "home_team": "NOP",
+  "odds_event_id": "77270837bc694d198c10f42937690d75",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261031-CLE-MIL",
+  "gameday": "2026-10-31",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-01T00:10:00Z",
+  "away_team": "CLE",
+  "home_team": "MIL",
+  "odds_event_id": "6d7e1e0af6d568f4435d35a1763a3622",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261031-SAC-MEM",
+  "gameday": "2026-10-31",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-01T00:10:00Z",
+  "away_team": "SAC",
+  "home_team": "MEM",
+  "odds_event_id": "863ae1092be42c6b563b2c4f099a3eb3",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261031-MIN-SAS",
+  "gameday": "2026-10-31",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-01T00:10:00Z",
+  "away_team": "MIN",
+  "home_team": "SAS",
+  "odds_event_id": "06a03fb0ce0f81a970c6000fb71fdc6d",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261031-OKC-HOU",
+  "gameday": "2026-10-31",
+  "gametime": "20:40",
+  "gametime_et": "20:40",
+  "tipoff_utc": "2026-11-01T00:40:00Z",
+  "away_team": "OKC",
+  "home_team": "HOU",
+  "odds_event_id": "c30d3bdf126e98ced5b9389db8617926",
+  "_fixture": false
+ }
+]

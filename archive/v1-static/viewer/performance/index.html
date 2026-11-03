@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0e14">
+  <title>PropStein Track Record: Graded Decisions, CLV and Calibration</title>
+  <meta name="description" content="Every graded PropStein decision published as-is: ledger record, full-board close calibration, holdout model evaluation including negative results, and the honest sample-size caveats.">
+  <link rel="canonical" href="https://propstein.vercel.app/performance/">
+  <meta property="og:title" content="PropStein Track Record: Graded Decisions, CLV and Calibration">
+  <meta property="og:description" content="Every graded PropStein decision published as-is: ledger record, full-board close calibration, holdout model evaluation including negative results, and the honest sample-size caveats.">
+  <meta property="og:url" content="https://propstein.vercel.app/performance/">
+  <meta name="robots" content="index,follow">
+  <link rel="stylesheet" href="/public.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest?v=2026_v154">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2026_v154">
+  <script type="application/ld+json">{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "PropStein",
+     "item": "https://propstein.vercel.app/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Track Record"
+    }
+   ]
+  },
+  {
+   "@type": "WebPage",
+   "name": "PropStein Track Record: Graded Decisions, CLV and Calibration",
+   "description": "Every graded PropStein decision published as-is: ledger record, full-board close calibration, holdout model evaluation including negative results, and the honest sample-size caveats.",
+   "url": "https://propstein.vercel.app/performance/",
+   "isPartOf": {
+    "@type": "WebSite",
+    "name": "PropStein",
+    "url": "https://propstein.vercel.app/"
+   }
+  }
+ ]
+}</script>
+</head>
+<body>
+
+  <header class="pub-header">
+    <a class="pub-brand" href="/">PropStein</a>
+    <nav class="pub-nav">
+      <a href="/nfl/props/receiving-yards/">NFL Receiving Yards</a>
+      <a href="/nfl/props/receptions/">NFL Receptions</a>
+      <a href="/performance/">Track Record</a>
+      <a href="/methodology/">Methodology</a>
+    </nav>
+  </header>
+  <main class="pub-main">
+    <nav class="pub-crumbs" aria-label="Breadcrumb"><ol>
+            <li><a href="/">PropStein</a></li>
+      <li aria-current="page">Track Record</li>
+    </ol></nav>
+
+    <h1>PropStein Track Record &amp; Evidence</h1>
+    <p class="pub-lede">Headline performance is full-board CLV &mdash; every
+    decision graded against closing line value with confidence intervals, not a
+    cherry-picked ledger subset. Everything graded so far is published as-is,
+    including the small sample, the losing weeks and the model defects.</p>
+    <section>
+      <h2>Full-board close calibration (Week 07)</h2>
+      <p>Headline metric: every graded board decision (N = <strong>37</strong>):<br>
+      &bull; <strong>2 of 37 beat the close</strong> (5.4%, 95% Wilson CI: [0.7%, 18.2%])<br>
+      &bull; <strong>34 of 37 tied the close</strong> (91.9%, line unchanged)<br>
+      &bull; <strong>1 of 37 closed worse</strong> (2.7%, -1.0 yd drift)<br>
+      Average line delta: <strong>+0.05 yds</strong> (95% CI: [-0.23, +0.33] yds). Average CLV EV: 0.82%.</p>
+      <p class="pub-note"><strong>Headline honesty:</strong> Across the full board only 2 of 37 decisions beat the close that week.
+      That is what an honest calibration record looks like early. We publish full-board calibration first so there is zero cherry-picking.</p>
+    </section>
+    <section>
+      <h2>Graded ledger (preliminary sample, n = 8)</h2>
+      <p><strong>7-1-0</strong> over
+      <strong>8</strong> graded records &mdash;
+      win rate 87.5% (95% Wilson CI: [52.9%, 97.8%]), beat-close rate
+      100.0%, average close beating value
+      4.29% of implied probability, net P&amp;L
+      549.64 on 790.0 staked
+      (ROI 69.57%). Ledger root hash
+      <code>178e29974bf8748c</code>.</p>
+      <p class="pub-note"><strong>Read this honestly:</strong> 8
+      records is a tiny sample. None of these rates are meaningful evidence of
+      edge yet. We publish them below the full board so the methodology is auditable from
+      day one, and so there is no incentive to quietly drop bad weeks.</p>
+      <div class="pub-tablewrap">
+      <table class="pub-table">
+        <thead><tr><th>Player</th><th>Market</th><th>Bet</th><th>Odds</th>
+        <th>Close</th><th>CLV</th><th>Outcome</th><th>Net</th></tr></thead>
+        <tbody><tr><td>Amon-Ra St. Brown</td><td>rec_yds</td><td>OVER 78.5</td><td>-115</td><td>81.5 (-115)</td><td class='pub-num'>3.0 yds / 4.97%</td><td>WIN</td><td class='pub-num'>104.35</td></tr>
+<tr><td>Hunter Henry</td><td>rec_yds</td><td>OVER 31.5</td><td>-115</td><td>33.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>86.96</td></tr>
+<tr><td>DeMario Douglas</td><td>rec_yds</td><td>OVER 34.5</td><td>-110</td><td>36.5 (-115)</td><td class='pub-num'>2.0 yds / 4.33%</td><td>WIN</td><td class='pub-num'>90.91</td></tr>
+<tr><td>Jaxon Smith-Njigba</td><td>rec_yds</td><td>OVER 100.5</td><td>170</td><td>103.5 (160)</td><td class='pub-num'>3.0 yds / 6.41%</td><td>LOSS</td><td class='pub-num'>-80.0</td></tr>
+<tr><td>Chris Olave</td><td>rec_yds</td><td>OVER 75.5</td><td>-115</td><td>77.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>86.96</td></tr>
+<tr><td>A.J. Brown</td><td>rec_yds</td><td>UNDER 69.5</td><td>-105</td><td>67.5 (-115)</td><td class='pub-num'>2.0 yds / 5.35%</td><td>WIN</td><td class='pub-num'>95.24</td></tr>
+<tr><td>Colston Loveland</td><td>rec_yds</td><td>OVER 44.5</td><td>-115</td><td>46.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>86.96</td></tr>
+<tr><td>DK Metcalf</td><td>rec_yds</td><td>UNDER 54.5</td><td>-115</td><td>52.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>78.26</td></tr></tbody>
+      </table>
+      </div>
+    </section>
+    <section>
+      <h2>Published model evaluation (holdout)</h2>
+      <p>Decision cutoff enforced: <strong>yes</strong>;
+      862 snapshots evaluated,
+      0 future snapshots excluded
+      to prevent leakage.</p>
+      <dl class="pub-stats">
+        <div><dt>Brier score (model)</dt><dd>0.2813</dd></div>
+        <div><dt>Brier score (naive baseline)</dt><dd>0.25</dd></div>
+        <div><dt>Brier skill</dt><dd>-12.51%</dd></div>
+        <div><dt>Log loss (model)</dt><dd>0.758</dd></div>
+        <div><dt>Log loss (baseline)</dt><dd>0.6931</dd></div>
+      </dl>
+      <p class="pub-note"><strong>The model currently underperforms the naive
+      baseline on this holdout.</strong> We publish that because it is true.
+      Recalibration is an active workstream; roles and thresholds carry
+      provisional labels everywhere in the product until the skill score turns
+      positive.</p>
+    </section>
+    <section>
+      <h2>Market-Model Edge Fit &amp; Guarantee Status (Phase 2 &amp; 3)</h2>
+      <p><strong>Model has no edge over market closing lines at this time. All projections should be treated as informational.</strong></p>
+      <p>Chronological regression fitting <code>p = w &middot; p<sub>model</sub> + (1 - w) &middot; p<sub>market</sub></code> on active trigger decisions yields:<br>
+      &bull; <strong>w&#770; = 0.6742</strong> (Standard Error: 0.3957, <strong>95% CI: [-0.1013, +1.4497]</strong>, N = 37)<br>
+      Because the 95% confidence interval spans zero, there is no statistically significant evidence of closing line alpha over the market consensus.</p>
+      <p class="pub-note"><strong>Public actions in effect:</strong><br>
+      &bull; <strong>Beat-Close Guarantee Suspended:</strong> Beating or tying a close on a small sample guarantees nothing about win rate or expected value. The marketing guarantee is publicly withdrawn.<br>
+      &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> Commercial paid upgrades remain suspended until N &ge; 300 graded board decisions achieve positive CLV bounded strictly above zero with 95% confidence.<br>
+      &bull; <strong>Uncensored Research Access:</strong> Projections and live pricing calculations are made available without paywalls in observer research mode.</p>
+    </section>
+    <section>
+      <h2>What we publish as the sample grows</h2>
+      <p>Calibration by predicted-probability bucket; win rate with sample
+      size; ROI with a confidence interval; maximum drawdown; splits by sport,
+      market and model version; and losing weeks next to winning weeks, every
+      week. The commitment is the record, not the highlight reel.</p>
+    </section>
+    <section class="pub-limitations">
+      <h2>Model limitations</h2>
+      
+<p>PropStein publishes model limitations alongside every page. Roles and
+thresholds are provisional pending chronological holdout validation. In our
+published week-1 holdout evaluation the model's Brier score trailed the naive
+baseline; we treat that as an open defect, not a marketing problem, and we
+publish recalibration results as they land. Snapshots are taken pre-kickoff;
+quotes age and lines move, so every number here carries a timestamp and a
+verification state. Route-participation and late-scratch information are not
+fully modeled. Nothing on this site is betting advice.</p>
+
+    </section>
+  </main>
+  <footer class="pub-footer">
+    <p>PropStein is quantitative research, not betting advice. No wager should
+    be placed based on any content on this site. 21+ where applicable. If
+    gambling stops being fun, call 1-800-GAMBLER.</p>
+    <nav class="pub-footer-nav">
+      <a href="/performance/">Track Record</a>
+      <a href="/methodology/">Methodology</a>
+      <a href="/">Terminal</a>
+      <a href="/legal/terms/">Terms</a>
+      <a href="/legal/privacy/">Privacy</a>
+      <a href="/legal/responsible-gaming/">Responsible Gaming</a>
+    </nav>
+  </footer>
+</body>
+</html>

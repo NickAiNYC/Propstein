@@ -1,0 +1,82 @@
+[
+  {
+    "player": "Amon-Ra St. Brown",
+    "team": "DET",
+    "market": "rec_yds",
+    "side": "OVER",
+    "line": 78.5,
+    "odds": -115,
+    "counterpart_odds": -115,
+    "stake_amount": 120.0
+  },
+  {
+    "player": "Hunter Henry",
+    "team": "NE",
+    "market": "rec_yds",
+    "side": "OVER",
+    "line": 31.5,
+    "odds": -115,
+    "counterpart_odds": -115,
+    "stake_amount": 100.0
+  },
+  {
+    "player": "DeMario Douglas",
+    "team": "NE",
+    "market": "rec_yds",
+    "side": "OVER",
+    "line": 34.5,
+    "odds": -110,
+    "counterpart_odds": -120,
+    "stake_amount": 100.0
+  },
+  {
+    "player": "Jaxon Smith-Njigba",
+    "team": "SEA",
+    "market": "rec_yds",
+    "side": "OVER",
+    "line": 100.5,
+    "odds": 170,
+    "counterpart_odds": -210,
+    "stake_amount": 80.0
+  },
+  {
+    "player": "Chris Olave",
+    "team": "NO",
+    "market": "rec_yds",
+    "side": "OVER",
+    "line": 75.5,
+    "odds": -115,
+    "counterpart_odds": -115,
+    "stake_amount": 100.0
+  },
+  {
+    "player": "A.J. Brown",
+    "team": "NE",
+    "market": "rec_yds",
+    "side": "UNDER",
+    "line": 69.5,
+    "odds": -105,
+    "counterpart_odds": -125,
+    "stake_amount": 100.0
+  },
+  {
+    "player": "Colston Loveland",
+    "team": "CHI",
+    "market": "rec_yds",
+    "side": "OVER",
+    "line": 44.5,
+    "odds": -115,
+    "counterpart_odds": -115,
+    "stake_amount": 100.0
+  },
+  {
+    "player": "DK Metcalf",
+    "team": "PIT",
+    "market": "rec_yds",
+    "side": "UNDER",
+    "line": 54.5,
+    "odds": -115,
+    "counterpart_odds": -115,
+    "stake_amount": 90.0
+  }
+]

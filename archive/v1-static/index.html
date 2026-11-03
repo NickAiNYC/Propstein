@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PropWire — Verified Prop Research</title>
+  <meta name="description" content="Research player roles, verify sportsbook prices, and see what could invalidate a prop before you act.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Progressive Web App (PWA) Manifest & Mobile Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#B6F36B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="PropWire">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('propwire_theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- ==================================================================== -->
+    <!-- 1. COMPACT PURPOSE-DRIVEN HEADER -->
+    <!-- ==================================================================== -->
+    <header class="top-nav">
+      <div class="top-nav-inner">
+        <!-- Brand & Positioning Hypothesis -->
+        <div class="nav-brand">
+          <div class="brand-header-lockup">
+            <div class="brand-logo-unit" onclick="window.scrollTo({top:0, behavior:'smooth'})" title="PropWire">
+              <svg class="brand-logo-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="PropWire Logo">
+                <path d="M14 53V12h20c9 0 15 5 17 12" class="logo-p-stroke" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 34h17c8 0 13-4 17-10L57 11" class="logo-p-stroke" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M47 11h10v10" class="logo-p-stroke" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M25 43h8c9 0 15-6 15-15" class="logo-p-stroke" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+              <div class="brand-logo-text">
+                <div class="logo-title-row"><span class="logo-prop">PROP</span><span class="logo-dot">·</span><span class="logo-wire">WIRE</span></div>
+                <div class="brand-one-line">Research the role. Verify the price.</div>
+              </div>
+            </div>
+          </div>
+          <h1 class="nav-title" id="navTitle">See what changed in a player’s role—and whether the price reflects it.</h1>
+        </div>
+
+        <!-- Schedule & Slate Selector -->
+        <div class="nav-slate-control">
+          <div class="slate-select-box">
+            <span class="slate-label">SLATE:</span>
+            <select id="slateSelector" class="slate-dropdown" onchange="onSlateSelectChange(this.value)">
+              <option value="2026_w7" selected>2026 Week 7 &bull; Oct 22–26 (Upcoming Slate)</option>
+              <option value="2026_w1">2026 Week 1 &bull; Sept 10–14 (Historical Audit)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Meta Status & Actions -->
+        <div class="nav-meta">
+          <div class="data-status-badge status-live" id="dataStatusBadge">
+            <span class="status-pulse"></span>
+            <span id="dataStatusText">LIVE &bull; CALIBRATED BASELINE</span>
+          </div>
+          <div class="nav-timestamp" id="lastUpdatedTimestamp">
+            Updated Oct 20, 2026 &bull; 01:15 EDT
+          </div>
+          <div class="snapshot-status-badge" id="headerSnapshotBadge" onclick="openAdminModal('freeze')" title="Pre-kickoff content-hashed snapshot audit trail">
+            <span class="snapshot-ticker-pulse"></span>
+            <span class="snapshot-lock-icon">🔒</span>
+            <span id="headerSnapshotText">SNAPSHOT: TNF ACTIVE</span>
+          </div>
+          <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Mode">
+            <svg class="icon-svg theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <svg class="icon-svg theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <span id="themeToggleText">Theme</span>
+          </button>
+          <button class="admin-gear-btn" onclick="openAdminModal()" title="Pipeline Runner &amp; Admin Tools">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span>Admin</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Slate Notice Banner -->
+      <div class="slate-banner-notice" id="slateNoticeBanner">
+        <div class="notice-content">
+          <span class="notice-icon">🗓️</span>
+          <span id="slateNoticeText">Showing <strong>2026 Week 7 Upcoming Slate</strong> (14 Matchups &bull; Oct 22&ndash;26). Pre-line phase: Displaying calibrated fair-line baselines.</span>
+          <button class="notice-action-btn" id="slateNoticeActionBtn" onclick="toggleSlateContext()">Switch to Historical Audit (Week 1)</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="league-switcher" aria-label="League selection">
+      <button class="league-button active" id="leagueNflBtn" onclick="setLeague('nfl')" aria-pressed="true">
+        <span class="league-logo league-logo-nfl" aria-hidden="true">
+          <svg viewBox="0 0 44 44"><path d="M9 5h26l3 9-4 22-12 5-12-5-4-22z"/><path d="M15 19c5-4 10-4 15 0-2 7-6 11-8 12-3-2-6-6-7-12z" class="league-ball"/><path d="M19 18l6 5M17 22l8 6" class="league-stitch"/></svg>
+        </span>
+        <span><strong>NFL</strong><small>Receiving props</small></span>
+      </button>
+      <button class="league-button" id="leagueNbaBtn" onclick="setLeague('nba')" aria-pressed="false">
+        <span class="league-logo league-logo-nba" aria-hidden="true">
+          <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="17"/><path d="M8 16c9 1 17 9 20 21M36 15c-9 2-16 10-19 22M5 23h34M22 5v34" class="league-stitch"/></svg>
+        </span>
+        <span><strong>NBA</strong><small>Player props</small></span>
+        <em>Waitlist</em>
+      </button>
+    </nav>
+
+    <!-- ==================================================================== -->
+    <!-- 2. SLATE HEALTH STRIP (5 Distinct Metric Tiles & Freeze Audit) -->
+    <!-- ==================================================================== -->
+    <section class="slate-health-strip nfl-only">
+      <!-- 1. Scheduled Games -->
+      <div class="health-metric-tile">
+        <div class="health-tile-header">
+          <span class="health-tile-label">Scheduled Games</span>
+          <span class="health-tile-pill pill-complete" id="healthGamesPill">14 / 14</span>
+        </div>
+        <div class="health-tile-val" id="healthGamesCount">14</div>
+        <div class="health-tile-sub">All regular week matchups verified on schedule.</div>
+      </div>
+
+      <!-- 2. Covered Teams -->
+      <div class="health-metric-tile">
+        <div class="health-tile-header">
+          <span class="health-tile-label">Covered Teams</span>
+          <span class="health-tile-pill pill-complete" id="healthTeamsPill">28 / 28</span>
+        </div>
+        <div class="health-tile-val" id="healthTeamsCount">28</div>
+        <div class="health-tile-sub">100% active teams covered (4 teams on bye).</div>
+      </div>
+
+      <!-- 3. Projected Receivers -->
+      <div class="health-metric-tile">
+        <div class="health-tile-header">
+          <span class="health-tile-label">Projected Players</span>
+          <span class="health-tile-pill pill-complete" id="healthPlayersPill">390 Receivers</span>
+        </div>
+        <div class="health-tile-val" id="healthPlayersCount">390</div>
+        <div class="health-tile-sub">Compound NegBin-Gamma GLM projections calibrated.</div>
+      </div>
+
+      <!-- 4. Sportsbook Market Verification -->
+      <div class="health-metric-tile">
+        <div class="health-tile-header">
+          <span class="health-tile-label">Sportsbook Markets</span>
+          <span class="health-tile-pill pill-unquoted" id="healthMarketsPill">0 Verified Quotes</span>
+        </div>
+        <div class="health-tile-val" id="healthMarketsCount">0</div>
+        <div class="health-tile-sub" id="healthMarketsSub">Feeds unquoted &bull; Displaying calibrated baselines.</div>
+      </div>
+
+      <!-- 5. Decision-Time Snapshot Audit -->
+      <div class="health-metric-tile" style="cursor:pointer;" onclick="openAdminModal('freeze')" title="Click to view or trigger pre-kickoff snapshots">
+        <div class="health-tile-header">
+          <span class="health-tile-label">Snapshot Audit</span>
+          <span class="health-tile-pill pill-frozen" id="healthFreezePill">Locked ✓</span>
+        </div>
+        <div class="health-tile-val" id="healthFreezeVal">Active</div>
+        <div class="health-tile-sub" id="healthFreezeSub">Pre-kickoff record &bull; content hashed</div>
+      </div>
+    </section>
+
+    <!-- ==================================================================== -->
+    <!-- 3. PRIMARY DESTINATION TABS -->
+    <!-- ==================================================================== -->
+    <nav class="primary-tabs nfl-only">
+      <div class="tabs-inner">
+        <button class="tab-item active" id="tabBoard" onclick="setDestination('board')">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+          <span>Research Board</span>
+          <span class="tab-badge" id="boardTotalBadge">390</span>
+        </button>
+
+        <button class="tab-item" id="tabWatchlist" onclick="setDestination('watchlist')">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>Saved Conditions</span>
+          <span class="tab-badge badge-accent" id="watchlistCountBadge">0</span>
+        </button>
+
+        <button class="tab-item" id="tabTracker" onclick="setDestination('tracker')">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20v-6M6 20V10M18 20V4"/>
+          </svg>
+          <span>CLV Proof Ledger</span>
+          <span class="tab-badge badge-prelim" id="clvStatusBadge">Audited</span>
+        </button>
+
+        <button class="tab-item" id="tabResearch" onclick="setDestination('research')">
+          <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <span>Model Architecture &amp; SGP</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ==================================================================== -->
+    <!-- DESTINATION 1: MAIN BOARD & ROLE RESEARCH -->
+    <!-- ==================================================================== -->
+    <main id="boardDestination" class="destination-page nfl-only active">
+      
+      <!-- GAME STRIP (Horizontal Matchup Filter) -->
+      <section class="game-strip-section">
+        <div class="game-strip-header">
+          <span class="strip-label">SCHEDULED MATCHUPS:</span>
+          <span class="strip-sub">Click a matchup to isolate team targets and game scripts</span>
+        </div>
+        <div class="game-strip-track" id="gameStripTrack">
+          <!-- Dynamically populated games -->
+        </div>
+      </section>
+
+      <!-- INJURY & ROLE SHIFT RADAR (What Changed — Pre-Line Ingestion) -->
+      <section class="injury-radar-section" id="injuryRadarSection">
+        <div class="radar-header-row">
+          <div class="radar-title-wrap">
+            <div class="badge-tag" style="background:rgba(239,68,68,0.12); color:#ef4444; border-color:rgba(239,68,68,0.35); margin-bottom:4px;">
+              <span class="status-pulse" style="background:#ef4444; margin-right:4px;"></span>
+              WHAT CHANGED: INJURY &amp; ROLE SHIFT RADAR
+            </div>
+            <h3>Tuesday Injury Claims &amp; Evidence Check</h3>
+            <p>
+              Incoming injury assertions are checked for a matching player, team, game, and auditable source.
+              Redistribution stays disabled until those checks pass.
+            </p>
+          </div>
+          <div class="radar-action-wrap">
+            <span class="radar-timestamp" id="injuryRadarTimestamp">Updated: Tuesday 2:00 AM ET</span>
+            <button class="btn-radar-filter" onclick="setViewMode('injury_surges')">
+              Filter Affected Players &rarr;
+            </button>
+          </div>
+        </div>
+
+        <div class="injury-radar-grid" id="injuryRadarGrid">
+          <!-- Dynamically populated breaking injury cards -->
+        </div>
+      </section>
+
+      <!-- OPPORTUNITY SUMMARY & EMPTY STATES (Honest proof infrastructure) -->
+      <section class="opportunity-summary-card">
+        <div class="summary-header-row">
+          <div class="summary-title-wrap">
+            <div class="badge-tag" style="margin-bottom:4px;">DECISION SUPPORT STATUS</div>
+            <h3 id="oppSummaryTitle">Market State: Early Openers Ingestion Active</h3>
+            <p id="oppSummarySub">
+              Ingested sportsbook prop lines matched to calibrated projections. Qualification stays disabled until provider evidence is attached.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <span style="font-family:var(--font-mono); font-size:11px; color:var(--text-ink-tertiary);">VIEW MODE:</span>
+            <div class="segmented-control" id="viewModeGroup">
+              <button class="seg-btn active" id="btnModeVerifiedQuotes" onclick="setViewMode('verified_quotes')">⚡ Market Quotes (<span id="verifiedQuotesTabCount">0</span> verified)</button>
+              <button class="seg-btn" id="btnModeInjurySurges" onclick="setViewMode('injury_surges')">🎯 Validated Injury Effects</button>
+              <button class="seg-btn" id="btnModeSurges" onclick="setViewMode('surges')">📈 Role Surges (12)</button>
+              <button class="seg-btn" id="btnModeBaseline" onclick="setViewMode('baseline')">Pure Baselines</button>
+              <button class="seg-btn" id="btnModeDemoQuotes" onclick="setViewMode('demo_quotes')">🧪 Scenario Lab</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state-notice" id="emptyStateNotice">
+          <!-- Dynamically updated based on view mode and verified feed availability -->
+        </div>
+      </section>
+
+      <!-- 1. BEST OPPORTUNITIES & ROLE-CHANGE DETECTION (Primary High-Signal View) -->
+      <section class="best-opportunities-section" style="margin-bottom:28px;">
+        <div class="section-editorial-header">
+          <div>
+            <div class="badge-tag">PRIMARY RESEARCH VIEW</div>
+            <h3 id="bestOppSectionTitle">Key Role Shifts &amp; Price Boundaries</h3>
+            <p>
+              Receivers with sustained route/target share divergence from baseline. Inspect price requirements before betting.
+            </p>
+          </div>
+          <span class="tab-badge" id="roleChangeCountBadge">12 Detected</span>
+        </div>
+
+        <div class="opp-cards-grid" id="bestOpportunitiesGrid">
+          <!-- Dynamically populated high-signal cards -->
+        </div>
+      </section>
+
+      <!-- 2. BOARD CONTROLS & FILTER BAR -->
+      <section class="board-filters-bar">
+        <div class="filters-row-primary">
+          <!-- Search -->
+          <div class="search-input-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="searchInput" class="search-field" placeholder="Search player, team, or opponent..." oninput="onFilterChange()">
+          </div>
+
+          <!-- Market Filter -->
+          <div class="filter-group">
+            <label class="filter-label" for="marketFilter">MARKET</label>
+            <select id="marketFilter" class="filter-select" onchange="onFilterChange()">
+              <option value="yards" selected>Receiving Yards</option>
+              <option value="receptions">Receptions</option>
+            </select>
+          </div>
+
+          <!-- Sportsbook Selection -->
+          <div class="filter-group">
+            <label class="filter-label" for="bookFilter">BOOK FEED</label>
+            <select id="bookFilter" class="filter-select" onchange="onFilterChange()">
+              <option value="Consensus" selected>Consensus Market</option>
+              <option value="DraftKings">DraftKings</option>
+              <option value="FanDuel">FanDuel</option>
+              <option value="BetMGM">BetMGM</option>
+              <option value="Caesars">Caesars</option>
+            </select>
+          </div>
+
+          <!-- Position Segmented Control -->
+          <div class="filter-group">
+            <label class="filter-label">POSITION</label>
+            <div class="segmented-control" id="posFilterGroup">
+              <button class="seg-btn active" data-pos="ALL" onclick="setPosFilter('ALL')">ALL</button>
+              <button class="seg-btn" data-pos="WR" onclick="setPosFilter('WR')">WR</button>
+              <button class="seg-btn" data-pos="TE" onclick="setPosFilter('TE')">TE</button>
+              <button class="seg-btn" data-pos="RB" onclick="setPosFilter('RB')">RB</button>
+            </div>
+          </div>
+
+          <!-- Team Dropdown -->
+          <div class="filter-group">
+            <label class="filter-label" for="teamFilter">TEAM</label>
+            <select id="teamFilter" class="filter-select" onchange="onFilterChange()">
+              <option value="ALL">All Teams</option>
+            </select>
+          </div>
+
+          <!-- QUALIFIED ONLY TOGGLE SWITCH -->
+          <div class="qualified-toggle-wrap">
+            <label class="toggle-switch-label" title="Show only bets clearing 10% edge with positive EV and no fatal injury flags">
+              <input type="checkbox" id="qualifiedOnlyToggle" onchange="onFilterChange()">
+              <span class="toggle-track"></span>
+              <span class="toggle-text">QUALIFIED ONLY</span>
+            </label>
+            <span class="qual-count-pill" id="qualCountPill">0</span>
+          </div>
+        </div>
+
+        <div class="filters-row-sub">
+          <div class="filter-meta-left">
+            <span>Showing <strong id="visibleRowCount">0</strong> of <strong id="totalRowCount">0</strong> receivers</span>
+            <span class="pipe-sep">&bull;</span>
+            <span id="activeMatchupFilterText">All Matchups</span>
+            <button class="clear-game-btn" id="clearMatchupBtn" style="display:none;" onclick="clearMatchupFilter()">Reset Game Filter</button>
+          </div>
+          <div class="filter-meta-right">
+            <div class="density-toggle-wrap">
+              <span class="density-label">FORMAT:</span>
+              <div class="segmented-control segmented-control-sm" id="feedFormatGroup">
+                <button class="seg-btn active" id="btnFormatQuant" onclick="setFeedFormat('quant')">📊 Quant Table</button>
+                <button class="seg-btn" id="btnFormatAction" onclick="setFeedFormat('action')">⚡ Action Feed</button>
+              </div>
+            </div>
+            <div class="density-toggle-wrap" id="tableDensityControlWrap">
+              <span class="density-label">DENSITY:</span>
+              <div class="segmented-control segmented-control-sm" id="tableDensityGroup">
+                <button class="seg-btn active" id="btnDensityDetailed" onclick="setTableDensity('detailed')">Detailed</button>
+                <button class="seg-btn" id="btnDensityCompact" onclick="setTableDensity('compact')">Compact</button>
+              </div>
+            </div>
+            <label class="checkbox-inline">
+              <input type="checkbox" id="projectableOnlyCheck" checked onchange="onFilterChange()">
+              <span>Projectable only</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUICK-FILTER PILLS BAR (Mobile & Desktop Instant Slate Navigation) -->
+      <nav class="sticky-quick-filters" id="stickyQuickFiltersBar" aria-label="Quick Slate Filters">
+        <div class="sticky-quick-filters-inner">
+          <div class="quick-pills-scroll-track" id="quickFilterPillsTrack">
+            <button class="quick-pill active" id="pillFilterAll" onclick="setQuickFilterPill('all')">
+              All Matchups (<span id="quickPillCountAll">390</span>)
+            </button>
+            <button class="quick-pill" id="pillFilterQualified" onclick="setQuickFilterPill('qualified')">
+              ⚡ Qualified Only (<span id="quickPillCountQual">0</span>)
+            </button>
+            <button class="quick-pill" id="pillFilterTnf" onclick="setQuickFilterPill('tnf')">
+              🏈 TNF Slate (NE @ CHI)
+            </button>
+            <button class="quick-pill" id="pillFilterInjuries" onclick="setQuickFilterPill('injuries')">
+              🚨 Injury Vacancies (<span id="quickPillCountInj">6</span>)
+            </button>
+            <button class="quick-pill" id="pillFilterSurges" onclick="setQuickFilterPill('surges')">
+              🔥 Role Surges (<span id="quickPillCountSurge">12</span>)
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <!-- 3. FULL SLATE RESEARCH TABLE (Secondary Research View) -->
+      <section class="main-slate-card">
+        <div class="slate-card-header">
+          <div>
+            <h3>Full Slate Research Table &bull; 3-Metric Quant Breakdown</h3>
+            <p class="text-muted" style="font-size:12px; margin-top:2px;">
+              Separate columns for Prob Edge (vs 50%), Break-Even Advantage (vs Odds), and Expected Return (EV).
+            </p>
+          </div>
+          <div class="legend-pills">
+            <span class="legend-item"><span class="badge-dot badge-green"></span> Qualified (&ge;10% Edge + EV&gt;0)</span>
+            <span class="legend-item"><span class="badge-dot badge-amber"></span> Lean (5-9.9%)</span>
+            <span class="legend-item"><span class="badge-dot badge-gray"></span> Pass (&lt;5% / -EV)</span>
+            <span class="legend-item"><span class="badge-dot badge-orange"></span> Questionable / Injured</span>
+          </div>
+        </div>
+        
+        <div class="table-responsive" id="quantTableWrap">
+          <table class="slate-table" id="mainSlateTable">
+            <thead>
+              <tr>
+                <th style="width:36px;" title="Save Condition">★</th>
+                <th onclick="sortTable('player_display_name')">Player &amp; Matchup</th>
+                <th onclick="sortTable('position')">Pos</th>
+                <th>Role Shift</th>
+                <th class="num-col" onclick="sortTable('proj_yards')">Proj Vol</th>
+                <th class="num-col" onclick="sortTable('fair_line_yards')">Calibrated Fair Line</th>
+                <th style="min-width:180px;">Offer / Scenario</th>
+                <th class="num-col" onclick="sortTable('winProb')">Win Prob / Push</th>
+                <th class="num-col" onclick="sortTable('probEdge')">Prob Edge (vs 50%)</th>
+                <th class="num-col" onclick="sortTable('breakEvenAdvantage')">BE Adv (vs Odds)</th>
+                <th class="num-col" onclick="sortTable('expectedReturn')">Exp Return (EV)</th>
+                <th class="num-col">Actionable Stake</th>
+                <th>Status</th>
+                <th style="text-align:right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="slateTableTbody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+        <div id="actionFeedWrap" class="action-feed-grid" style="display:none; margin-top:14px;"></div>
+      </section>
+    </main>
+
+    <main id="nbaDestination" class="nba-destination">
+      <section class="nba-hero">
+        <div class="nba-hero-mark" aria-hidden="true">
+          <svg viewBox="0 0 96 96"><circle cx="48" cy="48" r="39"/><path d="M16 35c21 2 39 20 46 47M80 33C60 37 44 54 36 82M9 50h78M48 9v78"/></svg>
+        </div>
+        <div>
+          <span class="eyebrow">NBA WAITLIST</span>
+          <h2>NBA is next. NFL earns trust first.</h2>
+          <p>NBA remains a preview until its model, rotation logic, injury feed, and sportsbook receipts pass the same verification standard as NFL. It is not included in a paid tier yet.</p>
+          <div class="nba-market-list">
+            <span>Points</span><span>Rebounds</span><span>Assists</span><span>3PM</span><span>PRA</span>
+          </div>
+        </div>
+      </section>
+      <section class="nba-roadmap">
+        <article><strong>01</strong><h3>Role and minutes</h3><p>Starter changes, rotations, pace, usage, and on/off splits.</p></article>
+        <article><strong>02</strong><h3>Verified prices</h3><p>Book-specific lines and odds with timestamped provider receipts.</p></article>
+        <article><strong>03</strong><h3>Condition alerts</h3><p>Notify only when the price and evidence clear the action threshold.</p></article>
+      </section>
+    </main>
+
+    <!-- ==================================================================== -->
+    <!-- DESTINATION 2: WATCHLIST -> CONDITION MONITORING -->
+    <!-- ==================================================================== -->
+    <main id="watchlistDestination" class="destination-page nfl-only">
+      <div class="page-container">
+        <div class="page-header" style="margin-bottom:20px;">
+          <div class="badge-tag">PERSISTENT CONDITION MONITORING</div>
+          <h2 style="font-size:22px; font-weight:800; color:var(--text-ink); margin-top:4px;">Saved Prop Conditions &amp; Triggers</h2>
+          <p class="text-muted" style="font-size:12px; margin-top:2px;">
+            Monitors price thresholds, line movements, and role/injury invalidation. Disclosed behavior: Saved locally in browser storage.
+          </p>
+        </div>
+
+        <div id="watchlistContentContainer">
+          <!-- Populated from localStorage condition monitor -->
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================================================================== -->
+    <!-- DESTINATION 3: AUDITED CLV TRACKER -->
+    <!-- ==================================================================== -->
+    <main id="trackerDestination" class="destination-page nfl-only">
+      <div class="page-container">
+        
+        <!-- Track Record Integrity Banner -->
+        <div class="empty-state-notice" style="margin-bottom:20px; border-left-color:var(--accent-editorial);">
+          <strong>CLV DISCIPLINE &amp; COMPARABILITY INTEGRITY:</strong>
+          Closing Line Value (CLV) compares your <strong>exact entry threshold</strong> with the <strong>closing quote at that identical threshold</strong>. 
+          A close at a different yard line is a different event. Live records logged on this device are stored locally and audited below.
+        </div>
+
+        <!-- KPI Metrics Strip -->
+        <div class="slate-health-strip" style="margin-bottom:20px;">
+          <div class="health-metric-tile">
+            <span class="health-tile-label">Total Logged Bets</span>
+            <div class="health-tile-val" id="trackerTotalBets">0</div>
+            <div class="health-tile-sub">Sample integrity tracked</div>
+          </div>
+          <div class="health-metric-tile">
+            <span class="health-tile-label">Mean Market CLV</span>
+            <div class="health-tile-val" style="color:var(--status-green);" id="trackerMeanClv">—</div>
+            <div class="health-tile-sub" id="trackerClvCi">95% CI: [—, —]</div>
+          </div>
+          <div class="health-metric-tile">
+            <span class="health-tile-label">% Beating Close</span>
+            <div class="health-tile-val" style="color:var(--status-green);" id="trackerBeatClose">—</div>
+            <div class="health-tile-sub">Market beat frequency</div>
+          </div>
+          <div class="health-metric-tile">
+            <span class="health-tile-label">Statistical Verdict</span>
+            <div class="health-tile-val" style="font-size:16px;" id="trackerVerdict">Awaiting live records</div>
+            <div class="health-tile-sub">Do not scale stakes on small N</div>
+          </div>
+        </div>
+
+        <!-- Filter Actions -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div class="segmented-control">
+            <button class="seg-btn active" id="btnClvAll" onclick="setClvFilter('all')">All Records (<span id="clvAllCount">0</span>)</button>
+            <button class="seg-btn" id="btnClvVerified" onclick="setClvFilter('verified')">Verified Live Only (<span id="clvVerifiedCount">0</span>)</button>
+            <button class="seg-btn" id="btnClvDemo" onclick="setClvFilter('demo')">Demonstration Data (<span id="clvDemoCount">0</span>)</button>
+          </div>
+          <button class="btn-primary" onclick="toggleClosingForm()">+ Record Closing Line</button>
+        </div>
+
+        <!-- Closing Price Input Panel -->
+        <div class="closing-form-panel" id="closingFormPanel" style="display:none; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:8px; padding:16px; margin-bottom:20px;">
+          <h4 style="color:var(--text-ink); margin-bottom:10px; font-size:14px;">Record Closing Line / Probability</h4>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div class="form-col" style="flex:2; min-width:200px;">
+              <label>Select Logged Bet:</label>
+              <select id="closingPickSelect" class="filter-select" style="width:100%;">
+                <option value="">Loading logged bets...</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label>Closing Odds (American):</label>
+              <input type="number" id="closingOddsInput" class="comp-line-input" placeholder="-125" oninput="updateClosingFromOdds()">
+            </div>
+            <div class="form-col">
+              <label>Closing Market Devigged Prob:</label>
+              <input type="number" step="0.001" id="closingProbInput" class="comp-line-input" placeholder="0.535">
+            </div>
+            <div class="form-col" style="align-self:flex-end;">
+              <button class="btn-primary" onclick="submitClosingPrice()">Save Closing Line</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chronological Holdout Evaluation Panel -->
+        <div class="research-card" id="holdoutEvalPanel" style="margin-bottom:20px; border:1px solid rgba(56,189,248,0.3); background:var(--bg-surface);">
+          <div class="research-card-header" style="margin-bottom:12px;">
+            <div>
+              <span class="badge-tag" style="color:#38bdf8; background:rgba(56,189,248,0.12); border-color:rgba(56,189,248,0.35);">OUT-OF-SAMPLE CHRONOLOGICAL HOLDOUT</span>
+              <h3 style="color:var(--text-ink); margin-top:4px; font-size:16px;">Holdout Evaluation &amp; Role-Change Hypothesis Validation</h3>
+              <p class="text-muted" style="font-size:12px; margin-top:2px;">
+                Evaluates frozen pre-kickoff model snapshots strictly created before lock (<code>created_at &le; decision_time</code>) against settled ground truth box scores. Zero lookahead leakage.
+              </p>
+            </div>
+          </div>
+          <div id="holdoutEvalContent">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+
+        <!-- Audited CLV Table -->
+        <div class="main-slate-card">
+          <div class="table-responsive">
+            <table class="slate-table">
+              <thead>
+                <tr>
+                  <th>Logged Date</th>
+                  <th>Player &amp; Selection</th>
+                  <th>Market &amp; Line</th>
+                  <th class="num-col">Entry Odds / Mkt</th>
+                  <th class="num-col">Model Prob</th>
+                  <th class="num-col">Closing Mkt Prob</th>
+                  <th class="num-col">True Market CLV</th>
+                  <th>Sample Class</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="trackerTableTbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ==================================================================== -->
+    <!-- DESTINATION 4: RESEARCH & METHODOLOGY -->
+    <!-- ==================================================================== -->
+    <main id="researchDestination" class="destination-page nfl-only">
+      <div class="page-container">
+        <div class="page-header" style="margin-bottom:20px;">
+          <div class="badge-tag">MATHEMATICAL SPECIFICATION</div>
+          <h2 style="font-size:22px; font-weight:800; color:var(--text-ink); margin-top:4px;">Research, Calibration &amp; SGP Bivariate Model</h2>
+          <p class="text-muted" style="font-size:12px; margin-top:2px;">
+            Full mathematical specification, out-of-sample calibration error audits, and same-game parlay joint correlation modeling.
+          </p>
+        </div>
+
+        <!-- SGP Bivariate Simulator -->
+        <div class="research-card">
+          <div class="research-card-header">
+            <div>
+              <span class="badge-tag">SRC/PARLAY.PY</span>
+              <h3 style="color:var(--text-ink); margin-top:4px; font-size:16px;">Bivariate Receiver Volume Simulator (Modeled Dependence)</h3>
+              <p class="text-muted" style="font-size:12px; line-height:1.6; margin-top:4px;">
+                Evaluates joint distribution of receptions and receiving yards using Marsaglia-Tsang bivariate sampling. Demonstrates how volume correlation affects joint probability relative to an unadjusted independent product. <em>Note: Sportsbooks use proprietary correlation copulas and do NOT use naive multiplication. Compare against actual offered sportsbook SGP odds below.</em>
+              </p>
+            </div>
+          </div>
+          
+          <div class="sgp-runner-controls">
+            <div class="form-col" style="flex:2; min-width:200px;">
+              <label>Select Receiver:</label>
+              <select id="sgpPlayerSelect" class="filter-select" style="width:100%;" onchange="runSgpSimulation()">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <div class="form-col">
+              <label>Sportsbook Offered SGP Odds:</label>
+              <input type="number" id="sgpOfferedOdds" value="180" class="comp-line-input" style="width:100%;" oninput="runSgpSimulation()" placeholder="+180">
+            </div>
+            <div class="form-col">
+              <label>Simulations (Monte Carlo):</label>
+              <input type="text" value="40,000 Draws" disabled class="comp-line-input" style="opacity:0.7;">
+            </div>
+            <div class="form-col" style="align-self:flex-end;">
+              <button class="btn-primary" onclick="runSgpSimulation()">Re-run Simulation</button>
+            </div>
+          </div>
+
+          <div id="sgpSimulationResultsContainer" style="margin-top:16px;">
+            <!-- Rendered by app.js -->
+          </div>
+
+          <div style="margin-top:14px; background:var(--bg-surface-subtle); border:1px solid var(--border-subtle); border-radius:6px; padding:12px; font-size:11px; color:var(--text-ink-secondary); line-height:1.6;">
+            <strong>Dependence Assumption Caveat:</strong> The correlation between receptions and yards varies substantially across player archetypes. Deep threats with high aDOT (e.g. Alec Pierce) have significantly lower correlation with receptions than slot possession receivers (e.g. Amon-Ra St. Brown). A uniform correlation parameter must not be assumed universally across markets.
+          </div>
+        </div>
+
+        <!-- Calibration & Mathematical Framework -->
+        <div class="research-card">
+          <h3 style="color:var(--text-ink); margin-bottom:12px; font-size:16px;">The Negative Binomial &bull; Compound Gamma Framework</h3>
+          <div class="research-grid">
+            <div class="rule-card">
+              <div class="rule-label">1. COUNT MODEL (RECEPTIONS)</div>
+              <p>Receptions are modeled as a Negative Binomial random variable <code>NegBin(&mu;<sub>rec</sub>, &alpha;)</code>, where &alpha; is the dispersion parameter estimated from historical NFL play-by-play. This accounts for target clustering and game-script variance that Poisson models miss.</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-label">2. SEVERITY MODEL (YARDS PER REC)</div>
+              <p>Each reception produces yards following a Gamma distribution with shape parameter <code>k</code> and scale parameter <code>&mu;<sub>ypr</sub> / k</code>. Total receiving yards is the compound sum of <code>N</code> independent Gamma draws.</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-label">3. CALIBRATED FAIR LINES (50/50 MEDIAN)</div>
+              <p>Fair lines are derived directly from the calibrated median of the predictive distribution. A player's fair line is defined as the exact line where <code>P(Over) = 50.0%</code> and <code>P(Under) = 50.0%</code> under the calibrated model.</p>
+            </div>
+            <div class="rule-card">
+              <div class="rule-label">4. ZERO LLM IN DECISION PATH</div>
+              <p>The betting decision, expected value, and stake sizing are computed with 100% deterministic mathematical code. Generative language models are strictly restricted to synthesizing textual injury summaries and context, never bets.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- ==================================================================== -->
+    <!-- SLIDE-IN DETAIL DRAWER (Strict 6-Step Order) -->
+    <!-- ==================================================================== -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    
+    <aside class="detail-drawer" id="detailDrawer">
+      <div class="drawer-header">
+        <div class="drawer-player-info">
+          <div class="drawer-badge-row">
+            <span class="pos-tag" id="drawerPosTag">WR</span>
+            <span class="drawer-team-matchup" id="drawerMatchupText">DET vs GB &bull; Spread: -2.5</span>
+            <span class="drawer-status-chip" id="drawerStatusChip">UNQUOTED</span>
+          </div>
+          <h2 class="drawer-name" id="drawerPlayerName">Amon-Ra St. Brown</h2>
+          <div class="drawer-odds-summary" id="drawerActionSummary">
+            PASS &bull; Unquoted Model Baseline &bull; Actionable Stake: 0.00%
+          </div>
+        </div>
+        <button class="drawer-close-btn" onclick="closeDrawer()" title="Close (Esc)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sticky Micro-Step Navigation Bar -->
+      <nav class="drawer-step-nav" id="drawerStepNav">
+        <button class="step-nav-btn active" onclick="scrollToDrawerStep('drawerStep1')">1. Decision</button>
+        <button class="step-nav-btn" onclick="scrollToDrawerStep('drawerStep2')">2. Price</button>
+        <button class="step-nav-btn" onclick="scrollToDrawerStep('drawerStep3')">3. Role</button>
+        <button class="step-nav-btn" onclick="scrollToDrawerStep('drawerStep4')">4. Risk</button>
+        <button class="step-nav-btn" onclick="scrollToDrawerStep('drawerStep5')">5. Curve</button>
+        <button class="step-nav-btn" onclick="scrollToDrawerStep('drawerStep6')">6. Audit</button>
+      </nav>
+
+      <div class="drawer-body" id="drawerBody">
+        <!-- Rendered dynamically in strict 6-step order by app.js:
+             Step 1. Decision (Side, Offer, Qualification, Rationale)
+             Step 2. Price (Sportsbook comparison + Sensitivity Matrix + Price Boundaries)
+             Step 3. Evidence (Role-Change Detection: Recent vs Baseline vs Career)
+             Step 4. Risks (Injuries, Teammates, Defense, Weather, Game Script)
+             Step 5. Distribution (Percentiles, IQR, Calibrated Density Curve)
+             Step 6. Sources & Provenance (Timestamps, Model Version)
+             Bonus Sub-Tool: Conditional Projections
+        -->
+      </div>
+
+      <div class="drawer-footer">
+        <button class="btn-secondary" id="drawerWatchlistBtn" onclick="toggleDrawerWatchlist()">
+          ★ Watch Condition
+        </button>
+        <button class="btn-secondary" id="drawerCopySlipBtn" onclick="copyDrawerSlip()" title="Copy slip to clipboard">
+          Copy Slip
+        </button>
+        <button class="btn-x-card" onclick="exportDrawerToXCard()" style="display:inline-flex; align-items:center; gap:6px;" title="Export high-contrast receipt card to 𝕏">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 23.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Export to 𝕏 Card
+        </button>
+        <button class="btn-primary" onclick="logDrawerPick()">
+          Log to CLV Proof Ledger
+        </button>
+      </div>
+    </aside>
+
+    <!-- ==================================================================== -->
+    <!-- ADMIN / PIPELINE TOOLS MODAL -->
+    <!-- ==================================================================== -->
+    <div class="modal-backdrop" id="adminModal">
+      <div class="modal-container">
+        <div class="modal-header">
+          <div>
+            <div class="badge-tag">PIPELINE EXECUTION CONSOLE</div>
+            <h3 style="margin-top:4px;">Pipeline Runner &amp; Admin Tools</h3>
+          </div>
+          <button class="modal-close" onclick="closeAdminModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <p class="text-muted" style="font-size:12px; margin-bottom:16px;">
+            Execute <code>week1.py</code> to refit the distributional model, compute projections, and generate slate files.
+          </p>
+
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
+            <div class="form-col">
+              <label for="adminSeasonSelect">Season:</label>
+              <select id="adminSeasonSelect" class="filter-select">
+                <option value="2026" selected>2026</option>
+                <option value="2025">2025</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label for="adminWeekSelect">Week (1–18):</label>
+              <select id="adminWeekSelect" class="filter-select">
+                <option value="1">Week 1 (Sept 10)</option>
+                <option value="2">Week 2 (Sept 17)</option>
+                <option value="3">Week 3 (Sept 24)</option>
+                <option value="4">Week 4 (Oct 1)</option>
+                <option value="5">Week 5 (Oct 8)</option>
+                <option value="6">Week 6 (Oct 15)</option>
+                <option value="7" selected>Week 7 (Oct 22 - Upcoming)</option>
+                <option value="8">Week 8 (Oct 29)</option>
+                <option value="9">Week 9 (Nov 5)</option>
+                <option value="10">Week 10 (Nov 12)</option>
+                <option value="11">Week 11 (Nov 19)</option>
+                <option value="12">Week 12 (Nov 26)</option>
+                <option value="13">Week 13 (Dec 3)</option>
+                <option value="14">Week 14 (Dec 10)</option>
+                <option value="15">Week 15 (Dec 17)</option>
+                <option value="16">Week 16 (Dec 24)</option>
+                <option value="17">Week 17 (Dec 31)</option>
+                <option value="18">Week 18 (Jan 7)</option>
+              </select>
+            </div>
+            <div class="form-col" style="align-self:flex-end;">
+              <button class="btn-primary" id="executeAdminRunBtn" onclick="executeAdminRun()">
+                Execute Pipeline
+              </button>
+            </div>
+          </div>
+
+          <!-- FREEZE SLATE CONSOLE -->
+          <div style="background:var(--bg-surface-subtle); border:1px solid rgba(56,189,248,0.3); border-radius:8px; padding:14px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-weight:700; font-size:13px; color:var(--text-ink);">🔒 Decision-Time Snapshot System</span>
+                <span class="provisional-badge" style="color:#38bdf8; background:rgba(56,189,248,0.12); border-color:rgba(56,189,248,0.35);">APPEND-ONLY</span>
+              </div>
+              <span id="freezeRecordCounter" style="font-family:var(--font-mono); font-size:11px; color:var(--text-ink-tertiary);">896 records logged</span>
+            </div>
+            <p style="font-size:11px; line-height:1.5; color:var(--text-ink-secondary); margin-bottom:12px;">
+              Records versioned pre-kickoff data with a deterministic SHA-256 content hash. The hash detects content changes; durable storage and access controls must provide immutability.
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <div class="form-col" style="flex:1; min-width:160px;">
+                <label for="adminFreezeGameSelect">Scope:</label>
+                <select id="adminFreezeGameSelect" class="filter-select">
+                  <option value="2026_07_NE_CHI" selected>TNF: Patriots @ Bears (2026_07_NE_CHI)</option>
+                  <option value="ALL">Full Slate (All 14 Games)</option>
+                </select>
+              </div>
+              <div class="form-col" style="flex:1; min-width:160px;">
+                <label for="adminFreezeTypeSelect">Snapshot Type:</label>
+                <select id="adminFreezeTypeSelect" class="filter-select">
+                  <option value="pre_kickoff" selected>pre_kickoff (Lock / Near-Lock)</option>
+                  <option value="first_published">first_published (First Recommendation)</option>
+                  <option value="material_revision">material_revision (Role / Proj Shift)</option>
+                  <option value="closing">closing (Final Market Quote)</option>
+                </select>
+              </div>
+              <div class="form-col" style="align-self:flex-end;">
+                <button class="btn-primary" id="executeFreezeBtn" onclick="executeAdminFreeze()" style="background:#0284c7; border-color:#0369a1;">
+                  Execute Freeze Snapshot
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- LIVE ODDS INGESTION ADAPTER CONSOLE -->
+          <div style="background:var(--bg-surface-subtle); border:1px solid rgba(182, 243, 107,0.3); border-radius:8px; padding:14px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-weight:700; font-size:13px; color:var(--text-ink);">⚡ Live Odds Ingestion Adapter</span>
+                <span class="provisional-badge" style="color:#B6F36B; background:rgba(182, 243, 107,0.12); border-color:rgba(182, 243, 107,0.35);">AUTO-EVAL</span>
+              </div>
+              <span id="oddsFeedStatusPill" style="font-family:var(--font-mono); font-size:11px; color:var(--status-amber);">0 Verified • Evidence Required</span>
+            </div>
+            <p style="font-size:11px; line-height:1.5; color:var(--text-ink-secondary); margin-bottom:12px;">
+              Ingests opening quote assertions, normalizes player names, and requires a provider quote ID or source URL before evaluation, qualification, or staking. Accepted records emit content-hashed <code>first_published</code> or <code>material_revision</code> snapshots.
+            </p>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+              <div class="form-col" style="flex:1; min-width:180px;">
+                <label for="adminOddsScopeSelect">Scope:</label>
+                <select id="adminOddsScopeSelect" class="filter-select">
+                  <option value="2026_07_NE_CHI" selected>TNF: Patriots @ Bears (2026_07_NE_CHI)</option>
+                  <option value="ALL">Full Week 7 Slate</option>
+                </select>
+              </div>
+              <div class="form-col" style="flex:1; min-width:180px;">
+                <label for="adminOddsProviderSelect">Provider / Source:</label>
+                <select id="adminOddsProviderSelect" class="filter-select">
+                  <option value="openers" selected>Early Market Openers (DK, FD, MGM, PINN)</option>
+                  <option value="the_odds_api">The Odds API (API Key)</option>
+                  <option value="feed">Local Feed File</option>
+                </select>
+              </div>
+              <div class="form-col">
+                <button class="btn-primary" id="executeIngestOddsBtn" onclick="executeAdminIngestOdds()" style="background:#B6F36B; color:#09090b; border-color:#9AD94F;">
+                  Ingest &amp; Evaluate Odds
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="runner-terminal">
+            <pre id="adminTerminalOutput">Ready. Select season, week, and actions. Output will appear here.&#10;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================== -->
+    <!-- X (TWITTER) SOCIAL RECEIPT CARD MODAL -->
+    <!-- ==================================================================== -->
+    <div class="modal-backdrop" id="xCardModal">
+      <div class="modal-container" style="max-width: 760px;">
+        <div class="modal-header">
+          <div>
+            <div class="badge-tag" style="background: rgba(182, 243, 107, 0.15); color: var(--status-green); border-color: rgba(182, 243, 107, 0.3);">
+              𝕏 VIRAL RECEIPT EXPORTER
+            </div>
+            <h3 style="margin-top:4px;" id="xCardModalTitle">Export Decision Receipt to 𝕏</h3>
+          </div>
+          <button class="modal-close" onclick="closeXCardModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <p class="text-muted" style="font-size:12px; margin-bottom:12px;">
+            High-contrast 16:9 social card rendered client-side with content-hashed holdout record.
+          </p>
+
+          <!-- Canvas Preview Container -->
+          <div class="x-card-canvas-wrap" style="position:relative; background:#0c0e12; border-radius:10px; overflow:hidden; border:1px solid var(--border-medium); margin-bottom:16px;">
+            <canvas id="xCardCanvas" width="1200" height="675" style="width:100%; height:auto; display:block; aspect-ratio: 16/9;"></canvas>
+          </div>
+
+          <!-- Viral Copy Preview -->
+          <div style="background:var(--bg-surface-subtle); border:1px solid var(--border-subtle); border-radius:8px; padding:12px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-family:var(--font-mono); font-size:10px; font-weight:700; color:var(--text-ink-tertiary); text-transform:uppercase;">
+                Pre-Filled 𝕏 Post Draft
+              </span>
+              <button class="btn-copy-mini" onclick="copyTweetText()" style="font-size:11px; font-family:var(--font-mono); background:none; border:none; color:var(--accent-editorial); cursor:pointer; font-weight:700;">
+                Copy Text
+              </button>
+            </div>
+            <textarea id="xCardTweetText" rows="4" style="width:100%; background:var(--bg-canvas); color:var(--text-ink); border:1px solid var(--border-subtle); border-radius:6px; padding:8px; font-family:var(--font-sans); font-size:12px; resize:vertical;"></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+            <button class="btn-secondary" onclick="downloadXCardPng()" style="display:inline-flex; align-items:center; gap:6px;">
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Download PNG (1200×675)
+            </button>
+            <button class="btn-secondary" onclick="copyXCardImage()" style="display:inline-flex; align-items:center; gap:6px;">
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy Image
+            </button>
+            <button class="btn-primary" onclick="launchTweetIntent()" style="background:#000000; color:#ffffff; border:1px solid #333; display:inline-flex; align-items:center; gap:6px;">
+              <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 23.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              Post to 𝕏
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PWA MOBILE INSTALL PROMPT BANNER -->
+    <aside id="pwaInstallBanner" class="pwa-install-banner" style="display:none;" aria-label="Add PropWire to Home Screen">
+      <div class="pwa-banner-content">
+        <div class="pwa-banner-icon-lockup">
+          <img src="icon-192.png" alt="PropWire Icon" class="pwa-app-icon" width="38" height="38">
+          <div class="pwa-banner-text">
+            <div class="pwa-banner-title">Add PropWire to Home Screen</div>
+            <div class="pwa-banner-desc">Fast, full-screen mobile terminal without browser URL bars</div>
+          </div>
+        </div>
+        <div class="pwa-banner-actions">
+          <button class="btn-pwa-install" onclick="triggerPwaInstall()">Add to Home Screen</button>
+          <button class="btn-pwa-dismiss" onclick="dismissPwaBanner()" title="Dismiss">&times;</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- TOAST NOTIFICATIONS -->
+    <div id="toastContainer"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
