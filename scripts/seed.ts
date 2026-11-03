@@ -15,6 +15,7 @@ import { db } from "../src/lib/db";
 import { computeEdge } from "../src/lib/ev";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import type { Prisma } from "@prisma/client";
 
 // v1 snapshot fixtures checked into the repo (worker/data/) — was an
 // absolute sandbox path into the removed viewer/ dir (audit fix 2026-11-03)
@@ -65,7 +66,7 @@ interface GameUpsert {
   venue: string | null;
   broadcast: string | null;
   oddsLine: string | null;
-  rawPayload: unknown;
+  rawPayload: Prisma.InputJsonValue;
 }
 
 function mapEvent(league: string, ev: any): GameUpsert {

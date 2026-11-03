@@ -33,7 +33,7 @@ export function Sidebar({
         </span>
         <div>
           <div className="font-mono text-sm font-bold tracking-tight text-zinc-100">propstein</div>
-          <div className="font-mono text-[9px] uppercase tracking-widest text-zinc-600">live prop terminal</div>
+          <div className="font-mono text-[9px] uppercase tracking-widest text-zinc-600">prop terminal</div>
         </div>
       </div>
 
@@ -54,6 +54,14 @@ export function Sidebar({
             <Radio size={11} className={league === l ? "text-emerald-500" : "text-zinc-700"} />
           </button>
         ))}
+        <div className="px-2 pb-1 pt-3 font-mono text-[9px] uppercase tracking-widest text-zinc-600">record</div>
+        <a
+          href="/performance"
+          className="flex w-full items-center justify-between rounded-md border border-transparent px-2.5 py-1.5 font-mono text-xs text-zinc-400 transition-colors hover:bg-zinc-900/70 hover:text-zinc-200"
+        >
+          track record
+          <Activity size={11} className="text-zinc-700" />
+        </a>
       </nav>
 
       <div className="mt-auto space-y-2 p-3">

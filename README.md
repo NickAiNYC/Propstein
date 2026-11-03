@@ -122,6 +122,10 @@ API returns 403 — tier comes from auth.)
 - Merge criteria: access control verified against real auth, quote status
   honest under real ingest, freshness labeling true, and the v1 public
   performance pages either restored or deliberately superseded.
+- Performance-page continuity is already handled: the v1 track record is
+  preserved **verbatim** at the public route `/performance` (terminal-styled,
+  numbers unmodified, footer + sidebar link), so a future merge does not
+  take the record offline. `archive/v1-static/` stays as the raw source.
 
 ## Preservation map — nothing is lost
 
@@ -151,9 +155,15 @@ API returns 403 — tier comes from auth.)
   book prices, and not betting advice.
 - Season stats start as "tracked-games averages" and converge as the cron
   accumulates box scores.
-- The header feed chip reflects actual data availability: `feed live`
-  only when panels have data; empty database shows "no feed yet", a
+- The header feed chip reflects actual data availability and data source:
+  an unqualified `feed live` only appears when games are live **and** props
+  explicitly declare a live book source. With the bundled snapshot (today's
+  default) the header reads `scores live · props static snapshot — not live`,
+  matching the props panel's badge. Empty database shows "no feed yet", a
   failed poll shows "feed unreachable".
+- The Pro upsell never promises "live edge": it offers the full edge model
+  (fair odds, EV, Kelly, book comparison) and states outright that quotes
+  come from a static v1 snapshot, not live sportsbooks.
 
 *v1 is preserved three ways: branch `v1-static-archive`, tag `v1.0.0`, and
 `archive/v1-static/` in-repo. `main` serves v1 until PR #99 is reviewed,

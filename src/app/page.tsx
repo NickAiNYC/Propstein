@@ -44,9 +44,19 @@ export default function TerminalPage() {
   const slate = propsFeed.data?.slate ?? null;
 
   // honest feed state — "live" only when a panel actually has data;
-  // empty database or a failed poll is shown as what it is
+  // empty database or a failed poll is shown as what it is.
+  // Props honesty: an unqualified "feed live" is only allowed when the props
+  // API explicitly declares a live book source. The bundled v1 snapshot
+  // (dataSource "bundled_v1_snapshot", the current default) renders as a
+  // static-snapshot status — never as "feed live".
   const gamesCount = games.data?.count ?? 0;
   const propsCount = propsFeed.data?.count ?? 0;
+  const propsSnapshot = propsCount > 0 && propsFeed.data?.dataSource !== "live_books";
+  const snapshotTitle = `Static v1 snapshot quotes — last observed ${
+    propsFeed.data?.lastObservedAt
+      ? new Date(propsFeed.data.lastObservedAt).toLocaleString()
+      : "—"
+  } · ${propsFeed.data?.verifiedCount ?? 0} verified. Not a live odds feed.`;
   const feedState: "live" | "connecting" | "empty" | "down" =
     games.error || propsFeed.error
       ? "down"
@@ -62,11 +72,25 @@ export default function TerminalPage() {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-12 shrink-0 items-center justify-between border-b border-zinc-800/80 bg-zinc-950/70 px-4 backdrop-blur">
           <div className="flex items-center gap-3 font-mono text-xs text-zinc-500">
-            {feedState === "live" && (
+            {feedState === "live" && (gamesCount > 0 && propsSnapshot ? (
+              <span className="flex items-center gap-1.5" title={snapshotTitle}>
+                <span className="flex items-center gap-1.5 text-emerald-400">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" /> scores live
+                </span>
+                <span className="text-zinc-700">·</span>
+                <span className="flex items-center gap-1.5 text-amber-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" /> props static snapshot — not live
+                </span>
+              </span>
+            ) : propsSnapshot ? (
+              <span className="flex items-center gap-1.5 text-amber-400" title={snapshotTitle}>
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" /> static snapshot — not live
+              </span>
+            ) : (
               <span className="flex items-center gap-1.5 text-emerald-400">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" /> feed live
               </span>
-            )}
+            ))}
             {feedState === "connecting" && (
               <span className="flex items-center gap-1.5 text-amber-400">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" /> connecting…
@@ -124,7 +148,8 @@ export default function TerminalPage() {
 
         <footer className="mt-auto border-t border-zinc-800/80 bg-zinc-950/80 px-4 py-2.5 font-mono text-[10px] text-zinc-600 backdrop-blur">
           propstein 2.0 · data: espn public json + nba_api (no keys, $0/mo) · ingest: github actions cron ·
-          build: next.js + prisma · projections are estimates, not betting advice
+          build: next.js + prisma · <a className="underline decoration-zinc-700 hover:text-zinc-400" href="/performance">track record</a> ·
+          projections are estimates, not betting advice
         </footer>
       </div>
     </div>

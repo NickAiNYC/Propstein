@@ -8,7 +8,7 @@
 
 import { useMemo, useState } from "react";
 import { Copy, Download, Lock, Timer, Zap } from "lucide-react";
-import { PropDTO, Tier } from "./data-hooks";
+import { PropDTO, PropsResp, Tier } from "./data-hooks";
 import { cn } from "@/lib/utils";
 
 function fmtOdds(a: number | null | undefined): string {
@@ -31,7 +31,8 @@ function slipLine(p: PropDTO): string {
   return `[${p.slate}] ${p.player.name} (${p.player.team ?? "—"}) ${side} ${p.line} ${marketLabel(p.market)} @ ${fmtOdds(odds)} · ${p.book} · EV ${fmtPct(p.ev)} · kelly ${((p.kelly ?? 0) * 100).toFixed(1)}%`;
 }
 
-function csvEsc(s: string): string {
+function csvEsc(v: string | number): string {
+  const s = String(v);
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
@@ -42,12 +43,15 @@ export function PropsPanel({
   loading,
 }: {
   props: PropDTO[];
-  resp: { slate: string | null; teaser: boolean; delayMinutes: number; totalForSlate: number } | null;
+  resp: Omit<PropsResp, "props"> | null;
   tier: Tier;
   loading: boolean;
 }) {
   const pro = tier === "pro";
   const [copied, setCopied] = useState(false);
+
+  // honest source label — snapshot unless the API explicitly declares live books
+  const snapshotQuotes = resp?.dataSource !== "live_books";
 
   // best book per player+market (Pro comparison calculator)
   const bestBookIds = useMemo(() => {
@@ -275,8 +279,9 @@ export function PropsPanel({
             <div className="pointer-events-auto glass flex max-w-lg items-center gap-3 rounded-lg border-emerald-900/50 px-4 py-2.5">
               <Lock size={14} className="shrink-0 text-emerald-400" />
               <div className="font-mono text-[11px] leading-relaxed text-zinc-300">
-                <span className="text-emerald-400">Upgrade to Pro</span> to unlock live edge — fair odds, exact EV,
-                Kelly sizing and book comparison across every slate.
+                <span className="text-emerald-400">Upgrade to Pro</span> to unlock the full edge model — fair
+                odds, exact EV, Kelly sizing and book comparison across every slate.
+                {snapshotQuotes ? " Quotes come from a static v1 snapshot — not live sportsbooks." : ""}
               </div>
             </div>
           </div>
@@ -290,8 +295,9 @@ export function PropsPanel({
         </p>
       ) : (
         <p className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-600">
-          <Zap size={10} className="text-emerald-500/70" /> pro feed: exact EV · full-Kelly (quarter-cap 25%) · best
-          book ★ · slip + csv export
+          <Zap size={10} className="text-emerald-500/70" />
+          {snapshotQuotes ? "pro board (static v1 snapshot · not live): " : "pro feed: "}exact EV · full-Kelly
+          (quarter-cap 25%) · best book ★ · slip + csv export
         </p>
       )}
     </section>
