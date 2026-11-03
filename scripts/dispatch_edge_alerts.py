@@ -90,7 +90,12 @@ def collect_active_edges(min_edge_pct: float = 5.0, allow_unverified: bool = Fal
 
                 pp_flex_edge = (win_prob - DFS_HURDLES["PrizePicks 5-Flex"]) * 100.0
 
-                if ev_pct >= min_edge_pct or edge_pct >= min_edge_pct or pp_flex_edge >= 3.0:
+                # Gating: must meet either the sportsbook EV threshold OR the DFS hurdle threshold
+                qualifies_sportsbook = ev_pct >= min_edge_pct or edge_pct >= min_edge_pct
+                qualifies_dfs = pp_flex_edge >= min_edge_pct
+
+                if qualifies_sportsbook or qualifies_dfs:
+                    effective_edge = max(ev_pct, edge_pct) if qualifies_sportsbook else pp_flex_edge
                     edges.append({
                         "id": f"{player}:{market}:{line}:{book}".lower().replace(" ", "_"),
                         "player": player,
@@ -103,6 +108,7 @@ def collect_active_edges(min_edge_pct: float = 5.0, allow_unverified: bool = Fal
                         "ev_pct": max(ev_pct, edge_pct),
                         "win_prob_pct": win_prob * 100.0,
                         "pp_flex_edge": pp_flex_edge,
+                        "effective_edge": effective_edge,
                         "source": tf.name,
                     })
         except Exception:
