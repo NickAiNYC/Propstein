@@ -1,12 +1,16 @@
 """Box-score providers — one normalized row per player-game.
 
-DATA-SOURCE DECISION (Phase 0.5 gate, user-approved; see DECISIONS.md):
+DATA-SOURCE DECISIONS (see DECISIONS.md):
 
-  The ONLY licensed NBA source wired for v1 is the balldontlie NBA API
-  (https://docs.balldontlie.io). Games metadata is free tier; BOX SCORES
-  (/v1/stats) require the ALL-STAR paid tier ($9.99/mo at decision time)
-  or higher. Scraping NBA.com / ESPN / stat-site endpoints is FORBIDDEN
-  by the project ToS rule.
+  D1 (2026-11-03): balldontlie NBA API (`https://docs.balldontlie.io`) —
+  games metadata on the free tier; BOX SCORES (/v1/stats) behind a paid
+  tier ("Full data access": GOAT $39.99/mo at decision time). Key:
+  `BALLDONTLIE_API_KEY`.
+
+  D7 (2026-11-03, owner call — supersedes the earlier "no NBA.com" rule):
+  the FREE default is the official stats.nba.com league feeds via
+  `NbaComProvider` (`data/nbacom.py`), keyless, mirroring swar/nba_api's
+  endpoint contracts. ESPN / other stat-site scraping remains forbidden.
 
   Fail-closed contract (mirrors scripts/fetch_nba.py exit semantics):
     - no BALLDONTLIE_API_KEY  -> MissingKeyError          (CLI exit 2)
