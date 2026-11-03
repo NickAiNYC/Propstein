@@ -3854,10 +3854,11 @@
         }, () => renderHomeEdgePreview());
       }
 
-      // Institutional status phrasing instead of raw diagnostics
+      // Keep the short homepage status copy; detail remains in Settings.
+      const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
       status.textContent = research.length
-        ? `Pre-Market Consensus: Displaying ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} institutional reference lines · Independent quote verification in progress.`
-        : `Pre-Market: Awaiting live book odds publication · Model fair lines active · As of ${asOf || 'today'}`;
+        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
+        : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
 
       const isPro = isProSubscriber();
       const displayCards = research.slice(0, homeEdgeExpanded ? undefined : HOME_EDGE_LIMIT);
@@ -3866,20 +3867,14 @@
         ? displayCards.map((pick, idx) => {
           const line = Number(pick.line);
           const odds = Number(pick.odds);
-          const isLocked = !isPro && idx > 0;
-          const winProb = pick.odds ? americanToImpliedProb(pick.odds) : 0.5;
+          const winProb = getImpliedWinProb(pick) ?? 0.5;
           const defaultEv = Number.isFinite(Number(pick.ev_per_unit)) ? `+${(Number(pick.ev_per_unit) * 100).toFixed(1)}% EV` : '';
-          return `<article class="home-edge-card home-research-card ${isLocked ? 'locked-teaser' : ''}" data-prop-card data-win-prob="${winProb}" data-default-ev="${defaultEv}">
+          return `<article class="home-edge-card home-research-card" data-prop-card data-win-prob="${winProb}" data-default-ev="${defaultEv}">
             <div class="home-edge-player"><strong>${esc(pick.player || 'Unknown player')}</strong><span>${esc(previewMarketLabel(pick.market))}</span></div>
-            <div class="home-edge-line"><span class="home-research-label">${idx === 0 ? 'FLAGSHIP EDGE OF THE DAY' : 'OBSERVED CONSENSUS'}</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${previewBookPill(pick.book)}</span></div>
-            <p class="home-research-note" data-mode-edge-badge>${isLocked ? 'Pro Access Required' : 'Research only · price and availability must be checked at the book.'}</p>
+            <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${previewBookPill(pick.book)}</span></div>
+            <p class="home-research-note" data-mode-edge-badge>Research only · price and availability must be checked at the book.</p>
           </article>`;
-        }).join('') + (!isPro && research.length > 1 ? `<div class="pro-gate-card">
-          <span class="pro-gate-badge">PRO ALL-ACCESS PASS</span>
-          <h4>Unlock All ${research.length} Edges &amp; DFS Slips</h4>
-          <p>Get instant Discord/Telegram alerts, optimal PrizePicks/Underdog slips, and un-throttled quantitative board access.</p>
-          <a href="https://whop.com/propstein" target="_blank" rel="noopener noreferrer" class="pro-gate-cta">Get Pro Access for $39/mo →</a>
-        </div>` : '')
+        }).join('')
         : modelRows.length
           ? modelRows.map((row) => `<article class="home-edge-card home-research-card">
             <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
