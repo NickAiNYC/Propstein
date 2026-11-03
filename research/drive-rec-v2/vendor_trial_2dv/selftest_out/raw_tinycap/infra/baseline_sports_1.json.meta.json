@@ -1,0 +1,13 @@
+{
+  "actual_credits": 0,
+  "attempt": 1,
+  "content_sha256": "18e2dafe25049847019daa1107f03bc39fc90423587cb98b7953e09a2315e46d",
+  "cumulative_actual_after": 0,
+  "fetched_at_utc": "SYNTHETIC-DRY-RUN-FIXTURES",
+  "http_status": 200,
+  "mode": "DRY_RUN",
+  "purpose": "usage-baseline-1",
+  "request_kind": "baseline_sports",
+  "url_redacted": "https://api.the-odds-api.com/v4/sports",
+  "x_requests_last": 0
+}

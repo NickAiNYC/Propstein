@@ -1,0 +1,203 @@
+{
+  "check": "V1",
+  "discovery_misses": [],
+  "failures": [],
+  "games": [
+    {
+      "game_id": "SYN25_G01",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2025,
+      "week": 6
+    },
+    {
+      "game_id": "SYN25_G02",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2025,
+      "week": 9
+    },
+    {
+      "game_id": "SYN25_G03",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2025,
+      "week": 14
+    },
+    {
+      "game_id": "SYN25_G04",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2025,
+      "week": 19
+    },
+    {
+      "game_id": "SYN26_G05",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2026,
+      "week": 1
+    },
+    {
+      "game_id": "SYN26_G06",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2026,
+      "week": 3
+    },
+    {
+      "game_id": "SYN26_G07",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2026,
+      "week": 5
+    },
+    {
+      "game_id": "SYN26_G08",
+      "low_player_count": false,
+      "max_players_priced": 8,
+      "per_time": {
+        "T-15m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 7
+        },
+        "T-180m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        },
+        "T-60m": {
+          "http_status": 200,
+          "n_books": 3,
+          "n_players": 8
+        }
+      },
+      "season": 2026,
+      "week": 7
+    }
+  ],
+  "requirement": "Actual NFL receiving-yards props returned for 2025 and 2026",
+  "status": "PASS",
+  "summary": "8 sampled games; receiving-yards props observed for seasons [2025, 2026]",
+  "title": "Historical availability"
+}

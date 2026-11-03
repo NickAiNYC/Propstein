@@ -1,0 +1,30 @@
+{
+  "attempt": 1,
+  "consumption_unestablished": true,
+  "content_sha256": "7c5fa5d9875e1ba45a5500a3dc8f95134b52b4d2dd0c6e6a0b3b98176f8d8002",
+  "decision_ts_utc": "2026-10-25T16:45:00Z",
+  "discovery_source": "synthetic-harness-fixture",
+  "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+  "event_id": "ev_syn_008",
+  "fetched_at_utc": "SYNTHETIC-DRY-RUN-FIXTURES",
+  "game_id": "SYN26_G08",
+  "http_status": 200,
+  "kickoff_verified_utc": "2026-10-25T17:00:00Z",
+  "market": "player_reception_yds",
+  "mode": "DRY_RUN",
+  "modeled_credits": 10,
+  "offset_label": "T-15m",
+  "params": {
+    "date": "2026-10-25T16:45:00Z",
+    "markets": "player_reception_yds",
+    "oddsFormat": "american",
+    "regions": "us"
+  },
+  "purpose": "SYN26_G08@T-15m",
+  "regions": [
+    "us"
+  ],
+  "request_kind": "historical_event_odds",
+  "sport_key": "playerprops_nfl",
+  "url_redacted": "https://api.the-odds-api.com/v4/historical/sports/playerprops_nfl/events/ev_syn_008"
+}

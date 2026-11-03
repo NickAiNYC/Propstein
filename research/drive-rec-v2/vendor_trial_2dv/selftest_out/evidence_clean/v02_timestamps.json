@@ -1,0 +1,130 @@
+{
+  "check": "V2",
+  "lags": [
+    {
+      "game_id": "SYN25_G01",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G01",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G01",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G02",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G02",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G02",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G03",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G03",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G03",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G04",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G04",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN25_G04",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G05",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G05",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G05",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G06",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G06",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G06",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G07",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G07",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G07",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G08",
+      "offset": "T-15m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G08",
+      "offset": "T-180m",
+      "snapshot_lag_s": 45.0
+    },
+    {
+      "game_id": "SYN26_G08",
+      "offset": "T-60m",
+      "snapshot_lag_s": 45.0
+    }
+  ],
+  "requirement": "Snapshot timestamp never exceeds decision timestamp",
+  "status": "PASS",
+  "summary": "24 responses; snapshot lag min/median/max = 45/45/45s (positive = snapshot BEFORE decision ts)",
+  "title": "Timestamp integrity",
+  "violations": []
+}
