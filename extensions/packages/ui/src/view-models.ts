@@ -66,9 +66,12 @@ function confidenceLabel(c: ModelConfidence | undefined): string {
 
 export function toSignalCardViewModel(s: SignalSnapshot): SignalCardViewModel {
   const m = s.observed;
+  const isSynthetic = m.source === "demobook" || m.provenance === "synthetic-fixture";
   const ev = s.evaluation;
+  const isRealWithoutCalibration = !isSynthetic && s.model?.confidence !== "calibrated";
+
   const evValue = ev?.evPerUnit ?? 0;
-  const evTone: SignalTone = !ev ? "muted" : evValue > 0 ? "positive" : evValue < 0 ? "negative" : "neutral";
+  const evTone: SignalTone = !ev || isRealWithoutCalibration ? "muted" : evValue > 0 ? "positive" : evValue < 0 ? "negative" : "neutral";
   const driveTag = m.driveId ? " · LIVE DRIVE" : "";
   const provenanceTag = m.provenance === "synthetic-fixture" ? " · DEMO FIXTURE" : "";
 
@@ -80,22 +83,24 @@ export function toSignalCardViewModel(s: SignalSnapshot): SignalCardViewModel {
     selectionLine: `Market: ${m.selection}`,
     sportsbookPrice: m.americanOdds !== undefined ? formatAmerican(m.americanOdds) : (m.decimalOdds !== undefined ? `${m.decimalOdds.toFixed(2)}` : "—"),
     breakEven: ev ? formatPercent(ev.impliedProbability) : "—",
-    modelProbability: ev ? formatPercent(ev.modelProbability, 1) : "—",
-    estimatedEv: ev ? formatEvPerUnit(ev.evPerUnit) : "—",
+    modelProbability: isRealWithoutCalibration ? "—" : (ev ? formatPercent(ev.modelProbability, 1) : "—"),
+    estimatedEv: isRealWithoutCalibration ? "RESEARCH ONLY" : (ev ? formatEvPerUnit(ev.evPerUnit) : "—"),
     evTone,
-    source: m.source === "demobook" ? "SYNTHETIC DEMO PAGE" : "VISIBLE PAGE · UNVERIFIED",
+    source: isSynthetic ? "SYNTHETIC DEMO PAGE" : "REAL BOOK · RESEARCH ONLY (UNVERIFIED)",
     marketStatus:
       m.marketStatus === "OPEN"
         ? `OPEN (OBSERVED${provenanceTag ? ", DEMO" : ""})`
         : m.marketStatus === "SUSPENDED" ? "SUSPENDED (OBSERVED)" : m.marketStatus,
     model: s.model ? `${s.model.modelVersion} · ${confidenceLabel(s.model.confidence)}` : "NO MODEL COVERAGE",
     quoteAge: formatQuoteAge(s.quoteAgeMs),
-    statusLabel: signalStatusLabel(s),
-    tone: toneForState(s),
+    statusLabel: isRealWithoutCalibration ? "RESEARCH ONLY · NO BET RECOMMENDATION" : signalStatusLabel(s),
+    tone: isRealWithoutCalibration ? "caution" : toneForState(s),
     withdrawn: s.withdrawn,
-    reasons: s.reasons.slice(0, 3),
+    reasons: isRealWithoutCalibration
+      ? ["real-book observation without prospective calibration — research only, no bet recommendation", ...s.reasons].slice(0, 3)
+      : s.reasons.slice(0, 3),
     confidenceLabel: confidenceLabel(s.model?.confidence),
-    fairOdds: ev ? `${fairDecimalOdds(Math.min(0.9999, Math.max(0.0001, ev.modelProbability))).toFixed(2)} dec` : null,
-    probabilityEdge: ev ? `${((ev.modelProbability - ev.impliedProbability) * 100).toFixed(1)} pts` : null,
+    fairOdds: !isRealWithoutCalibration && ev ? `${fairDecimalOdds(Math.min(0.9999, Math.max(0.0001, ev.modelProbability))).toFixed(2)} dec` : null,
+    probabilityEdge: !isRealWithoutCalibration && ev ? `${((ev.modelProbability - ev.impliedProbability) * 100).toFixed(1)} pts` : null,
   };
 }
