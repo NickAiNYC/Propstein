@@ -1,5 +1,9 @@
 name: Dispatch Verified Edge Alerts
 
+concurrency:
+  group: edge-alerts-watcher
+  cancel-in-progress: false
+
 on:
   push:
     branches: [main]
