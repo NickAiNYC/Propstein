@@ -46,7 +46,7 @@ jobs:
           # 2026-11-03: stats.nba.com blackholes cloud hosts incl. Actions
           # runners; cdn.nba.com Akamai-403s them — DECISIONS.md D7). Probe
           # cheaply: one offseason-day call, zero box-score follow-ups.
-          RESULT=$(PYTHONPATH=. python3 - <<'PY'
+          RESULT=$(PYTHONPATH=src python3 - <<'PY'
           from nba_model.data.nbacom import NbaComProvider
           from nba_model.data.providers import ProviderNetworkError, RateLimitError
           try:
