@@ -1,0 +1,85 @@
+{
+  "check": "V4",
+  "per_game": [
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN25_G01",
+      "n_books": 3
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_b2",
+        "synbook_c"
+      ],
+      "game_id": "SYN25_G02",
+      "n_books": 4
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN25_G03",
+      "n_books": 3
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN25_G04",
+      "n_books": 3
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN26_G05",
+      "n_books": 3
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN26_G06",
+      "n_books": 3
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN26_G07",
+      "n_books": 3
+    },
+    {
+      "books": [
+        "synbook_a",
+        "synbook_b",
+        "synbook_c"
+      ],
+      "game_id": "SYN26_G08",
+      "n_books": 3
+    }
+  ],
+  "requirement": "Stable bookmaker identifiers across observations",
+  "status": "FAIL",
+  "summary": "bookmaker key/title stability across observation times; 25 book-game slots",
+  "title": "Sportsbook identity",
+  "violations": [
+    "SYN25_G02: book title 'Synthetic Book B' maps to keys ['synbook_b', 'synbook_b2']"
+  ]
+}

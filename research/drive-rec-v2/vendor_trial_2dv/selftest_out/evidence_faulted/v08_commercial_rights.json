@@ -1,0 +1,19 @@
+{
+  "attachment": "/home/z/my-project/propstein-live-sniper/research/drive-rec-v2/vendor_trial_2dv/ATTACHMENT_V8_COMMERCIAL_RIGHTS.md",
+  "check": "V8",
+  "note": "status marked CONFIRMED but template placeholders remain",
+  "placeholders_remaining": [
+    "[PLAN",
+    "[DATE",
+    "[NAME",
+    "[PASTE",
+    "[REQUIREMENTS",
+    "[LIMITS]",
+    "[NOTES",
+    "status: PENDING"
+  ],
+  "requirement": "Written permission for intended storage, analysis, and display",
+  "status": "PENDING_MANUAL",
+  "summary": "written permission for storage, analysis, and display NOT YET ATTACHED",
+  "title": "Commercial rights"
+}

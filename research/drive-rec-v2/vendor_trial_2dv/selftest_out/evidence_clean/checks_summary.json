@@ -1,0 +1,34 @@
+{
+  "canonical_preview": {
+    "path": "selftest_out/evidence_clean/trial_quotes_canonical_preview.csv",
+    "rows": 552,
+    "schema_validation": "PASS (on synthetic=False copy)",
+    "synthetic_refusal": "REFUSED (fail-closed intact)"
+  },
+  "checks": {
+    "V1": "PASS",
+    "V10": "PASS",
+    "V2": "PASS",
+    "V3": "PASS",
+    "V4": "PASS",
+    "V5": "PASS",
+    "V6": "PASS",
+    "V7": "PASS",
+    "V8": "PENDING_MANUAL",
+    "V9": "PASS"
+  },
+  "data_label": "SYNTHETIC-HARNESS-TEST",
+  "overall": "BLOCKED_PENDING_MANUAL",
+  "overall_note": "V8 written permission outstanding \u2014 full acquisition BLOCKED until attached",
+  "sample_manifest_games": [
+    "SYN25_G01",
+    "SYN25_G02",
+    "SYN25_G03",
+    "SYN25_G04",
+    "SYN26_G05",
+    "SYN26_G06",
+    "SYN26_G07",
+    "SYN26_G08"
+  ],
+  "trial_id": "DECISION_2DV_TRIAL_v1"
+}

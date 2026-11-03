@@ -1,0 +1,159 @@
+{
+  "entries": [
+    {
+      "away_team_verified": "SYN_A01",
+      "commence_time_verified": "2025-10-12T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_001",
+      "game_id": "SYN25_G01",
+      "home_team_verified": "SYN_H01",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A02",
+      "commence_time_verified": "2025-11-02T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": null,
+      "event_id": "ev_syn_002",
+      "game_id": "SYN25_G02",
+      "home_team_verified": "SYN_H02",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A03",
+      "commence_time_verified": "2025-12-07T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_003",
+      "game_id": "SYN25_G03",
+      "home_team_verified": "SYN_H03",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A04",
+      "commence_time_verified": "2026-01-10T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_004",
+      "game_id": "SYN25_G04",
+      "home_team_verified": "SYN_H04",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A05",
+      "commence_time_verified": "2026-09-13T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_005",
+      "game_id": "SYN26_G05",
+      "home_team_verified": "SYN_H05",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A06",
+      "commence_time_verified": "2026-09-27T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_006",
+      "game_id": "SYN26_G06",
+      "home_team_verified": "SYN_H06",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A07",
+      "commence_time_verified": "2026-10-11T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_007",
+      "game_id": "SYN26_G07",
+      "home_team_verified": "SYN_H07",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    },
+    {
+      "away_team_verified": "SYN_A08",
+      "commence_time_verified": "2026-10-25T17:00:00Z",
+      "discovery_source": "synthetic-harness-fixture",
+      "discovery_timestamp_utc": "2026-10-30T00:00:00Z",
+      "event_id": "ev_syn_008",
+      "game_id": "SYN26_G08",
+      "home_team_verified": "SYN_H08",
+      "sport_key": "playerprops_nfl",
+      "status": "verified",
+      "verification": {
+        "fields_matched": [
+          "home_team",
+          "away_team",
+          "commence_time"
+        ],
+        "method": "synthetic"
+      }
+    }
+  ],
+  "map_version": 1,
+  "policy": "SYNTHETIC HARNESS-TEST event-ID map (NOT vendor evidence): models the verified historical event-ID mapping that replaces the current-events discovery endpoint (owner defect-1 fix, 2026-10-30). Every entry records its discovery source and timestamp.",
+  "trial_id": "DECISION_2DV_TRIAL_v1"
+}

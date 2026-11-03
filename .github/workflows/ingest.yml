@@ -1,0 +1,76 @@
+name: ingest
+
+# Propstein 2.0 zero-cost ingest pipeline.
+# games + players every 15 min (ESPN public JSON + nba_api), props hourly
+# (v1 snapshot live-odds feed). All writes are chunked atomic upserts.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *" # games + players
+    - cron: "5 * * * *"    # props
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "which ingest to run"
+        required: false
+        default: all
+        type: choice
+        options: [all, games, players, props]
+
+concurrency:
+  group: ingest-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  games-and-players:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '*/15 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: worker/requirements.txt
+
+      - name: Install deps
+        run: pip install -r worker/requirements.txt
+
+      - name: Selftest (offline)
+        run: python worker/selftest.py
+
+      - name: Ingest games (NBA/NFL/NHL)
+        working-directory: worker
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python ingest_games.py
+
+      - name: Ingest players (registry + ESPN box, identity merge)
+        working-directory: worker
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python ingest_players.py --games 12
+
+  props:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '5 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: worker/requirements.txt
+
+      - name: Install deps
+        run: pip install -r worker/requirements.txt
+
+      - name: Ingest props (v1 snapshot live-odds feed)
+        working-directory: worker
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python ingest_props.py

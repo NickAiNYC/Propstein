@@ -1,100 +1,113 @@
-<img src="viewer/propstein-logo.svg" alt="PropStein logo" width="420" />
+# Propstein 2.0 — Live Sports Prop Terminal
 
-PropStein is a distributional prop model and operational terminal for NFL receiving markets. It prices outcomes with a compound negative-binomial / gamma framework, runs weekly slate logic, and logs closing-line value with a disciplined risk gate.
+One repo. One app. Zero paid APIs.
 
-**Historical context gate:** New model fits and weekly projections are blocked while the nflverse game spread, total, and weather inputs lack observation timestamps. The existing frozen artifacts remain available for research, but they are not evidence that these context values were known at pricing time. The weekly model command below will fail closed until timestamped context and per-row pricing cutoffs are supplied. See [Feature cutoff gate](docs/FEATURE_CUTOFF_GATE.md).
+Next.js (App Router, TS) + Tailwind terminal UI over Prisma (Supabase/Neon
+Postgres in production, SQLite for preview), fed by a GitHub Actions cron
+running the Python ingest workers against **free, key-less public data**:
 
-Built for edge detection, not hype: the model is probabilistic, walk-forward validated, and intentionally conservative. No LLM sits in the decision path; the language model reasons after the numbers are fixed.
+| source | what | cost |
+| --- | --- | --- |
+| `site.api.espn.com` public JSON | NBA/NFL/NHL scoreboards, box scores, player identities | $0, no auth |
+| `nba_api` (stats.nba.com) | active-player registry | $0, no auth |
+| v1 snapshot live-odds feed (`worker/data/`) | Polymarket prop quotes + model fair lines | $0 |
 
-## Why PropStein
+## Free / Pro tiers (single-app gating)
 
-- Distribution-aware pricing for receptions and receiving yards
-- Real-time weekly slate generation and live line comparison
-- Risk-gated picks with EV and Kelly guidance
-- CLV logging and audit workflow for model accountability
-- Clean deployment on a high-performance edge stack
+| | Free | Pro |
+| --- | --- | --- |
+| Live scores (NBA/NFL/NHL) | ✅ full | ✅ full |
+| Player directory + season stats | ✅ | ✅ |
+| Rolling box-score form (L3) | ❌ blurred | ✅ |
+| Props per slate | first 3 teaser rows | full join-flattened feed |
+| Line freshness | 15-min delay | live |
+| Direction (side + Watch/Pass lean) | ✅ | ✅ |
+| Exact model numbers (prob, fair odds, EV, Kelly) | ❌ blurred | ✅ |
+| Book comparison (best book ★) | ❌ | ✅ |
+| Copy-for-slips + CSV export | ❌ | ✅ |
 
-## 3. Weekly Operational Cadence
+Enforcement is server-side in `/api/props` and `/api/players`: the free
+response **omits** `probWin`, `fairOdds`, `ev`, `kelly`, `fairLine` and
+`formSummary` fields entirely (the UI blur is cosmetic on top of stripped
+payloads, not the gate itself).
 
-1. **Tuesday – Thursday (Ingest & Projection)**
-   - Schedule and depth charts finalize.
-   - Run the weekly pipeline via the UI **Run Slate** button or terminal:
-     ```bash
-     python src/week1.py --season 2026 --week 1
-     ```
-   - Model fits in ~2 seconds and refreshes `slate_projections.json`, `current_picks.json`, and `top_picks.json`.
+Production wiring: Supabase Auth session → `user.isPro` (written by the
+Stripe billing webhook). Preview wiring: the `propstein_tier` cookie
+flipped by the sidebar toggle — default `free`, exactly what an anonymous
+visitor sees.
 
-2. **Friday – Sunday Morning (Line Comparison & Execution)**
-   - Open the **Slate Browser** and enter your sportsbook line in the **Book Line Comparison** tool.
-   - The app runs the compound distribution and flags qualifying plays:
-     - 🟢 **Green**: Edge >= 10% in W1 / >= 3% normal; value play clearing the calibration gate with EV per unit and Kelly guidance.
-     - 🟡 **Yellow**: Positive edge below the strict risk gate (lean/watch).
-     - 🔴 **Red**: Negative edge / sharp book.
-   - Click **Save Bet to CLV Tracking Log** in the Calculator to add active plays to `picks_log.jsonl`.
-   - Click **Copy as Text for Slips** in the Top Picks Card for rapid slip entry.
+## Player identity (the v2 fix)
 
-3. **Sunday Night / Monday (Closing Line Value Audit)**
-   - Once games lock or settle, open the **CLV Tracking Log** tab.
-   - Select logged picks and input the closing devigged probability or closing odds.
-   - The app computes `clv = model_prob - closing_prob` and updates the running 95% confidence interval.
+The v1 build collided two ID namespaces under one prefix (LeBron existed
+twice: `espn-nba-2544` registry vs `espn-nba-1966` ESPN). v2 keeps them
+separate and merges by `nameKey` with ESPN canonical:
 
----
+```
+espn-nba-{espnAthleteId}   canonical — team/position/form/stats from box scores
+nba-{nbaStatsId}           registry-only — name until ESPN box data arrives
+nfl-{nameKey}              v1 snapshot NFL players
+```
 
-## 4. Production Deployment
+When an ESPN row meets an existing registry row with the same
+`(league, name_key)`, the registry row is retired and its `nbaStatsId`
+carried onto the ESPN record — one human, one row, richest identity wins.
+Guard: `@@unique([league, nameKey])`.
 
-The viewer frontend and precomputed slate data are deployed globally via Vercel:
+## Repo layout
 
-- **Live Production URL**: [propstein.vercel.app](https://propstein.vercel.app)
-- **Vercel Project**: [`propstein`](https://vercel.com/nicks-projects-ec56abd4/propstein)
-- **Deployment root**: repository root (`.`). The root [`vercel.json`](vercel.json) publishes `viewer/`.
-- **Operational model**: static assets are versioned, service workers are fail-closed, and edge caching is tuned for speed and reliability.
+```
+prisma/schema.prisma            SQLite preview schema
+prisma/schema.postgres.prisma   canonical Postgres schema (Supabase/Neon)
+worker/ingest_games.py          ESPN scoreboards -> Game
+worker/ingest_players.py        registry + ESPN summaries -> Player (merge)
+worker/ingest_props.py          snapshot quotes -> Prop (+ EV/Kelly)
+worker/upsert.py                chunked atomic upsert core (psycopg3)
+worker/ev.py                    odds/EV/Kelly math (mirrors src/lib/ev.ts)
+worker/selftest.py              offline sanity suite (11 tests)
+worker/data/                    v1 snapshot fixtures (live odds, picks)
+.github/workflows/ingest.yml    cron: games+players 15m, props hourly
+src/app/api/*                   games / players / props (tier-gated) / tier
+src/components/terminal/*       sidebar, ticker, panels, paywall UI
+scripts/seed.ts                 real-data seed for local preview
+research/                       preserved v1 quant research (untouched)
+```
 
-To publish the latest slate build:
+## Local preview
 
 ```bash
-vercel --prod
+bun install
+bun run db:push                # SQLite schema
+bun scripts/seed.ts            # real ESPN + snapshot data (~1 min)
+bun run dev                    # http://localhost:3000
+python worker/selftest.py      # offline math + fail-closed checks
 ```
 
-The edge deployment builds and propagates in roughly 4 seconds.
+Flip Free ⇄ Pro with the sidebar toggle and watch `/api/props` strip vs
+serve the model columns.
 
----
+## Deploy (Vercel + Supabase)
 
-## Architecture Snapshot
+1. **Supabase**: create project → copy the pooled connection string.
+2. **Database**: `npx prisma db push --schema prisma/schema.postgres.prisma`
+   against the Supabase URL (tables + indexes + unique guards).
+3. **GitHub Actions secret**: `DATABASE_URL` = same pooled URL — the cron
+   then fills Game/Player/Prop every 15 minutes.
+4. **Vercel**: import this repo (root = repo root, framework Next.js),
+   set `DATABASE_URL` env var, deploy. API routes read through Prisma with
+   `s-maxage=60, stale-while-revalidate=300` CDN caching.
+   The `postinstall` hook (scripts/postinstall.mjs) auto-picks the Postgres
+   schema when `DATABASE_URL` is a `postgres://` URL — no other build
+   settings to change.
+5. **Auth (optional at first)**: add Supabase env vars; swap the demo
+   `/api/tier` toggle for `getTier()` reading the Supabase session claim.
 
-```text
-src/features.py   leak-free inputs and leakage checks
-src/slate.py      weekly slate build, roster/injury ingestion, Week 1 handling
-src/week1.py      CLI runner for live weekly pipelines
-src/model.py      compound distribution, de-vig, Kelly logic
-src/baseline.py   form-only line setter
-src/backtest.py   walk-forward calibration and simulation
-src/parlay.py     correlation-aware SGP and alt-line pricing
-src/odds.py       odds API client and no-vig consensus logic
-src/agent.py      picks engine, hard gate logic, CLV logging
-api/main.py       FastAPI service, billing, and entitlement layer
-```
+## Honesty notes
 
-## Quick Start
+- Prop rows carry `verified` + raw provenance in `rawPayload`; synthetic
+  demo fixtures in the snapshot are **skipped**, never ingested.
+- The model (Gaussian tail around the fair line, market-aware sigma) is an
+  estimate. EV/Kelly are model outputs, not betting advice.
+- Season stats start as "tracked-games averages" and converge as the cron
+  accumulates box scores.
 
-```bash
-pip install -r requirements.txt        # intent spec (floor ranges)
-pip install -r requirements.lock       # reproducible set — what CI runs the suite against
-```
-
-`requirements.txt` declares intent; `requirements.lock` is the exact pinned
-set CI installs and the full test suite is validated against (refresh protocol
-in the lock header).
-
-Then run the weekly model (season/week are arguments — rolling to 2027 is a
-data exercise, see [docs/SEASON-ROLLOVER.md](docs/SEASON-ROLLOVER.md)):
-
-```bash
-python src/week1.py --season 2026 --week 1
-```
-
----
-
-## Disclaimer
-
-Statistical estimates for research and entertainment. Not financial advice.
-21+ where legal. If gambling is causing harm, call 1-800-GAMBLER.
+*v1 static site is preserved on branch `v1-static-archive` and tag `v1.0.0`.*

@@ -1,0 +1,344 @@
+{
+  "_synthetic_fixture": true,
+  "away_team": "SYN_A07",
+  "bookmakers": [
+    {
+      "key": "synbook_a",
+      "last_update": 1791737025,
+      "markets": [
+        {
+          "key": "player_reception_yds",
+          "outcomes": [
+            {
+              "description": "SYN WR G01",
+              "label": "Over",
+              "point": 28.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G01",
+              "label": "Under",
+              "point": 28.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G02",
+              "label": "Over",
+              "point": 35.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G02",
+              "label": "Under",
+              "point": 35.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G03",
+              "label": "Over",
+              "point": 40.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G03",
+              "label": "Under",
+              "point": 40.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G04",
+              "label": "Over",
+              "point": 45.0,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G04",
+              "label": "Under",
+              "point": 45.0,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G05",
+              "label": "Over",
+              "point": 50.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G05",
+              "label": "Under",
+              "point": 50.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G06",
+              "label": "Over",
+              "point": 55.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G06",
+              "label": "Under",
+              "point": 55.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G07",
+              "label": "Over",
+              "point": 60.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G07",
+              "label": "Under",
+              "point": 60.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            }
+          ]
+        }
+      ],
+      "title": "Synthetic Book A"
+    },
+    {
+      "key": "synbook_b",
+      "last_update": 1791737040,
+      "markets": [
+        {
+          "key": "player_reception_yds",
+          "outcomes": [
+            {
+              "description": "SYN WR G01",
+              "label": "Over",
+              "point": 28.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G01",
+              "label": "Under",
+              "point": 28.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G02",
+              "label": "Over",
+              "point": 35.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G02",
+              "label": "Under",
+              "point": 35.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G03",
+              "label": "Over",
+              "point": 40.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G03",
+              "label": "Under",
+              "point": 40.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G04",
+              "label": "Over",
+              "point": 45.0,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G04",
+              "label": "Under",
+              "point": 45.0,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G05",
+              "label": "Over",
+              "point": 50.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G05",
+              "label": "Under",
+              "point": 50.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G06",
+              "label": "Over",
+              "point": 55.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G06",
+              "label": "Under",
+              "point": 55.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G07",
+              "label": "Over",
+              "point": 60.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G07",
+              "label": "Under",
+              "point": 60.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            }
+          ]
+        }
+      ],
+      "title": "Synthetic Book B"
+    },
+    {
+      "key": "synbook_c",
+      "last_update": 1791737050,
+      "markets": [
+        {
+          "key": "player_reception_yds",
+          "outcomes": [
+            {
+              "description": "SYN WR G01",
+              "label": "Over",
+              "point": 28.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G01",
+              "label": "Under",
+              "point": 28.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G02",
+              "label": "Over",
+              "point": 35.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G02",
+              "label": "Under",
+              "point": 35.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G03",
+              "label": "Over",
+              "point": 40.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G03",
+              "label": "Under",
+              "point": 40.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G04",
+              "label": "Over",
+              "point": 45.0,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G04",
+              "label": "Under",
+              "point": 45.0,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G05",
+              "label": "Over",
+              "point": 50.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            },
+            {
+              "description": "SYN WR G05",
+              "label": "Under",
+              "point": 50.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G06",
+              "label": "Over",
+              "point": 55.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G06",
+              "label": "Under",
+              "point": 55.5,
+              "price": -110,
+              "price_decimal": 1.9091
+            },
+            {
+              "description": "SYN WR G07",
+              "label": "Over",
+              "point": 60.5,
+              "price": -115,
+              "price_decimal": 1.8696
+            },
+            {
+              "description": "SYN WR G07",
+              "label": "Under",
+              "point": 60.5,
+              "price": -105,
+              "price_decimal": 1.9524
+            }
+          ]
+        }
+      ],
+      "title": "Synthetic Book C"
+    }
+  ],
+  "commence_time": "2026-10-11T17:00:00Z",
+  "game_id": "ev_syn_007",
+  "home_team": "SYN_H07",
+  "next_timestamp": 1791737355,
+  "previous_timestamp": 1791736755,
+  "sport_key": "playerprops_nfl",
+  "sport_title": "NFL Player Props (SYNTHETIC)",
+  "timestamp": 1791737055
+}

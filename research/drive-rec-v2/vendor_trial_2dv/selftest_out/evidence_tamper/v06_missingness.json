@@ -1,0 +1,303 @@
+{
+  "check": "V6",
+  "discovery_misses": [],
+  "ledger_path": "selftest_out/evidence_tamper/missingness_ledger.csv",
+  "n_absent_book_slots": 0,
+  "n_ledger_rows": 72,
+  "n_pulled_lines": 24,
+  "pulled_lines": [
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN25_G01",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR A08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN25_G01",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR A08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN25_G01",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR A08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN25_G02",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR B08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN25_G02",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR B08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN25_G02",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR B08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN25_G03",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR C08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN25_G03",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR C08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN25_G03",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR C08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN25_G04",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR D08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN25_G04",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR D08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN25_G04",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR D08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN26_G05",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR E08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN26_G05",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR E08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN26_G05",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR E08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN26_G06",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR F08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN26_G06",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR F08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN26_G06",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR F08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN26_G07",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR G08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN26_G07",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR G08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN26_G07",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR G08"
+    },
+    {
+      "bookmaker": "synbook_a",
+      "game_id": "SYN26_G08",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR H08"
+    },
+    {
+      "bookmaker": "synbook_b",
+      "game_id": "SYN26_G08",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR H08"
+    },
+    {
+      "bookmaker": "synbook_c",
+      "game_id": "SYN26_G08",
+      "missing_at": [
+        "T-15m"
+      ],
+      "observed_at": [
+        "T-180m",
+        "T-60m"
+      ],
+      "player": "SYN WR H08"
+    }
+  ],
+  "pulled_path": "selftest_out/evidence_tamper/pulled_lines.csv",
+  "requirement": "Missing players, markets, and books explicitly recorded",
+  "status": "PASS",
+  "summary": "72 game x time x book ledger rows (missingness_ledger.csv); 24 pulled/absent player-line entries (pulled_lines.csv); 0 discovery misses",
+  "title": "Missingness"
+}
