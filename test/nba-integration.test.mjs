@@ -24,7 +24,7 @@ test('NBA player drawer uses NBA units and only available telemetry', async () =
   assert.match(registry.get('#detailSummary').textContent, /31\.1 pts/);
 });
 
-test('NBA market-only date shows real unverified lines without model or edge claims', () => {
+test('NBA market-only date separates empty picks from browsable unverified lines', () => {
   const { sandbox, registry } = buildSandbox({ seedLocalStorage: { propwire_active_sport: 'nba' } });
   const app = loadApp(sandbox);
   app.SLATES['2026-10-31'] = { marketOnly: true, historical: false };
@@ -37,14 +37,26 @@ test('NBA market-only date shows real unverified lines without model or edge cla
       market: 'points', line: 24.5, over_odds: -110, under_odds: 100, _fixture: false, verified: false }]
   };
   app.renderBoard();
+  assert.equal(registry.get('#topCount').textContent, '0');
+  assert.equal(registry.get('#homeEdgeTitle').textContent, '0 NBA picks today');
+  assert.doesNotMatch(registry.get('#emptyState').innerHTML, /Test Player/);
+  assert.match(registry.get('#emptyState').innerHTML, /Browse FanDuel lines/);
+  app.setPlayMode('top');
+  assert.doesNotMatch(registry.get('#emptyState').innerHTML, /Test Player/);
+  app.setPlayMode('all');
   const markup = registry.get('#emptyState').innerHTML;
   assert.match(markup, /Test Player/);
-  assert.match(markup, /OVER 24\.5/);
-  assert.match(markup, /UNDER 24\.5/);
+  assert.match(markup, /Over 24\.5/);
+  assert.match(markup, /Under 24\.5/);
   assert.match(markup, /UNVERIFIED/);
   assert.match(markup, /No NBA model predictions or qualified edges/);
   assert.doesNotMatch(markup, /model fair|probability edge|expected value/i);
-  assert.equal(registry.get('#homeEdgeTitle').textContent, 'FanDuel player points lines');
+  app.setView('table');
+  assert.equal(app.state.view, 'table');
+  assert.match(registry.get('#emptyState').innerHTML, /Test Player/);
+  app.setView('compact-grid');
+  assert.equal(app.state.view, 'compact-grid');
+  assert.match(registry.get('#emptyState').innerHTML, /Test Player/);
 });
 
 test('October 31 NBA market feed keeps every alternate points line distinct and unverified', () => {
