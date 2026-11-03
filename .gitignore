@@ -1,50 +1,31 @@
-data/*.parquet
-data/games.csv
-*.jsonl
-!snapshots/*.jsonl
-!viewer/feeds/nba_model/*.jsonl
-__pycache__/
-.env
-
-.venv/
-.vercel/
-
-
-.vercel
-.env*
-!.env.example
-dist/
+# dependencies
 node_modules/
-/*.png
-data/sniper_cooldowns.json
-data/*.db
-data/*.db-*
-.pytest_cache/
-artifacts/
-extensions/node_modules/
-extensions/dist/
 
-# Decision 2D-V vendor trial: licensed responses and run evidence stay local.
-research/drive-rec-v2/vendor_trial_2dv/raw/
-research/drive-rec-v2/vendor_trial_2dv/evidence/
-research/drive-rec-v2/vendor_trial_2dv/selftest_out/
-*.apikey
-*.api_key
-ODDS_API_KEY*
-
-# Stage-A discovery output contains licensed vendor responses (same rationale
-# as raw/); stays local unless V8 permission permits otherwise.
-research/drive-rec-v2/vendor_trial_2dv/raw_discovery/
-data/ufc_history.json
-data/ufc_athletes.json
-
-# Next.js terminal workspace (terminal/) build output
-.next/
+# next.js
+/.next/
+/out/
+/build/
 next-env.d.ts
-playwright-report/
-test-results/
-*.tsbuildinfo
 
-# Research data corpora (nflverse parquet/csv downloads, ~100MB): regenerable
-# via research/drive-rec-v2/00_download_data.py — never commit the raw data.
-research/drive-rec-v2/data/
+# database — local preview only (Postgres in production via DATABASE_URL)
+db/
+*.db
+
+# env — the example IS committed, real env never
+.env
+.env.local
+.env*.local
+
+# logs
+*.log
+dev.log
+server.log
+
+# misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+.vercel
+.zscripts/
+tool-results/
+agent-ctx/

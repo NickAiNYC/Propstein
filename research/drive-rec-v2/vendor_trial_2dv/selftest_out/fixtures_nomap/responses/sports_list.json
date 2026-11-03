@@ -1,0 +1,19 @@
+{
+  "_sim": {
+    "credit_cost": 0
+  },
+  "sports": [
+    {
+      "active": true,
+      "description": "Synthetic fixture sport key",
+      "key": "playerprops_nfl",
+      "title": "NFL Player Props"
+    },
+    {
+      "active": true,
+      "description": "Synthetic fixture sport key",
+      "key": "americanfootball_nfl",
+      "title": "NFL Football"
+    }
+  ]
+}
