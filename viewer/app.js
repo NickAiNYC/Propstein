@@ -1498,6 +1498,16 @@
       });
     }
 
+    const howMathWorksBtn = $('#howMathWorksBtn');
+    if (howMathWorksBtn) {
+      howMathWorksBtn.addEventListener('click', () => {
+        if (firstRunBanner) {
+          firstRunBanner.hidden = false;
+          firstRunBanner.style.display = 'flex';
+        }
+      });
+    }
+
     $$('.slate-mode-toggle button, .dataset-switcher button').forEach((button) => button.addEventListener('click', () => setPlayMode(button.dataset.mode)));
     $$('.intent-chips .intent-chip').forEach((button) => button.addEventListener('click', () => setIntent(button.dataset.intent)));
     $$('.view-switch button').forEach((button) => button.addEventListener('click', () => setView(button.dataset.view)));

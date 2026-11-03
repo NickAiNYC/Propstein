@@ -2,10 +2,11 @@
   "version": 2,
   "outputDirectory": "viewer",
   "cleanUrls": true,
+  "trailingSlash": true,
   "rewrites": [
     { "source": "/ledger", "destination": "/index.html" },
     { "source": "/audit", "destination": "/index.html" },
-    { "source": "/verify/:id*", "destination": "/verify" },
+    { "source": "/verify/:id*", "destination": "/verify.html" },
     { "source": "/verify", "destination": "/verify.html" }
   ],
   "headers": [

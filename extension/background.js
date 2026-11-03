@@ -8,14 +8,14 @@ chrome.runtime.onInstalled.addListener(() => {
 
   // Create right-click context menu item for selected player text
   chrome.contextMenus.create({
-    id: "propwire-check-edge",
-    title: "Check PropWire Edge for '%s'",
+    id: "propstein-check-edge",
+    title: "Check PropStein Edge for '%s'",
     contexts: ["selection"]
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "propwire-check-edge" && tab) {
+  if (info.menuItemId === "propstein-check-edge" && tab) {
     // 1. Open the side panel for the current window
     if (chrome.sidePanel && chrome.sidePanel.open) {
       chrome.sidePanel.open({ windowId: tab.windowId }).catch((err) => {

@@ -5,9 +5,9 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DIST_DIR="$ROOT_DIR/dist"
 EXT_DIR="$DIST_DIR/extension"
 
-echo "==> Packaging PropWire Manifest V3 Chrome Extension Side Panel..."
+echo "==> Packaging PropStein Manifest V3 Chrome Extension Side Panel..."
 
-rm -rf "$EXT_DIR" "$DIST_DIR/propwire-extension-v1.2.0.zip"
+rm -rf "$EXT_DIR" "$DIST_DIR/propstein-extension-v1.2.0.zip"
 mkdir -p "$EXT_DIR/icons"
 
 # 1. Copy viewer assets (static frontend)
@@ -21,8 +21,8 @@ cp "$ROOT_DIR/extension/background.js" "$EXT_DIR/"
 cp -R "$ROOT_DIR/extension/icons/"* "$EXT_DIR/icons/"
 
 # 4. Create ZIP bundle (rooted at EXT_DIR for Chrome Web Store compliance)
-(cd "$EXT_DIR" && zip -q -r "$DIST_DIR/propwire-extension-v1.2.0.zip" .)
+(cd "$EXT_DIR" && zip -q -r "$DIST_DIR/propstein-extension-v1.2.0.zip" .)
 
 echo "==> Build complete:"
 echo "    - Unpacked directory : $EXT_DIR"
-echo "    - Distribution bundle: $DIST_DIR/propwire-extension-v1.2.0.zip"
+echo "    - Distribution bundle: $DIST_DIR/propstein-extension-v1.2.0.zip"
