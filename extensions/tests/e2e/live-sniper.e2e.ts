@@ -153,7 +153,7 @@ async function waitForPanel(pred: (text: string) => boolean, timeoutMs = 15_000,
 
 test("e2e: manifest loads, service worker runs, panel renders the terminal UI", async () => {
   const text = await waitForPanel((t) => t.includes("PROPSTEIN") && t.includes("LIVE SNIPER"), 20_000, "(brand header)");
-  assert.ok(text.includes("SIGN IN REQUIRED") || text.includes("PRO") || text.includes("NO SUPPORTED TAB"), "entitlement state visible");
+  assert.ok(text.includes("FREE RESEARCH TRIAL") || text.includes("SIGN IN") || text.includes("PRO") || text.includes("NO SUPPORTED TAB"), "entitlement state visible");
 });
 
 test("e2e: monitoring the demo page produces four priced signal cards with exact spec values", async () => {
@@ -234,6 +234,26 @@ test("e2e CRITICAL: drive end invalidates every signal tied to the old drive", a
   assert.ok(!kelce.includes("DRIVE ENDED"), "the live Kelce card is not the withdrawn d4 card");
 });
 
+test("e2e CRITICAL: stale quote ticks withdraw signals with QUOTE EXPIRED", async () => {
+  // Pause quote ticks on the demo fixture; after maxQuoteAgeMs (3s for drive props),
+  // quotes expire and must be withdrawn with QUOTE EXPIRED.
+  await demoPage!.click("#btn-stale");
+  const text = await waitForPanel(
+    (t) => t.includes("QUOTE EXPIRED") || t.includes("STALE"),
+    20_000,
+    "(quotes expired after pausing ticks)",
+  );
+  assert.ok(text.includes("QUOTE EXPIRED") || text.includes("STALE"), "stale quotes withdrawn fail-closed");
+
+  // Resume ticks and verify signals recover
+  await demoPage!.click("#btn-stale");
+  await waitForPanel(
+    (t) => t.includes("+160") && (t.includes("ALERTABLE") || t.includes("OPEN")),
+    20_000,
+    "(quotes restored after resuming ticks)",
+  );
+});
+
 test("e2e: stopping monitoring withdraws all signals", async () => {
   await panelPage!.evaluate(() => {
     const btns = Array.from(document.querySelectorAll("button"));
@@ -246,7 +266,7 @@ test("e2e: stopping monitoring withdraws all signals", async () => {
 
 test("e2e: trial journal exports observed, repriced, and suspended decisions", async () => {
   const result = await panelPage!.evaluate(async () => {
-    return (globalThis as { chrome: { runtime: { sendMessage(m: unknown): Promise<unknown> } } })
+    return (globalThis as unknown as { chrome: { runtime: { sendMessage(m: unknown): Promise<unknown> } } })
       .chrome.runtime.sendMessage({ type: "GET_AUDIT" });
   }) as { records?: Array<{ kind: string; reasonCodes: string[]; mode: string }>; error?: string };
   assert.equal(result.error, undefined);
