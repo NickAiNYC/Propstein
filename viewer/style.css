@@ -3321,9 +3321,20 @@ body {
 .nba-market-quote > div:first-child span { margin-top: 4px; }
 .nba-market-sides span { min-width: 122px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; font-family: var(--mono); white-space: nowrap; }
 .nba-market-sides b { float: right; margin-left: 8px; color: var(--text); }
-.nba-market-over { color: #ACE4AA; }
-.nba-market-under { color: #FF8383; }
-@media (max-width: 640px) { .nba-market-quote { align-items: stretch; flex-direction: column; } .nba-market-sides span { flex: 1; min-width: 0; } }
+.nba-market-browse { min-height: 44px; padding: 10px 16px; border: 1px solid var(--brand-accent); border-radius: 9px; background: rgba(128, 198, 246, 0.1); color: var(--brand-accent); font: 700 12px var(--sans); cursor: pointer; }
+.nba-market-browse:hover { background: rgba(128, 198, 246, 0.18); }
+.nba-market-browse:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+.nba-market-view-table .nba-market-quote { display: grid; grid-template-columns: minmax(180px, 1fr) auto; border-radius: 6px; padding: 9px 12px; }
+.nba-market-view-table .nba-market-sides span { min-width: 115px; padding: 5px 8px; }
+.nba-market-view-cards .nba-market-list { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.nba-market-view-cards .nba-market-quote, .nba-market-view-compact-grid .nba-market-quote { align-items: stretch; flex-direction: column; }
+.nba-market-view-cards .nba-market-sides, .nba-market-view-compact-grid .nba-market-sides { width: 100%; }
+.nba-market-view-cards .nba-market-sides span, .nba-market-view-compact-grid .nba-market-sides span { flex: 1; min-width: 0; }
+.nba-market-view-compact-grid .nba-market-list { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.nba-market-view-compact-grid .nba-market-quote { padding: 9px; }
+.nba-market-view-compact-grid .nba-market-sides { gap: 5px; }
+.nba-market-view-compact-grid .nba-market-sides span { padding: 5px; font-size: 10px; }
+@media (max-width: 640px) { .nba-market-list { grid-template-columns: 1fr !important; } .nba-market-quote, .nba-market-view-table .nba-market-quote { display: flex; align-items: stretch; flex-direction: column; } .nba-market-sides span { flex: 1; min-width: 0; } }
 
 /* ─── v221: PLAYER IDENTITY IN NBA MARKET-ONLY + HOME-EDGE CARDS ───
    Headshot (pw-avatar, initials fallback) + matchup team crests. Quotes ship
