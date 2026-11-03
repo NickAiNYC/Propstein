@@ -1,0 +1,84 @@
+name: UFC Fight-Week Snapshots
+
+# Three fixed closing points per fight (research/ufc-gate1 §D), fail-closed:
+#   pre  : Friday 13:00 UTC, before the official weigh-ins
+#   post : Friday 22:00 UTC, after weigh-ins (missed weight / scratches settled)
+#   lock : every 30 min on fight day; snapshots only fights whose first bell is
+#          within 60 min and not yet locked. No such fight -> no API call.
+#   grade: Sunday 14:00 UTC, results from ESPN -> viewer/ufc_ledger.json
+# A captured point is never overwritten or backfilled. Each odds pull is one
+# request (h2h + totals, region us) = 2 credits; budget guard caps at 4.
+
+on:
+  schedule:
+    - cron: '0 13 * * 5'
+    - cron: '0 22 * * 5'
+    - cron: '*/30 12-23 * * 6'
+    - cron: '*/30 0-5 * * 0'
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'pre | post | lock | grade | card (no snapshot)'
+        required: true
+        default: card
+
+concurrency:
+  group: autopilot
+  cancel-in-progress: false
+
+jobs:
+  ufc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Resolve phase
+        id: phase
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          INPUT: ${{ github.event.inputs.phase }}
+        run: |
+          case "$SCHEDULE" in
+            '0 13 * * 5') P=pre ;;
+            '0 22 * * 5') P=post ;;
+            '0 14 * * 0') P=grade ;;
+            '') P="${INPUT:-card}" ;;
+            *) P=lock ;;
+          esac
+          echo "phase=$P" >> "$GITHUB_OUTPUT"
+          echo "UFC phase: $P"
+
+      - name: Run UFC pipeline
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          PHASE: ${{ steps.phase.outputs.phase }}
+        run: |
+          case "$PHASE" in
+            grade) python scripts/fetch_ufc_odds.py --grade ;;
+            card)  python scripts/fetch_ufc_odds.py ;;
+            pre|post|lock) python scripts/fetch_ufc_odds.py --snapshot "$PHASE" ;;
+            *) echo "unknown phase $PHASE"; exit 2 ;;
+          esac
+
+      - name: Commit and push UFC data (if changed)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add viewer/ufc_*.json
+          if git diff --staged --quiet; then
+            echo "No UFC data changes."
+            exit 0
+          fi
+          git commit -m "chore(ufc): ${{ steps.phase.outputs.phase }} $(date -u +%FT%H:%MZ) [skip ci]"
+          git pull --rebase origin main
+          git push

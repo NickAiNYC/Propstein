@@ -1,0 +1,1 @@
+{"anytime_td_beneficiary_max_drift":2,"anytime_td_drift_hurdle":1,"cooldown_minutes":15,"deadman_switch_max_age_seconds":300,"drift_pct_hurdle":0.12,"high_edge_caution_hurdle":0.15,"receiving_yards_beneficiary_max_drift":8.5,"receiving_yards_drift_hurdle":5,"receptions_beneficiary_max_drift":2,"receptions_drift_hurdle":1}

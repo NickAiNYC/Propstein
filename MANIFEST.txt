@@ -1,0 +1,26 @@
+receiving-props-agent — complete file manifest
+Verify every path below exists after unzipping. Flat files = wrong structure.
+
+src/features.py        leak-free feature build; assert_no_leakage()
+src/model.py           compound NegBin-Gamma distribution, de-vig, Kelly
+src/baseline.py        form-only line setter (the fair-line opponent)
+src/backtest.py        walk-forward calibration + simulation
+src/parlay.py          correlation-aware SGP and alt-line pricing
+src/odds.py            The Odds API client + no-vig sharp consensus
+src/agent.py           in-season picks, hard gates, CLV log
+src/fetch_data.py      nflverse downloader (no API key needed)
+src/slate.py           forward slate build, roster/injury, Week-1 handling
+src/week1.py           CLI runner for a live week
+
+api/main.py            FastAPI service, Whop entitlement
+
+docs/FINDINGS.md       what the model does and does not prove
+docs/WEEK1.md          Week-1 degradation, bias correction, thresholds
+docs/HISTORICAL_ODDS.md  the real blocker: historical prop lines
+docs/PAYMENTS.md       Stripe/Whop restrictions, claim limits
+
+README.md  requirements.txt  Dockerfile  railway.json  .gitignore
+data/      (empty; populated by fetch_data.py)
+
+10 .py in src/, 1 in api/, 4 docs. If you have 7 src files, you have the
+pre-Week-1 build and are missing fetch_data.py, slate.py, week1.py.
