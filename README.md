@@ -95,6 +95,9 @@ serve the model columns.
 4. **Vercel**: import this repo (root = repo root, framework Next.js),
    set `DATABASE_URL` env var, deploy. API routes read through Prisma with
    `s-maxage=60, stale-while-revalidate=300` CDN caching.
+   The `postinstall` hook (scripts/postinstall.mjs) auto-picks the Postgres
+   schema when `DATABASE_URL` is a `postgres://` URL — no other build
+   settings to change.
 5. **Auth (optional at first)**: add Supabase env vars; swap the demo
    `/api/tier` toggle for `getTier()` reading the Supabase session claim.
 
