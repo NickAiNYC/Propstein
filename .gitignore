@@ -2,6 +2,7 @@ data/*.parquet
 data/games.csv
 *.jsonl
 !snapshots/*.jsonl
+!viewer/feeds/nba_model/*.jsonl
 __pycache__/
 .env
 
