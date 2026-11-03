@@ -9,26 +9,9 @@ permissions:
   contents: read
 
 jobs:
-  # Preserved from v1: the Propstein Live Sniper browser extension
-  # (extension/ + extensions/) survives the 2.0 migration untouched and
-  # keeps its own blocking checks.
-  extension:
-    name: Live Sniper extension (blocking)
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Check out source
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Verify runtime
-        run: node --version
-      - name: Install extension workspace dependencies
-        run: npm ci --prefix extensions --ignore-scripts
-      - name: Typecheck
-        run: npm run typecheck --prefix extensions
-      - name: Unit + integration tests
-        run: npm run test:core --prefix extensions
+  # Extension CI lives in its own path-filtered workflow
+  # (.github/workflows/live_sniper_extension.yml): typecheck, build,
+  # test:core and the Playwright e2e run whenever extensions/** changes.
 
   # New in 2.0: the Next.js terminal app. Prisma client generation goes
   # through the postinstall hook (schema picked by DATABASE_URL protocol —

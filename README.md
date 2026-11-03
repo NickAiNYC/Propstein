@@ -76,9 +76,11 @@ extension/ + extensions/        Live Sniper browser extension (preserved from v1
 research/                       preserved v1 quant research (untouched)
 ```
 
-CI runs on every PR: the extension's typecheck + unit/integration tests
-(`npm run test:core --prefix extensions`), the Next app's lint + production
-build, and the workers' offline selftest — no secrets, no database needed.
+CI runs on every PR: the Next app's lint + production build and the
+workers' offline selftest (`.github/workflows/ci.yml`) — no secrets, no
+database needed. The extension keeps its own path-filtered workflow
+(`.github/workflows/live_sniper_extension.yml`): typecheck, build,
+test:core and Playwright e2e whenever `extensions/**` changes.
 
 ## Local preview
 
