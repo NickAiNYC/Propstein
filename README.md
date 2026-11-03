@@ -126,6 +126,31 @@ API returns 403 — tier comes from auth.)
   preserved **verbatim** at the public route `/performance` (terminal-styled,
   numbers unmodified, footer + sidebar link), so a future merge does not
   take the record offline. `archive/v1-static/` stays as the raw source.
+- Preview deployment 404 fix (2026-11-04): the Vercel project was set up
+  for the v1 static site (`outputDirectory: "viewer"`), so branch previews
+  copied a nonexistent static output instead of building the Next app —
+  every route 404'd while the deploy reported success. The branch now
+  carries a root `vercel.json` with `"framework": "nextjs"` so previews
+  build the app. Two self-host-only landmines removed: `output:
+  "standalone"` is now conditional (off on Vercel via the `VERCEL` env),
+  and the standalone asset copy moved from `build` to `build:standalone`.
+  **Merge note:** this `vercel.json` replaces v1's at merge — intended for
+  the production switch. v1's CSP is deliberately NOT carried over (its
+  `script-src 'self'` blocks Next.js inline bootstrap scripts); re-add a
+  Next-compatible CSP before the production switch. The v1 deploy config
+  remains intact on `main` until then.
+- Preview-DB runbook: point the repo `DATABASE_URL` **Actions secret** and
+  a **Preview-scoped** Vercel env var at the same Postgres (Supabase/
+  Neon), redeploy, then trigger ingest (`ingest.yml` →
+  `workflow_dispatch`, job `all`; games/players live-fetch, props is the
+  static snapshot re-upsert). The whole real-DB validation is now one
+  command — `./scripts/real_db_preview_test.sh` boots a throwaway
+  Postgres 18, pushes the schema, seeds, builds, serves in production
+  mode and asserts tier authority (GET free/POST 403), props honesty
+  (`bundled_v1_snapshot`, `verifiedCount 0`, EV/Kelly stripped), real
+  game rows, the verbatim `/performance` record and bundle truth strings.
+  `DATABASE_URL=postgresql://… ./scripts/real_db_preview_test.sh` runs
+  the same assertions against Supabase/Neon directly.
 
 ## Preservation map — nothing is lost
 
