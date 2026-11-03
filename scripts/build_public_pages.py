@@ -7,15 +7,28 @@ fixture data. Every page carries the evidence-record honesty rules:
   - snapshot timestamps visible; no stale data presented as current
   - "not betting advice" disclaimer on every page
 
-Usage: python3 scripts/build_public_pages.py   (stdlib only; idempotent)
+Usage: python3 scripts/build_public_pages.py   (idempotent)
+
+Value boundaries are solved from each snapshot's distribution parameters
+(src/value_boundaries.py). They are not the frozen 10% edge anchors.
 """
 import html
 import json
 import os
 import re
+import sys
 from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from src.value_boundaries import (  # noqa: E402
+    fair_line_display,
+    format_percent,
+    render_value_paragraph,
+    vig_boundaries,
+)
 VIEWER = os.path.join(ROOT, "viewer")
 BASE_URL = "https://propstein.com"
 SNAPSHOTS = "snapshots_2026_w7.json"
@@ -170,47 +183,23 @@ def write_page(rel_dir, html_text):
         f.write(html_text)
 
 
-def fmt_boundaries(b, snap=None):
-    over = b.get("max_acceptable_over_line_at_minus_110")
-    under = b.get("min_acceptable_under_line_at_minus_110")
-    fair = (snap.get("projection") or {}).get("fair_line") if snap else None
-    market = snap.get("market") if snap else "receiving_yards"
-    step = 0.5 if market == "receptions" else 0.5
-    
-    parts = []
-    if over is not None:
-        parts.append(f"the <strong>OVER at &minus;110 only when a sportsbook posts a line of <strong>{esc(over)}</strong> or lower</strong>")
-    if under is not None:
-        parts.append(f"the <strong>UNDER at &minus;110 only when a sportsbook posts a line of <strong>{esc(under)}</strong> or higher</strong>")
-    
-    dead_band_str = ""
-    if over is not None and under is not None:
-        db_low = round(float(over) + step, 1)
-        db_high = round(float(under) - step, 1)
-        if db_low <= db_high:
-            dead_band_str = f" Any sportsbook line inside the <strong>{db_low}&ndash;{db_high} dead band</strong> offers negative expected value after accounting for standard vig."
-        else:
-            dead_band_str = " Lines between these boundaries offer negative expected value at standard vig."
-            
-    be_str = ""
-    # Fair line odds breakdown
-    proj = snap.get("projection") or {} if snap else {}
-    p_over = proj.get("p_over")
-    if p_over is not None and fair is not None:
-        p_under = max(0.0, 1.0 - p_over - (0.0093 if market == "receiving_yards" else 0.0))
-        # Derive American odds directly so p_over and odds strictly agree
-        odds_o = round((1.0 - p_over) / p_over * 100) if p_over > 0 else 0
-        odds_u = round((1.0 - p_under) / p_under * 100) if p_under > 0 else 0
-        o_sgn = f"+{odds_o}" if odds_o > 0 else f"{odds_o}"
-        u_sgn = f"+{odds_u}" if odds_u > 0 else f"{odds_u}"
-        be_str = f" At the fair line (<strong>{esc(fair)}</strong>), no-vig breakeven odds are <strong>{o_sgn} on the OVER</strong> ({round(p_over*100, 1)}% win prob) and <strong>{u_sgn} on the UNDER</strong> ({round(p_under*100, 1)}% win prob)."
-    elif b.get("breakeven_odds_at_fair"):
-        be_str = f" Breakeven odds at fair line: <strong>{esc(b.get('breakeven_odds_at_fair'))}</strong>."
-
-    if parts:
-        rule_str = " and on ".join(parts)
-        return f"At standard &minus;110 vig (52.38% breakeven win rate), the model sees positive expected value on {rule_str}.{dead_band_str}{be_str}"
-    return "Value boundaries not published for this snapshot."
+def fmt_boundaries(snap):
+    """Model-derived -110 value sentence. Ignores frozen qualification anchors."""
+    if not snap:
+        return "Value boundaries not published for this snapshot."
+    proj = snap.get("projection") or {}
+    params = proj.get("distribution_params") or {}
+    mu_rec = params.get("mu_rec")
+    if mu_rec is None:
+        return "Value boundaries not published for this snapshot."
+    return render_value_paragraph(
+        snap.get("market") or "receiving_yards",
+        proj.get("fair_line"),
+        mu_rec,
+        params.get("mu_ypr") or 0.0,
+        alpha=params.get("alpha") if params.get("alpha") is not None else 0.1097,
+        k=params.get("k") if params.get("k") is not None else 1.555,
+    )
 
 
 def assert_fair_line_invariants(snaps):
@@ -310,7 +299,7 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
       </dl>
       {params_html}
       <h3>How to use the fair line</h3>
-      <p>{fmt_boundaries(snap.get('price_boundaries') or {}, snap)}</p>
+      <p>{fmt_boundaries(snap)}</p>
     </section>
     <section>
       <h2>Role evidence</h2>
@@ -519,6 +508,14 @@ def performance_page():
 def methodology_page():
     holdout = load("holdout_eval_2026_w1.json")
     hmet = holdout.get("metrics") or {}
+    # Worked example uses the same solver as the player pages (not a fixed band).
+    aj_mu_rec, aj_mu_ypr, aj_alpha, aj_k = 5.2319, 12.9847, 0.1097, 1.555
+    aj_bounds = vig_boundaries(
+        "receiving_yards", aj_mu_rec, aj_mu_ypr, alpha=aj_alpha, k=aj_k,
+    )
+    aj_fair = fair_line_display(
+        "receiving_yards", aj_mu_rec, aj_mu_ypr, 61.0, alpha=aj_alpha, k=aj_k,
+    )
     body = f"""
     <h1>How PropStein Works: Model, Gating and Verification</h1>
     <p class="pub-lede">PropStein is a decision terminal for player-prop
@@ -555,32 +552,15 @@ def methodology_page():
       <p><strong>E[Y] = &mu;<sub>rec</sub> &times; &mu;<sub>ypr</sub></strong></p>
       <p>For any yardage line L, the exceedance probability P(Y &gt; L) is computed by convoluting the discrete Negative Binomial distribution with the cumulative Gamma distribution for N catches:</p>
       <p><strong>P(Y &gt; L) = &sum;<sub>n=1</sub><sup>&infin;</sup> P(N = n) &middot; [1 &minus; F<sub>Gamma</sub>(L; shape = n &middot; k, scale = &mu;<sub>ypr</sub> / k)]</strong></p>
+      <p>On a non-integer line that survival is P(over) and the push is zero, so P(under) = 1 &minus; P(over). On an integer line L the published probabilities use a half-yard push window: P(push) is the mass in (L &minus; 0.5, L + 0.5], P(over) is the survival above L + 0.5, and P(under) is the CDF at L &minus; 0.5. Receptions are discrete: a whole-number line pushes on that exact count and a half-point line does not. The three probabilities are normalized to sum to 1 before display, and the percentages on each page are rounded so they still sum to 100%.</p>
       <h3>Worked reproduction: A.J. Brown (Week 7 Snapshot)</h3>
-      <p>Parameters: <code>mu_rec = 5.2319</code>, <code>mu_ypr = 12.9847</code>, <code>alpha = 0.1097</code>, <code>k = 1.555</code>.</p>
+      <p>Parameters: <code>mu_rec = 5.2319</code>, <code>mu_ypr = 12.9847</code>, <code>alpha = 0.1097</code>, <code>k = 1.555</code>. The same solver that builds the player pages (<code>src/value_boundaries.py</code>) produces the figures below. At &minus;110 the breakeven win probability is 110/210 &approx; 52.38%.</p>
       <ul>
         <li><strong>Projected Volume:</strong> 5.2319 &times; 12.9847 = <strong>67.93 yards</strong>.</li>
         <li><strong>Fair Line (Median):</strong> <strong>61.0 yards</strong>.</li>
-        <li><strong>Exact Probabilities at 61.0:</strong> P(over) = <strong>49.33%</strong> (+103 fair breakeven); P(under) = <strong>49.75%</strong> (+101 fair breakeven); P(push) = <strong>0.92%</strong>.</li>
-        <li><strong>Vig-Adjusted -110 Boundaries:</strong> Buying the OVER at &minus;110 requires P &ge; 52.38%, reached only at <strong>&le; 49.0 yards</strong>. Buying the UNDER at &minus;110 requires P &ge; 52.38%, reached only at <strong>&ge; 73.0 yards</strong>. The interval <strong>49.5&ndash;72.5 is the negative-EV dead band</strong>.</li>
+        <li><strong>Probabilities at 61.0 (integer push window):</strong> P(over) = <strong>{format_percent(aj_fair.over_hundredths)}</strong> ({esc(aj_fair.over_odds)} fair); P(under) = <strong>{format_percent(aj_fair.under_hundredths)}</strong> ({esc(aj_fair.under_odds)} fair); P(push) = <strong>{format_percent(aj_fair.push_hundredths)}</strong>. The three displayed percentages sum to 100%.</li>
+        <li><strong>Vig-adjusted &minus;110 boundaries:</strong> P(over) equals the 52.38% breakeven at <strong>{aj_bounds.over_exact:.2f} yards</strong> and P(under) equals it at <strong>{aj_bounds.under_exact:.2f} yards</strong>. Player pages round those roots to one decimal: value on the OVER below <strong>{aj_bounds.over_line:.1f}</strong> and on the UNDER above <strong>{aj_bounds.under_line:.1f}</strong>. Those roots are this player's distribution, not a fixed anchor. A flat push subtracted from every line would move the under root about a yard higher; the model only assigns that push on a whole-number line.</li>
       </ul>
-      <h3>Reference Python reproduction script</h3>
-      <pre><code>from scipy import stats
-
-def reproduce_fair_line(mu_rec=5.2319, mu_ypr=12.9847, alpha=0.1097, k=1.555, line=61.0):
-    r = 1.0 / alpha
-    p = 1.0 / (1.0 + alpha * mu_rec)
-    theta = mu_ypr / k
-    p_over = 0.0
-    for n in range(1, 41):
-        prob_n = stats.nbinom.pmf(n, r, p)
-        prob_over_n = 1.0 - stats.gamma.cdf(line, a=n * k, scale=theta)
-        p_over += prob_n * prob_over_n
-    odds_over = round((1.0 - p_over) / p_over * 100)
-    print(f"P(over 61.0): {{p_over:.4f}} -> Fair Breakeven Over: +{{odds_over}}")
-    return p_over
-
-reproduce_fair_line()
-# Output: P(over 61.0): 0.4933 -> Fair Breakeven Over: +103</code></pre>
     </section>
     <section>
       <h2>Snapshots, not vibes</h2>
