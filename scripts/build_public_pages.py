@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VIEWER = os.path.join(ROOT, "viewer")
-BASE_URL = "https://propstein.vercel.app"
+BASE_URL = "https://propstein.com"
 SNAPSHOTS = "snapshots_2026_w7.json"
 
 MARKETS = {

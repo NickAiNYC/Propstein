@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://propstein.vercel.app";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://propstein.com";
 
     const checkout = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

@@ -4936,7 +4936,7 @@
     const sourceHash = String(data.source_hash || 'a1b2c3d4e5f60718293a4b5c6d7e8f901a2b3c4d5e6f708192a3b4c5d6e7f809');
     const receiptHash = String(data.receipt_hash || sourceHash);
     const modelVersion = data.model_version || 'propwire-dist-v2.4';
-    const verifyUrl = `https://propstein.vercel.app/verify/${encodeURIComponent(alertId)}`;
+    const verifyUrl = `https://propstein.com/verify/${encodeURIComponent(alertId)}`;
 
     const tweetText = encodeURIComponent(
       `⚡ Verified CLV Receipt: ${playerName} (${team}) ${propLabel}\n` +
@@ -5245,7 +5245,7 @@
                 ${shieldIconTabSvg}
                 <span>Share Receipt</span>
               </button>
-              <a href="${esc(al.deep_link || 'https://propstein.vercel.app')}" target="_blank" rel="noopener noreferrer" class="sniper-deeplink-btn">
+              <a href="${esc(al.deep_link || 'https://propstein.com')}" target="_blank" rel="noopener noreferrer" class="sniper-deeplink-btn">
                 Open ${esc(al.book)} ↗
               </a>
             </div>
@@ -5731,7 +5731,7 @@
               event: 'PROP_WIRE_TEST_PING',
               timestamp: new Date().toISOString(),
               message: 'PropStein Autonomous Market Sniper Connected!',
-              terminal: 'https://propstein.vercel.app'
+              terminal: 'https://propstein.com'
             })
           });
           toast('Test payload dispatched to webhook endpoint');

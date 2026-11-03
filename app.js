@@ -3081,7 +3081,7 @@ function logDrawerPick() {
 function copyDrawerSlip() {
   if (!selectedDrawerPlayer) return;
   const p = selectedDrawerPlayer;
-  const slip = `PROPRIETARY SELECTION: ${p.player_display_name} (${p.team}) ${p.bestSide} ${p.bookLine} ${p.market} (${p.odds > 0 ? '+' : ''}${p.odds})\nModel Fair: ${Number(p.fairLine).toFixed(1)} | Win Prob: ${(p.winProb * 100).toFixed(1)}% | EV: ${(p.expectedReturn * 100).toFixed(1)}%\nVerified Decision Support: https://propwire.vercel.app`;
+  const slip = `PROPRIETARY SELECTION: ${p.player_display_name} (${p.team}) ${p.bestSide} ${p.bookLine} ${p.market} (${p.odds > 0 ? '+' : ''}${p.odds})\nModel Fair: ${Number(p.fairLine).toFixed(1)} | Win Prob: ${(p.winProb * 100).toFixed(1)}% | EV: ${(p.expectedReturn * 100).toFixed(1)}%\nVerified Decision Support: https://propstein.com`;
   
   // Real haptic/tactile feedback on mobile devices
   if (navigator && typeof navigator.vibrate === 'function') {
@@ -4090,7 +4090,7 @@ function generateXCard(row) {
   ctx.fillStyle = '#B6F36B';
   ctx.font = '700 13px "SF Mono", monospace';
   ctx.textAlign = 'right';
-  ctx.fillText('https://propwire.vercel.app/', 1150, 634);
+  ctx.fillText('https://propstein.com/', 1150, 634);
   ctx.textAlign = 'left';
 }
 
@@ -4133,7 +4133,7 @@ async function copyXCardImage() {
 function launchTweetIntent() {
   const tweetTextarea = document.getElementById('xCardTweetText');
   const text = tweetTextarea ? tweetTextarea.value : '';
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent("https://propwire.vercel.app/")}`;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent("https://propstein.com/")}`;
   window.open(url, '_blank', 'width=600,height=440,noopener,noreferrer');
 }
 

@@ -8,7 +8,7 @@ from discord.ext import commands
 DISCORD_BOT_TOKEN = os.environ.get("DISCORD_BOT_TOKEN")
 PROPSTEIN_VERIFY_URL = os.environ.get(
     "PROPSTEIN_VERIFY_URL",
-    os.environ.get("PropWire_VERIFY_URL", "https://propstein.vercel.app/api/v1/verify-receipt"),
+    os.environ.get("PropWire_VERIFY_URL", "https://propstein.com/api/v1/verify-receipt"),
 )
 POST_BETS_CHANNEL_ID = int(os.environ.get("POST_BETS_CHANNEL_ID", "0"))
 VERIFIED_EXECUTION_ROLE_NAME = "Receipt Verified"

@@ -160,7 +160,7 @@ class MarketIngestAgent:
                 }
 
         self._last_seen_quotes[book_key] = (line, p_over)
-        deep_link = raw_quote.get("deep_link") or BOOK_DEEP_LINKS.get(book.lower(), "https://propstein.vercel.app")
+        deep_link = raw_quote.get("deep_link") or BOOK_DEEP_LINKS.get(book.lower(), "https://propstein.com")
 
         payload = MarketMovePayload(
             prop_id=prop_id,

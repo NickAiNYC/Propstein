@@ -27,4 +27,4 @@ Forward-only reality: **every week uncaptured is history that can never be backf
 1. **Vercel: Deployment Protection OFF for production** — the site currently 302s behind Vercel auth; nothing is publicly reachable (verified 2026-10-27).
 2. PAT revoke (admin scope, crossed chats).
 3. Repo settings via UI (403 via API): description + topics + homepage; branch protection on `main` (require `regression-tests`); secret-scanning push protection + Dependabot.
-4. Search Console + Bing **after** #1 is fixed; custom domain before SEO accrues to `propwire.vercel.app`.
+4. Search Console + Bing **after** #1 is fixed; custom domain before SEO accrues to `propstein.com`.
