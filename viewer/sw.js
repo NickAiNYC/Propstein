@@ -23,7 +23,7 @@ const STATIC_ASSETS = [
   '/verify-landing.js?v=2026_v179',
   '/js/sports/registry.js?v=2026_v179',
   '/js/sports/nfl.js?v=2026_v179',
-  '/js/sports/nba.js?v=2026_v179',
+  '/js/sports/nba.js?v=2026_v221',
   // brand marks: PropStein lighter ice-blue logo suite
   '/propstein-logo.png',
   '/propstein-logo.png?v=2026_v179',

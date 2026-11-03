@@ -974,26 +974,43 @@
       .trim();
   }
 
-  function avatarFor(playerId, displayName, team) {
+  // v221: module-scope initials helper — the NBA court lineup previously called
+  // an out-of-scope `initials()` (ReferenceError that killed the whole Lineups
+  // tab whenever a node rendered) and avatarFor kept its own private copy.
+  function playerInitials(displayName) {
+    return (String(displayName || '').trim().split(/\s+/)
+      .map((part) => (part[0] || '').toUpperCase())
+      .join('').replace(/[^A-Z]/g, '').slice(0, 2)) || '?';
+  }
+
+  // v221: shared photo-map resolver — avatarFor and the NBA court lineup both
+  // resolve headshots through it (the court view previously had only the
+  // cdn.nba.com fallback, which some networks block; the photo map rides
+  // a.espncdn.com, allowed by the production CSP since v150).
+  function photoEntryFor(playerId, displayName) {
     const store = state.playerPhotos || {};
     const photos = store.photos || {};
     const byName = store.by_name || {};
-    let entry = null;
-    if (playerId && photos[String(playerId)]) entry = photos[String(playerId)];
-    else if (displayName) {
+    if (playerId && photos[String(playerId)]) return photos[String(playerId)];
+    if (displayName) {
       const pid = byName[normalizePlayerName(displayName)];
-      if (pid && photos[pid]) entry = photos[pid];
+      if (pid && photos[pid]) return photos[pid];
     }
-    const initials = (String(displayName || '').trim().split(/\s+/)
-      .map((part) => (part[0] || '').toUpperCase())
-      .join('').replace(/[^A-Z]/g, '').slice(0, 2)) || '?';
-    const face = `<span class="pw-avatar-initials" aria-hidden="true">${esc(initials)}</span>`;
+    return null;
+  }
+
+  function avatarFor(playerId, displayName, team) {
+    const entry = photoEntryFor(playerId, displayName);
+    const face = `<span class="pw-avatar-initials" aria-hidden="true">${esc(playerInitials(displayName))}</span>`;
     // v168 composite: the team logo rides the picture's bottom-left corner as a
     // circular chip on a solid dark surface (CSS-owned — team tints are too
     // subtle over a photo). Dead logos self-remove through the delegated
     // capture-phase error handler in initPlayerPhotos.
-    const code = String(team || '').toUpperCase();
-    const meta = code ? (NFL_LOGO_MAP[code] || { slug: String(team).toLowerCase() }) : null;
+    // v221: odds-feed quotes ship team:null — when the caller has no team code,
+    // the photo entry's own team (built from ESPN search subtitle / slate rows)
+    // badges the avatar so NBA market-only rows still show the player's logo.
+    const code = String(team || (entry && entry.team) || '').toUpperCase();
+    const meta = code ? (NFL_LOGO_MAP[code] || { slug: code.toLowerCase() }) : null;
     const badge = meta
       ? `<img class="pw-avatar-team-badge" src="${adapter.logo.espnCdnBase}${meta.slug}.png" alt="${esc(code)}" title="${esc(code)}" loading="lazy" decoding="async" referrerpolicy="no-referrer">`
       : '';
@@ -3334,9 +3351,19 @@
     box.classList.add('nba-market-only', `nba-market-view-${state.view}`);
     const quotesHtml = rows.map(q => {
       const game = state.games.find(g => g.game_id === q.game_id);
-      const matchup = game ? `${game.away_team} @ ${game.home_team}` : 'NBA';
       const started = game?.tipoff_utc && Date.parse(game.tipoff_utc) <= Date.now();
       const oddsLabel = value => Number(value) > 0 ? `+${value}` : String(value);
+      // v221: the board is not text-only anymore — each observed line carries the
+      // player's headshot (avatarFor; initials fallback when no photo resolves)
+      // with the team badge from the photo map, plus the matchup's two team
+      // crests from the games file. Quotes ship team:null, so the badge source
+      // is the photo entry (avatarFor falls back to entry.team); the crests are
+      // the game's away/home codes — never a guess about which side the player
+      // is on.
+      const avatar = avatarFor(q.player_id, q.player_name, q.team);
+      const matchupMeta = game
+        ? `<span class="nba-market-matchup" title="${esc(String(game.away_team))} @ ${esc(String(game.home_team))}">${teamCrest(game.away_team, 'sm')}<span class="nba-market-vs">@</span>${teamCrest(game.home_team, 'sm')}<span class="nba-market-vs">${esc(String(game.away_team))} @ ${esc(String(game.home_team))}</span></span>`
+        : '<span class="nba-market-vs">NBA</span>';
       return `<article class="nba-market-quote">
         <div><strong>${esc(q.player_name)}</strong><span>${esc(matchup)} · ${esc(q.book)}${started ? ' · GAME STARTED' : ''}</span></div>
         <div class="nba-market-sides"><span>Over ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span>Under ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
@@ -4057,7 +4084,12 @@
     const row4 = onCourt.filter((p) => Number(p.formation_row) >= 4);
 
     const renderCourtNode = (p) => {
-      const headshotUrl = p.headshot_url || (p.nba_id
+      // v221: prefer the photo-map headshot (a.espncdn.com, CSP-allowed since
+      // v150, URLs verified 200 image/* at build time) before the NBA CDN
+      // fallback — cdn.nba.com is now in the CSP but some networks still
+      // block it, and the initials fallback stays underneath regardless.
+      const courtPhotoEntry = photoEntryFor(p.player_id, p.name);
+      const headshotUrl = p.headshot_url || (courtPhotoEntry && courtPhotoEntry.url) || (p.nba_id
         ? `https://cdn.nba.com/headshots/nba/latest/260x190/${encodeURIComponent(p.nba_id)}.png`
         : '');
       const statusClass = p.sub_status === 'FOUL_RISK'
@@ -4080,7 +4112,7 @@
         <div class="nba-court-player ${statusClass}" data-court-player="${esc(p.player_id)}" title="${esc(p.name)} · ${esc(p.position)}">
           <div class="nba-court-avatar-wrap">
             ${headshotUrl ? `<img src="${headshotUrl}" alt="${esc(p.name)}" class="nba-court-avatar-img" loading="lazy">` : ''}
-            <span class="nba-court-avatar-fallback">${esc(initials(p.name))}</span>
+            <span class="nba-court-avatar-fallback">${esc(playerInitials(p.name))}</span>
             <span class="nba-court-node-badge ${statusClass}">${esc(badgeText)}</span>
           </div>
           <div class="nba-court-player-name">${esc(p.short_name || p.name)}</div>

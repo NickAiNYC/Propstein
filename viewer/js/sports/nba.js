@@ -404,7 +404,7 @@
         MIA: { slug: 'mia', bg: 'rgba(152,0,46,0.20)', border: 'rgba(249,160,27,0.45)' },
         MIL: { slug: 'mil', bg: 'rgba(0,71,55,0.26)', border: 'rgba(205,155,90,0.50)' },
         MIN: { slug: 'min', bg: 'rgba(11,55,100,0.24)', border: 'rgba(120,190,90,0.45)' },
-        NOP: { slug: 'nop', bg: 'rgba(12,35,64,0.26)', border: 'rgba(197,99,30,0.45)' },
+        NOP: { slug: 'no', bg: 'rgba(12,35,64,0.26)', border: 'rgba(197,99,30,0.45)' },  // v221: ESPN CDN slug is 'no', not 'nop' (404)
         NYK: { slug: 'nyk', bg: 'rgba(0,107,182,0.20)', border: 'rgba(248,109,35,0.45)' },
         OKC: { slug: 'okc', bg: 'rgba(0,83,155,0.20)', border: 'rgba(239,95,35,0.45)' },
         ORL: { slug: 'orl', bg: 'rgba(0,83,155,0.20)', border: 'rgba(197,166,180,0.45)' },
@@ -414,7 +414,7 @@
         SAC: { slug: 'sac', bg: 'rgba(91,43,130,0.20)', border: 'rgba(99,112,154,0.45)' },
         SAS: { slug: 'sas', bg: 'rgba(0,0,0,0.30)', border: 'rgba(198,146,20,0.50)' },
         TOR: { slug: 'tor', bg: 'rgba(206,17,38,0.18)', border: 'rgba(206,17,38,0.45)' },
-        UTA: { slug: 'uta', bg: 'rgba(0,43,92,0.24)', border: 'rgba(0,71,27,0.45)' },
+        UTA: { slug: 'utah', bg: 'rgba(0,43,92,0.24)', border: 'rgba(0,71,27,0.45)' },  // v221: ESPN CDN slug is 'utah', not 'uta' (404)
         WAS: { slug: 'was', bg: 'rgba(0,43,92,0.24)', border: 'rgba(229,119,11,0.45)' }
       }
     },
