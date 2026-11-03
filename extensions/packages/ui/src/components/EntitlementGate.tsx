@@ -17,7 +17,6 @@ export type EntitlementState =
 export function EntitlementGate({
   state,
   onSignIn,
-  onOpenPricing,
 }: {
   state: EntitlementState;
   onSignIn?: () => void;
@@ -27,7 +26,7 @@ export function EntitlementGate({
     const minsLeft = Math.max(0, Math.round((Date.parse(state.expiresAtIso) - Date.now()) / 60_000));
     return (
       <div className="entitlement entitlement--pro">
-        <span className="entitlement__tier">PRO · VERIFIED</span>
+        <span className="entitlement__tier">PRO SESSION · FREE RESEARCH TRIAL</span>
         <span className="entitlement__detail">via {state.provider} · session renews in {minsLeft}m</span>
       </div>
     );
@@ -35,28 +34,27 @@ export function EntitlementGate({
   if (state.kind === "expired") {
     return (
       <div className="entitlement entitlement--expired">
-        <span className="entitlement__tier">SESSION EXPIRED</span>
-        <span className="entitlement__detail">Protected model responses are unavailable until you re-authenticate.</span>
-        <button type="button" className="btn btn--primary" onClick={onSignIn}>SIGN IN</button>
+        <span className="entitlement__tier">FREE RESEARCH TRIAL</span>
+        <span className="entitlement__detail">Paid signups frozen pending N &ge; 300 validation. Browser trial is active at $0.</span>
+        <button type="button" className="btn btn--primary" onClick={onSignIn}>SIGN IN (OPTIONAL)</button>
       </div>
     );
   }
   if (state.kind === "free") {
     return (
       <div className="entitlement entitlement--free">
-        <span className="entitlement__tier">FREE PREVIEW</span>
+        <span className="entitlement__tier">FREE RESEARCH TRIAL</span>
         <span className="entitlement__detail">
-          Live Sniper signals are a PropStein Pro feature. The panel previews the interface; premium model output stays locked.
+          Paid signups frozen pending N &ge; 300 prospective evidence. Live Sniper browser trial runs free at $0 with no tier purchase required.
         </span>
-        <button type="button" className="btn btn--primary" onClick={onOpenPricing}>UPGRADE TO PRO</button>
       </div>
     );
   }
   return (
     <div className="entitlement entitlement--signedout">
-      <span className="entitlement__tier">SIGN IN REQUIRED</span>
-      <span className="entitlement__detail">Connect your PropStein membership to activate Live Sniper.</span>
-      <button type="button" className="btn btn--primary" onClick={onSignIn}>SIGN IN</button>
+      <span className="entitlement__tier">FREE RESEARCH TRIAL</span>
+      <span className="entitlement__detail">Paid signups frozen pending validation. Browser trial is active at $0 — no tier purchase required.</span>
+      <button type="button" className="btn btn--primary" onClick={onSignIn}>SIGN IN (OPTIONAL)</button>
     </div>
   );
 }

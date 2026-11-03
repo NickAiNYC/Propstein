@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PropStein Live Sniper",
   "version": "0.1.0",
-  "description": "Visible-market intelligence for PropStein Pro subscribers. Research companion only — never places, submits, modifies, or confirms wagers.",
+  "description": "Visible-market intelligence browser trial. Read-only research companion — free trial, paid signups frozen pending validation, never places or confirms wagers.",
   "permissions": [
     "sidePanel",
     "storage",
