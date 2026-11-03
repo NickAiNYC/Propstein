@@ -78,6 +78,47 @@ shipping garbage selectors; the order is deliberate.
    break; the design goal is that they break *loudly* (withdrawals), never
    *quietly* (wrong prices).
 
+## Real-Book Adapter Blockers (Why DK, FD, and Polymarket Remain Disabled)
+
+Per PropStein core principles and Live Sniper specifications, real sportsbook adapters (`draftkings`, `fanduel`, `polymarket`) remain strictly **DISABLED BY DEFAULT**. Having an adapter class scaffold does not justify enabling a real book in the browser trial.
+
+Enabling any real-book adapter requires five mandatory gates:
+
+### 1. Documented Visible Book & Exact Market
+- **DraftKings**: Target market is *In-Game NFL Drive Props* (e.g., `Player to Record a Reception on Drive X`). DK's live DOM employs dynamically scrambled React component classes and changing test IDs across sportsbook deployments.
+- **FanDuel**: Target market is *In-Play Drive Specials*. FanDuel frequently hydrates through closed WebSockets and renders into Shadow DOM or obfuscated custom elements (`af-dropdown-list`).
+- **Polymarket**: Target market is *Binary Event Contracts*. Polymarket is not a traditional drive-level micro-market sportsbook; its events settle over hours, days, or months.
+
+### 2. Capturable Source Timestamps (No DOM Observation Substitution)
+- Under spec §8, **DOM observation time (`observedAt`) cannot substitute for a book quote timestamp (`sourceTimestamp`)**.
+- A recent DOM mutation indicates when the browser re-rendered an element, NOT when the book’s trading engine generated the price.
+- Neither DraftKings nor FanDuel publishes a machine-readable, verified generation receipt in their visible DOM. Without a verifiable book source receipt, the freshness engine fails closed with `SOURCE_TIMESTAMP_UNVERIFIED` / `STALE`.
+
+### 3. Suspension State Verification
+- Live in-play markets suspend every 15–45 seconds during active downs and huddles.
+- An adapter must capture visual lock/padlock states, disabled button classes, and text changes (e.g., `SUSPENDED`, `LOCKED`, `OFF THE BOARD`) with 100% precision.
+- Prematurely alerting on a price that the book has locked on-screen is a fatal failure mode.
+
+### 4. Independent Timestamped Drive Feed
+- Drive-scoped markets cannot be validated from book DOM alone. A sportsbook might leave a drive market on screen 10 seconds after a turnover or touchdown.
+- Validation requires an independent, timestamped play-by-play game feed (e.g., official NFL GSIS or licensed sports data provider) that continuously confirms:
+  - `eventId` match
+  - `driveId` match
+  - `isActive === true` (possession still active)
+  - `dataAgeMs <= maxDataAgeMs` (possession feed is fresh, not stale)
+- Without this independent feed, drive signals fail closed as `NO_DRIVE_CONTEXT` or `DRIVE_UNBOUND`.
+
+### 5. Prospectively Calibrated Model
+- Any real-market observation fed into an uncalibrated model or a synthetic fixture model (`DRIVE-REC-V1`) must be suppressed.
+- The UI unambiguously displays real-book observations as **`RESEARCH ONLY · NO BET RECOMMENDATION`**, with EV and edge suppressed (`null` / `RESEARCH ONLY`).
+- No synthetic model output may ever route to customer-facing real-book alerts.
+
+### 6. Polymarket-Specific Architecture
+- Polymarket’s documented, low-latency API is the Gamma/CLOB API (`src/agents/polymarket_agent.py`).
+- Attempting to scrape Polymarket's web frontend is fragile, unauthorized, and inferior to the official CLOB API. Page-level inspection is therefore kept disabled.
+
+Until all five criteria are satisfied and validated against live fixtures, real-book adapters will remain disabled in the registry.
+
 ## Why DOM adapters at all, when licensed feeds exist?
 
 The product promise is **"the market you are looking at, priced now"**:

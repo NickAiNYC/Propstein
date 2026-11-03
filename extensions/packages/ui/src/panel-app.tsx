@@ -29,9 +29,9 @@ export interface PanelBridge {
 
 const ADAPTER_STATUS = [
   { platform: "demobook", enabled: true, note: "Synthetic fixture — active" },
-  { platform: "draftkings", enabled: false, note: "Disabled pending authorization" },
-  { platform: "fanduel", enabled: false, note: "Disabled pending authorization" },
-  { platform: "polymarket", enabled: false, note: "Disabled — licensed API preferred" },
+  { platform: "draftkings", enabled: false, note: "Disabled: requires capturable book source timestamp (DOM time fails closed), suspension state capture, and independent possession feed" },
+  { platform: "fanduel", enabled: false, note: "Disabled: requires capturable book source timestamp, suspension state verification, and independent possession feed" },
+  { platform: "polymarket", enabled: false, note: "Disabled: licensed Gamma/CLOB API preferred; event-level resolution lacks micro-market drive feeds" },
 ];
 
 export function LiveSniperPanel({ bridge }: { bridge: PanelBridge }) {
@@ -94,8 +94,8 @@ export function LiveSniperPanel({ bridge }: { bridge: PanelBridge }) {
 
       <div className="panel-body">
         <div className="state-view state-view--warn" role="status">
-          <h2 className="state-view__title">RESEARCH TRIAL · NO LIVE BET SIGNALS</h2>
-          <p className="state-view__body">Only the synthetic DemoBook fixture is enabled. Real NFL drive alerts require a verified book quote, an independent possession feed, and a prospectively calibrated model. No wagers are placed.</p>
+          <h2 className="state-view__title">RESEARCH TRIAL · SYNTHETIC FIXTURE ONLY</h2>
+          <p className="state-view__body">DemoBook and its model are SYNTHETIC. Real-book observations without a prospectively calibrated model or independent possession feed are RESEARCH ONLY, with no &ldquo;has edge&rdquo; or bet recommendation. PropStein never places or confirms wagers.</p>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
           <ConnectionState quality={connection} detail={panelState?.adapterPlatform ? `adapter: ${panelState.adapterPlatform}` : undefined} />

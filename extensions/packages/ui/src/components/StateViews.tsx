@@ -88,9 +88,9 @@ const COPY: Record<PanelViewKind, { title: string; body: string; tone: string }>
     tone: "warn",
   },
   "subscription-expired": {
-    title: "PRO SUBSCRIPTION REQUIRED",
-    body: "Your PropStein membership is no longer active. Protected model responses fail closed until the subscription is restored — the panel keeps working in preview mode.",
-    tone: "warn",
+    title: "FREE RESEARCH TRIAL · PAID SIGNUPS FROZEN",
+    body: "Paid signups are frozen site-wide pending prospective calibration evidence (N >= 300). The browser companion operates as a free, read-only research trial.",
+    tone: "neutral",
   },
   "network-disconnected": {
     title: "NETWORK DISCONNECTED",
