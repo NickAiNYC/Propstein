@@ -138,6 +138,7 @@
     <button id="btn-move">Simulate odds move (+160 → +115 on Kelce)</button>
     <button id="btn-suspend">Suspend market (Kelce)</button>
     <button id="btn-drive-end">End drive (d4 → d5)</button>
+    <button id="btn-stale">Pause quote ticks (simulate stale quote)</button>
     <button id="btn-reset">Reset fixture</button>
   </div>
   <main class="market-section">
@@ -271,15 +272,44 @@
         location.reload();
       });
 
+      var quoteInterval = null;
+      var isPaused = false;
+
+      function startFeedTicks() {
+        if (quoteInterval) return;
+        quoteInterval = setInterval(function () {
+          var age = Math.round((Date.now() - FEED_START) / 1000);
+          document.getElementById("feed-age").textContent = "FEED AGE " + age + "s";
+          publishSyntheticQuotes();
+          board.setAttribute("data-ps-feed-tick", String(Date.now()));
+        }, 2000);
+      }
+
+      function stopFeedTicks() {
+        if (quoteInterval) {
+          clearInterval(quoteInterval);
+          quoteInterval = null;
+        }
+      }
+
+      var btnStale = document.getElementById("btn-stale");
+      if (btnStale) {
+        btnStale.addEventListener("click", function () {
+          isPaused = !isPaused;
+          if (isPaused) {
+            stopFeedTicks();
+            btnStale.textContent = "Resume quote ticks";
+            document.getElementById("feed-age").textContent = "FEED PAUSED (SIMULATING STALE QUOTE)";
+          } else {
+            publishSyntheticQuotes();
+            startFeedTicks();
+            btnStale.textContent = "Pause quote ticks (simulate stale quote)";
+          }
+        });
+      }
+
       publishSyntheticQuotes();
-      // The synthetic feed republishes its quotes every 2s. This is a demo
-      // receipt, not an assertion that a real sportsbook refreshes this fast.
-      setInterval(function () {
-        var age = Math.round((Date.now() - FEED_START) / 1000);
-        document.getElementById("feed-age").textContent = "FEED AGE " + age + "s";
-        publishSyntheticQuotes();
-        board.setAttribute("data-ps-feed-tick", String(Date.now()));
-      }, 2000);
+      startFeedTicks();
     })();
   </script>
 </body>
