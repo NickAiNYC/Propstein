@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-02T20:38:59Z",
+  "generated_at": "2026-11-03T02:42:38Z",
   "event_id": "600061268",
   "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
   "date": "2026-11-07",
@@ -33,7 +33,7 @@
         },
         {
           "id": "5080485",
-          "name": "Jose Henrique",
+          "name": "José Souza",
           "record": "9-1-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
@@ -183,15 +183,15 @@
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
           "age": 26,
-          "reach_in": 71.0,
+          "reach_in": 72.0,
           "stance": "Southpaw",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4795284.png"
         }
       ],
       "model": {
         "p": [
-          0.5303,
-          0.4697
+          0.5188,
+          0.4812
         ],
         "elo": [
           1509.9,
@@ -203,15 +203,15 @@
         ],
         "adjustments": [
           {
-            "reach": -4.0
+            "reach": -8.0
           },
           {
-            "reach": 4.0
+            "reach": 8.0
           }
         ],
         "fair_american": [
-          -113,
-          113
+          -108,
+          108
         ],
         "p_finish": 0.4806,
         "p_over_by_line": {
@@ -254,15 +254,15 @@
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
           "winner": false,
           "age": 25,
-          "reach_in": null,
-          "stance": "--",
+          "reach_in": 71.0,
+          "stance": "Orthodox",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5346907.png"
         }
       ],
       "model": {
         "p": [
-          0.4758,
-          0.5242
+          0.4643,
+          0.5357
         ],
         "elo": [
           1523.0,
@@ -274,13 +274,16 @@
         ],
         "adjustments": [
           {
+            "reach": -4.0,
             "age": -60.0
           },
-          {}
+          {
+            "reach": 4.0
+          }
         ],
         "fair_american": [
-          110,
-          -110
+          115,
+          -115
         ],
         "p_finish": 0.534,
         "p_over_by_line": {
