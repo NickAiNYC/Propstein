@@ -1,0 +1,11 @@
+{
+ "source": "stats_nba_com",
+ "all_fixture": false,
+ "n_rows": 681,
+ "n_games": 26,
+ "n_players": 412,
+ "max_game_date": "2026-11-02",
+ "min_game_date": "2026-10-31",
+ "league_avg_poss": 85.16769230769229,
+ "generated_at": "2026-11-03T06:29:43Z"
+}
