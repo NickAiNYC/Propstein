@@ -126,3 +126,26 @@ Topology note (free hosting): the daily ingestion worker is
 statically). Git is the cache layer; a Postgres cache (Supabase/Neon)
 is an optional future upgrade for queryable history, not a v1
 dependency.
+
+**Empirical status (2026-11-03, same day as the decision — updated after
+the first live run):** the D7 datacenter-IP risk is REAL, not
+hypothetical. Verified from two cloud vantage points: GitHub Actions
+runner (workflow run 41584926512: `leaguegamefinder` read-timeouts —
+packet blackhole, not an HTTP rejection) and a second datacenter sandbox
+(stats.nba.com times out via curl with 0 bytes; cdn.nba.com returns
+Akamai "Access Denied" 403 in <0.1 s even with full browser headers;
+data.nba.net serves a broken TLS cert). Consequences:
+
+1. The GitHub-hosted Actions leg can NEVER fetch — the workflow now
+   probes cheaply (one offseason-day call) and skips with a `::notice`
+   when blocked, instead of burning red runs twice a day. A data-quality
+   failure inside the pipeline still fails RED.
+2. The free path runs from RESIDENTIAL IPs:
+   - `scripts/nba_model_local_worker.py` — same pipeline + artifact
+     commit, run from the owner's machine (cron/launchd), or
+   - a GitHub **self-hosted runner** on a residential line (flip
+     `runs-on: ubuntu-latest` → `runs-on: [self-hosted]`; the rest of
+     the workflow works unchanged).
+3. The provider itself is unchanged and offline-test-green; its
+   fail-closed behavior is exactly what surfaced this finding as a
+   visible failure instead of silent empty data.
