@@ -1,0 +1,109 @@
+{
+  "counts": {
+    "season_2025_games_available": 4,
+    "season_2026_w1_7_games_available": 4
+  },
+  "fixed_at_note": "synthetic fixtures; regenerate deterministically",
+  "games": [
+    {
+      "away_team": "SYN_A01",
+      "bin": "w1-6",
+      "event_id": "ev_syn_001",
+      "game_id": "SYN25_G01",
+      "game_type": "REG",
+      "gameday": "2025-10-12",
+      "home_team": "SYN_H01",
+      "kickoff_utc": "2025-10-12T17:00:00Z",
+      "season": 2025,
+      "week": 6
+    },
+    {
+      "away_team": "SYN_A02",
+      "bin": "w7-12",
+      "event_id": "ev_syn_002",
+      "game_id": "SYN25_G02",
+      "game_type": "REG",
+      "gameday": "2025-11-02",
+      "home_team": "SYN_H02",
+      "kickoff_utc": "2025-11-02T17:00:00Z",
+      "season": 2025,
+      "week": 9
+    },
+    {
+      "away_team": "SYN_A03",
+      "bin": "w13-18",
+      "event_id": "ev_syn_003",
+      "game_id": "SYN25_G03",
+      "game_type": "REG",
+      "gameday": "2025-12-07",
+      "home_team": "SYN_H03",
+      "kickoff_utc": "2025-12-07T17:00:00Z",
+      "season": 2025,
+      "week": 14
+    },
+    {
+      "away_team": "SYN_A04",
+      "bin": "w19-22",
+      "event_id": "ev_syn_004",
+      "game_id": "SYN25_G04",
+      "game_type": "REG",
+      "gameday": "2026-01-10",
+      "home_team": "SYN_H04",
+      "kickoff_utc": "2026-01-10T17:00:00Z",
+      "season": 2025,
+      "week": 19
+    },
+    {
+      "away_team": "SYN_A05",
+      "bin": "w1-2",
+      "event_id": "ev_syn_005",
+      "game_id": "SYN26_G05",
+      "game_type": "REG",
+      "gameday": "2026-09-13",
+      "home_team": "SYN_H05",
+      "kickoff_utc": "2026-09-13T17:00:00Z",
+      "season": 2026,
+      "week": 1
+    },
+    {
+      "away_team": "SYN_A06",
+      "bin": "w3-4",
+      "event_id": "ev_syn_006",
+      "game_id": "SYN26_G06",
+      "game_type": "REG",
+      "gameday": "2026-09-27",
+      "home_team": "SYN_H06",
+      "kickoff_utc": "2026-09-27T17:00:00Z",
+      "season": 2026,
+      "week": 3
+    },
+    {
+      "away_team": "SYN_A07",
+      "bin": "w5-6",
+      "event_id": "ev_syn_007",
+      "game_id": "SYN26_G07",
+      "game_type": "REG",
+      "gameday": "2026-10-11",
+      "home_team": "SYN_H07",
+      "kickoff_utc": "2026-10-11T17:00:00Z",
+      "season": 2026,
+      "week": 5
+    },
+    {
+      "away_team": "SYN_A08",
+      "bin": "w7-7",
+      "event_id": "ev_syn_008",
+      "game_id": "SYN26_G08",
+      "game_type": "REG",
+      "gameday": "2026-10-25",
+      "home_team": "SYN_H08",
+      "kickoff_utc": "2026-10-25T17:00:00Z",
+      "season": 2026,
+      "week": 7
+    }
+  ],
+  "seed_source": "SYNTHETIC-FIXTURES",
+  "selection_rule": "SYNTHETIC harness-test sample (8 games, both seasons)",
+  "source": "make_fixtures.py \u2014 NOT schedule data",
+  "trial_id": "DECISION_2DV_TRIAL_v1"
+}

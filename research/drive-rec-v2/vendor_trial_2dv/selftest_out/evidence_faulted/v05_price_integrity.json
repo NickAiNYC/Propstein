@@ -1,0 +1,1015 @@
+{
+  "check": "V5",
+  "n_violations": 3,
+  "requirement": "Both sides, American odds, and decimal conversion validated",
+  "status": "FAIL",
+  "summary": "1086 outcome prices validated; 543 two-sided markets; vig mean 4.73pp (min 4.71, max 4.76)",
+  "title": "Price integrity",
+  "vig_rows": [
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_a', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_b', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-15m', 'synbook_c', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A03', 9999.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_a', 'SYN WR A08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A03', 9999.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_b', 'SYN WR A08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A03', 9999.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-180m', 'synbook_c', 'SYN WR A08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_a', 'SYN WR A08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_b', 'SYN WR A08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G01', 'T-60m', 'synbook_c', 'SYN WR A08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_a', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_b', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-15m', 'synbook_c', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_a', 'SYN WR B08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_b', 'SYN WR B08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-180m', 'synbook_c', 'SYN WR B08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_a', 'SYN WR B08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_b2', 'SYN WR B08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G02', 'T-60m', 'synbook_c', 'SYN WR B08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_a', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_b', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C01', 28.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-15m', 'synbook_c', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_a', 'SYN WR C08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_b', 'SYN WR C08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C01', 30.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-180m', 'synbook_c', 'SYN WR C08', 65.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_a', 'SYN WR C08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C01', 28.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C02', 35.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C03', 40.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C04', 45.0)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C05', 50.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C06', 55.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C07', 60.5)",
+      "vig_pp": 4.76
+    },
+    {
+      "implied_sum": 1.0471,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_b', 'SYN WR C08', 65.5)",
+      "vig_pp": 4.71
+    },
+    {
+      "implied_sum": 1.0476,
+      "key": "('SYN25_G03', 'T-60m', 'synbook_c', 'SYN WR C01', 28.5)",
+      "vig_pp": 4.76
+    }
+  ],
+  "violations": [
+    "SYN25_G03@T-180m:synbook_a:SYN WR C05 Over decimal 1.95 != american -110 -> 1.9091",
+    "SYN25_G03@T-180m:synbook_b:SYN WR C05 Over decimal 1.95 != american -110 -> 1.9091",
+    "SYN25_G03@T-180m:synbook_c:SYN WR C05 Over decimal 1.95 != american -110 -> 1.9091"
+  ]
+}

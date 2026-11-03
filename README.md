@@ -1,100 +1,195 @@
-<img src="viewer/propstein-logo.svg" alt="PropStein logo" width="420" />
+# Propstein 2.0 — Live Sports Prop Terminal
 
-PropStein is a distributional prop model and operational terminal for NFL receiving markets. It prices outcomes with a compound negative-binomial / gamma framework, runs weekly slate logic, and logs closing-line value with a disciplined risk gate.
+One repo. One app. Zero paid APIs.
 
-**Historical context gate:** New model fits and weekly projections are blocked while the nflverse game spread, total, and weather inputs lack observation timestamps. The existing frozen artifacts remain available for research, but they are not evidence that these context values were known at pricing time. The weekly model command below will fail closed until timestamped context and per-row pricing cutoffs are supplied. See [Feature cutoff gate](docs/FEATURE_CUTOFF_GATE.md).
+Next.js (App Router, TS) + Tailwind terminal UI over Prisma (Supabase/Neon
+Postgres in production, SQLite for preview), fed by a GitHub Actions cron
+running the Python ingest workers against **free, key-less public data**:
 
-Built for edge detection, not hype: the model is probabilistic, walk-forward validated, and intentionally conservative. No LLM sits in the decision path; the language model reasons after the numbers are fixed.
+| source | what | cost |
+| --- | --- | --- |
+| `site.api.espn.com` public JSON | NBA/NFL/NHL scoreboards, box scores, player identities | $0, no auth |
+| `nba_api` (stats.nba.com) | active-player registry | $0, no auth |
+| v1 snapshot live-odds feed (`worker/data/`) | Polymarket prop quotes + model fair lines | $0 |
 
-## Why PropStein
+## Free / Pro tiers (single-app gating)
 
-- Distribution-aware pricing for receptions and receiving yards
-- Real-time weekly slate generation and live line comparison
-- Risk-gated picks with EV and Kelly guidance
-- CLV logging and audit workflow for model accountability
-- Clean deployment on a high-performance edge stack
+| | Free | Pro |
+| --- | --- | --- |
+| Live scores (NBA/NFL/NHL) | ✅ full | ✅ full |
+| Player directory + season stats | ✅ | ✅ |
+| Rolling box-score form (L3) | ❌ blurred | ✅ |
+| Props per slate | first 3 teaser rows | full join-flattened feed |
+| Line freshness | 15-min delay | live |
+| Direction (side + Watch/Pass lean) | ✅ | ✅ |
+| Exact model numbers (prob, fair odds, EV, Kelly) | ❌ blurred | ✅ |
+| Book comparison (best book ★) | ❌ | ✅ |
+| Copy-for-slips + CSV export | ❌ | ✅ |
 
-## 3. Weekly Operational Cadence
+Enforcement is server-side in `/api/props` and `/api/players`: the free
+response **omits** `probWin`, `fairOdds`, `ev`, `kelly`, `fairLine` and
+`formSummary` fields entirely (the UI blur is cosmetic on top of stripped
+payloads, not the gate itself).
 
-1. **Tuesday – Thursday (Ingest & Projection)**
-   - Schedule and depth charts finalize.
-   - Run the weekly pipeline via the UI **Run Slate** button or terminal:
-     ```bash
-     python src/week1.py --season 2026 --week 1
-     ```
-   - Model fits in ~2 seconds and refreshes `slate_projections.json`, `current_picks.json`, and `top_picks.json`.
+Production wiring: Supabase Auth session → `user.isPro` (written by the
+Stripe billing webhook). **Until auth is configured, every production
+request resolves to free** — the sidebar tier toggle is a preview-only
+demo switch (`POST /api/tier` returns 403 in production unless
+`ALLOW_TIER_DEMO=1` is explicitly set for a staging deploy). A
+client-settable cookie never grants Pro.
 
-2. **Friday – Sunday Morning (Line Comparison & Execution)**
-   - Open the **Slate Browser** and enter your sportsbook line in the **Book Line Comparison** tool.
-   - The app runs the compound distribution and flags qualifying plays:
-     - 🟢 **Green**: Edge >= 10% in W1 / >= 3% normal; value play clearing the calibration gate with EV per unit and Kelly guidance.
-     - 🟡 **Yellow**: Positive edge below the strict risk gate (lean/watch).
-     - 🔴 **Red**: Negative edge / sharp book.
-   - Click **Save Bet to CLV Tracking Log** in the Calculator to add active plays to `picks_log.jsonl`.
-   - Click **Copy as Text for Slips** in the Top Picks Card for rapid slip entry.
+## Player identity (the v2 fix)
 
-3. **Sunday Night / Monday (Closing Line Value Audit)**
-   - Once games lock or settle, open the **CLV Tracking Log** tab.
-   - Select logged picks and input the closing devigged probability or closing odds.
-   - The app computes `clv = model_prob - closing_prob` and updates the running 95% confidence interval.
+The v1 build collided two ID namespaces under one prefix (LeBron existed
+twice: `espn-nba-2544` registry vs `espn-nba-1966` ESPN). v2 keeps them
+separate and merges by `nameKey` with ESPN canonical:
 
----
+```
+espn-nba-{espnAthleteId}   canonical — team/position/form/stats from box scores
+nba-{nbaStatsId}           registry-only — name until ESPN box data arrives
+nfl-{nameKey}              v1 snapshot NFL players
+```
 
-## 4. Production Deployment
+When an ESPN row meets an existing registry row with the same
+`(league, name_key)`, the registry row is retired and its `nbaStatsId`
+carried onto the ESPN record — one human, one row, richest identity wins.
+Guard: `@@unique([league, nameKey])`.
 
-The viewer frontend and precomputed slate data are deployed globally via Vercel:
+## Repo layout
 
-- **Live Production URL**: [propstein.vercel.app](https://propstein.vercel.app)
-- **Vercel Project**: [`propstein`](https://vercel.com/nicks-projects-ec56abd4/propstein)
-- **Deployment root**: repository root (`.`). The root [`vercel.json`](vercel.json) publishes `viewer/`.
-- **Operational model**: static assets are versioned, service workers are fail-closed, and edge caching is tuned for speed and reliability.
+```
+prisma/schema.prisma            SQLite preview schema
+prisma/schema.postgres.prisma   canonical Postgres schema (Supabase/Neon)
+worker/ingest_games.py          ESPN scoreboards -> Game
+worker/ingest_players.py        registry + ESPN summaries -> Player (merge)
+worker/ingest_props.py          snapshot quotes -> Prop (+ EV/Kelly)
+worker/upsert.py                chunked atomic upsert core (psycopg3)
+worker/ev.py                    odds/EV/Kelly math (mirrors src/lib/ev.ts)
+worker/selftest.py              offline sanity suite
+worker/data/                    v1 snapshot fixtures (live odds, picks)
+.github/workflows/ci.yml        CI: extension + next-app + worker (blocking)
+.github/workflows/ingest.yml    cron: games+players 15m, props hourly
+src/app/api/*                   games / players / props (tier-gated) / tier
+src/components/terminal/*       sidebar, ticker, panels, paywall UI
+scripts/seed.ts                 real-data seed for local preview
+extension/ + extensions/        Live Sniper browser extension (preserved from v1)
+research/                       preserved v1 quant research (untouched)
+```
 
-To publish the latest slate build:
+CI runs on every PR: the Next app's lint + production build and the
+workers' offline selftest (`.github/workflows/ci.yml`) — no secrets, no
+database needed. The extension keeps its own path-filtered workflow
+(`.github/workflows/live_sniper_extension.yml`): typecheck, build,
+test:core and Playwright e2e whenever `extensions/**` changes.
+
+## Local preview
 
 ```bash
-vercel --prod
+bun install
+bun run db:push                # SQLite schema
+bun scripts/seed.ts            # real ESPN + snapshot data (~1 min)
+bun run dev                    # http://localhost:3000
+python worker/selftest.py      # offline math + fail-closed checks
 ```
 
-The edge deployment builds and propagates in roughly 4 seconds.
+Flip Free ⇄ Pro with the sidebar toggle and watch `/api/props` strip vs
+serve the model columns. (In production the toggle is disabled and the
+API returns 403 — tier comes from auth.)
 
----
+## Deploy (Vercel + Supabase)
 
-## Architecture Snapshot
+1. **Supabase**: create project → copy the pooled connection string.
+2. **Database**: `npx prisma db push --schema prisma/schema.postgres.prisma`
+   against the Supabase URL (tables + indexes + unique guards).
+3. **GitHub Actions secret**: `DATABASE_URL` = same pooled URL — the cron
+   then fills Game/Player/Prop every 15 minutes.
+4. **Vercel**: import this repo (root = repo root, framework Next.js),
+   set `DATABASE_URL` env var, deploy. API routes read through Prisma with
+   `s-maxage=60, stale-while-revalidate=300` CDN caching.
+   The `postinstall` hook (scripts/postinstall.mjs) auto-picks the Postgres
+   schema when `DATABASE_URL` is a `postgres://` URL — no other build
+   settings to change.
+5. **Auth (optional at first)**: add Supabase env vars; swap the demo
+   `/api/tier` toggle for `getTier()` reading the Supabase session claim.
 
-```text
-src/features.py   leak-free inputs and leakage checks
-src/slate.py      weekly slate build, roster/injury ingestion, Week 1 handling
-src/week1.py      CLI runner for live weekly pipelines
-src/model.py      compound distribution, de-vig, Kelly logic
-src/baseline.py   form-only line setter
-src/backtest.py   walk-forward calibration and simulation
-src/parlay.py     correlation-aware SGP and alt-line pricing
-src/odds.py       odds API client and no-vig consensus logic
-src/agent.py      picks engine, hard gate logic, CLV logging
-api/main.py       FastAPI service, billing, and entitlement layer
-```
+## Rollout plan — 2.0 is preview-only (deliberately NOT merged)
 
-## Quick Start
+- `main` keeps serving the v1 site in production. PR #99 stays open.
+- The 2.0 terminal runs on **preview deployments only** (Vercel → PR #99
+  checks → preview URL), optionally pointed at a real Supabase database
+  (env var scoped to Preview, not Production) for testing against real
+  data.
+- Merge criteria: access control verified against real auth, quote status
+  honest under real ingest, freshness labeling true, and the v1 public
+  performance pages either restored or deliberately superseded.
+- Performance-page continuity is already handled: the v1 track record is
+  preserved **verbatim** at the public route `/performance` (terminal-styled,
+  numbers unmodified, footer + sidebar link), so a future merge does not
+  take the record offline. `archive/v1-static/` stays as the raw source.
+- Preview deployment 404 fix (2026-11-04): the Vercel project was set up
+  for the v1 static site (`outputDirectory: "viewer"`), so branch previews
+  copied a nonexistent static output instead of building the Next app —
+  every route 404'd while the deploy reported success. The branch now
+  carries a root `vercel.json` with `"framework": "nextjs"` so previews
+  build the app. Two self-host-only landmines removed: `output:
+  "standalone"` is now conditional (off on Vercel via the `VERCEL` env),
+  and the standalone asset copy moved from `build` to `build:standalone`.
+  **Merge note:** this `vercel.json` replaces v1's at merge — intended for
+  the production switch. v1's CSP is deliberately NOT carried over (its
+  `script-src 'self'` blocks Next.js inline bootstrap scripts); re-add a
+  Next-compatible CSP before the production switch. The v1 deploy config
+  remains intact on `main` until then.
+- Preview-DB runbook: point the repo `DATABASE_URL` **Actions secret** and
+  a **Preview-scoped** Vercel env var at the same Postgres (Supabase/
+  Neon), redeploy, then trigger ingest (`ingest.yml` →
+  `workflow_dispatch`, job `all`; games/players live-fetch, props is the
+  static snapshot re-upsert). The whole real-DB validation is now one
+  command — `./scripts/real_db_preview_test.sh` boots a throwaway
+  Postgres 18, pushes the schema, seeds, builds, serves in production
+  mode and asserts tier authority (GET free/POST 403), props honesty
+  (`bundled_v1_snapshot`, `verifiedCount 0`, EV/Kelly stripped), real
+  game rows, the verbatim `/performance` record and bundle truth strings.
+  `DATABASE_URL=postgresql://… ./scripts/real_db_preview_test.sh` runs
+  the same assertions against Supabase/Neon directly.
 
-```bash
-pip install -r requirements.txt        # intent spec (floor ranges)
-pip install -r requirements.lock       # reproducible set — what CI runs the suite against
-```
+## Preservation map — nothing is lost
 
-`requirements.txt` declares intent; `requirements.lock` is the exact pinned
-set CI installs and the full test suite is validated against (refresh protocol
-in the lock header).
+| artifact | where it lives |
+| --- | --- |
+| v1 static site (incl. performance pages, ledger, audit, per-player pages) | `archive/v1-static/` (hidden: not routed, not deployed — see `archive/v1-static/RESTORE.md`) |
+| v1 complete tree (backend + site + workflows) | branch `v1-static-archive` = tag `v1.0.0` (commit `25327c48`) |
+| quant research | `research/` — kept live at the repo root, untouched |
+| Live Sniper extension | `extension/` + `extensions/` — restored, with its own CI workflow |
+| v1 cron workflows (daily_update, nba_daily, freezes, news_watcher, odds_freshness) | preserved in git at `v1-static-archive`; superseded on 2.0 by `ingest.yml` |
 
-Then run the weekly model (season/week are arguments — rolling to 2027 is a
-data exercise, see [docs/SEASON-ROLLOVER.md](docs/SEASON-ROLLOVER.md)):
+## Honesty notes
 
-```bash
-python src/week1.py --season 2026 --week 1
-```
+- Props come from the **bundled v1 Week 8 snapshot** (`worker/data/live_odds_feed.json`),
+  re-upserted **daily** (not live): `/api/props` declares
+  `dataSource: "bundled_v1_snapshot"` + `lastObservedAt` + `verifiedCount`,
+  and the props panel renders a `static v1 snapshot · not live` badge. A
+  real odds feed must land before props are treated as live.
+- `verified` mirrors the upstream feed's own `verified` flag — nothing
+  upstream means nothing here. In the bundled Week 8 snapshot that is
+  **0 verified, 9 receipt-matched (OBSERVED), 1 PASS**: receipt-matched
+  quotes are *not* verified and are stored as such, with the full
+  `evaluation` payload carried in `rawPayload` for inspection. Synthetic
+  demo fixtures are **skipped**, never ingested.
+- EV/Kelly are freshly computed model estimates over that static snapshot
+  (Gaussian tail around the fair line, market-aware sigma) — not live
+  book prices, and not betting advice.
+- Season stats start as "tracked-games averages" and converge as the cron
+  accumulates box scores.
+- The header feed chip reflects actual data availability and data source:
+  an unqualified `feed live` only appears when games are live **and** props
+  explicitly declare a live book source. With the bundled snapshot (today's
+  default) the header reads `scores live · props static snapshot — not live`,
+  matching the props panel's badge. Empty database shows "no feed yet", a
+  failed poll shows "feed unreachable".
+- The Pro upsell never promises "live edge": it offers the full edge model
+  (fair odds, EV, Kelly, book comparison) and states outright that quotes
+  come from a static v1 snapshot, not live sportsbooks.
 
----
-
-## Disclaimer
-
-Statistical estimates for research and entertainment. Not financial advice.
-21+ where legal. If gambling is causing harm, call 1-800-GAMBLER.
+*v1 is preserved three ways: branch `v1-static-archive`, tag `v1.0.0`, and
+`archive/v1-static/` in-repo. `main` serves v1 until PR #99 is reviewed,
+tested against a real database, and deliberately merged.*

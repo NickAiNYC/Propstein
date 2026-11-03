@@ -1,0 +1,9 @@
+{
+  "check": "V10",
+  "manifest_sha256": "df050e59eb49c1180526347402bbede844c01daa5f81f097bf0f28d715446be9",
+  "problems": [],
+  "requirement": "Raw responses preserved with timestamps and SHA-256 hashes",
+  "status": "PASS",
+  "summary": "53 manifest entries verified by SHA-256; 52 raw responses with redacted-URL metadata",
+  "title": "Reproducibility"
+}

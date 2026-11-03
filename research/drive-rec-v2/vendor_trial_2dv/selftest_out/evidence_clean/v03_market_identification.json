@@ -1,0 +1,203 @@
+{
+  "check": "V3",
+  "n_violations": 0,
+  "observed": [
+    {
+      "away": "SYN_A01",
+      "commence_time": "2025-10-12T17:00:00Z",
+      "event_id": "ev_syn_001",
+      "game_id": "SYN25_G01",
+      "home": "SYN_H01",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A01",
+      "commence_time": "2025-10-12T17:00:00Z",
+      "event_id": "ev_syn_001",
+      "game_id": "SYN25_G01",
+      "home": "SYN_H01",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A01",
+      "commence_time": "2025-10-12T17:00:00Z",
+      "event_id": "ev_syn_001",
+      "game_id": "SYN25_G01",
+      "home": "SYN_H01",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A02",
+      "commence_time": "2025-11-02T17:00:00Z",
+      "event_id": "ev_syn_002",
+      "game_id": "SYN25_G02",
+      "home": "SYN_H02",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A02",
+      "commence_time": "2025-11-02T17:00:00Z",
+      "event_id": "ev_syn_002",
+      "game_id": "SYN25_G02",
+      "home": "SYN_H02",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A02",
+      "commence_time": "2025-11-02T17:00:00Z",
+      "event_id": "ev_syn_002",
+      "game_id": "SYN25_G02",
+      "home": "SYN_H02",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A03",
+      "commence_time": "2025-12-07T17:00:00Z",
+      "event_id": "ev_syn_003",
+      "game_id": "SYN25_G03",
+      "home": "SYN_H03",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A03",
+      "commence_time": "2025-12-07T17:00:00Z",
+      "event_id": "ev_syn_003",
+      "game_id": "SYN25_G03",
+      "home": "SYN_H03",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A03",
+      "commence_time": "2025-12-07T17:00:00Z",
+      "event_id": "ev_syn_003",
+      "game_id": "SYN25_G03",
+      "home": "SYN_H03",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A04",
+      "commence_time": "2026-01-10T17:00:00Z",
+      "event_id": "ev_syn_004",
+      "game_id": "SYN25_G04",
+      "home": "SYN_H04",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A04",
+      "commence_time": "2026-01-10T17:00:00Z",
+      "event_id": "ev_syn_004",
+      "game_id": "SYN25_G04",
+      "home": "SYN_H04",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A04",
+      "commence_time": "2026-01-10T17:00:00Z",
+      "event_id": "ev_syn_004",
+      "game_id": "SYN25_G04",
+      "home": "SYN_H04",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A05",
+      "commence_time": "2026-09-13T17:00:00Z",
+      "event_id": "ev_syn_005",
+      "game_id": "SYN26_G05",
+      "home": "SYN_H05",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A05",
+      "commence_time": "2026-09-13T17:00:00Z",
+      "event_id": "ev_syn_005",
+      "game_id": "SYN26_G05",
+      "home": "SYN_H05",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A05",
+      "commence_time": "2026-09-13T17:00:00Z",
+      "event_id": "ev_syn_005",
+      "game_id": "SYN26_G05",
+      "home": "SYN_H05",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A06",
+      "commence_time": "2026-09-27T17:00:00Z",
+      "event_id": "ev_syn_006",
+      "game_id": "SYN26_G06",
+      "home": "SYN_H06",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A06",
+      "commence_time": "2026-09-27T17:00:00Z",
+      "event_id": "ev_syn_006",
+      "game_id": "SYN26_G06",
+      "home": "SYN_H06",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A06",
+      "commence_time": "2026-09-27T17:00:00Z",
+      "event_id": "ev_syn_006",
+      "game_id": "SYN26_G06",
+      "home": "SYN_H06",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A07",
+      "commence_time": "2026-10-11T17:00:00Z",
+      "event_id": "ev_syn_007",
+      "game_id": "SYN26_G07",
+      "home": "SYN_H07",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A07",
+      "commence_time": "2026-10-11T17:00:00Z",
+      "event_id": "ev_syn_007",
+      "game_id": "SYN26_G07",
+      "home": "SYN_H07",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A07",
+      "commence_time": "2026-10-11T17:00:00Z",
+      "event_id": "ev_syn_007",
+      "game_id": "SYN26_G07",
+      "home": "SYN_H07",
+      "offset": "T-60m"
+    },
+    {
+      "away": "SYN_A08",
+      "commence_time": "2026-10-25T17:00:00Z",
+      "event_id": "ev_syn_008",
+      "game_id": "SYN26_G08",
+      "home": "SYN_H08",
+      "offset": "T-15m"
+    },
+    {
+      "away": "SYN_A08",
+      "commence_time": "2026-10-25T17:00:00Z",
+      "event_id": "ev_syn_008",
+      "game_id": "SYN26_G08",
+      "home": "SYN_H08",
+      "offset": "T-180m"
+    },
+    {
+      "away": "SYN_A08",
+      "commence_time": "2026-10-25T17:00:00Z",
+      "event_id": "ev_syn_008",
+      "game_id": "SYN26_G08",
+      "home": "SYN_H08",
+      "offset": "T-60m"
+    }
+  ],
+  "requirement": "Correct player, team, game, line, and over/under, traced to a verified event-ID map whose discovery source and timestamp are recorded",
+  "status": "PASS",
+  "summary": "24 responses checked for player/team/game/line/over-under identification + event-ID map provenance (8 map entries)",
+  "title": "Market identification",
+  "violations": []
+}

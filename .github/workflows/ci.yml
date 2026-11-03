@@ -9,81 +9,68 @@ permissions:
   contents: read
 
 jobs:
-  # Foundation freeze (Phase 1) + verification layer (Phase 2): the quant
-  # decision contracts, the trust-spine engine, structured logging, and the
-  # leakage suite run as their own BLOCKING job so the freeze stays visible
-  # even if the broad pytest invocation is ever narrowed. Master prompt §0:
-  # leakage tests block deploy.
-  foundation-freeze:
-    name: Foundation freeze + verification layer (blocking)
+  # Extension CI lives in its own path-filtered workflow
+  # (.github/workflows/live_sniper_extension.yml): typecheck, build,
+  # test:core and the Playwright e2e run whenever extensions/** changes.
+
+  # New in 2.0: the Next.js terminal app. Prisma client generation goes
+  # through the postinstall hook (schema picked by DATABASE_URL protocol —
+  # unset here means the SQLite preview schema, which is all the build
+  # needs; no database is contacted during CI).
+  next-app:
+    name: Next.js terminal app (blocking)
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - name: Check out source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies (postinstall generates Prisma client)
+        run: bun install --frozen-lockfile
+      - name: Lint
+        run: bun run lint
+      - name: Production build
+        run: bun run build
+
+  # New in 2.0: the ingestion workers. The selftest is fully offline
+  # (no DATABASE_URL, no network) so it runs on every PR — the exit-code
+  # contract (0 ok / 2 config / 3 data / 5 upstream) is part of the spec.
+  worker:
+    name: Ingestion workers (blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
       - name: Set up Python 3.12
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
-          cache-dependency-path: requirements.lock
-      - name: Install dependencies (locked — fail-closed, never the open ranges)
+      - name: Install worker dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.lock pytest
-      - name: Contract + verification + logging + leakage suites (blocking)
-        run: |
-          PYTHONPATH=. pytest tests/test_contracts_quant.py tests/test_verification_layer.py tests/test_structured_logging.py tests/test_leakage.py tests/test_feature_cutoff.py -q --tb=short
+          pip install -r worker/requirements.txt
+      - name: Offline selftest
+        run: python worker/selftest.py
 
-  regression-tests:
+  # Preserved from v1: secret scanning (advisory, same posture as v1).
+  secret-scan:
+    name: Secret scanning (Gitleaks)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: Check out source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v4
         with:
-          persist-credentials: false
-      - name: Verify runtime
-        run: node --version
-      - name: Install locked dependencies
-        run: npm ci
-      - name: Install extension workspace dependencies
-        run: npm ci --prefix extensions --ignore-scripts
-      - name: Run production readiness gate
-        run: npm run check:production
-
-  python-tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    strategy:
-      matrix:
-        python-version: ["3.12"]
-    steps:
-      - name: Check out source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
           fetch-depth: 0
-      - name: Secret scanning (Gitleaks)
+          persist-credentials: false
+      - name: Gitleaks
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: "pip"
-          cache-dependency-path: requirements.lock
-      - name: Install locked dependencies + audit tooling
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.lock pytest pip-audit
-      - name: Run pip-audit (audits the exact locked set)
-        run: |
-          pip-audit --desc || true
-      - name: Run pytest (includes tests/test_dependency_lock.py — lock/spec drift fails here)
-        run: |
-          PYTHONPATH=. pytest test/ tests/
