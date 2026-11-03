@@ -17,7 +17,7 @@ import sys
 import time
 import urllib.request
 
-API = "https://api.github.com/repos/NickAiNYC/PropWire"
+API = "https://api.github.com/repos/NickAiNYC/Propstein"
 
 
 def req(method, url, token, payload=None):
