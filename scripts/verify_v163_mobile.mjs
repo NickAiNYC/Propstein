@@ -42,14 +42,14 @@ function createStaticServer(port = 4173) {
 
 async function main() {
   const isProd = process.argv.includes('--prod');
-  const targetUrl = isProd ? 'https://propwire.vercel.app/' : 'http://127.0.0.1:4173/';
+  const targetUrl = isProd ? 'https://propstein.com/' : 'http://127.0.0.1:4173/';
   let server = null;
 
   if (!isProd) {
     console.log('Starting local server on http://127.0.0.1:4173...');
     server = await createStaticServer(4173);
   } else {
-    console.log('Verifying LIVE PRODUCTION on https://propwire.vercel.app/ (iPhone 390x844)...');
+    console.log('Verifying LIVE PRODUCTION on https://propstein.com/ (iPhone 390x844)...');
   }
 
   console.log('Launching headless Chrome with iPhone 390x844 viewport...');
@@ -77,7 +77,7 @@ async function main() {
       try {
         const listRes = await fetch('http://127.0.0.1:9336/json');
         const tabs = await listRes.json();
-        pageTab = tabs.find((t) => t.type === 'page' && (t.url.includes('4173') || t.url.includes('propwire.vercel.app')));
+        pageTab = tabs.find((t) => t.type === 'page' && (t.url.includes('4173') || t.url.includes('propstein.com')));
         if (pageTab && pageTab.webSocketDebuggerUrl) {
           connected = true;
           break;

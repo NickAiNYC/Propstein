@@ -6,7 +6,6 @@ data/games.csv
 __pycache__/
 .env
 
-.cache/
 .sent_alerts.json
 data/.sent_alerts.json
 .venv/

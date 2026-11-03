@@ -42,12 +42,12 @@ html = html.replace(
     '  <meta name="build-hash" content="2026-w8-v24">',
 )
 html = html.replace(
-    '<meta name="twitter:image" content="https://propwire.vercel.app/propwire-logo.svg">',
-    '<meta name="twitter:image" content="https://propwire.vercel.app/og-image.png?v=2026_v171">',
+    '<meta name="twitter:image" content="https://propstein.com/propwire-logo.svg">',
+    '<meta name="twitter:image" content="https://propstein.com/og-image.png?v=2026_v171">',
 )
 html = html.replace(
-    '<meta property="og:image" content="https://propwire.vercel.app/propwire-logo.svg">',
-    '<meta property="og:image" content="https://propwire.vercel.app/og-image.png?v=2026_v171">',
+    '<meta property="og:image" content="https://propstein.com/propwire-logo.svg">',
+    '<meta property="og:image" content="https://propstein.com/og-image.png?v=2026_v171">',
 )
 
 # 4. busters

@@ -44,7 +44,7 @@ Built for edge detection, not hype: the model is probabilistic, walk-forward val
 
 The viewer frontend and precomputed slate data are deployed globally via Vercel:
 
-- **Live Production URL**: [propstein.vercel.app](https://propstein.vercel.app)
+- **Live Production URL**: [propstein.com](https://propstein.com)
 - **Vercel Project**: [`propstein`](https://vercel.com/nicks-projects-ec56abd4/propstein)
 - **Deployment root**: repository root (`.`). The root [`vercel.json`](vercel.json) publishes `viewer/`.
 - **Operational model**: static assets are versioned, service workers are fail-closed, and edge caching is tuned for speed and reliability.

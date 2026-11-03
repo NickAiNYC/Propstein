@@ -77,7 +77,7 @@ allowed_origins = [
     origin.strip()
     for origin in os.environ.get(
         "ALLOWED_ORIGINS",
-        "https://propstein.vercel.app,https://propwire.vercel.app,https://propwire-github.vercel.app,http://127.0.0.1:4180,http://localhost:4180",
+        "https://propstein.com,http://127.0.0.1:4180,http://localhost:4180",
     ).split(",")
     if origin.strip()
 ]
@@ -1680,7 +1680,7 @@ def _billing_safe_redirect(url: object) -> Optional[str]:
     if not isinstance(url, str) or not url.strip():
         return None
     candidate = url.strip()
-    base_origin = os.environ.get("APP_URL", "https://propstein.vercel.app").rstrip("/")
+    base_origin = os.environ.get("APP_URL", "https://propstein.com").rstrip("/")
     if candidate.startswith("/"):
         return base_origin + candidate
     if candidate == base_origin or candidate.startswith(base_origin + "/"):

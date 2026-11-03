@@ -131,7 +131,7 @@ def test_checkout_session_authenticated_returns_stripe_url(client, monkeypatch):
 
     # Foreign-origin redirect target discarded; relative path clamped to app origin.
     assert recorded["success_url"] is None
-    assert recorded["cancel_url"] == "https://propstein.vercel.app/?checkout=cancelled"
+    assert recorded["cancel_url"] == "https://propstein.com/?checkout=cancelled"
 
 
 def test_checkout_session_rate_limited_after_three_requests(client, monkeypatch):

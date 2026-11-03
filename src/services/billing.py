@@ -117,7 +117,7 @@ class BillingService:
         Creates a Stripe Checkout Session for $29/mo (or $290/yr).
         Falls back to a simulated session URL if STRIPE_SECRET_KEY is unset in development.
         """
-        base_url = os.environ.get("APP_URL", "https://propstein.vercel.app").rstrip("/")
+        base_url = os.environ.get("APP_URL", "https://propstein.com").rstrip("/")
         succ_url = success_url or f"{base_url}/?checkout=success&session_id={{CHECKOUT_SESSION_ID}}"
         canc_url = cancel_url or f"{base_url}/?checkout=cancelled"
 
@@ -172,7 +172,7 @@ class BillingService:
         customer_id: str,
         return_url: str | None = None,
     ) -> dict[str, Any]:
-        base_url = os.environ.get("APP_URL", "https://propstein.vercel.app").rstrip("/")
+        base_url = os.environ.get("APP_URL", "https://propstein.com").rstrip("/")
         ret_url = return_url or f"{base_url}/"
 
         if not self.stripe_secret_key:

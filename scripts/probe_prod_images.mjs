@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Live-prod image probe: loads https://propwire.vercel.app/ in a FRESH
+// Live-prod image probe: loads https://propstein.com/ in a FRESH
 // headless browser (real SW + real cache behavior) and reports:
 //   - every failed/4xx/5xx request (which images, why)
 //   - every <img> that is complete but naturalWidth===0 (broken)
@@ -10,7 +10,7 @@ import { mkdirSync } from 'fs';
 
 const SHOTS = '/home/z/my-project/download';
 mkdirSync(SHOTS, { recursive: true });
-const URLS = ['https://propwire.vercel.app/', 'https://propwire.vercel.app/ledger.html'];
+const URLS = ['https://propstein.com/', 'https://propstein.com/ledger.html'];
 
 const browser = await chromium.launch();
 
@@ -80,7 +80,7 @@ const ifailed = [];
 const i4xx = [];
 ip.on('requestfailed', (r) => ifailed.push(`${r.url()}  ::  ${r.failure()?.errorText}`));
 ip.on('response', (r) => { if (r.status() >= 400) i4xx.push(`${r.status()}  ${r.url()}`); });
-await ip.goto('https://propwire.vercel.app/', { waitUntil: 'networkidle', timeout: 45000 }).catch(() => {});
+await ip.goto('https://propstein.com/', { waitUntil: 'networkidle', timeout: 45000 }).catch(() => {});
 await ip.waitForTimeout(4000);
 const iimgs = await ip.evaluate(() => {
   const out = [];

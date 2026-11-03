@@ -121,7 +121,7 @@ const permissionsApi: PermissionsApi = {
 };
 
 const API_BASE_URL = (globalThis as { __PROPSTEIN_API_BASE__?: string }).__PROPSTEIN_API_BASE__
-  ?? "https://propstein.vercel.app";
+  ?? "https://propstein.com";
 
 // ---------------------------------------------------------------------------
 // Panel state broadcast
