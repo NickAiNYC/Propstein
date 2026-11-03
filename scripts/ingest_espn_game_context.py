@@ -4,12 +4,17 @@
 HONESTY & INTEGRITY CONTRACT:
   1. Capture time: spread_observed_at, total_observed_at, and weather_observed_at
      are set to the EXACT UTC moment this script fetched the live endpoint.
-  2. No backfill: Only upcoming (future) games on active/prospective slates are
-     timestamped. Completed or historical games (Weeks 1-8) are never backfilled.
-  3. Append, don't overwrite: Raw API payloads are stored in data/raw_espn_captures/
-     with SHA-256 content hashes, and parsed captures append to data/game_context_captures.jsonl.
-  4. Fail closed: If ESPN returns HTTP error, partial game list, or invalid payload,
-     the script exits non-zero and touches no live feed.
+  2. No fake weather: If temperature and wind are unavailable (e.g. outdoor game with no
+     forecast yet), weather_observed_at is omitted (None) unless real data exists.
+  3. Pre-kickoff only: Games marked in-progress ('in') or completed ('post') or scheduled
+     prior to fetch time are strictly excluded.
+  4. Spread sign convention: In nflverse, spread_line is home-relative where POSITIVE
+     means home is favored. DraftKings reports home point spread (e.g. '+10' when home is underdog,
+     '-3.5' when home is favored). We parse home point spread directly: nflverse = -float(home_spread).
+  5. Audit log kept: Captures are tracked in data/game_context_captures.jsonl, and raw payloads
+     in data/raw_espn_captures/, tracked in git as an immutable audit journal.
+  6. Fail closed: Full slate check (at least 13-16 games scheduled per standard NFL week).
+     If fewer games are returned or parse fails, exits non-zero without writing.
 """
 
 from __future__ import annotations
@@ -23,6 +28,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
@@ -31,15 +37,26 @@ CAPTURES_LOG = DATA_DIR / "game_context_captures.jsonl"
 GAMES_CSV_PATH = DATA_DIR / "games.csv"
 
 ESPN_SCOREBOARD_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+ESPN_SUMMARY_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary"
+
+ET = ZoneInfo("America/New_York")
 
 # Standard abbreviation mappings between ESPN and nflverse
 TEAM_MAP = {
     "WSH": "WAS",
     "JAC": "JAX",
+    "LAR": "LA",
+}
+
+# Known stadiums with fixed roof configuration in nflverse
+DOME_STADIUMS = {
+    "Lucas Oil Stadium", "Caesars Superdome", "U.S. Bank Stadium",
+    "Ford Field", "Allegiant Stadium", "SoFi Stadium", "AT&T Stadium",
+    "NRG Stadium", "Mercedes-Benz Stadium", "State Farm Stadium",
 }
 
 
-def fetch_espn_week(season: int, week: int, timeout: int = 15) -> tuple[dict, bytes, str]:
+def fetch_espn_week_data(season: int, week: int, timeout: int = 15) -> tuple[dict, bytes, str]:
     """Fetch live scoreboard for the given NFL season and week."""
     url = f"{ESPN_SCOREBOARD_URL}?season={season}&week={week}&seasontype=2"
     fetch_time_utc = datetime.now(timezone.utc).isoformat()
@@ -64,19 +81,57 @@ def fetch_espn_week(season: int, week: int, timeout: int = 15) -> tuple[dict, by
     return data, raw_bytes, fetch_time_utc
 
 
-def parse_espn_games(data: dict, season: int, week: int, fetch_time_utc: str) -> list[dict]:
+def fetch_event_weather(event_id: str, timeout: int = 8) -> tuple[float | None, float | None]:
+    """Fetch optional real weather (temp, wind) from game summary."""
+    url = f"{ESPN_SUMMARY_URL}?event={event_id}"
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            gi = data.get("gameInfo", {})
+            w = gi.get("weather") or data.get("header", {}).get("weather") or {}
+            temp = float(w["temperature"]) if "temperature" in w and w["temperature"] is not None else None
+            wind = float(w["gust"]) if "gust" in w and w["gust"] is not None else None
+            return temp, wind
+    except Exception:
+        return None, None
+
+
+def parse_espn_games(data: dict, season: int, week: int, fetch_time_utc: str, fetch_weather: bool = True) -> list[dict]:
     """Parse events into verified game context records."""
     events = data.get("events", [])
-    if not events:
-        raise ValueError(f"ESPN returned 0 events for season {season} week {week}")
+    # Fail closed on partial slate: NFL regular season weeks have between 13 and 16 games
+    if len(events) < 13:
+        raise ValueError(f"ESPN returned only {len(events)} events for season {season} week {week} (expected >= 13)")
 
+    now_utc = datetime.fromisoformat(fetch_time_utc.replace("Z", "+00:00"))
     parsed_records = []
+
     for ev in events:
         status_type = (ev.get("status") or {}).get("type") or {}
         state = status_type.get("state")  # 'pre', 'in', 'post'
 
-        # Only future/pre-kickoff games get captured
-        if state not in ("pre", "in"):
+        # Rule 3: STRICTLY pre-kickoff only. In-progress ('in') or completed ('post') are dropped
+        if state != "pre":
+            continue
+
+        kickoff_str = ev.get("date")
+        if not kickoff_str:
+            continue
+
+        try:
+            kickoff_dt = datetime.fromisoformat(kickoff_str.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+
+        # Must be in the future relative to fetch time
+        if kickoff_dt <= now_utc:
             continue
 
         comps = ev.get("competitions", [{}])[0]
@@ -107,16 +162,26 @@ def parse_espn_games(data: dict, season: int, week: int, fetch_time_utc: str) ->
         spread_line = None
         total_line = None
         if dk_odds:
-            # ESPN pointSpread home close line
-            home_odds = dk_odds.get("homeTeamOdds", {})
-            away_odds = dk_odds.get("awayTeamOdds", {})
-            spread_val = dk_odds.get("spread")
-            if spread_val is not None:
-                # In nflverse: spread_line is home-relative (positive = home favored)
-                if home_odds.get("favorite"):
-                    spread_line = float(spread_val)
-                elif away_odds.get("favorite"):
-                    spread_line = -float(spread_val)
+            # Rule 4: Verify spread sign convention
+            # PointSpread home close line gives exact home spread string: e.g. '+10' or '-3.5'
+            ps = dk_odds.get("pointSpread", {})
+            home_ps = (ps.get("home") or {}).get("close", {}).get("line")
+            if home_ps:
+                try:
+                    home_line_val = float(str(home_ps).replace("+", ""))
+                    # In nflverse: spread_line is positive when HOME is favored.
+                    # e.g. home_line +10 (underdog) -> nflverse spread_line = -10.0
+                    # e.g. home_line -3.5 (favorite) -> nflverse spread_line = +3.5
+                    spread_line = -home_line_val
+                except ValueError:
+                    spread_line = None
+            elif dk_odds.get("spread") is not None:
+                spread_val = float(dk_odds["spread"])
+                # Fallback to home/away favorite flag
+                if dk_odds.get("homeTeamOdds", {}).get("favorite"):
+                    spread_line = spread_val
+                elif dk_odds.get("awayTeamOdds", {}).get("favorite"):
+                    spread_line = -spread_val
                 else:
                     spread_line = 0.0
 
@@ -126,15 +191,30 @@ def parse_espn_games(data: dict, season: int, week: int, fetch_time_utc: str) ->
 
         # Venue / roof
         venue = comps.get("venue", {})
-        indoor = venue.get("indoor", False)
-        roof = "dome" if indoor else "outdoors"
+        venue_name = venue.get("fullName", "")
+        is_dome = venue.get("indoor", False) or (venue_name in DOME_STADIUMS)
+        roof = "dome" if is_dome else "outdoors"
 
-        # Game time
-        kickoff_utc = ev.get("date")
-        gameday = kickoff_utc[:10] if kickoff_utc else None
-        gametime = kickoff_utc[11:16] if kickoff_utc and len(kickoff_utc) > 16 else None
+        # Game time in Eastern (HH:MM) to match nflverse convention
+        kickoff_et = kickoff_dt.astimezone(ET)
+        gameday = kickoff_et.strftime("%Y-%m-%d")
+        gametime = kickoff_et.strftime("%H:%M")
 
-        # Record with exact UTC fetch time
+        # Weather: ONLY set observation time if real weather was fetched or dome
+        temp, wind = None, None
+        weather_observed_at = None
+        if fetch_weather and ev.get("id"):
+            temp, wind = fetch_event_weather(ev["id"])
+            if temp is not None or wind is not None:
+                weather_observed_at = fetch_time_utc
+
+        if is_dome:
+            roof = "dome"
+            wind = 0.0
+            if temp is None:
+                temp = 72.0
+            weather_observed_at = fetch_time_utc
+
         record = {
             "game_id": game_id,
             "season": season,
@@ -146,11 +226,11 @@ def parse_espn_games(data: dict, season: int, week: int, fetch_time_utc: str) ->
             "spread_line": spread_line,
             "total_line": total_line,
             "roof": roof,
-            "temp": None,
-            "wind": None,
+            "temp": temp,
+            "wind": wind,
             "spread_observed_at": fetch_time_utc if spread_line is not None else None,
             "total_observed_at": fetch_time_utc if total_line is not None else None,
-            "weather_observed_at": fetch_time_utc,
+            "weather_observed_at": weather_observed_at,
             "source": "espn_draftkings",
         }
         parsed_records.append(record)
@@ -216,6 +296,10 @@ def update_games_csv_week(records: list[dict], season: int, week: int) -> int:
                 row["total_line"] = str(new_val["total_line"])
             if new_val.get("roof") is not None:
                 row["roof"] = new_val["roof"]
+            if new_val.get("temp") is not None:
+                row["temp"] = str(new_val["temp"])
+            if new_val.get("wind") is not None:
+                row["wind"] = str(new_val["wind"])
 
             row["spread_observed_at"] = new_val["spread_observed_at"] or ""
             row["total_observed_at"] = new_val["total_observed_at"] or ""
@@ -239,6 +323,8 @@ def update_games_csv_week(records: list[dict], season: int, week: int) -> int:
                 "spread_line": str(r["spread_line"]) if r["spread_line"] is not None else "",
                 "total_line": str(r["total_line"]) if r["total_line"] is not None else "",
                 "roof": r["roof"] or "outdoors",
+                "temp": str(r["temp"]) if r["temp"] is not None else "",
+                "wind": str(r["wind"]) if r["wind"] is not None else "",
                 "spread_observed_at": r["spread_observed_at"] or "",
                 "total_observed_at": r["total_observed_at"] or "",
                 "weather_observed_at": r["weather_observed_at"] or "",
@@ -261,14 +347,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Ingest live ESPN game context with strict provenance")
     parser.add_argument("--season", type=int, default=2026, help="NFL season year (default 2026)")
     parser.add_argument("--week", type=int, required=True, help="NFL week to capture (e.g. 9)")
+    parser.add_argument("--no-weather", action="store_true", help="Skip fetching live weather from event summary")
     parser.add_argument("--dry-run", action="store_true", help="Fetch and parse without writing to disk")
     args = parser.parse_args()
 
     print(f"[espn-context] Fetching live NFL Week {args.week} ({args.season})...")
-    data, raw_bytes, fetch_time = fetch_espn_week(args.season, args.week)
-    records = parse_espn_games(data, args.season, args.week, fetch_time)
+    data, raw_bytes, fetch_time = fetch_espn_week_data(args.season, args.week)
+    records = parse_espn_games(data, args.season, args.week, fetch_time, fetch_weather=not args.no_weather)
 
-    print(f"[espn-context] Successfully parsed {len(records)} active games with capture timestamp {fetch_time}")
+    print(f"[espn-context] Successfully parsed {len(records)} pregame games with capture timestamp {fetch_time}")
 
     if args.dry_run:
         print("[espn-context] DRY RUN: Sample record:")

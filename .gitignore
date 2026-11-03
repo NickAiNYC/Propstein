@@ -1,9 +1,11 @@
 data/*.parquet
 data/games.csv
-data/raw_espn_captures/
+data/raw_espn_captures/*
+!data/raw_espn_captures/*.json
 *.jsonl
 !snapshots/*.jsonl
 !viewer/feeds/nba_model/*.jsonl
+!data/game_context_captures.jsonl
 __pycache__/
 .env
 
@@ -23,6 +25,7 @@ data/sniper_cooldowns.json
 data/*.db
 data/*.db-*
 .pytest_cache/
+.cache/
 artifacts/
 extensions/node_modules/
 extensions/dist/
