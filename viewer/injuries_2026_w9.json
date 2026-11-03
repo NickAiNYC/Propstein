@@ -1,0 +1,10 @@
+{
+  "as_of": "2026-11-03T17:17:29Z",
+  "slate_week": 9,
+  "season": 2026,
+  "total_active_injuries": 0,
+  "total_practice_entries": 0,
+  "source": "nflverse injuries_2026.parquet",
+  "impacted_beneficiaries": {},
+  "injuries": []
+}

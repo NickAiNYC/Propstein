@@ -1,10 +1,10 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-11-03T03:58:38Z",
+  "generated_at": "2026-11-03T17:17:21Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
-      "default_slate": "2026_w8",
+      "default_slate": "2026_w9",
       "slates": {
         "2026_w1": {
           "season": 2026,
@@ -41,15 +41,31 @@
         "2026_w8": {
           "season": 2026,
           "week": 8,
-          "shortLabel": "W8 Research",
-          "state": "Model refresh blocked: untimestamped game context",
+          "shortLabel": "W8 Audit",
+          "state": "Historical audit \u00b7 Oct 29-Nov 2",
           "slate": "slate_2026_w8.json",
           "games": "games_2026_w8.json",
-          "picks": null,
+          "picks": "current_picks_2026_w8.json",
           "livePicks": null,
-          "injuries": "injuries_2026_w8.json",
+          "injuries": null,
           "odds": null,
           "snapshots": "snapshots_2026_w8.json",
+          "historical": true,
+          "modelContextStatus": "AVAILABLE",
+          "actionLocked": false
+        },
+        "2026_w9": {
+          "season": 2026,
+          "week": 9,
+          "shortLabel": "W9 Research",
+          "state": "Model refresh blocked: untimestamped game context",
+          "slate": "slate_2026_w9.json",
+          "games": "games_2026_w9.json",
+          "picks": null,
+          "livePicks": null,
+          "injuries": "injuries_2026_w9.json",
+          "odds": null,
+          "snapshots": "snapshots_2026_w9.json",
           "historical": false,
           "modelContextStatus": "BLOCKED_UNTIMESTAMPED",
           "actionLocked": true
@@ -57,7 +73,7 @@
       }
     },
     "nba": {
-      "default_slate": "2026-11-02",
+      "default_slate": null,
       "slates": {
         "2026-10-22": {
           "season": 2026,
@@ -137,15 +153,15 @@
         "2026-11-02": {
           "season": 2026,
           "date": "2026-11-02",
-          "shortLabel": "Nov 2 Slate",
-          "state": "Slate \u00b7 2026-11-02",
+          "shortLabel": "Nov 2 Audit",
+          "state": "Historical audit \u00b7 2026-11-02",
           "slate": "nba_slate_2026-11-02.json",
           "games": "nba_games_2026-11-02.json",
           "picks": null,
           "injuries": "nba_injuries_2026-11-02.json",
           "odds": "nba_odds_2026-11-02.json",
           "snapshots": null,
-          "historical": false,
+          "historical": true,
           "timezone": "America/New_York",
           "marketOnly": true
         }

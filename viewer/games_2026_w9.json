@@ -1,0 +1,167 @@
+[
+  {
+    "game_id": "2026_09_JAX_BAL",
+    "gameday": "2026-11-05",
+    "gametime": "20:15",
+    "away_team": "JAX",
+    "home_team": "BAL",
+    "spread_line": -9.5,
+    "total_line": 41.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_CIN_ATL",
+    "gameday": "2026-11-08",
+    "gametime": "09:30",
+    "away_team": "CIN",
+    "home_team": "ATL",
+    "spread_line": -3.0,
+    "total_line": 52.5,
+    "roof": null,
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_CLE_NO",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "CLE",
+    "home_team": "NO",
+    "spread_line": 2.5,
+    "total_line": 43.5,
+    "roof": "dome",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_DAL_IND",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "DAL",
+    "home_team": "IND",
+    "spread_line": -6.0,
+    "total_line": 51.5,
+    "roof": null,
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_DEN_CAR",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "DEN",
+    "home_team": "CAR",
+    "spread_line": -2.5,
+    "total_line": 43.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_DET_MIA",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "DET",
+    "home_team": "MIA",
+    "spread_line": -7.0,
+    "total_line": 50.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_LA_WAS",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "LA",
+    "home_team": "WAS",
+    "spread_line": -5.5,
+    "total_line": 47.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_NYG_PHI",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "NYG",
+    "home_team": "PHI",
+    "spread_line": -3.5,
+    "total_line": 39.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_NYJ_KC",
+    "gameday": "2026-11-08",
+    "gametime": "13:00",
+    "away_team": "NYJ",
+    "home_team": "KC",
+    "spread_line": 9.5,
+    "total_line": 46.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_HOU_LAC",
+    "gameday": "2026-11-08",
+    "gametime": "16:05",
+    "away_team": "HOU",
+    "home_team": "LAC",
+    "spread_line": -4.5,
+    "total_line": 40.5,
+    "roof": "dome",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_LV_SF",
+    "gameday": "2026-11-08",
+    "gametime": "16:05",
+    "away_team": "LV",
+    "home_team": "SF",
+    "spread_line": 10.0,
+    "total_line": 51.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_ARI_SEA",
+    "gameday": "2026-11-08",
+    "gametime": "16:25",
+    "away_team": "ARI",
+    "home_team": "SEA",
+    "spread_line": 10.5,
+    "total_line": 42.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_GB_NE",
+    "gameday": "2026-11-08",
+    "gametime": "16:25",
+    "away_team": "GB",
+    "home_team": "NE",
+    "spread_line": 2.5,
+    "total_line": 46.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_TB_CHI",
+    "gameday": "2026-11-08",
+    "gametime": "20:20",
+    "away_team": "TB",
+    "home_team": "CHI",
+    "spread_line": 6.0,
+    "total_line": 46.5,
+    "roof": "outdoors",
+    "wind": null
+  },
+  {
+    "game_id": "2026_09_BUF_MIN",
+    "gameday": "2026-11-09",
+    "gametime": "20:15",
+    "away_team": "BUF",
+    "home_team": "MIN",
+    "spread_line": -3.5,
+    "total_line": 45.5,
+    "roof": "dome",
+    "wind": null
+  }
+]
