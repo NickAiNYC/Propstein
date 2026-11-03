@@ -3353,7 +3353,7 @@
       const game = state.games.find(g => g.game_id === q.game_id);
       const started = game?.tipoff_utc && Date.parse(game.tipoff_utc) <= Date.now();
       const oddsLabel = value => Number(value) > 0 ? `+${value}` : String(value);
-      // v221: the board is not text-only anymore — each observed line carries the
+      // v221: the browsed reference lines carry identity — each card renders the
       // player's headshot (avatarFor; initials fallback when no photo resolves)
       // with the team badge from the photo map, plus the matchup's two team
       // crests from the games file. Quotes ship team:null, so the badge source
@@ -3365,7 +3365,7 @@
         ? `<span class="nba-market-matchup" title="${esc(String(game.away_team))} @ ${esc(String(game.home_team))}">${teamCrest(game.away_team, 'sm')}<span class="nba-market-vs">@</span>${teamCrest(game.home_team, 'sm')}<span class="nba-market-vs">${esc(String(game.away_team))} @ ${esc(String(game.home_team))}</span></span>`
         : '<span class="nba-market-vs">NBA</span>';
       return `<article class="nba-market-quote">
-        <div><strong>${esc(q.player_name)}</strong><span>${esc(matchup)} · ${esc(q.book)}${started ? ' · GAME STARTED' : ''}</span></div>
+        <div class="nba-market-id">${avatar}<div class="nba-market-id-text"><strong>${esc(q.player_name)}</strong><span>${matchupMeta} · ${esc(q.book)}${started ? ' · GAME STARTED' : ''}</span></div></div>
         <div class="nba-market-sides"><span>Over ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span>Under ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
       </article>`;
     }).join('');
