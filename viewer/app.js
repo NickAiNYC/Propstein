@@ -3656,6 +3656,7 @@
             <p class="home-research-note">Research only · no current edge or stake is available.</p>
           </article>`).join('')
           : '<p class="home-edge-empty">Prices or news are unavailable. No model slate is loaded; no picks are being recommended.</p>';
+      syncBoardRowsToMode(activeBoardMode, BOARD_MODES[activeBoardMode]);
       return;
     }
     const title = $('#homeEdgeTitle');
