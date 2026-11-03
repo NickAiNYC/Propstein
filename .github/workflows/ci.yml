@@ -9,6 +9,28 @@ permissions:
   contents: read
 
 jobs:
+  production-deploy-contract:
+    name: Production v1 deploy contract (blocking)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Verify deployed static site and Vercel output
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          config = json.loads(Path('vercel.json').read_text())
+          if config.get('outputDirectory') != 'viewer':
+              raise SystemExit('Vercel must deploy viewer/ while v1 is the production site')
+          for name in ('index.html', 'app.js', 'style.css', 'sw.js',
+                       'performance/index.html', 'live_odds_feed.json'):
+              if not (Path('viewer') / name).is_file():
+                  raise SystemExit(f'Missing production v1 asset: viewer/{name}')
+          print('Production v1 deployment contract passed')
+          PY
+
   # Foundation freeze (Phase 1) + verification layer (Phase 2): the quant
   # decision contracts, the trust-spine engine, structured logging, and the
   # leakage suite run as their own BLOCKING job so the freeze stays visible
