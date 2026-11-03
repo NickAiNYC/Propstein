@@ -14,8 +14,11 @@
 import { db } from "../src/lib/db";
 import { computeEdge } from "../src/lib/ev";
 import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
-const SNAPSHOT_DIR = "/home/z/my-project/propstein-live-sniper/viewer";
+// v1 snapshot fixtures checked into the repo (worker/data/) — was an
+// absolute sandbox path into the removed viewer/ dir (audit fix 2026-11-03)
+const SNAPSHOT_DIR = join(process.cwd(), "worker/data");
 
 /* ── helpers ─────────────────────────────────────────────────────── */
 
@@ -412,14 +415,16 @@ async function main() {
       ev: +edge.ev.toFixed(2),
       kelly: +edge.kelly.toFixed(4),
       lean: edge.lean,
-      verified: q.evaluation?.status === "OBSERVED",
+      // upstream flag only — OBSERVED/receipt-matched is NOT verified (audit fix 2026-11-03)
+      verified: q.verified === true,
       observedAt: new Date(q.observed_at),
       rawPayload: { quoteId: q.quote_id, evaluation: q.evaluation },
     };
     await db.prop.upsert({ where: { id: propId }, create: { id: propId, ...data }, update: data });
     props++;
   }
-  console.log(`  ${props} props from live quotes (synthetic fixtures skipped)`);
+  const verifiedCount = await db.prop.count({ where: { verified: true } });
+  console.log(`  ${props} props from live quotes (synthetic fixtures skipped; verified: ${verifiedCount})`);
 
   /* 5. demo users */
   await db.user.create({

@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DemoBook — PropStein Synthetic Live Market Fixture</title>
+  <style>
+    :root {
+      --bg: #070708;
+      --surface: #0e1117;
+      --surface-2: #12161f;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #7dd3fc;
+      --positive: #10b981;
+      --warning: #f59e0b;
+      --danger: #f87171;
+      --mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.5 "IBM Plex Sans", system-ui, sans-serif;
+    }
+    .banner {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.18), rgba(245, 158, 11, 0.06));
+      border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--warning);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 10px 16px;
+      text-transform: uppercase;
+    }
+    header.site {
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      padding: 18px 20px;
+    }
+    header.site h1 { font-family: var(--mono); font-size: 18px; margin: 0; letter-spacing: 0.06em; }
+    header.site .tag {
+      border: 1px solid rgba(125, 211, 252, 0.4);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .game-bar {
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      padding: 10px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    .game-bar b { color: var(--text); font-weight: 600; }
+    .drive-chip {
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--positive);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .controls { padding: 14px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .controls button {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+    .controls button:hover { border-color: rgba(125, 211, 252, 0.5); }
+    .market-section { padding: 6px 20px 30px; }
+    .market-section h2 {
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 18px 0 10px;
+    }
+    .cards { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+    .card {
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr auto;
+      padding: 14px 16px;
+    }
+    .card .who { min-width: 0; }
+    .card .who .name { font-weight: 600; }
+    .card .who .mkt { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .card .who .meta { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-top: 6px; }
+    .price {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 20px;
+      font-weight: 700;
+      min-width: 74px;
+      text-align: right;
+    }
+    .price.up { color: var(--positive); }
+    .price.down { color: var(--danger); }
+    .price.suspended { color: var(--warning); font-size: 13px; letter-spacing: 0.05em; }
+    .card[data-ps-market-status="SUSPENDED"] { opacity: 0.55; }
+    .status-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; margin-top: 4px; text-align: right; }
+    .status-label.open { color: var(--positive); }
+    .status-label.suspended { color: var(--warning); }
+    footer { border-top: 1px solid var(--border); color: var(--muted); font-family: var(--mono); font-size: 11px; padding: 14px 20px; }
+  </style>
+</head>
+<body>
+  <div class="banner">⚠ SYNTHETIC FIXTURE — NOT A REAL SPORTSBOOK · DEMO DATA ONLY · NO WAGERS</div>
+  <header class="site">
+    <h1>DEMOBOOK</h1>
+    <span class="tag">LIVE SNIPER TEST SURFACE</span>
+  </header>
+  <div class="game-bar">
+    <span>NFL · <b>KC 17 — NE 10</b></span>
+    <span>Q3 · 4:12</span>
+    <span class="drive-chip" id="drive-chip">DRIVE d4 · KC BALL · 2ND &amp; 6 · KC 34</span>
+    <span id="feed-age">FEED AGE 0s</span>
+  </div>
+  <div class="controls">
+    <button id="btn-move">Simulate odds move (+160 → +115 on Kelce)</button>
+    <button id="btn-suspend">Suspend market (Kelce)</button>
+    <button id="btn-drive-end">End drive (d4 → d5)</button>
+    <button id="btn-reset">Reset fixture</button>
+  </div>
+  <main class="market-section">
+    <h2>Live Betting · Current Drive · Player to Record a Reception</h2>
+    <div id="board" data-propstein-demo="market-board"
+         data-ps-event-id="2026_09_NE_KC" data-ps-sport="football" data-ps-league="NFL"
+         data-ps-home-team="Kansas City" data-ps-away-team="New England" data-ps-drive-id="d4">
+      <div class="cards" id="cards">
+        <div class="card" data-ps-market-card data-ps-player-id="nfl_travis_kelce" data-ps-player-name="Travis Kelce"
+             data-ps-market-type="Player to Record a Reception" data-ps-market-label="Player to record a reception this drive"
+             data-ps-selection="YES" data-ps-american-odds="160" data-ps-market-status="OPEN">
+          <div class="who">
+            <div class="name">Travis Kelce</div>
+            <div class="mkt">Reception · current drive</div>
+            <div class="meta">TE · KC</div>
+          </div>
+          <div>
+            <div class="price" data-ps-odds-text="+160">+160</div>
+            <div class="status-label open">OPEN</div>
+          </div>
+        </div>
+        <div class="card" data-ps-market-card data-ps-player-id="nfl_rashee_rice" data-ps-player-name="Rashee Rice"
+             data-ps-market-type="Player to Record a Reception" data-ps-market-label="Player to record a reception this drive"
+             data-ps-selection="YES" data-ps-american-odds="105" data-ps-market-status="OPEN">
+          <div class="who">
+            <div class="name">Rashee Rice</div>
+            <div class="mkt">Reception · current drive</div>
+            <div class="meta">WR · KC</div>
+          </div>
+          <div>
+            <div class="price" data-ps-odds-text="+105">+105</div>
+            <div class="status-label open">OPEN</div>
+          </div>
+        </div>
+        <div class="card" data-ps-market-card data-ps-player-id="nfl_hunter_henry" data-ps-player-name="Hunter Henry"
+             data-ps-market-type="Player to Record a Reception" data-ps-market-label="Player to record a reception this drive"
+             data-ps-selection="YES" data-ps-american-odds="230" data-ps-market-status="OPEN">
+          <div class="who">
+            <div class="name">Hunter Henry</div>
+            <div class="mkt">Reception · current drive</div>
+            <div class="meta">TE · NE</div>
+          </div>
+          <div>
+            <div class="price" data-ps-odds-text="+230">+230</div>
+            <div class="status-label open">OPEN</div>
+          </div>
+        </div>
+        <div class="card" data-ps-market-card data-ps-player-id="nfl_juwan_johnson" data-ps-player-name="Juwan Johnson"
+             data-ps-market-type="Player to Record a Reception" data-ps-market-label="Player to record a reception this drive"
+             data-ps-selection="YES" data-ps-american-odds="290" data-ps-market-status="OPEN">
+          <div class="who">
+            <div class="name">Juwan Johnson</div>
+            <div class="mkt">Reception · current drive</div>
+            <div class="meta">TE · NE</div>
+          </div>
+          <div>
+            <div class="price" data-ps-odds-text="+290">+290</div>
+            <div class="status-label open">OPEN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    Fixture page for PropStein Live Sniper end-to-end tests. Serves structured
+    <code>data-ps-*</code> attributes for the DemoBook adapter. Odds on this page are
+    synthetic and are never sent anywhere as real quotes.
+  </footer>
+
+  <script>
+    // Fixture control logic — drives DOM mutations that the extension must react to.
+    (function () {
+      "use strict";
+      var FEED_START = Date.now();
+      var board = document.getElementById("board");
+
+      function card(playerId) {
+        return board.querySelector('[data-ps-player-id="' + playerId + '"]');
+      }
+      function publishSyntheticQuotes() {
+        // DemoBook's simulated source publishes a new receipt. Production
+        // adapters must obtain this timestamp from the book's own feed.
+        var sourceTimestamp = new Date().toISOString();
+        board.querySelectorAll("[data-ps-market-card]").forEach(function (el) {
+          el.setAttribute("data-ps-source-timestamp", sourceTimestamp);
+        });
+      }
+      function setOdds(el, odds) {
+        var price = el.querySelector(".price");
+        var old = parseInt(el.getAttribute("data-ps-american-odds"), 10);
+        el.setAttribute("data-ps-american-odds", String(odds));
+        price.textContent = (odds > 0 ? "+" : "") + odds;
+        price.className = "price " + (odds > old ? "up" : "down");
+        publishSyntheticQuotes();
+      }
+      function setStatus(el, status) {
+        el.setAttribute("data-ps-market-status", status);
+        var price = el.querySelector(".price");
+        var label = el.querySelector(".status-label");
+        if (status === "SUSPENDED") {
+          price.textContent = "SUSPENDED";
+          price.className = "price suspended";
+          label.textContent = "SUSPENDED";
+          label.className = "status-label suspended";
+        } else {
+          price.textContent = "+" + el.getAttribute("data-ps-american-odds");
+          price.className = "price";
+          label.textContent = "OPEN";
+          label.className = "status-label open";
+        }
+      }
+
+      document.getElementById("btn-move").addEventListener("click", function () {
+        var kelce = card("nfl_travis_kelce");
+        if (kelce) setOdds(kelce, 115);
+      });
+      document.getElementById("btn-suspend").addEventListener("click", function () {
+        var kelce = card("nfl_travis_kelce");
+        if (kelce) setStatus(kelce, "SUSPENDED");
+      });
+      document.getElementById("btn-drive-end").addEventListener("click", function () {
+        board.setAttribute("data-ps-drive-id", "d5");
+        document.getElementById("drive-chip").textContent = "DRIVE d5 · NE BALL · 1ST &amp; 10 · NE 25";
+        // A new drive replaces the market set: all current-drive cards are
+        // re-bound to the new drive id (the extension must invalidate d4 signals).
+        board.querySelectorAll("[data-ps-market-card]").forEach(function (el) {
+          el.setAttribute("data-ps-drive-id", "d5");
+        });
+      });
+      document.getElementById("btn-reset").addEventListener("click", function () {
+        location.reload();
+      });
+
+      publishSyntheticQuotes();
+      // The synthetic feed republishes its quotes every 2s. This is a demo
+      // receipt, not an assertion that a real sportsbook refreshes this fast.
+      setInterval(function () {
+        var age = Math.round((Date.now() - FEED_START) / 1000);
+        document.getElementById("feed-age").textContent = "FEED AGE " + age + "s";
+        publishSyntheticQuotes();
+        board.setAttribute("data-ps-feed-tick", String(Date.now()));
+      }, 2000);
+    })();
+  </script>
+</body>
+</html>

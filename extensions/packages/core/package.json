@@ -1,0 +1,11 @@
+{
+  "name": "@propstein/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared business logic: market types, odds math, normalization, matching, freshness, signal state machine, drive-reception baseline model.",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

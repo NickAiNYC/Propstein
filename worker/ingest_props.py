@@ -115,11 +115,15 @@ def main() -> int:
             "ev": edge["ev"],
             "kelly": edge["kelly"],
             "lean": edge["lean"],
-            "verified": (q.get("evaluation") or {}).get("status") == "OBSERVED",
+            "verified": bool(q.get("verified")),  # upstream flag only — OBSERVED ≠ verified (audit fix 2026-11-03)
             "observed_at": q.get("observed_at"),
             "raw_payload": jsonb({"quote_id": q.get("quote_id"), "evaluation": q.get("evaluation")}),
         })
-    print(f"  real quotes: {len(props)} (skipped {skipped} synthetic fixtures)")
+    verified_count = sum(1 for p in props if p["verified"])
+    print(
+        f"  real quotes: {len(props)} (skipped {skipped} synthetic fixtures) "
+        f"[verified: {verified_count} — receipt-matched/OBSERVED rows stay unverified]"
+    )
 
     if not props:
         print("FATAL: no usable quotes in snapshot", file=sys.stderr)

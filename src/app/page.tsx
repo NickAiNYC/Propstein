@@ -16,7 +16,7 @@ import { useGames, usePlayers, useProps, useTier } from "@/components/terminal/d
 export default function TerminalPage() {
   const [league, setLeague] = useState("NBA");
   const [search, setSearch] = useState("");
-  const { tier, setTier, pending } = useTier();
+  const { tier, setTier, pending, demoTier } = useTier();
 
   const games = useGames(league, tier);
   const players = usePlayers(league, search, tier);
@@ -43,15 +43,45 @@ export default function TerminalPage() {
 
   const slate = propsFeed.data?.slate ?? null;
 
+  // honest feed state — "live" only when a panel actually has data;
+  // empty database or a failed poll is shown as what it is
+  const gamesCount = games.data?.count ?? 0;
+  const propsCount = propsFeed.data?.count ?? 0;
+  const feedState: "live" | "connecting" | "empty" | "down" =
+    games.error || propsFeed.error
+      ? "down"
+      : gamesCount > 0 || propsCount > 0
+        ? "live"
+        : games.loading || propsFeed.loading
+          ? "connecting"
+          : "empty";
+
   return (
     <div className="flex min-h-screen bg-zinc-950 text-zinc-100">
-      <Sidebar league={league} onLeague={setLeague} tier={tier} onTier={setTier} pending={pending} />
+      <Sidebar league={league} onLeague={setLeague} tier={tier} onTier={setTier} pending={pending} demoTier={demoTier} />
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-12 shrink-0 items-center justify-between border-b border-zinc-800/80 bg-zinc-950/70 px-4 backdrop-blur">
           <div className="flex items-center gap-3 font-mono text-xs text-zinc-500">
-            <span className="flex items-center gap-1.5 text-emerald-400">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" /> feed live
-            </span>
+            {feedState === "live" && (
+              <span className="flex items-center gap-1.5 text-emerald-400">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" /> feed live
+              </span>
+            )}
+            {feedState === "connecting" && (
+              <span className="flex items-center gap-1.5 text-amber-400">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" /> connecting…
+              </span>
+            )}
+            {feedState === "empty" && (
+              <span className="flex items-center gap-1.5 text-zinc-500">
+                <span className="h-1.5 w-1.5 rounded-full bg-zinc-600" /> no feed yet — ingest has not run
+              </span>
+            )}
+            {feedState === "down" && (
+              <span className="flex items-center gap-1.5 text-red-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-red-500" /> feed unreachable
+              </span>
+            )}
             <span className="text-zinc-700">|</span>
             <span>slate {slate ?? "—"}</span>
             <span className="text-zinc-700">|</span>

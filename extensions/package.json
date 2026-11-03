@@ -1,0 +1,37 @@
+{
+  "name": "propstein-live-sniper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PropStein Live Sniper — visible-market intelligence browser companion. Intelligence only; never places wagers.",
+  "workspaces": [
+    "packages/core",
+    "packages/detection",
+    "packages/browser",
+    "packages/ui"
+  ],
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "node scripts/build.mjs",
+    "test:unit": "node --test \"tests/unit/*.test.ts\"",
+    "test:integration": "node --test \"tests/integration/*.test.ts\"",
+    "test:core": "node --test \"tests/unit/*.test.ts\" \"tests/integration/*.test.ts\"",
+    "test:e2e": "node tests/e2e/run-e2e.mjs",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "demo": "node demo/serve.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "esbuild": "^0.25.0",
+    "linkedom": "^0.18.11",
+    "playwright-core": "1.57.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.0"
+  }
+}

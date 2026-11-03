@@ -119,26 +119,43 @@ export function useProps(slate: string | null, tier: Tier) {
 
 export function useTier() {
   const [tier, setTierState] = useState<Tier>("free");
+  const [demoTier, setDemoTier] = useState(false);
   const [pending, setPending] = useState(false);
 
+  // authoritative state comes from the server: in production (demo off)
+  // it always resolves to free until real auth is wired
   useEffect(() => {
-    const m = document.cookie.match(/(?:^|;\s*)propstein_tier=([^;]+)/);
-    if (m?.[1] === "pro") setTierState("pro");
+    let alive = true;
+    fetch("/api/tier")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!alive || !d) return;
+        if (d.tier === "pro") setTierState("pro");
+        setDemoTier(Boolean(d.demoTier));
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
   }, []);
 
-  const setTier = useCallback(async (next: Tier) => {
-    setPending(true);
-    try {
-      await fetch("/api/tier", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tier: next }),
-      });
-      setTierState(next);
-    } finally {
-      setPending(false);
-    }
-  }, []);
+  const setTier = useCallback(
+    async (next: Tier) => {
+      if (!demoTier) return; // production: tier comes from auth, not a toggle
+      setPending(true);
+      try {
+        const res = await fetch("/api/tier", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tier: next }),
+        });
+        if (res.ok) setTierState(next);
+      } finally {
+        setPending(false);
+      }
+    },
+    [demoTier],
+  );
 
-  return { tier, setTier, pending };
+  return { tier, setTier, pending, demoTier };
 }

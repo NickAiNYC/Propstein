@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # Preserved from v1: the Propstein Live Sniper browser extension
+  # (extension/ + extensions/) survives the 2.0 migration untouched and
+  # keeps its own blocking checks.
+  extension:
+    name: Live Sniper extension (blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify runtime
+        run: node --version
+      - name: Install extension workspace dependencies
+        run: npm ci --prefix extensions --ignore-scripts
+      - name: Typecheck
+        run: npm run typecheck --prefix extensions
+      - name: Unit + integration tests
+        run: npm run test:core --prefix extensions
+
+  # New in 2.0: the Next.js terminal app. Prisma client generation goes
+  # through the postinstall hook (schema picked by DATABASE_URL protocol —
+  # unset here means the SQLite preview schema, which is all the build
+  # needs; no database is contacted during CI).
+  next-app:
+    name: Next.js terminal app (blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies (postinstall generates Prisma client)
+        run: bun install --frozen-lockfile
+      - name: Lint
+        run: bun run lint
+      - name: Production build
+        run: bun run build
+
+  # New in 2.0: the ingestion workers. The selftest is fully offline
+  # (no DATABASE_URL, no network) so it runs on every PR — the exit-code
+  # contract (0 ok / 2 config / 3 data / 5 upstream) is part of the spec.
+  worker:
+    name: Ingestion workers (blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install worker dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r worker/requirements.txt
+      - name: Offline selftest
+        run: python worker/selftest.py
+
+  # Preserved from v1: secret scanning (advisory, same posture as v1).
+  secret-scan:
+    name: Secret scanning (Gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true

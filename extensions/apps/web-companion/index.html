@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PropStein Live Sniper — Web Companion</title>
+  <meta name="description" content="Standalone research companion for PropStein Live Sniper. Intelligence only — never places wagers." />
+  <style>html, body { margin: 0; background: #070708; }</style>
+</head>
+<body>
+  <div id="panel-root-mount"></div>
+  <!--
+    The web companion is the cross-browser fallback surface (Safari, any
+    browser). Bundled identically to the side panel; when it runs inside the
+    extension it bridges to the background service worker, and when it runs
+    standalone it renders honest degraded states.
+  -->
+  <link rel="stylesheet" href="panel.css" />
+  <script type="module" src="panel.js"></script>
+</body>
+</html>

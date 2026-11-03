@@ -1,10 +1,11 @@
 "use client";
 
-// Sidebar — league nav, feed status, tier switch (sandbox preview of
-// the Supabase-authenticated Free/Pro gate).
+// Sidebar — league nav, feed status, tier switch. The toggle is a
+// preview-only demo of the Supabase-authenticated Free/Pro gate; in
+// production it is disabled and tier comes from the signed session.
 
 import { cn } from "@/lib/utils";
-import { Activity, Eye, EyeOff, Radio } from "lucide-react";
+import { Activity, Eye, EyeOff, Lock, Radio } from "lucide-react";
 import { Tier } from "./data-hooks";
 
 const LEAGUES = ["NBA", "NFL", "NHL"] as const;
@@ -15,12 +16,14 @@ export function Sidebar({
   tier,
   onTier,
   pending,
+  demoTier,
 }: {
   league: string;
   onLeague: (l: string) => void;
   tier: Tier;
   onTier: (t: Tier) => void;
   pending: boolean;
+  demoTier: boolean;
 }) {
   return (
     <aside className="hidden w-52 shrink-0 flex-col border-r border-zinc-800/80 bg-zinc-950/60 backdrop-blur md:flex" aria-label="terminal nav">
@@ -64,37 +67,49 @@ export function Sidebar({
 
         <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-2.5">
           <div className="mb-1.5 font-mono text-[9px] uppercase tracking-widest text-zinc-600">account tier</div>
-          <div className="flex gap-1">
-            <button
-              onClick={() => onTier("free")}
-              disabled={pending}
-              className={cn(
-                "flex-1 rounded-sm border px-2 py-1 font-mono text-[10px] transition-colors disabled:opacity-50",
-                tier === "free"
-                  ? "border-zinc-600 bg-zinc-800 text-zinc-200"
-                  : "border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-zinc-300",
-              )}
-            >
-              <EyeOff size={10} className="mr-1 inline" /> free
-            </button>
-            <button
-              onClick={() => onTier("pro")}
-              disabled={pending}
-              className={cn(
-                "flex-1 rounded-sm border px-2 py-1 font-mono text-[10px] transition-colors disabled:opacity-50",
-                tier === "pro"
-                  ? "border-emerald-700 bg-emerald-950/50 text-emerald-300"
-                  : "border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-emerald-400",
-              )}
-            >
-              <Eye size={10} className="mr-1 inline" /> pro
-            </button>
-          </div>
-          <div className="mt-1.5 font-mono text-[9px] leading-snug text-zinc-600">
-            {tier === "pro"
-              ? "supabase auth: session.user.isPro = true"
-              : "supabase auth: session.user.isPro = false"}
-          </div>
+          {demoTier ? (
+            <>
+              <div className="flex gap-1">
+                <button
+                  onClick={() => onTier("free")}
+                  disabled={pending}
+                  className={cn(
+                    "flex-1 rounded-sm border px-2 py-1 font-mono text-[10px] transition-colors disabled:opacity-50",
+                    tier === "free"
+                      ? "border-zinc-600 bg-zinc-800 text-zinc-200"
+                      : "border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-zinc-300",
+                  )}
+                >
+                  <EyeOff size={10} className="mr-1 inline" /> free
+                </button>
+                <button
+                  onClick={() => onTier("pro")}
+                  disabled={pending}
+                  className={cn(
+                    "flex-1 rounded-sm border px-2 py-1 font-mono text-[10px] transition-colors disabled:opacity-50",
+                    tier === "pro"
+                      ? "border-emerald-700 bg-emerald-950/50 text-emerald-300"
+                      : "border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-emerald-400",
+                  )}
+                >
+                  <Eye size={10} className="mr-1 inline" /> pro
+                </button>
+              </div>
+              <div className="mt-1.5 font-mono text-[9px] leading-snug text-zinc-600">
+                preview demo switch — prod tier resolves via auth
+              </div>
+            </>
+          ) : (
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400">
+                <Lock size={10} className="text-zinc-500" />
+                {tier === "pro" ? "pro (session claim)" : "free"}
+              </div>
+              <div className="font-mono text-[9px] leading-snug text-zinc-600">
+                pro is gated by sign-in — self-serve switching is off
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </aside>

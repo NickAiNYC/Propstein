@@ -32,9 +32,11 @@ response **omits** `probWin`, `fairOdds`, `ev`, `kelly`, `fairLine` and
 payloads, not the gate itself).
 
 Production wiring: Supabase Auth session → `user.isPro` (written by the
-Stripe billing webhook). Preview wiring: the `propstein_tier` cookie
-flipped by the sidebar toggle — default `free`, exactly what an anonymous
-visitor sees.
+Stripe billing webhook). **Until auth is configured, every production
+request resolves to free** — the sidebar tier toggle is a preview-only
+demo switch (`POST /api/tier` returns 403 in production unless
+`ALLOW_TIER_DEMO=1` is explicitly set for a staging deploy). A
+client-settable cookie never grants Pro.
 
 ## Player identity (the v2 fix)
 
@@ -63,14 +65,20 @@ worker/ingest_players.py        registry + ESPN summaries -> Player (merge)
 worker/ingest_props.py          snapshot quotes -> Prop (+ EV/Kelly)
 worker/upsert.py                chunked atomic upsert core (psycopg3)
 worker/ev.py                    odds/EV/Kelly math (mirrors src/lib/ev.ts)
-worker/selftest.py              offline sanity suite (11 tests)
+worker/selftest.py              offline sanity suite
 worker/data/                    v1 snapshot fixtures (live odds, picks)
+.github/workflows/ci.yml        CI: extension + next-app + worker (blocking)
 .github/workflows/ingest.yml    cron: games+players 15m, props hourly
 src/app/api/*                   games / players / props (tier-gated) / tier
 src/components/terminal/*       sidebar, ticker, panels, paywall UI
 scripts/seed.ts                 real-data seed for local preview
+extension/ + extensions/        Live Sniper browser extension (preserved from v1)
 research/                       preserved v1 quant research (untouched)
 ```
+
+CI runs on every PR: the extension's typecheck + unit/integration tests
+(`npm run test:core --prefix extensions`), the Next app's lint + production
+build, and the workers' offline selftest — no secrets, no database needed.
 
 ## Local preview
 
@@ -83,7 +91,8 @@ python worker/selftest.py      # offline math + fail-closed checks
 ```
 
 Flip Free ⇄ Pro with the sidebar toggle and watch `/api/props` strip vs
-serve the model columns.
+serve the model columns. (In production the toggle is disabled and the
+API returns 403 — tier comes from auth.)
 
 ## Deploy (Vercel + Supabase)
 
@@ -103,11 +112,20 @@ serve the model columns.
 
 ## Honesty notes
 
-- Prop rows carry `verified` + raw provenance in `rawPayload`; synthetic
-  demo fixtures in the snapshot are **skipped**, never ingested.
-- The model (Gaussian tail around the fair line, market-aware sigma) is an
-  estimate. EV/Kelly are model outputs, not betting advice.
+- `verified` mirrors the upstream feed's own `verified` flag — nothing
+  upstream means nothing here. In the bundled Week 8 snapshot that is
+  **0 verified, 9 receipt-matched (OBSERVED), 1 PASS**: receipt-matched
+  quotes are *not* verified and are stored as such, with the full
+  `evaluation` payload carried in `rawPayload` for inspection. Synthetic
+  demo fixtures are **skipped**, never ingested.
+- EV/Kelly are freshly computed model estimates over that static snapshot
+  (Gaussian tail around the fair line, market-aware sigma) — not live
+  book prices, and not betting advice.
 - Season stats start as "tracked-games averages" and converge as the cron
   accumulates box scores.
+- The header feed chip reflects actual data availability: `feed live`
+  only when panels have data; empty database shows "no feed yet", a
+  failed poll shows "feed unreachable".
 
-*v1 static site is preserved on branch `v1-static-archive` and tag `v1.0.0`.*
+*v1 static site is preserved on branch `v1-static-archive` and tag
+`v1.0.0`; `main` serves v1 until this branch is reviewed and merged.*

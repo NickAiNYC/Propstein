@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "PropStein Live Sniper",
+  "version": "0.1.0",
+  "description": "Visible-market intelligence for PropStein Pro subscribers. Research companion only — never places, submits, modifies, or confirms wagers.",
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [],
+  "optional_host_permissions": [
+    "https://propstein.vercel.app/*",
+    "https://sportsbook.draftkings.com/*",
+    "https://sportsbook.fanduel.com/*",
+    "https://polymarket.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "PropStein Live Sniper"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@propstein/browser",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-API isolation layer: capabilities, origin-validated messaging, per-site permission management.",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
