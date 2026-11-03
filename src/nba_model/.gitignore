@@ -1,0 +1,4 @@
+# runtime artifacts — never committed
+out/
+__pycache__/
+*.pyc
