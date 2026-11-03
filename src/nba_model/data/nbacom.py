@@ -33,11 +33,14 @@ from __future__ import annotations
 
 import gzip
 import json
+import shutil
+import subprocess
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 import zlib
+from pathlib import Path
 from typing import Callable, Iterable
 
 from .providers import ProviderNetworkError, RateLimitError, parse_minutes
@@ -59,6 +62,8 @@ NBA_COM_HEADERS = {
     "Referer": "https://www.nba.com/",
     "Origin": "https://www.nba.com",
     "Connection": "keep-alive",
+    "x-nba-stats-origin": "stats",
+    "x-nba-stats-token": "true",
 }
 
 
@@ -120,6 +125,29 @@ class NbaComProvider:
     # ── transport ───────────────────────────────────────────────────────────
     @staticmethod
     def _default_transport(url: str) -> tuple[int, dict]:
+        # Node transport provides HTTP/2 + modern browser TLS negotiation to satisfy
+        # Akamai Bot Manager (DECISIONS.md D7). Falls back to urllib if node is absent.
+        node_bin = shutil.which("node")
+        script = Path(__file__).resolve().parents[3] / "scripts" / "fetch_nbacom_endpoint.mjs"
+        if node_bin and script.exists():
+            try:
+                proc = subprocess.run(
+                    [node_bin, str(script), url],
+                    capture_output=True,
+                    text=True,
+                    timeout=35,
+                )
+                if proc.returncode == 0 and proc.stdout.strip():
+                    data = json.loads(proc.stdout)
+                    status = data.get("status", 500)
+                    if status == 429:
+                        return 429, {}
+                    if status >= 400:
+                        return status, {}
+                    return status, data.get("body", {})
+            except Exception as exc:
+                raise ProviderNetworkError(f"node transport error: {exc}") from exc
+
         req = urllib.request.Request(url, headers=NBA_COM_HEADERS)
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
