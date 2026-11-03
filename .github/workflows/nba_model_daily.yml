@@ -46,13 +46,28 @@ jobs:
           # 2026-11-03: stats.nba.com blackholes cloud hosts incl. Actions
           # runners; cdn.nba.com Akamai-403s them — DECISIONS.md D7). Probe
           # cheaply: one offseason-day call, zero box-score follow-ups.
-          RESULT=$(PYTHONPATH=src python3 - <<'PY'
-          from nba_model.data.nbacom import NbaComProvider
-          from nba_model.data.providers import ProviderNetworkError, RateLimitError
+          # Stdlib-only ON PURPOSE: the runner's bare python has no
+          # pandas/numpy (importing nba_model pulls them) and the probe must
+          # not need the pip-install step. Headers mirror nbacom.NBA_COM_HEADERS.
+          RESULT=$(python3 - <<'PY'
+          import urllib.request
+          URL = ("https://stats.nba.com/stats/leaguegamefinder"
+                 "?LeagueID=00&SeasonType=Regular%20Season&PlayerOrTeam=T"
+                 "&DateFrom=07/01/2026&DateTo=07/01/2026")
+          HEADERS = {
+              "User-Agent": (
+                  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"),
+              "Accept": "application/json, text/plain, */*",
+              "Referer": "https://www.nba.com/",
+              "Origin": "https://www.nba.com",
+          }
           try:
-              NbaComProvider().fetch_range(["2026-07-01"])  # offseason: 1 call, 0 games
+              with urllib.request.urlopen(
+                      urllib.request.Request(URL, headers=HEADERS), timeout=12) as resp:
+                  resp.read(1024)
               print("ok")
-          except (ProviderNetworkError, RateLimitError):
+          except Exception:
               print("blocked")
           PY
           )
