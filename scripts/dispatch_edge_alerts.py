@@ -19,8 +19,8 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-CACHE_DIR = Path(__file__).resolve().parent.parent / "data"
-SENT_LOG_PATH = CACHE_DIR / ".sent_alerts.json"
+CACHE_DIR = Path(__file__).resolve().parent.parent / ".cache"
+SENT_LOG_PATH = CACHE_DIR / "sent_edge_alerts.json"
 VIEWER_DIR = Path(__file__).resolve().parent.parent / "viewer"
 
 DFS_HURDLES = {
@@ -54,20 +54,25 @@ def american_to_implied(american: float | int) -> float:
         return 0.5
 
 
-def collect_active_edges(min_edge_pct: float = 5.0) -> list[dict]:
+def collect_active_edges(min_edge_pct: float = 5.0, allow_unverified: bool = False, picks_path: Path | None = None) -> list[dict]:
     """Inspects viewer/live_odds_feed.json, current_picks.json, and snapshots for high-conviction plays."""
     edges: list[dict] = []
 
     # 1. Ingest live picks if present
-    picks_files = sorted(VIEWER_DIR.glob("current_picks*.json"), reverse=True)
-    live_picks_files = sorted(VIEWER_DIR.glob("live_picks*.json"), reverse=True)
+    if picks_path and picks_path.is_file():
+        target_files = [picks_path]
+    else:
+        picks_files = sorted(VIEWER_DIR.glob("current_picks*.json"), reverse=True)
+        live_picks_files = sorted(VIEWER_DIR.glob("live_picks*.json"), reverse=True)
+        target_files = live_picks_files + picks_files
 
-    target_files = live_picks_files + picks_files
     for tf in target_files:
         try:
             data = json.loads(tf.read_text(encoding="utf-8"))
             picks = data.get("picks", [])
             for p in picks:
+                if not allow_unverified and p.get("verified") is False:
+                    continue
                 player = p.get("player") or p.get("player_name")
                 market = p.get("market", "points")
                 line = p.get("line") or p.get("fair_line_rec") or p.get("fair_line_yards")
@@ -215,20 +220,23 @@ def run_selftest() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="PropStein Edge Alert Dispatcher")
+    parser.add_argument("--input", type=str, default=None, help="Input picks file path")
+    parser.add_argument("--min-ev", "--threshold", dest="threshold", type=float, default=5.0, help="Minimum EV/DFS edge percent hurdle")
+    parser.add_argument("--allow-unverified", action="store_true", help="Allow unverified lines")
     parser.add_argument("--dry-run", action="store_true", help="Print payloads without firing webhooks")
     parser.add_argument("--selftest", action="store_true", help="Execute built-in test suite and exit")
-    parser.add_argument("--threshold", type=float, default=5.0, help="Minimum EV/DFS edge percent hurdle")
     args = parser.parse_args()
 
     if args.selftest:
         run_selftest()
         return
 
-    discord_url = os.environ.get("DISCORD_EDGE_WEBHOOK")
+    discord_url = os.environ.get("DISCORD_WEBHOOK_URL") or os.environ.get("DISCORD_EDGE_WEBHOOK")
     tg_token = os.environ.get("TELEGRAM_BOT_TOKEN")
     tg_chat = os.environ.get("TELEGRAM_CHAT_ID")
 
-    edges = collect_active_edges(min_edge_pct=args.threshold)
+    picks_path = Path(args.input) if args.input else None
+    edges = collect_active_edges(min_edge_pct=args.threshold, allow_unverified=args.allow_unverified, picks_path=picks_path)
     sent_log = load_sent_alerts()
 
     new_dispatches = 0
