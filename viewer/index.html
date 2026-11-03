@@ -111,7 +111,7 @@
 
         <!-- Slate Selector (Desktop) -->
         <select id="slateSelector" class="pw-select pw-select-slate pw-desktop-only" aria-label="Select Slate">
-          <option value="2026_w7">W7 Unverified</option>
+          <option value="2026_w7">NFL Board · Research Mode</option>
           <option value="2026_w1">W1 Audit</option>
         </select>
 
@@ -151,9 +151,9 @@
         </div>
 
         <!-- Receipt Status Pill (Desktop only) -->
-        <div class="pw-receipt-badge pw-desktop-only" title="All 64 quotes verified via SHA-256 content receipt">
+        <div class="pw-receipt-badge pw-desktop-only" title="SHA-256 content receipt gate active · Unverified quotes fail closed">
           <span class="pw-receipt-dot"></span>
-          <span id="marketState">Receipts active</span>
+          <span id="marketState" title="SHA-256 content receipt gate active · Unverified quotes fail closed">Receipts active</span>
         </div>
 
         <!-- Programmable Market Alerts Sniper (Desktop) -->
@@ -301,7 +301,10 @@
       <div id="marketStateBanner" class="market-state-banner" hidden></div>
       <div class="home-edge-heading">
         <div><p class="today-schedule-eyebrow">PLAYER PROP BOARD</p><h2 id="homeEdgeTitle">Loading player research</h2></div>
-        <button type="button" id="homeEdgeOpenBoard">View player board <span aria-hidden="true">↗</span></button>
+        <div class="home-edge-actions">
+          <button type="button" id="howMathWorksBtn" class="how-math-works-btn" title="How the quantitative model works">How the Math Works ⓘ</button>
+          <button type="button" id="homeEdgeOpenBoard">View player board <span aria-hidden="true">↗</span></button>
+        </div>
       </div>
       <div id="dfsModeSelector" class="dfs-mode-selector" role="group" aria-label="DFS and Edge Mode Selector">
         <button type="button" class="dfs-mode-btn active" data-preset="SPORTSBOOK_EV">Sportsbook +EV</button>
@@ -406,8 +409,8 @@
           <div class="telemetry-health-box">
             <div class="telemetry-health-status">
               <span class="health-dot"></span>
-              <span class="health-title" id="ribbonHealthTitle">ODDS STALE</span>
-              <span class="health-age" id="ribbonHealthAge">· 7d ago</span>
+              <span class="health-title" id="ribbonHealthTitle">PRE-MARKET</span>
+              <span class="health-age" id="ribbonHealthAge">· Sync Standby</span>
             </div>
             <button type="button" class="telemetry-refresh-btn" id="ribbonRefreshBtn" title="Probe live sportsbook feeds (DraftKings, FanDuel)" aria-label="Refresh feed">↻</button>
           </div>
@@ -859,14 +862,6 @@
       <span>Audit</span>
     </button>
   </nav>
-
-  <!-- Institutional Disclaimer & Responsible Gaming Footer -->
-  <footer class="pw-institutional-footer" role="contentinfo">
-    <div class="pw-footer-inner">
-      <p class="pw-legal-notice"><strong>Statistical Research Only:</strong> PropStein provides quantitative distribution modeling and closing line value (CLV) research for NFL and NBA player propositions. It is not financial advice and does not accept or place bets. Past calibration or CLV performance does not guarantee future outcomes.</p>
-      <p class="pw-rg-notice"><strong>Responsible Gaming:</strong> If you or someone you know has a gambling problem, help is available. Call 1-800-GAMBLER (1-800-426-2537) or visit <a href="https://www.ncpgambling.org" target="_blank" rel="noopener noreferrer">ncpgambling.org</a>. 21+ only.</p>
-    </div>
-  </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 </body>
