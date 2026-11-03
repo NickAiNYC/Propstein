@@ -1,11 +1,11 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v215-daily-top-eight';
+const CACHE_NAME = 'propstein-v221-nba-identity';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v215',
-  '/app.js?v=2026_v215',
+  '/style.css?v=2026_v221',
+  '/app.js?v=2026_v221',
   '/js/quant-math.js?v=2026_v215',
   '/js/today-schedule.js?v=2026_v207',
   '/js/sports/ufc.js?v=2026_v200',
@@ -23,7 +23,7 @@ const STATIC_ASSETS = [
   '/verify-landing.js?v=2026_v179',
   '/js/sports/registry.js?v=2026_v179',
   '/js/sports/nfl.js?v=2026_v179',
-  '/js/sports/nba.js?v=2026_v179',
+  '/js/sports/nba.js?v=2026_v221',
   // brand marks: PropStein lighter ice-blue logo suite
   '/propstein-logo.png',
   '/propstein-logo.png?v=2026_v179',

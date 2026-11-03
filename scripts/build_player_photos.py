@@ -63,6 +63,57 @@ ALIAS_FIRST = {
 _DROP_RE = re.compile(r"[.,'’]")   # removed outright: A.J.==AJ, De'Vonta==DeVonta (ESPN style)
 _SPACE_RE = re.compile(r"[-]")      # hyphenated surnames -> space-separated
 
+# v221 — ESPN search `subtitle` carries the player's current team as a display
+# name ("Brooklyn Nets", "LA Clippers"). Mapped to the app's team codes so the
+# avatar badge can ride the photo entry when a data source ships team:null
+# (The Odds API quotes do exactly that). Slate rows keep working as fallback
+# hints for already-resolved players (no network needed to backfill).
+TEAM_BY_NAME = {
+    # ── NBA (30) ──
+    "atlanta hawks": "ATL", "boston celtics": "BOS", "brooklyn nets": "BKN",
+    "charlotte hornets": "CHA", "chicago bulls": "CHI", "cleveland cavaliers": "CLE",
+    "dallas mavericks": "DAL", "denver nuggets": "DEN", "detroit pistons": "DET",
+    "golden state warriors": "GSW", "houston rockets": "HOU", "indiana pacers": "IND",
+    "la clippers": "LAC", "los angeles clippers": "LAC",
+    "los angeles lakers": "LAL", "la lakers": "LAL",
+    "memphis grizzlies": "MEM", "miami heat": "MIA", "milwaukee bucks": "MIL",
+    "minnesota timberwolves": "MIN", "new orleans pelicans": "NOP", "new york knicks": "NYK",
+    "oklahoma city thunder": "OKC", "orlando magic": "ORL", "philadelphia 76ers": "PHI",
+    "phoenix suns": "PHX", "portland trail blazers": "POR", "sacramento kings": "SAC",
+    "san antonio spurs": "SAS", "toronto raptors": "TOR", "utah jazz": "UTA",
+    "washington wizards": "WAS",
+    # ── NFL (32) ──
+    "arizona cardinals": "ARI", "atlanta falcons": "ATL", "baltimore ravens": "BAL",
+    "buffalo bills": "BUF", "carolina panthers": "CAR", "cincinnati bengals": "CIN",
+    "cleveland browns": "CLE", "dallas cowboys": "DAL", "denver broncos": "DEN",
+    "detroit lions": "DET", "green bay packers": "GB", "houston texans": "HOU",
+    "indianapolis colts": "IND", "jacksonville jaguars": "JAX", "kansas city chiefs": "KC",
+    "las vegas raiders": "LV", "los angeles chargers": "LAC", "los angeles rams": "LAR",
+    "miami dolphins": "MIA", "minnesota vikings": "MIN", "new england patriots": "NE",
+    "new orleans saints": "NO", "new york giants": "NYG", "new york jets": "NYJ",
+    "philadelphia eagles": "PHI", "pittsburgh steelers": "PIT", "san francisco 49ers": "SF",
+    "seattle seahawks": "SEA", "tampa bay buccaneers": "TB", "tennessee titans": "TEN",
+    "washington commanders": "WAS", "washington football team": "WAS",
+}
+
+
+def team_code_of(hit: dict) -> str:
+    """Team code from an ESPN search hit's subtitle; '' when unmapped.
+
+    Subtitles observed in the wild are clean team display names
+    ("Brooklyn Nets"). Tolerates decorations by matching on the longest
+    known team name that prefixes the subtitle.
+    """
+    raw = str(hit.get("subtitle") or "").strip().lower()
+    if not raw:
+        return ""
+    if raw in TEAM_BY_NAME:
+        return TEAM_BY_NAME[raw]
+    for name, code in sorted(TEAM_BY_NAME.items(), key=lambda kv: -len(kv[0])):
+        if raw.startswith(name + " ") or raw.startswith(name + "·") or raw.startswith(name):
+            return code
+    return ""
+
 
 def normalize_name(value: str) -> str:
     """Mirror of viewer/app.js normalizePlayerName — keep the two in lockstep."""
@@ -85,7 +136,10 @@ def load_existing() -> dict:
 
 
 def collect_players() -> dict:
-    """normalized name -> {player_id, name, league} across all viewer slates."""
+    """normalized name -> {player_id, name, league} across all viewer slates
+    and NBA odds feeds (v221: The Odds API market-only slates have empty slate
+    files — their player roster lives in the nba_odds_*.json quote lists, so
+    those names must be collected too or they never resolve a headshot)."""
     players: dict[str, dict] = {}
     if not VIEWER.exists():
         return players
@@ -120,7 +174,50 @@ def collect_players() -> dict:
             if key not in players or (pid and not players[key]["player_id"]):
                 players[key] = entry
 
+    # v221: market-only slates carry their roster in the odds feed quotes.
+    # player_id there is a stable provider id ("odds-nba-<slug>"); when a name
+    # already resolved via a fixture slate the fixture entry wins (same photo,
+    # same name match path).
+    for path in sorted(VIEWER.glob("nba_odds_*.json")):
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        quotes = doc.get("quotes") if isinstance(doc, dict) else None
+        for row in quotes if isinstance(quotes, list) else []:
+            name = str(row.get("player_name") or "").strip()
+            pid = str(row.get("player_id") or "").strip()
+            if not name:
+                continue
+            entry = {"player_id": pid, "name": name, "league": "nba"}
+            key = normalize_name(name)
+            if key not in players or (pid and not players[key]["player_id"]):
+                players[key] = entry
+
     return players
+
+
+def collect_team_hints() -> dict:
+    """normalized name -> team code from slate rows (no network).
+
+    Fixture/audit slates carry a team code per row; used to backfill the team
+    field of already-resolved photo entries without touching ESPN again.
+    """
+    hints: dict[str, str] = {}
+    if not VIEWER.exists():
+        return hints
+    for glob_pat in ("slate_2026_w*.json", "nba_slate_*.json"):
+        for path in sorted(VIEWER.glob(glob_pat)):
+            try:
+                rows = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                continue
+            for row in rows if isinstance(rows, list) else []:
+                name = str(row.get("player_display_name") or "").strip()
+                team = str(row.get("team") or "").strip().upper()
+                if name and team:
+                    hints.setdefault(normalize_name(name), team)
+    return hints
 
 
 def _http_json(url: str) -> dict | None:
@@ -155,6 +252,11 @@ def espn_search_variants(display_name: str) -> list[str]:
         alias_list = ALIAS_FIRST.get(tokens[0].lower(), [])
         for alias in alias_list:
             queries.append(" ".join([alias] + tokens[1:]))
+    # v221: ESPN search can return NOTHING for suffixed names ("Paul Reed Jr"
+    # -> 0 results) while the bare name resolves. Try the suffix-stripped form.
+    stripped = " ".join(t for t in tokens if t.lower() not in SUFFIXES)
+    if stripped and stripped != display_name:
+        queries.append(stripped)
     return queries
 
 
@@ -264,6 +366,7 @@ def refresh(limit: int | None = None, force: bool = False, quiet: bool = False) 
     by_name: dict = existing.get("by_name", {})
 
     players = collect_players()
+    team_hints = collect_team_hints()
     todo = [
         (key, meta) for key, meta in sorted(players.items())
         if force or not (meta["player_id"] and meta["player_id"] in photos)
@@ -288,7 +391,16 @@ def refresh(limit: int | None = None, force: bool = False, quiet: bool = False) 
         url = headshot_of(best) if best else ""
         if url and verify_url(url):
             pid = meta["player_id"] or f"name:{key}"
-            photos[pid] = {"url": url, "name": meta["name"], "league": meta["league"]}
+            # v221: team code rides the entry (ESPN subtitle first, slate hint
+            # as fallback) so avatarFor can badge market-only rows whose
+            # quotes ship team:null.
+            team = team_code_of(best) if best else ""
+            if not team:
+                team = team_hints.get(key, "")
+            entry_payload = {"url": url, "name": meta["name"], "league": meta["league"]}
+            if team:
+                entry_payload["team"] = team
+            photos[pid] = entry_payload
             by_name[key] = pid
             resolved += 1
             new += 1
@@ -298,6 +410,18 @@ def refresh(limit: int | None = None, force: bool = False, quiet: bool = False) 
             unresolved_names.append(meta["name"])
         if not quiet and i % 50 == 0:
             print(f"[photos] {i}/{len(todo)} scanned, {new} new", flush=True)
+
+    # v221: backfill team codes on already-resolved entries (slate hints only —
+    # no extra network; missing hints leave the entry unchanged).
+    backfilled = 0
+    for key, pid in by_name.items():
+        entry = photos.get(pid)
+        if not isinstance(entry, dict) or entry.get("team"):
+            continue
+        hint = team_hints.get(key, "")
+        if hint:
+            entry["team"] = hint
+            backfilled += 1
 
     # Drop by_name keys whose photo vanished (keeps map self-consistent).
     by_name = {k: pid for k, pid in by_name.items() if pid in photos}
@@ -322,6 +446,7 @@ def refresh(limit: int | None = None, force: bool = False, quiet: bool = False) 
         "new": new,
         "unresolved": failed,
         "kept": len(photos) - new,
+        "teams_backfilled": backfilled,
         "unresolved_names": unresolved_names,
     }
 
@@ -373,11 +498,28 @@ def selftest() -> int:
     assert headshot_of({"image": {"default": " x "}}) == "x"
     assert headshot_of({}) == ""
 
+    # v221: team code parsing from ESPN subtitle.
+    assert team_code_of({"subtitle": "Brooklyn Nets"}) == "BKN", team_code_of({"subtitle": "Brooklyn Nets"})
+    assert team_code_of({"subtitle": "LA Clippers"}) == "LAC"
+    assert team_code_of({"subtitle": "Philadelphia 76ers"}) == "PHI"
+    assert team_code_of({"subtitle": "Philadelphia Eagles"}) == "PHI"
+    assert team_code_of({"subtitle": ""}) == ""
+    assert team_code_of({"subtitle": "Some College Team"}) == ""
+
     players = collect_players()
     assert players, "collect_players found zero players in viewer slates"
     assert all(m["league"] in ("nfl", "nba") for m in players.values())
+    # v221: the odds feed roster must be collected too — market-only slates
+    # have empty slate files, so without this scan their players never resolve.
+    odds_only = [m for m in players.values() if str(m["player_id"]).startswith("odds-nba-")]
+    assert odds_only, "collect_players missed the nba_odds_*.json quote roster"
 
-    print(f"build_player_photos selftest: ALL PASS ({len(players)} players in slates)")
+    hints = collect_team_hints()
+    assert hints, "collect_team_hints found zero slate team hints"
+    assert all(isinstance(v, str) and v.isupper() and len(v) <= 4 for v in hints.values())
+
+    print(f"build_player_photos selftest: ALL PASS ({len(players)} players in slates+feeds, "
+          f"{len(odds_only)} odds-feed ids, {len(hints)} team hints)")
     return 0
 
 
@@ -396,7 +538,8 @@ def main() -> int:
         limit = int(args[args.index("--limit") + 1])
     stats = refresh(limit=limit, force=force, quiet=quiet)
     print(f"[photos] players={stats['total_players']} scanned={stats['scanned']} "
-          f"new={stats['new']} kept={stats['kept']} unresolved={stats['unresolved']}")
+          f"new={stats['new']} kept={stats['kept']} unresolved={stats['unresolved']} "
+          f"teams_backfilled={stats.get('teams_backfilled', 0)}")
     if stats.get("unresolved_names"):
         print(f"[photos] unresolved: {', '.join(stats['unresolved_names'][:12])}")
     print(f"[photos] wrote {OUT_PATH.relative_to(ROOT)}")
