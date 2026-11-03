@@ -23,6 +23,15 @@ test('fetch_nba.py --selftest: ET date keying (DST) + normalization + provenance
   assert.match(stdout, /DST/);
 });
 
+test('fetch_nba.py --selftest: stats tier-gate classification (401 unified gateway, 402/403 legacy)', () => {
+  // The unified balldontlie gateway answers 401 for plan-gated /v1/stats
+  // (verified live 2026-11-03 with a games-valid key). The script must
+  // classify that as a tier block (exit 3), not a network error (exit 5).
+  const stdout = execFileSync('python3', [SCRIPT, '--selftest'], { encoding: 'utf8' });
+  assert.match(stdout, /tier-gate/);
+  assert.match(stdout, /401\/402\/403/);
+});
+
 test('fetch_nba.py without BALLDONTLIE_API_KEY: exits 2, writes nothing, names the gate', () => {
   const result = spawnSync('python3', [SCRIPT], {
     encoding: 'utf8',

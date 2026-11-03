@@ -14,7 +14,10 @@ BEHAVIOUR:
     (every row carries _fixture: true) until real feeds are committed.
   • With a key: fetches teams + games for --date (free tier), then box
     scores (/v1/stats) — on a tier without stats access the API answers
-    402/403 and the script exits 3 with the exact tier requirement.
+    402/403 (legacy gateway) or 401 (unified gateway, verified live
+    2026-11-03: "Unauthorized - ... your account tier does not have
+    access to the endpoint") and the script exits 3 with the exact tier
+    requirement.
   • Rate limit: hard-capped at 5 req/min (13s sleep between calls);
     429 responses honour Retry-After.
   • Output files are provenance-stamped: _fixture: false, schema_version
@@ -94,6 +97,20 @@ def normalize_game(game):
         "_fixture": False,
         "source": "balldontlie",
     }
+
+
+def stats_error_is_tier_block(code):
+    """True when balldontlie's gateway blocks /v1/stats for the account tier.
+
+    Live behavior (verified 2026-11-03 against api.balldontlie.io/v1): the
+    unified gateway answers HTTP 401 "Unauthorized - You either need an API
+    key or your account tier does not have access to the endpoint" for
+    plan-gated endpoints; 402/403 are the older tier codes. A 401 at the
+    stats stage cannot mean a bad key — the same key authenticated the
+    /v1/games call moments earlier (a bad key exits 2 there) — so it is a
+    tier block, and must be reported as exit 3, not a network error.
+    """
+    return code in (401, 402, 403)
 
 
 def normalize_boxscore_row(stat):
@@ -178,12 +195,12 @@ def fetch_day(date_str, api_key, sleep_between=REQUEST_SPACING_SECONDS):
         )
         if err is not None:
             code = getattr(err, "code", None)
-            if code in (402, 403):
+            if stats_error_is_tier_block(code):
                 tier_block = {
                     "exit": 3,
                     "message": "Box scores (/v1/stats) need a paid balldontlie tier "
-                               "(ALL-STAR tier or higher per the Phase 0.5 gate). "
-                               "No live feed was published.",
+                               "(ALL-STAR or GOAT per the Phase 0.5 gate; the gateway "
+                               "answers HTTP %s until then). No live feed was published." % code,
                 }
                 break
             return None, {"exit": 5, "message": f"network error fetching stats for {bdl_id}: {err}"}
@@ -280,9 +297,21 @@ def selftest():
     assert row["pts"] == 31 and row["fg3m"] == 4
     assert row["_fixture"] is False and row["source"] == "balldontlie"
 
+    # Stats tier-gate classification: the unified balldontlie gateway returns
+    # 401 for plan-gated /v1/stats (verified live 2026-11-03); 402/403 are the
+    # legacy codes. A 401 here is a tier block, not a bad key (games auth ran
+    # first) and not a network error (exit 5 would mislabel it in autopilot).
+    assert stats_error_is_tier_block(401)
+    assert stats_error_is_tier_block(402)
+    assert stats_error_is_tier_block(403)
+    assert not stats_error_is_tier_block(429)
+    assert not stats_error_is_tier_block(500)
+    assert not stats_error_is_tier_block(None)
+
     # Committed fixture feeds stay untouched by ingest semantics: the script
     # writes bdl-* ids / _fixture:false, never mutating fx-* fixture rows.
-    print("selftest OK: ET keying (DST), game + box-score normalization, provenance flags")
+    print("selftest OK: ET keying (DST), game + box-score normalization, provenance flags, "
+          "stats tier-gate classification (401/402/403)")
 
 
 def main():
