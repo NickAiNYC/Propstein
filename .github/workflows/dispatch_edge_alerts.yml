@@ -1,0 +1,66 @@
+name: Dispatch Verified Edge Alerts
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "viewer/current_picks.json"
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      min_ev:
+        description: "Minimum EV% threshold"
+        required: false
+        default: "5.0"
+      allow_unverified:
+        description: "Allow unverified lines (dev testing only)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Restore SHA-256 sent alerts deduplication cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/sent_edge_alerts.json
+          key: propstein-edge-alerts-${{ github.run_id }}
+          restore-keys: |
+            propstein-edge-alerts-
+
+      - name: Run zero-dependency webhook dispatcher
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          EXTRA_FLAGS=""
+          if [ "${{ github.event.inputs.allow_unverified }}" = "true" ]; then
+            EXTRA_FLAGS="--allow-unverified"
+          fi
+          MIN_EV="${{ github.event.inputs.min_ev || '5.0' }}"
+          python3 scripts/dispatch_edge_alerts.py \
+            --input viewer/current_picks.json \
+            --min-ev "$MIN_EV" \
+            $EXTRA_FLAGS
+
+      - name: Save updated SHA-256 sent alerts cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/sent_edge_alerts.json
+          key: propstein-edge-alerts-${{ github.run_id }}

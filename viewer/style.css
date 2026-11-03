@@ -15644,6 +15644,98 @@ body {
   color: #64748b;
 }
 
+/* --- viewer/style.css: Row Mode Sync & Stateless Whop Gate --- */
+.ps-row-dfs-qualified {
+  border-color: rgba(52, 211, 153, 0.45) !important;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.08);
+}
+
+.ps-row-sub-breakeven {
+  opacity: 0.45;
+  filter: saturate(0.4);
+  transition: opacity 0.15s ease, filter 0.15s ease;
+}
+
+.ps-whop-gate {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.ps-whop-gate-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.ps-whop-gate-copy {
+  font-size: 11px;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+.ps-pass-input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.ps-pass-input {
+  flex: 1;
+  background: #090d16;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: #f8fafc;
+}
+
+.ps-pass-submit-btn {
+  background: #1e293b;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ps-pass-error {
+  margin-top: 4px;
+  font-size: 10px;
+  color: #f87171;
+}
+
+.ps-pass-active-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.ps-pass-badge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #34d399;
+}
+
+.ps-pass-clear-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* Pro Gate Teaser Card */
 .pro-gate-card {
   padding: 18px;

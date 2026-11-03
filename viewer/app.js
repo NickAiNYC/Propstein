@@ -3389,6 +3389,131 @@
 
   let activeBoardMode = "SPORTSBOOK";
 
+  const PRO_STORAGE_KEY = "ps_pro_access_key";
+  const WHOP_CHECKOUT_URL = "https://whop.com/propstein/";
+
+  function isValidProPassKey(rawKey) {
+    if (!rawKey || typeof rawKey !== "string") return false;
+    const cleaned = rawKey.trim().toUpperCase();
+    return /^(PS-PRO-|WHOP-|QUANT-)[A-Z0-9-]{6,}$/.test(cleaned);
+  }
+
+  function hasStatelessProAccess() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlPass = params.get("pass");
+      if (urlPass && isValidProPassKey(urlPass)) {
+        localStorage.setItem(PRO_STORAGE_KEY, urlPass.trim().toUpperCase());
+        return true;
+      }
+      const stored = localStorage.getItem(PRO_STORAGE_KEY) || localStorage.getItem('propstein_pro_token') || localStorage.getItem('whop_license_key');
+      return isValidProPassKey(stored);
+    } catch {
+      return false;
+    }
+  }
+
+  function syncBoardRowsToMode(modeId, modeConfig) {
+    const cards = document.querySelectorAll("[data-prop-card]");
+    cards.forEach((card) => {
+      const winProbAttr = Number(card.getAttribute("data-win-prob"));
+      const modeBadge = card.querySelector("[data-mode-edge-badge]");
+
+      if (modeId === "SPORTSBOOK" || !modeConfig || !modeConfig.breakEven) {
+        card.classList.remove("ps-row-sub-breakeven", "ps-row-dfs-qualified");
+        if (modeBadge) {
+          const defaultEv = card.getAttribute("data-default-ev") || "";
+          modeBadge.textContent = defaultEv;
+        }
+        return;
+      }
+
+      if (!isNaN(winProbAttr) && winProbAttr > 0) {
+        const edgeVsBe = (winProbAttr - modeConfig.breakEven) * 100;
+        if (winProbAttr >= modeConfig.breakEven) {
+          card.classList.add("ps-row-dfs-qualified");
+          card.classList.remove("ps-row-sub-breakeven");
+          if (modeBadge) {
+            modeBadge.textContent = `${(winProbAttr * 100).toFixed(1)}% Win (+${edgeVsBe.toFixed(1)}% vs BE)`;
+          }
+        } else {
+          card.classList.add("ps-row-sub-breakeven");
+          card.classList.remove("ps-row-dfs-qualified");
+          if (modeBadge) {
+            modeBadge.textContent = `${(winProbAttr * 100).toFixed(1)}% Win (Below ${(modeConfig.breakEven * 100).toFixed(1)}% BE)`;
+          }
+        }
+      }
+    });
+  }
+
+  function bindStatelessPassGate(mountEl, onUnlocked) {
+    if (!mountEl) return;
+    const unlocked = hasStatelessProAccess();
+
+    const gateBar = mountEl.querySelector("#psPassGateBar");
+    if (!gateBar) return;
+
+    if (unlocked) {
+      gateBar.innerHTML = `
+        <div class="ps-pass-active-bar">
+          <span class="ps-pass-badge">PRO PASS ACTIVE</span>
+          <button type="button" class="ps-pass-clear-btn" id="psClearPassBtn">Lock Session</button>
+        </div>
+      `;
+      const clearBtn = gateBar.querySelector("#psClearPassBtn");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          localStorage.removeItem(PRO_STORAGE_KEY);
+          if (typeof onUnlocked === "function") onUnlocked(false);
+        });
+      }
+      return;
+    }
+
+    gateBar.innerHTML = `
+      <div class="pro-gate-card ps-whop-gate">
+        <div class="ps-whop-gate-top">
+          <div>
+            <div class="ps-dfs-kicker">PROPSTEIN PRO &amp; PICK'EM PASS</div>
+            <div class="ps-whop-gate-copy">Unlock full 5-Flex slips, fair lines &amp; Discord webhook alerts.</div>
+          </div>
+          <a href="${WHOP_CHECKOUT_URL}" target="_blank" rel="noopener" class="ps-copy-slip-btn">
+            Get Pass ($39/mo)
+          </a>
+        </div>
+        <div class="ps-pass-input-row">
+          <input
+            type="text"
+            id="psPassKeyInput"
+            class="ps-pass-input"
+            placeholder="Enter Whop / Pro Key (e.g. PS-PRO-...)"
+            autocomplete="off"
+          />
+          <button type="button" id="psVerifyPassBtn" class="ps-pass-submit-btn">Unlock</button>
+        </div>
+        <div id="psPassError" class="ps-pass-error" hidden>Invalid key format. Expected PS-PRO-XXXX or WHOP-XXXX.</div>
+      </div>
+    `;
+
+    const input = gateBar.querySelector("#psPassKeyInput");
+    const btn = gateBar.querySelector("#psVerifyPassBtn");
+    const errEl = gateBar.querySelector("#psPassError");
+
+    if (btn && input) {
+      btn.addEventListener("click", () => {
+        const val = input.value.trim().toUpperCase();
+        if (isValidProPassKey(val)) {
+          localStorage.setItem(PRO_STORAGE_KEY, val);
+          if (errEl) errEl.hidden = true;
+          if (typeof onUnlocked === "function") onUnlocked(true);
+        } else if (errEl) {
+          errEl.hidden = false;
+        }
+      });
+    }
+  }
+
   function getImpliedWinProb(row) {
     if (typeof row.model_win_prob === "number") return row.model_win_prob;
     if (typeof row.modelWinProb === "number") return row.modelWinProb;
@@ -3404,12 +3529,7 @@
   }
 
   function isProSubscriber() {
-    try {
-      const token = localStorage.getItem('propstein_pro_token') || localStorage.getItem('whop_license_key');
-      return Boolean(token && token.trim().length > 4);
-    } catch {
-      return false;
-    }
+    return hasStatelessProAccess();
   }
 
   function getMarketStateDescriptor(rows = [], meta = {}) {
@@ -3532,6 +3652,7 @@
     if (!mountEl) return;
     const state = getMarketStateDescriptor(rows, meta);
     const slip = computeOptimalDfsSlip(rows, activeBoardMode);
+    const proUnlocked = hasStatelessProAccess();
 
     mountEl.innerHTML = `
       <div class="ps-telemetry-banner ps-tone-${state.tone}">
@@ -3586,13 +3707,22 @@
               ? `<div class="ps-dfs-leg-list">
                   ${slip.legs
                     .map(
-                      (l) => `
-                    <div class="ps-dfs-leg-chip">
-                      <span class="ps-leg-player">${esc(l.player || l.player_display_name)}</span>
-                      <span class="ps-leg-pick">${l.direction === "UNDER" ? "U" : "O"} ${l.line} ${esc(l.market)}</span>
-                      <span class="ps-leg-edge">+${l._dfsEdge.toFixed(1)}%</span>
-                    </div>
-                  `
+                      (l, idx) => {
+                        const isTeaserLocked = !proUnlocked && idx > 0;
+                        return `
+                        <div class="ps-dfs-leg-chip ${isTeaserLocked ? "locked-teaser" : ""}">
+                          <span class="ps-leg-player">${
+                            isTeaserLocked ? "Pro Slip Leg #" + (idx + 1) : esc(l.player || l.player_display_name)
+                          }</span>
+                          <span class="ps-leg-pick">${
+                            isTeaserLocked
+                              ? "Locked Pick'em Edge"
+                              : `${l.direction === "UNDER" ? "U" : "O"} ${l.line} ${esc(l.market)}`
+                          }</span>
+                          <span class="ps-leg-edge">+${l._dfsEdge.toFixed(1)}%</span>
+                        </div>
+                      `;
+                      }
                     )
                     .join("")}
                 </div>`
@@ -3600,6 +3730,7 @@
                   (slip.mode.breakEven * 100).toFixed(2)
                 }% implied probability hurdle.</p>`
           }
+          <div id="psPassGateBar"></div>
         </div>
       `
           : ""
@@ -3630,6 +3761,11 @@
         }
       });
     }
+
+    bindStatelessPassGate(mountEl, () => {
+      renderMarketAndDfsControls(mountEl, rows, meta, onModeChange);
+    });
+    syncBoardRowsToMode(activeBoardMode, BOARD_MODES[activeBoardMode]);
   }
 
   $('#homeEdgeShowAll')?.addEventListener('click', () => {
@@ -3731,10 +3867,12 @@
           const line = Number(pick.line);
           const odds = Number(pick.odds);
           const isLocked = !isPro && idx > 0;
-          return `<article class="home-edge-card home-research-card ${isLocked ? 'locked-teaser' : ''}">
+          const winProb = pick.odds ? americanToImpliedProb(pick.odds) : 0.5;
+          const defaultEv = Number.isFinite(Number(pick.ev_per_unit)) ? `+${(Number(pick.ev_per_unit) * 100).toFixed(1)}% EV` : '';
+          return `<article class="home-edge-card home-research-card ${isLocked ? 'locked-teaser' : ''}" data-prop-card data-win-prob="${winProb}" data-default-ev="${defaultEv}">
             <div class="home-edge-player"><strong>${esc(pick.player || 'Unknown player')}</strong><span>${esc(previewMarketLabel(pick.market))}</span></div>
             <div class="home-edge-line"><span class="home-research-label">${idx === 0 ? 'FLAGSHIP EDGE OF THE DAY' : 'OBSERVED CONSENSUS'}</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${previewBookPill(pick.book)}</span></div>
-            <p class="home-research-note">${isLocked ? 'Pro Access Required' : 'Research only · price and availability must be checked at the book.'}</p>
+            <p class="home-research-note" data-mode-edge-badge>${isLocked ? 'Pro Access Required' : 'Research only · price and availability must be checked at the book.'}</p>
           </article>`;
         }).join('') + (!isPro && research.length > 1 ? `<div class="pro-gate-card">
           <span class="pro-gate-badge">PRO ALL-ACCESS PASS</span>
@@ -3749,6 +3887,7 @@
             <p class="home-research-note">Research only · no current edge or stake is available.</p>
           </article>`).join('')
           : '<p class="home-edge-empty">Prices or news are unavailable. No model slate is loaded; no picks are being recommended.</p>';
+      syncBoardRowsToMode(activeBoardMode, BOARD_MODES[activeBoardMode]);
       return;
     }
     const title = $('#homeEdgeTitle');
@@ -3802,10 +3941,11 @@
       const winProb = Math.max(0, Math.min(1, implied + evaluation.edge));
       const odds = evaluation.odds > 0 ? `+${evaluation.odds}` : String(evaluation.odds);
       const isLocked = !isPro && idx > 0;
-      return `<article class="home-edge-card ${isLocked ? 'locked-teaser' : ''}">
+      const defaultEv = `+${(evaluation.ev * 100).toFixed(1)}%`;
+      return `<article class="home-edge-card ${isLocked ? 'locked-teaser' : ''}" data-prop-card data-win-prob="${winProb}" data-default-ev="${defaultEv}">
         <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(market))}</span></div>
         <div class="home-edge-line"><span class="home-edge-direction ${evaluation.side === 'UNDER' ? 'under' : 'over'}">${evaluation.side === 'UNDER' ? '↓ UNDER' : '↑ OVER'}</span><strong>${evaluation.line.toFixed(1)} <small>${esc(odds)}</small></strong><span>${previewBookPill(evaluation.book)}</span></div>
-        <div class="home-edge-metrics"><span><small>${idx === 0 ? 'FLAGSHIP WIN' : 'MODEL WIN'}</small><strong>${(winProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(evaluation.edge * 100).toFixed(1)}%</strong></span><span><small>EV</small><strong>+${(evaluation.ev * 100).toFixed(1)}%</strong></span></div>
+        <div class="home-edge-metrics"><span><small>${idx === 0 ? 'FLAGSHIP WIN' : 'MODEL WIN'}</small><strong>${(winProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(evaluation.edge * 100).toFixed(1)}%</strong></span><span><small>EV</small><strong data-mode-edge-badge>+${(evaluation.ev * 100).toFixed(1)}%</strong></span></div>
       </article>`;
     }).join('') + (!isPro && plays.length > 1 ? `<div class="pro-gate-card">
       <span class="pro-gate-badge">PRO ALL-ACCESS PASS</span>
@@ -3813,6 +3953,7 @@
       <p>Access our entire quantified edge board, instant Discord alert webhooks, and optimal DFS slip generator.</p>
       <a href="https://whop.com/propstein" target="_blank" rel="noopener noreferrer" class="pro-gate-cta">Get Pro Access for $39/mo →</a>
     </div>` : '');
+    syncBoardRowsToMode(activeBoardMode, BOARD_MODES[activeBoardMode]);
   }
 
   function updateHeroCard(isResearchMode, qualifiedCount, displayCount) {
