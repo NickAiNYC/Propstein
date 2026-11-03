@@ -298,10 +298,18 @@
       <input type="search" id="frontInlineSearch" placeholder="Search player, team, or prop..." autocomplete="off" aria-label="Search player, team, or prop">
     </div>
     <section class="home-edge-preview" id="homeEdgePreview" aria-labelledby="homeEdgeTitle" aria-live="polite">
+      <div id="marketStateBanner" class="market-state-banner" hidden></div>
       <div class="home-edge-heading">
         <div><p class="today-schedule-eyebrow">PLAYER PROP BOARD</p><h2 id="homeEdgeTitle">Loading player research</h2></div>
         <button type="button" id="homeEdgeOpenBoard">View player board <span aria-hidden="true">↗</span></button>
       </div>
+      <div id="dfsModeSelector" class="dfs-mode-selector" role="group" aria-label="DFS and Edge Mode Selector">
+        <button type="button" class="dfs-mode-btn active" data-preset="SPORTSBOOK_EV">Sportsbook +EV</button>
+        <button type="button" class="dfs-mode-btn" data-preset="PRIZEPICKS_5FLEX">PrizePicks 5-Flex (54.2%)</button>
+        <button type="button" class="dfs-mode-btn" data-preset="PRIZEPICKS_2POWER">PrizePicks 2-Power (57.7%)</button>
+        <button type="button" class="dfs-mode-btn" data-preset="UNDERDOG_3STANDARD">Underdog 3-Pick (55.0%)</button>
+      </div>
+      <div id="dfsOptimalSlipWrap" class="dfs-slip-wrap" hidden></div>
       <p class="home-edge-status" id="homeEdgeStatus">Loading data and checking price status…</p>
       <div class="home-edge-list" id="homeEdgeList"></div>
       <button type="button" id="homeEdgeShowAll" class="home-edge-show-all" aria-expanded="false" hidden></button>

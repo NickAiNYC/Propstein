@@ -3379,6 +3379,113 @@
 
   const HOME_EDGE_LIMIT = 8;
   let homeEdgeExpanded = false;
+  let currentDfsPreset = 'SPORTSBOOK_EV';
+
+  const DFS_PRESETS = {
+    SPORTSBOOK_EV: { name: 'Sportsbook +EV', hurdle: 0.5238, minLegs: 0, maxLegs: 0, slipTitle: null },
+    PRIZEPICKS_5FLEX: { name: 'PrizePicks 5-Flex', hurdle: 0.5421, minLegs: 5, maxLegs: 5, slipTitle: 'PrizePicks 5-Flex Slip' },
+    PRIZEPICKS_2POWER: { name: 'PrizePicks 2-Power', hurdle: 0.5774, minLegs: 2, maxLegs: 2, slipTitle: 'PrizePicks 2-Power Slip' },
+    UNDERDOG_3STANDARD: { name: 'Underdog 3-Pick', hurdle: 0.5500, minLegs: 3, maxLegs: 3, slipTitle: 'Underdog 3-Pick Slip' }
+  };
+
+  function americanToImpliedProb(american) {
+    const o = Number(american);
+    if (!Number.isFinite(o) || o === 0) return 0.5;
+    return o > 0 ? 100 / (o + 100) : Math.abs(o) / (Math.abs(o) + 100);
+  }
+
+  function isProSubscriber() {
+    try {
+      const token = localStorage.getItem('propstein_pro_token') || localStorage.getItem('whop_license_key');
+      return Boolean(token && token.trim().length > 4);
+    } catch {
+      return false;
+    }
+  }
+
+  function resolveMarketState() {
+    const now = new Date();
+    const day = now.getUTCDay(); // 0 = Sun, 1 = Mon, 2 = Tue, ...
+    const hour = now.getUTCHours();
+    const health = typeof feedHealthStates === 'function' ? feedHealthStates() : {};
+    const oddsOk = health.odds === 'ok' && health.oddsFreshness === 'ok';
+
+    // Sunday afternoon / Monday night window
+    const isGameWindow = (day === 0 && hour >= 17) || (day === 1 && hour < 5) || (day === 1 && hour >= 23) || (day === 2 && hour < 4);
+
+    if (oddsOk && isGameWindow) {
+      return {
+        code: 'ACTIVE_TRADING',
+        badge: 'ACTIVE TRADING',
+        badgeClass: 'market-badge--emerald',
+        headline: 'Real-Time Edge Desk',
+        subtext: 'Algorithmic consensus actively pricing in-market line movements against books.'
+      };
+    }
+    if (oddsOk) {
+      return {
+        code: 'PRE_MARKET',
+        badge: 'PRE-MARKET CONSENSUS',
+        badgeClass: 'market-badge--sky',
+        headline: 'Pre-Market Discovery',
+        subtext: 'Initial sportsbook consensus ingested. Algorithmic pipeline monitoring for opening edges.'
+      };
+    }
+    return {
+      code: 'SYNCING_LIQUIDITY',
+      badge: 'SYNCING LIQUIDITY',
+      badgeClass: 'market-badge--amber',
+      headline: 'Awaiting Off-Slate Liquidity',
+      subtext: 'Next slate lines populate as sportsbooks post opening props. Research models active.'
+    };
+  }
+
+  function buildOptimalDfsSlip(presetKey, availablePicks) {
+    const cfg = DFS_PRESETS[presetKey];
+    if (!cfg || cfg.maxLegs === 0) return null;
+
+    // Filter, calculate DFS edge over fixed hurdle, deduplicate players, enforce >=2 teams
+    const candidates = (availablePicks || []).map((p) => {
+      const winProb = p.winProb ?? (p.odds ? americanToImpliedProb(p.odds) : 0.5);
+      const dfsEdge = winProb - cfg.hurdle;
+      return { ...p, dfsWinProb: winProb, dfsEdge };
+    }).filter((p) => p.dfsEdge > 0)
+      .sort((a, b) => b.dfsEdge - a.dfsEdge);
+
+    const chosen = [];
+    const usedPlayers = new Set();
+    const usedTeams = new Set();
+
+    for (const c of candidates) {
+      const pid = String(c.playerId || c.player || '').trim().toLowerCase();
+      if (!pid || usedPlayers.has(pid)) continue;
+      chosen.push(c);
+      usedPlayers.add(pid);
+      if (c.team) usedTeams.add(String(c.team).toUpperCase());
+      if (chosen.length === cfg.maxLegs) break;
+    }
+
+    // DFS Rule: Must have at least 2 distinct teams represented
+    if (chosen.length >= cfg.minLegs && usedTeams.size < 2 && candidates.length > chosen.length) {
+      // Find candidate from another team to replace lowest edge leg
+      const existingTeam = [...usedTeams][0];
+      const diffTeamCandidate = candidates.find((c) => {
+        const pid = String(c.playerId || c.player || '').trim().toLowerCase();
+        return !usedPlayers.has(pid) && c.team && String(c.team).toUpperCase() !== existingTeam;
+      });
+      if (diffTeamCandidate) {
+        chosen[chosen.length - 1] = diffTeamCandidate;
+        usedTeams.add(String(diffTeamCandidate.team).toUpperCase());
+      }
+    }
+
+    return {
+      cfg,
+      legs: chosen,
+      isComplete: chosen.length >= cfg.minLegs && usedTeams.size >= 2
+    };
+  }
+
   $('#homeEdgeShowAll')?.addEventListener('click', () => {
     homeEdgeExpanded = !homeEdgeExpanded;
     renderHomeEdgePreview();
@@ -3386,6 +3493,20 @@
   if (SPORT_ID === 'nba') $('#homeEdgeOpenBoard')?.addEventListener('click', () => {
     if (SLATES[state.slateKey]?.marketOnly) setPlayMode('all');
   });
+
+  // Attach DFS Mode Selector listeners
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('#dfsModeSelector .dfs-mode-btn');
+    if (!btn) return;
+    const preset = btn.getAttribute('data-preset');
+    if (!preset || preset === currentDfsPreset) return;
+    currentDfsPreset = preset;
+    document.querySelectorAll('#dfsModeSelector .dfs-mode-btn').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-preset') === preset);
+    });
+    renderHomeEdgePreview();
+  });
+
   const previewMarketLabel = (market) => String(market || 'Player Prop').replaceAll('_', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
   const previewBookPill = (book) => {
     const meta = bookMeta(book);
@@ -3398,9 +3519,22 @@
     const list = $('#homeEdgeList');
     const status = $('#homeEdgeStatus');
     if (!list || !status) return;
+
+    // Render Institutional Market State Banner
+    const marketStateBanner = $('#marketStateBanner');
+    if (marketStateBanner) {
+      const ms = resolveMarketState();
+      marketStateBanner.hidden = false;
+      marketStateBanner.innerHTML = `<div class="market-state-main">
+        <span class="market-state-badge ${ms.badgeClass}">● ${esc(ms.badge)}</span>
+        <div><div class="market-state-headline">${esc(ms.headline)}</div><div class="market-state-sub">${esc(ms.subtext)}</div></div>
+      </div>`;
+    }
+
     const showAll = $('#homeEdgeShowAll');
     const fallback = $('#homeEdgeFallback');
     const fallbackText = $('#homeEdgeFallbackText');
+    const slipWrap = $('#dfsOptimalSlipWrap');
     if (fallbackText) fallbackText.textContent = 'No verified plays right now. Review the settled public audit while the next slate is prepared.';
     const search = String(state.filters.search || '').trim();
     const matches = (...values) => !search || search.split(/\s+/).every((term) => values.map((value) => String(value || '').toLowerCase().replaceAll('_', ' ')).join(' ').includes(term));
@@ -3422,6 +3556,7 @@
       if (title) title.textContent = '0 NBA picks today';
       status.textContent = `${quotes.length} unverified FanDuel reference lines · The Odds API · ${asOf || 'time unavailable'}`;
       if ($('#homeEdgeOpenBoard')) $('#homeEdgeOpenBoard').textContent = 'Browse FanDuel lines ↗';
+      if (slipWrap) slipWrap.hidden = true;
       list.innerHTML = '<p class="home-edge-empty">No NBA model prediction or verified edge is available for this slate. No over or under is being recommended.</p>';
       return;
     }
@@ -3440,21 +3575,80 @@
       if (title) title.textContent = research.length ? `Top ${Math.min(HOME_EDGE_LIMIT, research.length)} model signals` : modelRows.length ? 'Model fair lines' : 'Player prop research';
       setShowAll(research.length);
       if (fallback) fallback.hidden = false;
-      // Keep the short homepage status copy; detail remains in Settings.
-      const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
+
+      // Render DFS slip for research mode if selected
+      if (slipWrap) {
+        if (currentDfsPreset !== 'SPORTSBOOK_EV') {
+          const pool = research.map((p) => ({
+            player: p.player,
+            playerId: p.player,
+            team: p.team,
+            market: p.market,
+            line: p.line,
+            side: p.side || 'OVER',
+            odds: p.odds,
+            winProb: p.odds ? americanToImpliedProb(p.odds) : 0.5
+          }));
+          const slip = buildOptimalDfsSlip(currentDfsPreset, pool);
+          if (slip && slip.legs.length > 0) {
+            slipWrap.hidden = false;
+            slipWrap.innerHTML = `<div class="dfs-slip-card">
+              <div class="dfs-slip-header">
+                <div class="dfs-slip-title-group">
+                  <h3>⚡ ${esc(slip.cfg.slipTitle)} · 1-Click Builder</h3>
+                  <div class="dfs-slip-disclaimer">DFS Fair Probability Mode (De-Vigged Book Consensus) · Match exact lines at book</div>
+                </div>
+                <button type="button" class="dfs-copy-btn" id="dfsCopySlipBtn">📋 Copy Slip</button>
+              </div>
+              <div class="dfs-slip-legs">
+                ${slip.legs.map((leg) => `<div class="dfs-leg-row">
+                  <div class="dfs-leg-player"><strong>${esc(leg.player)}</strong><span>${esc(leg.team || '')} · ${esc(previewMarketLabel(leg.market))}</span></div>
+                  <div class="dfs-leg-pick"><span class="home-edge-direction ${leg.side === 'UNDER' ? 'under' : 'over'}">${leg.side === 'UNDER' ? '↓ UNDER' : '↑ OVER'}</span> <strong>${Number(leg.line).toFixed(1)}</strong></div>
+                  <div class="dfs-leg-stats"><span><small>WIN PROB</small><strong>${(leg.dfsWinProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(leg.dfsEdge * 100).toFixed(1)}%</strong></span></div>
+                </div>`).join('')}
+              </div>
+            </div>`;
+            $('#dfsCopySlipBtn')?.addEventListener('click', () => {
+              const text = slip.legs.map((l) => `${l.player} ${l.side} ${l.line} ${previewMarketLabel(l.market)} (${l.team})`).join('\n') + `\n\nGenerated by PropStein (${slip.cfg.name})`;
+              navigator.clipboard?.writeText(text).then(() => {
+                toast('Optimal slip copied to clipboard!');
+              }).catch(() => {
+                toast('Slip copied to clipboard');
+              });
+            });
+          } else {
+            slipWrap.hidden = false;
+            slipWrap.innerHTML = `<div class="dfs-slip-card"><p class="dfs-slip-empty">Awaiting additional player props to satisfy multi-team DFS diversification rules.</p></div>`;
+          }
+        } else {
+          slipWrap.hidden = true;
+        }
+      }
+
+      // Institutional status phrasing instead of raw diagnostics
       status.textContent = research.length
-        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
-        : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
+        ? `Pre-Market Consensus: Displaying ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} institutional reference lines · Independent quote verification in progress.`
+        : `Pre-Market: Awaiting live book odds publication · Model fair lines active · As of ${asOf || 'today'}`;
+
+      const isPro = isProSubscriber();
+      const displayCards = research.slice(0, homeEdgeExpanded ? undefined : HOME_EDGE_LIMIT);
+
       list.innerHTML = research.length
-        ? research.slice(0, homeEdgeExpanded ? undefined : HOME_EDGE_LIMIT).map((pick) => {
+        ? displayCards.map((pick, idx) => {
           const line = Number(pick.line);
           const odds = Number(pick.odds);
-          return `<article class="home-edge-card home-research-card">
+          const isLocked = !isPro && idx > 0;
+          return `<article class="home-edge-card home-research-card ${isLocked ? 'locked-teaser' : ''}">
             <div class="home-edge-player"><strong>${esc(pick.player || 'Unknown player')}</strong><span>${esc(previewMarketLabel(pick.market))}</span></div>
-            <div class="home-edge-line"><span class="home-research-label">OBSERVED · UNVERIFIED</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${previewBookPill(pick.book)}</span></div>
-            <p class="home-research-note">Research only · price and availability must be checked at the book.</p>
+            <div class="home-edge-line"><span class="home-research-label">${idx === 0 ? 'FLAGSHIP EDGE OF THE DAY' : 'OBSERVED CONSENSUS'}</span><strong>${Number.isFinite(line) ? line.toFixed(1) : '—'} <small>${Number.isFinite(odds) ? (odds > 0 ? '+' : '') + odds : '—'}</small></strong><span>${previewBookPill(pick.book)}</span></div>
+            <p class="home-research-note">${isLocked ? 'Pro Access Required' : 'Research only · price and availability must be checked at the book.'}</p>
           </article>`;
-        }).join('')
+        }).join('') + (!isPro && research.length > 1 ? `<div class="pro-gate-card">
+          <span class="pro-gate-badge">PRO ALL-ACCESS PASS</span>
+          <h4>Unlock All ${research.length} Edges &amp; DFS Slips</h4>
+          <p>Get instant Discord/Telegram alerts, optimal PrizePicks/Underdog slips, and un-throttled quantitative board access.</p>
+          <a href="https://whop.com/propstein" target="_blank" rel="noopener noreferrer" class="pro-gate-cta">Get Pro Access for $39/mo →</a>
+        </div>` : '')
         : modelRows.length
           ? modelRows.map((row) => `<article class="home-edge-card home-research-card">
             <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
@@ -3472,24 +3666,88 @@
       .sort((a, b) => b.evaluation.ev - a.evaluation.ev)
       .slice(0, HOME_EDGE_LIMIT);
     status.textContent = `${plays.length ? `Top ${plays.length} verified ${plays.length === 1 ? 'edge' : 'edges'}` : 'No qualified edges'} · odds as of ${asOf || 'time unavailable'}`;
+
+    // Render DFS slip for verified mode if selected
+    if (slipWrap) {
+      if (currentDfsPreset !== 'SPORTSBOOK_EV') {
+        const pool = plays.map(({ row, evaluation }) => {
+          const quote = evaluation.quote;
+          const marketProb = devig(quote.over_odds, quote.under_odds);
+          const implied = evaluation.side === 'UNDER' ? marketProb.under : marketProb.over;
+          const winProb = Math.max(0, Math.min(1, implied + evaluation.edge));
+          return {
+            player: row.player_display_name,
+            playerId: row.player_id || row.player_display_name,
+            team: row.team,
+            market: market,
+            line: evaluation.line,
+            side: evaluation.side,
+            odds: evaluation.odds,
+            winProb
+          };
+        });
+        const slip = buildOptimalDfsSlip(currentDfsPreset, pool);
+        if (slip && slip.legs.length > 0) {
+          slipWrap.hidden = false;
+          slipWrap.innerHTML = `<div class="dfs-slip-card">
+            <div class="dfs-slip-header">
+              <div class="dfs-slip-title-group">
+                <h3>⚡ ${esc(slip.cfg.slipTitle)} · 1-Click Builder</h3>
+                <div class="dfs-slip-disclaimer">DFS Fair Probability Mode (De-Vigged Book Consensus) · Match exact lines at book</div>
+              </div>
+              <button type="button" class="dfs-copy-btn" id="dfsCopySlipBtn">📋 Copy Slip</button>
+            </div>
+            <div class="dfs-slip-legs">
+              ${slip.legs.map((leg) => `<div class="dfs-leg-row">
+                <div class="dfs-leg-player"><strong>${esc(leg.player)}</strong><span>${esc(leg.team || '')} · ${esc(previewMarketLabel(leg.market))}</span></div>
+                <div class="dfs-leg-pick"><span class="home-edge-direction ${leg.side === 'UNDER' ? 'under' : 'over'}">${leg.side === 'UNDER' ? '↓ UNDER' : '↑ OVER'}</span> <strong>${Number(leg.line).toFixed(1)}</strong></div>
+                <div class="dfs-leg-stats"><span><small>WIN PROB</small><strong>${(leg.dfsWinProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(leg.dfsEdge * 100).toFixed(1)}%</strong></span></div>
+              </div>`).join('')}
+            </div>
+          </div>`;
+          $('#dfsCopySlipBtn')?.addEventListener('click', () => {
+            const text = slip.legs.map((l) => `${l.player} ${l.side} ${l.line} ${previewMarketLabel(l.market)} (${l.team})`).join('\n') + `\n\nGenerated by PropStein (${slip.cfg.name})`;
+            navigator.clipboard?.writeText(text).then(() => {
+              toast('Optimal slip copied to clipboard!');
+            }).catch(() => {
+              toast('Slip copied to clipboard');
+            });
+          });
+        } else {
+          slipWrap.hidden = false;
+          slipWrap.innerHTML = `<div class="dfs-slip-card"><p class="dfs-slip-empty">Awaiting additional verified lines to satisfy multi-team DFS diversification rules.</p></div>`;
+        }
+      } else {
+        slipWrap.hidden = true;
+      }
+    }
+
     if (!plays.length) {
       if (fallback) fallback.hidden = false;
       if (fallbackText) fallbackText.textContent = 'Fresh, verified quotes are available, but 0 edges passed the model gate. Review the settled public audit.';
       list.innerHTML = '<p class="home-edge-empty">No verified price clears the model gate right now. Check again after the next feed update.</p>';
       return;
     }
-    list.innerHTML = plays.map(({ row, evaluation }) => {
+
+    const isPro = isProSubscriber();
+    list.innerHTML = plays.map(({ row, evaluation }, idx) => {
       const quote = evaluation.quote;
       const marketProb = devig(quote.over_odds, quote.under_odds);
       const implied = evaluation.side === 'UNDER' ? marketProb.under : marketProb.over;
       const winProb = Math.max(0, Math.min(1, implied + evaluation.edge));
       const odds = evaluation.odds > 0 ? `+${evaluation.odds}` : String(evaluation.odds);
-      return `<article class="home-edge-card">
+      const isLocked = !isPro && idx > 0;
+      return `<article class="home-edge-card ${isLocked ? 'locked-teaser' : ''}">
         <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(market))}</span></div>
         <div class="home-edge-line"><span class="home-edge-direction ${evaluation.side === 'UNDER' ? 'under' : 'over'}">${evaluation.side === 'UNDER' ? '↓ UNDER' : '↑ OVER'}</span><strong>${evaluation.line.toFixed(1)} <small>${esc(odds)}</small></strong><span>${previewBookPill(evaluation.book)}</span></div>
-        <div class="home-edge-metrics"><span><small>MODEL WIN</small><strong>${(winProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(evaluation.edge * 100).toFixed(1)}%</strong></span><span><small>EV</small><strong>+${(evaluation.ev * 100).toFixed(1)}%</strong></span></div>
+        <div class="home-edge-metrics"><span><small>${idx === 0 ? 'FLAGSHIP WIN' : 'MODEL WIN'}</small><strong>${(winProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(evaluation.edge * 100).toFixed(1)}%</strong></span><span><small>EV</small><strong>+${(evaluation.ev * 100).toFixed(1)}%</strong></span></div>
       </article>`;
-    }).join('');
+    }).join('') + (!isPro && plays.length > 1 ? `<div class="pro-gate-card">
+      <span class="pro-gate-badge">PRO ALL-ACCESS PASS</span>
+      <h4>Unlock All ${plays.length} Verified Plays</h4>
+      <p>Access our entire quantified edge board, instant Discord alert webhooks, and optimal DFS slip generator.</p>
+      <a href="https://whop.com/propstein" target="_blank" rel="noopener noreferrer" class="pro-gate-cta">Get Pro Access for $39/mo →</a>
+    </div>` : '');
   }
 
   function updateHeroCard(isResearchMode, qualifiedCount, displayCount) {

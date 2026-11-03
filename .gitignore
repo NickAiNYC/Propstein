@@ -6,6 +6,8 @@ data/games.csv
 __pycache__/
 .env
 
+.sent_alerts.json
+data/.sent_alerts.json
 .venv/
 .vercel/
 
