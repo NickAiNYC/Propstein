@@ -1,5 +1,6 @@
 data/*.parquet
 data/games.csv
+data/raw_espn_captures/
 *.jsonl
 !snapshots/*.jsonl
 !viewer/feeds/nba_model/*.jsonl
