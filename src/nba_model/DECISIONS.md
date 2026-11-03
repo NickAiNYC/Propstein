@@ -74,3 +74,55 @@ differentiator. Calibrated ML can graduate individual components later
 Rebounds and assists reuse the same projector skeleton (minutes-driven
 with their own per-minute rates); they are intentionally absent until
 points calibration demonstrates the loop works end-to-end.
+
+## D7. Free data path — official stats.nba.com feeds (DECIDED, owner call 2026-11-03)
+
+**Decision:** the production default provider is `nbacom` — the official
+stats.nba.com league feeds (`leaguegamefinder` for games + per-day team
+rows, `boxscoretraditionalv2` for player box scores), keyless and free,
+implementing the exact normalized row schema and fail-closed contract as
+the balldontlie provider (`data/nbacom.py`).
+
+Implementation stance: endpoint/parameter contracts and browser-grade
+headers mirror **swar/nba_api** (MIT, ~3.9k stars) — the maintained
+reference for this surface, whose header fixes land in point releases
+(v1.11.4 / #633). We speak the same endpoint language through our own
+injectable transport instead of importing the library's request layer:
+the provider stays hermetically testable, adds zero runtime
+dependencies, and swapping in the library itself later is a one-function
+change (`_default_transport`).
+
+Why: owner directive — run Propstein on Vercel at $0. balldontlie's box
+scores sit behind "Full data access" (GOAT $39.99/mo per their pricing
+page fetched 2026-11-03; the $299.99/mo All-Access tier is the
+multi-sport/webhooks bundle) — the D1 note that ALL-STAR ($9.99) covered
+`/v1/stats` no longer matches their current tier copy.
+
+Honest trade-offs, accepted by the owner call:
+1. Unofficial access to league endpoints: no SLA; the edge can block
+   datacenter IPs (GitHub Actions runners included) at any time.
+   Mitigation: fail-closed everywhere — a blocked run is RED and visible,
+   never silently empty.
+2. Header/endpoint drift: when NBA.com changes, mirror the upstream
+   swar/nba_api fix in `NBA_COM_HEADERS`/params.
+3. Politeness discipline: 1.2 s spacing between successful calls, one
+   60 s 429 backoff, then fail closed.
+
+What does NOT change:
+- `bdl` remains wired as the licensed alternative (D1).
+- ESPN / other stat-site scraping stays forbidden.
+- Odds still flow through the project's existing odds feed — stats.nba.com
+  has no odds, so the independent-quote gate stays honest.
+- Availability stays on the project's `nba_injuries_*.json` schema.
+- The api-evangelist public API surface/OpenAPI maps (balldontlie,
+  thesportsdb) were reviewed as response-shape references and deliberately
+  not adopted: Propstein's canonical schema is the provider-agnostic
+  normalized row in `data/providers.py`; external wrappers must come to
+  it, not the reverse.
+
+Topology note (free hosting): the daily ingestion worker is
+`.github/workflows/nba_model_daily.yml` (GitHub Actions cron → pipeline
+→ artifacts committed to `viewer/feeds/nba_model/` → Vercel serves them
+statically). Git is the cache layer; a Postgres cache (Supabase/Neon)
+is an optional future upgrade for queryable history, not a v1
+dependency.

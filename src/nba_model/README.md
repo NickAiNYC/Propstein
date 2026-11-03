@@ -55,15 +55,36 @@ Exit codes: `0` ok · `2` missing API key · `3` tier lacks box scores ·
 `4` rate limit · `5` network/no-data · `6` bad args · `10` publish
 REFUSED by gates (a refusal artifact is still written, with reasons).
 
-## Production data path (licensed)
+## Production data path (FREE — stats.nba.com, D7 owner call)
 
-`BALDONTLIE_API_KEY` + ALL-STAR tier ($9.99/mo or higher) — the Phase 0.5
-user-approved gate documented in `scripts/fetch_nba.py`. The provider is
-fail-closed: no key → nothing fetched, nothing written; a tier error
-never produces partial model input. Odds continue to flow through the
+```bash
+PYTHONPATH=. python3 src/nba_model/cli.py prepare --provider nbacom --start 2026-10-20 --end 2026-11-02
+```
+
+`--provider nbacom` is the FREE, keyless default: official stats.nba.com
+league feeds (`leaguegamefinder` + `boxscoretraditionalv2`) with endpoint
+contracts and browser-grade headers mirroring **swar/nba_api** (MIT).
+Politeness: 1.2 s spacing, one 60 s 429 backoff, then fail closed — a
+blocked run is RED, never silently empty. The daily ingestion worker is
+`.github/workflows/nba_model_daily.yml` (GitHub Actions cron → artifacts
+committed to `viewer/feeds/nba_model/` → Vercel serves them statically:
+no paid API, no database). Sandbox/dev machines that cannot reach
+stats.nba.com simply fail closed; the runner is the validation venue.
+
+### Licensed alternative (D1, still wired)
+
+`BALLDONTLIE_API_KEY` + box-score tier ("Full data access" per
+balldontlie's current pricing page — GOAT $39.99/mo; the earlier note
+that ALL-STAR $9.99 covered `/v1/stats` no longer matches their tier
+copy) — the Phase 0.5 user-approved gate documented in
+`scripts/fetch_nba.py`. The provider is fail-closed: no key → nothing
+fetched, nothing written; a tier error never produces partial model
+input. Odds continue to flow through the
 existing project feed (`nba_odds_*.json` schema — quotes with
 `book / market / line / over_odds / under_odds / observed_at`);
-availability through the existing `nba_injuries_*.json` schema.
+availability through the existing `nba_injuries_*.json` schema —
+stats.nba.com provides neither odds nor a clean injury feed, so both
+gates stay honest through the project's own feeds.
 
 Swapping in another licensed stats provider later means implementing
 `fetch_range()` against the same normalized row schema — the feature,

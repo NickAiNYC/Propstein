@@ -3,7 +3,7 @@
 Exit codes (mirrors scripts/fetch_nba.py conventions):
   0  ok
   2  missing/unrejected API key (fail-closed, nothing written)
-  3  balldontlie tier lacks box scores
+  3  balldontlie tier lacks box scores (nbacom path never hits this)
   4  rate limit exhausted
   5  network / protocol / no-data error
   6  bad arguments
@@ -16,9 +16,11 @@ USAGE:
   python3 src/nba_model/cli.py publish --provider synthetic --date 2026-11-17
 
 All three commands are fully offline with --provider synthetic
-(labeled research fixtures). --provider bdl requires BALLDONTLIE_API_KEY
-and is the licensed production path (ALL-STAR tier or higher for box
-scores); --provider fixtures reads the committed viewer fixture files.
+(labeled research fixtures). --provider nbacom is the FREE production
+path: official stats.nba.com league feeds, keyless (DECISIONS.md D7).
+--provider bdl is the licensed paid alternative (BALLDONTLIE_API_KEY,
+ALL-STAR tier or higher for box scores); --provider fixtures reads the
+committed viewer fixture files.
 """
 
 from __future__ import annotations
@@ -37,6 +39,7 @@ import pandas as pd  # noqa: E402
 
 from nba_model import config  # noqa: E402
 from nba_model.data.dataset import build_dataset  # noqa: E402
+from nba_model.data.nbacom import NbaComProvider  # noqa: E402
 from nba_model.data.providers import (  # noqa: E402
     BalldontlieProvider,
     FixtureProvider,
@@ -59,6 +62,8 @@ def _default_out() -> Path:
 
 
 def build_provider(args):
+    if args.provider == "nbacom":
+        return NbaComProvider()  # free, keyless (DECISIONS.md D7)
     if args.provider == "bdl":
         return BalldontlieProvider()
     if args.provider == "fixtures":
@@ -77,7 +82,7 @@ def build_provider(args):
 def load_world(args) -> dict:
     """provider -> normalized rows/games (+odds+injuries when available)."""
     provider = build_provider(args)
-    if args.provider == "bdl":
+    if args.provider in ("bdl", "nbacom"):
         dates = pd.date_range(args.start, args.end or args.start, freq="D")
         world = provider.fetch_range([d.date().isoformat() for d in dates])
         world.setdefault("odds", [])
@@ -206,7 +211,8 @@ def main(argv=None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     def common(p):
-        p.add_argument("--provider", choices=["synthetic", "bdl", "fixtures"], default="synthetic")
+        p.add_argument("--provider", choices=["synthetic", "bdl", "nbacom", "fixtures"],
+                       default="synthetic")
         p.add_argument("--start", help="window start (YYYY-MM-DD)")
         p.add_argument("--end", help="window end (YYYY-MM-DD)")
         p.add_argument("--date", help="slate date (YYYY-MM-DD)")
