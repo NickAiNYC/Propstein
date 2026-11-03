@@ -81,6 +81,53 @@
       its inputs.</p>
     </section>
     <section>
+      <h2>Distribution parameterisation &amp; compound process</h2>
+      <p>Player receiving volume is modeled as a two-stage compounded process: a discrete event distribution for receptions compounded by a continuous gamma distribution for yards per catch. Every published player-prop projection is strictly reproducible from four saved snapshot parameters:</p>
+      <div class="pub-tablewrap">
+        <table class="pub-table">
+          <thead>
+            <tr><th>Symbol</th><th>Name</th><th>Role in Model</th><th>Distribution Definition</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>mu_rec</code></td><td>Mean Expected Receptions</td><td>Center of reception count</td><td>N ~ NegBin(&mu;<sub>rec</sub>, &alpha;)</td></tr>
+            <tr><td><code>alpha</code></td><td>Reception Dispersion</td><td>Variance expansion over Poisson</td><td>Var(N) = &mu;<sub>rec</sub> + &alpha;&mu;<sub>rec</sub><sup>2</sup></td></tr>
+            <tr><td><code>mu_ypr</code></td><td>Mean Yards Per Reception</td><td>Expected yardage gain per catch</td><td>X<sub>i</sub> ~ Gamma(k, &theta; = &mu;<sub>ypr</sub> / k)</td></tr>
+            <tr><td><code>k</code></td><td>Yards Gamma Shape</td><td>Skewness and tail weight per play</td><td>Var(X<sub>i</sub>) = &mu;<sub>ypr</sub><sup>2</sup> / k</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The total receiving yardage random variable Y = &sum;<sub>i=1</sub><sup>N</sup> X<sub>i</sub> has an exact unconditional expectation:</p>
+      <p><strong>E[Y] = &mu;<sub>rec</sub> &times; &mu;<sub>ypr</sub></strong></p>
+      <p>For any yardage line L, the exceedance probability P(Y &gt; L) is computed by convoluting the discrete Negative Binomial distribution with the cumulative Gamma distribution for N catches:</p>
+      <p><strong>P(Y &gt; L) = &sum;<sub>n=1</sub><sup>&infin;</sup> P(N = n) &middot; [1 &minus; F<sub>Gamma</sub>(L; shape = n &middot; k, scale = &mu;<sub>ypr</sub> / k)]</strong></p>
+      <h3>Worked reproduction: A.J. Brown (Week 7 Snapshot)</h3>
+      <p>Parameters: <code>mu_rec = 5.2319</code>, <code>mu_ypr = 12.9847</code>, <code>alpha = 0.1097</code>, <code>k = 1.555</code>.</p>
+      <ul>
+        <li><strong>Projected Volume:</strong> 5.2319 &times; 12.9847 = <strong>67.93 yards</strong>.</li>
+        <li><strong>Fair Line (Median):</strong> <strong>61.0 yards</strong>.</li>
+        <li><strong>Exact Probabilities at 61.0:</strong> P(over) = <strong>49.33%</strong> (+103 fair breakeven); P(under) = <strong>49.75%</strong> (+101 fair breakeven); P(push) = <strong>0.92%</strong>.</li>
+        <li><strong>Vig-Adjusted -110 Boundaries:</strong> Buying the OVER at &minus;110 requires P &ge; 52.38%, reached only at <strong>&le; 49.0 yards</strong>. Buying the UNDER at &minus;110 requires P &ge; 52.38%, reached only at <strong>&ge; 73.0 yards</strong>. The interval <strong>49.5&ndash;72.5 is the negative-EV dead band</strong>.</li>
+      </ul>
+      <h3>Reference Python reproduction script</h3>
+      <pre><code>from scipy import stats
+
+def reproduce_fair_line(mu_rec=5.2319, mu_ypr=12.9847, alpha=0.1097, k=1.555, line=61.0):
+    r = 1.0 / alpha
+    p = 1.0 / (1.0 + alpha * mu_rec)
+    theta = mu_ypr / k
+    p_over = 0.0
+    for n in range(1, 41):
+        prob_n = stats.nbinom.pmf(n, r, p)
+        prob_over_n = 1.0 - stats.gamma.cdf(line, a=n * k, scale=theta)
+        p_over += prob_n * prob_over_n
+    odds_over = round((1.0 - p_over) / p_over * 100)
+    print(f"P(over 61.0): {p_over:.4f} -> Fair Breakeven Over: +{odds_over}")
+    return p_over
+
+reproduce_fair_line()
+# Output: P(over 61.0): 0.4933 -> Fair Breakeven Over: +103</code></pre>
+    </section>
+    <section>
       <h2>Snapshots, not vibes</h2>
       <p>Every number on this site comes from a pre-kickoff snapshot with an
       explicit timestamp, a content hash and a verification state

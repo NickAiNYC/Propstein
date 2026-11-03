@@ -121,7 +121,7 @@ def format_discord_payload(edge: dict) -> dict:
 
     return {
         "username": "PropStein Live Edge",
-        "avatar_url": "https://propstein.vercel.app/brand/p-logo-2027.png",
+        "avatar_url": "https://propstein.com/brand/p-logo-2027.png",
         "embeds": [{
             "title": f"🚨 QUANT EDGE DETECTED: {edge['player']} ({edge['team']})",
             "description": f"**Pick**: {edge['side']} {edge['line']} {edge['market'].title()}\n**Book**: {edge['book']} ({odds_str})",
@@ -152,7 +152,7 @@ def format_telegram_message(edge: dict) -> str:
         f"📊 <b>Sportsbook +EV</b>: <code>{ev_val}</code>\n"
         f"🎯 <b>Model Win Prob</b>: <code>{edge['win_prob_pct']:.1f}%</code>\n"
         f"⚡ <b>PrizePicks 5-Flex Edge</b>: <code>{pp_val}</code>\n\n"
-        f"<a href=\"https://propstein.vercel.app\">Open PropStein Terminal</a> · "
+        f"<a href=\"https://propstein.com\">Open PropStein Terminal</a> · "
         f"<a href=\"https://whop.com/propstein\">Unlock Pro Desk</a>"
     )
 

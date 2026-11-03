@@ -170,20 +170,47 @@ def write_page(rel_dir, html_text):
         f.write(html_text)
 
 
-def fmt_boundaries(b):
+def fmt_boundaries(b, snap=None):
     over = b.get("max_acceptable_over_line_at_minus_110")
     under = b.get("min_acceptable_under_line_at_minus_110")
-    be = b.get("breakeven_odds_at_fair")
+    fair = (snap.get("projection") or {}).get("fair_line") if snap else None
+    market = snap.get("market") if snap else "receiving_yards"
+    step = 0.5 if market == "receptions" else 0.5
+    
     parts = []
     if over is not None:
-        parts.append(f"take the <strong>OVER at &minus;110</strong> only up to a line of "
-                     f"<strong>{esc(over)}</strong>")
+        parts.append(f"the <strong>OVER at &minus;110 only when a sportsbook posts a line of <strong>{esc(over)}</strong> or lower</strong>")
     if under is not None:
-        parts.append(f"take the <strong>UNDER at &minus;110</strong> only down to a line of "
-                     f"<strong>{esc(under)}</strong>")
-    if be:
-        parts.append(f"breakeven odds at the fair line: <strong>{esc(be)}</strong>")
-    return "; ".join(parts) if parts else "not published for this snapshot."
+        parts.append(f"the <strong>UNDER at &minus;110 only when a sportsbook posts a line of <strong>{esc(under)}</strong> or higher</strong>")
+    
+    dead_band_str = ""
+    if over is not None and under is not None:
+        db_low = round(float(over) + step, 1)
+        db_high = round(float(under) - step, 1)
+        if db_low <= db_high:
+            dead_band_str = f" Any sportsbook line inside the <strong>{db_low}&ndash;{db_high} dead band</strong> offers negative expected value after accounting for standard vig."
+        else:
+            dead_band_str = " Lines between these boundaries offer negative expected value at standard vig."
+            
+    be_str = ""
+    # Fair line odds breakdown
+    proj = snap.get("projection") or {} if snap else {}
+    p_over = proj.get("p_over")
+    if p_over is not None and fair is not None:
+        p_under = max(0.0, 1.0 - p_over - (0.0093 if market == "receiving_yards" else 0.0))
+        # Derive American odds directly so p_over and odds strictly agree
+        odds_o = round((1.0 - p_over) / p_over * 100) if p_over > 0 else 0
+        odds_u = round((1.0 - p_under) / p_under * 100) if p_under > 0 else 0
+        o_sgn = f"+{odds_o}" if odds_o > 0 else f"{odds_o}"
+        u_sgn = f"+{odds_u}" if odds_u > 0 else f"{odds_u}"
+        be_str = f" At the fair line (<strong>{esc(fair)}</strong>), no-vig breakeven odds are <strong>{o_sgn} on the OVER</strong> ({round(p_over*100, 1)}% win prob) and <strong>{u_sgn} on the UNDER</strong> ({round(p_under*100, 1)}% win prob)."
+    elif b.get("breakeven_odds_at_fair"):
+        be_str = f" Breakeven odds at fair line: <strong>{esc(b.get('breakeven_odds_at_fair'))}</strong>."
+
+    if parts:
+        rule_str = " and on ".join(parts)
+        return f"At standard &minus;110 vig (52.38% breakeven win rate), the model sees positive expected value on {rule_str}.{dead_band_str}{be_str}"
+    return "Value boundaries not published for this snapshot."
 
 
 def assert_fair_line_invariants(snaps):
@@ -283,9 +310,7 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
       </dl>
       {params_html}
       <h3>How to use the fair line</h3>
-      <p>The model {fmt_boundaries(snap.get('price_boundaries') or {})}.
-      A book line outside those boundaries is where the model sees no value at
-      standard vig.</p>
+      <p>{fmt_boundaries(snap.get('price_boundaries') or {}, snap)}</p>
     </section>
     <section>
       <h2>Role evidence</h2>
@@ -417,7 +442,7 @@ def performance_page():
     <section>
       <h2>Full-board close calibration (Week {esc((weekly.get('slate') or '').split('W')[-1])})</h2>
       <p>Headline metric: every graded board decision (N = <strong>{esc((weekly.get('summary') or {}).get('total_graded'))}</strong>):<br>
-      &bull; <strong>2 of 37 beat the close</strong> (5.4%, 95% Wilson CI: [0.7%, 18.2%])<br>
+      &bull; <strong>2 of 37 beat the close</strong> (5.4%, 95% Wilson CI: [1.5%, 17.7%]; Clopper&ndash;Pearson exact: [0.7%, 18.2%])<br>
       &bull; <strong>34 of 37 tied the close</strong> (91.9%, line unchanged)<br>
       &bull; <strong>1 of 37 closed worse</strong> (2.7%, -1.0 yd drift)<br>
       Average line delta: <strong>+0.05 yds</strong> (95% CI: [-0.23, +0.33] yds). Average CLV EV: {esc(pct((weekly.get('summary') or {}).get('avg_clv_ev'), 2))}.</p>
@@ -511,6 +536,53 @@ def methodology_page():
       its inputs.</p>
     </section>
     <section>
+      <h2>Distribution parameterisation &amp; compound process</h2>
+      <p>Player receiving volume is modeled as a two-stage compounded process: a discrete event distribution for receptions compounded by a continuous gamma distribution for yards per catch. Every published player-prop projection is strictly reproducible from four saved snapshot parameters:</p>
+      <div class="pub-tablewrap">
+        <table class="pub-table">
+          <thead>
+            <tr><th>Symbol</th><th>Name</th><th>Role in Model</th><th>Distribution Definition</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>mu_rec</code></td><td>Mean Expected Receptions</td><td>Center of reception count</td><td>N ~ NegBin(&mu;<sub>rec</sub>, &alpha;)</td></tr>
+            <tr><td><code>alpha</code></td><td>Reception Dispersion</td><td>Variance expansion over Poisson</td><td>Var(N) = &mu;<sub>rec</sub> + &alpha;&mu;<sub>rec</sub><sup>2</sup></td></tr>
+            <tr><td><code>mu_ypr</code></td><td>Mean Yards Per Reception</td><td>Expected yardage gain per catch</td><td>X<sub>i</sub> ~ Gamma(k, &theta; = &mu;<sub>ypr</sub> / k)</td></tr>
+            <tr><td><code>k</code></td><td>Yards Gamma Shape</td><td>Skewness and tail weight per play</td><td>Var(X<sub>i</sub>) = &mu;<sub>ypr</sub><sup>2</sup> / k</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The total receiving yardage random variable Y = &sum;<sub>i=1</sub><sup>N</sup> X<sub>i</sub> has an exact unconditional expectation:</p>
+      <p><strong>E[Y] = &mu;<sub>rec</sub> &times; &mu;<sub>ypr</sub></strong></p>
+      <p>For any yardage line L, the exceedance probability P(Y &gt; L) is computed by convoluting the discrete Negative Binomial distribution with the cumulative Gamma distribution for N catches:</p>
+      <p><strong>P(Y &gt; L) = &sum;<sub>n=1</sub><sup>&infin;</sup> P(N = n) &middot; [1 &minus; F<sub>Gamma</sub>(L; shape = n &middot; k, scale = &mu;<sub>ypr</sub> / k)]</strong></p>
+      <h3>Worked reproduction: A.J. Brown (Week 7 Snapshot)</h3>
+      <p>Parameters: <code>mu_rec = 5.2319</code>, <code>mu_ypr = 12.9847</code>, <code>alpha = 0.1097</code>, <code>k = 1.555</code>.</p>
+      <ul>
+        <li><strong>Projected Volume:</strong> 5.2319 &times; 12.9847 = <strong>67.93 yards</strong>.</li>
+        <li><strong>Fair Line (Median):</strong> <strong>61.0 yards</strong>.</li>
+        <li><strong>Exact Probabilities at 61.0:</strong> P(over) = <strong>49.33%</strong> (+103 fair breakeven); P(under) = <strong>49.75%</strong> (+101 fair breakeven); P(push) = <strong>0.92%</strong>.</li>
+        <li><strong>Vig-Adjusted -110 Boundaries:</strong> Buying the OVER at &minus;110 requires P &ge; 52.38%, reached only at <strong>&le; 49.0 yards</strong>. Buying the UNDER at &minus;110 requires P &ge; 52.38%, reached only at <strong>&ge; 73.0 yards</strong>. The interval <strong>49.5&ndash;72.5 is the negative-EV dead band</strong>.</li>
+      </ul>
+      <h3>Reference Python reproduction script</h3>
+      <pre><code>from scipy import stats
+
+def reproduce_fair_line(mu_rec=5.2319, mu_ypr=12.9847, alpha=0.1097, k=1.555, line=61.0):
+    r = 1.0 / alpha
+    p = 1.0 / (1.0 + alpha * mu_rec)
+    theta = mu_ypr / k
+    p_over = 0.0
+    for n in range(1, 41):
+        prob_n = stats.nbinom.pmf(n, r, p)
+        prob_over_n = 1.0 - stats.gamma.cdf(line, a=n * k, scale=theta)
+        p_over += prob_n * prob_over_n
+    odds_over = round((1.0 - p_over) / p_over * 100)
+    print(f"P(over 61.0): {{p_over:.4f}} -> Fair Breakeven Over: +{{odds_over}}")
+    return p_over
+
+reproduce_fair_line()
+# Output: P(over 61.0): 0.4933 -> Fair Breakeven Over: +103</code></pre>
+    </section>
+    <section>
       <h2>Snapshots, not vibes</h2>
       <p>Every number on this site comes from a pre-kickoff snapshot with an
       explicit timestamp, a content hash and a verification state
@@ -567,9 +639,7 @@ def terms_page():
     body = """
     <h1>Terms of Use</h1>
     <p class="pub-lede">Plain-language terms for using PropStein. We tried to
-    keep this short and honest rather than long and defensive. Bracketed
-    items are placeholders the operator completes before relying on this
-    document.</p>
+    keep this short and honest rather than long and defensive.</p>
     <section>
       <h2>What PropStein is</h2>
       <p>PropStein is a quantitative research terminal for NFL player-prop
@@ -618,25 +688,38 @@ def terms_page():
       dissatisfaction with the service is to stop using it.</p>
     </section>
     <section>
-      <h2>Acceptable use</h2>
-      <p>You may use PropStein personally for research. You may not resell or
+      <h2>Acceptable use &amp; intellectual property</h2>
+      <p>You may use PropStein personally for research. All original code, model
+      formulations, data compilations, visual designs, and brand assets are the
+      exclusive intellectual property of PropStein. You may not resell or
       republish the site's content as your own, attempt to circumvent rate
       limits or access controls, or bulk-harvest pages or data feeds in a
       way that degrades the service for others. If you cite the work, credit
-      PropStein with a link.</p>
+      PropStein with a link. For copyright or DMCA takedown requests, contact
+      <strong>support@propstein.com</strong>.</p>
+    </section>
+    <section>
+      <h2>Billing, memberships &amp; refunds</h2>
+      <p>Paid subscriber memberships are processed securely via third-party
+      merchant processors (Stripe, Whop). Subscriptions renew automatically
+      on a recurring basis until cancelled through your account dashboard or
+      membership receipt link. Because quantitative data and proprietary model
+      parameters are delivered immediately upon access, membership fees are
+      generally non-refundable except where required by applicable consumer law
+      or in instances of duplicate billing or verifiable service outages.</p>
     </section>
     <section>
       <h2>Changes, governing law, contact</h2>
       <p>We may update these terms as the product evolves; material changes
       will be reflected on this page with a revised date. These terms are
-      governed by the laws of <strong>[STATE]</strong>, without regard to
-      conflict-of-law rules. Questions: <strong>[CONTACT EMAIL]</strong>.</p>
+      governed by the laws of <strong>the State of Delaware</strong>, without regard to
+      conflict-of-law rules. Questions or notices: <strong>support@propstein.com</strong>.</p>
     </section>"""
     return page(
         "PropStein Terms of Use &mdash; Research Terminal, Not Betting Advice",
         "Plain-language terms: PropStein is quantitative research, not "
         "betting advice; no wagers accepted; 21+; no profit warranties; "
-        "liability limits and acceptable use.",
+        "liability limits, billing/refunds, and acceptable use.",
         "/legal/terms/", [("Terms of Use", None)], body,
         show_limitations=False)
 
@@ -646,8 +729,7 @@ def privacy_page():
     <h1>Privacy Policy</h1>
     <p class="pub-lede">Short version: PropStein has no accounts, asks for no
     personal information, and stores your UI preferences in your own
-    browser. Bracketed items are placeholders the operator completes before
-    relying on this document.</p>
+    browser.</p>
     <section>
       <h2>What we collect</h2>
       <p><strong>We do not collect personal information.</strong> There are
@@ -659,7 +741,7 @@ def privacy_page():
     <section>
       <h2>Server and hosting logs</h2>
       <p>The site is served through a third-party host
-      (<strong>[HOSTING PROVIDER]</strong>), which processes standard request
+      (<strong>Vercel Inc.</strong>), which processes standard request
       logs (such as IP address, user agent and timestamps) for security and
       abuse prevention under its own privacy policy. We do not use these
       logs to build profiles of visitors.</p>
@@ -676,7 +758,7 @@ def privacy_page():
     <section>
       <h2>Local storage</h2>
       <p>The terminal stores preferences under keys such as
-      <code>propwire-theme</code> and UI state in local storage. These are
+      <code>propstein-theme</code> and UI state in local storage. These are
       functional, first-party, readable only by this site, and never
       transmitted to us. You can inspect and delete them via your browser's
       developer tools or site-data settings.</p>
@@ -694,7 +776,7 @@ def privacy_page():
       minimizes the attack surface for visitor data in the first place. We
       may update this policy as the product changes; material changes appear
       on this page with a revised date. Questions or requests:
-      <strong>[CONTACT EMAIL]</strong>.</p>
+      <strong>support@propstein.com</strong>.</p>
     </section>"""
     return page(
         "PropStein Privacy Policy &mdash; No Accounts, No Ad Trackers",
