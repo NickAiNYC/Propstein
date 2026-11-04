@@ -22,7 +22,8 @@
     ]
   },
   "holdout_w1_brier_skill_score_pct": -12.51,
-  "sample_threshold_target": 300,
+  "sample_threshold_target": 600,
+  "sample_checkpoint_descriptive": 300,
   "sample_sufficient": false,
   "action_required": {
     "state_no_edge_on_performance": true,
