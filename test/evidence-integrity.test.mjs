@@ -60,3 +60,27 @@ test('evidence integrity: gate counter requires independently evaluable qualifyi
     );
   }
 });
+
+test('evidence integrity: copy lint bans promotional tout copy in public views', () => {
+  const publicFiles = [
+    path.join(ROOT, 'viewer/performance/index.html'),
+    path.join(ROOT, 'terminal/src/components/propstein/PerformancePage.tsx'),
+  ];
+
+  const TOUT_PATTERNS = [
+    { pattern: /\b(value bet|best bet|lean over|lean under|beat the book|act now|before the line moves)\b/i, desc: 'tout betting CTA' },
+    { pattern: /\b(guaranteed\s+(return|profit|win)|guaranteed\s+edge)\b/i, desc: 'guaranteed edge tout claim' },
+    { pattern: /\b(positive\s+ev\s+picks|lock\s+of\s+the\s+day)\b/i, desc: 'tout pick label' },
+  ];
+
+  for (const file of publicFiles) {
+    if (!fs.existsSync(file)) continue;
+    const content = fs.readFileSync(file, 'utf8');
+    for (const { pattern, desc } of TOUT_PATTERNS) {
+      assert.ok(
+        !pattern.test(content),
+        `FAIL CLOSED: Tout copy violation in ${path.relative(ROOT, file)}: found ${desc}`
+      );
+    }
+  }
+});

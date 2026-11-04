@@ -293,9 +293,6 @@
     return merged;
   };
 
-  // Canonical CLV ledger root hash anchored to settle_ledger.py and clv_audit_report.json
-  const CLV_ROOT_HASH_FALLBACK = '178e29974bf8748c';
-
   // Map PropWire team codes to official ESPN CDN slugs + subtle brand ring tints
   // (NFL crest metadata lives on the adapter; other sports bring their own).
   const NFL_LOGO_MAP = adapter.logo.map;
@@ -1168,22 +1165,6 @@
     if ($('#teamFilter')) $('#teamFilter').addEventListener('input', syncFilters);
     if ($('#clearFilters')) $('#clearFilters').addEventListener('click', clearFilters);
 
-    // Interactive risk steppers (execution gate)
-    const gateMinus = $('#gateMinus');
-    const gatePlus = $('#gatePlus');
-
-    function updateGate(delta) {
-      triggerHaptic('light');
-      state.picks.gate_edge = Math.max(0.01, Math.min(0.30, +( (Number(state.picks.gate_edge) || 0.10) + delta ).toFixed(3)));
-      renderHeader();
-      renderBoard();
-    }
-
-    if (gateMinus && gatePlus) {
-      gateMinus.addEventListener('click', () => updateGate(-0.01));
-      gatePlus.addEventListener('click', () => updateGate(0.01));
-    }
-
     // Mobile Settings & Risk Sheet Controls
     const mobileMenuBtn = $('#mobileMenuBtn');
     const mobileStatusPill = $('#mobileStatusPill');
@@ -1239,14 +1220,6 @@
         $$('.filter-mode-chips [data-sheet-mode]').forEach((b) => b.classList.toggle('active', b === btn));
       });
     });
-
-    const modalGateMinus = $('#modalGateMinus');
-    const modalGatePlus = $('#modalGatePlus');
-
-    if (modalGateMinus && modalGatePlus) {
-      modalGateMinus.addEventListener('click', () => updateGate(-0.01));
-      modalGatePlus.addEventListener('click', () => updateGate(0.01));
-    }
 
     const mobileSlateSelector = $('#mobileSlateSelector');
     if (mobileSlateSelector) {
@@ -2641,8 +2614,8 @@
       const total = report.total_records ?? report.records.length;
       const beatRate = report.beat_close_rate_pct ?? (report.summary ? +(report.summary.positive_clv_pct * 100).toFixed(1) : 0);
       const avgClv = report.avg_clv_prob_pct ?? (report.summary ? +(report.summary.avg_clv_ev * 100).toFixed(2) : 0);
-      const root = report.ledger_root_hash || CLV_ROOT_HASH_FALLBACK;
-      el.innerHTML = `<strong>CLV</strong> ${total} verified records · ${beatRate}% beat close · +${avgClv}% mean CLV · Root #${root}`;
+      const rootText = report.ledger_root_hash ? `Root #${report.ledger_root_hash}` : 'LEDGER ROOT UNAVAILABLE';
+      el.innerHTML = `<strong>CLV</strong> ${total} verified records · ${beatRate}% beat close · +${avgClv}% mean CLV · ${rootText}`;
     } else {
       el.innerHTML = `<strong>CLV</strong> 0 verified live records.`;
     }
@@ -4670,78 +4643,15 @@
     const isPolyWsDisconnected = Boolean(
       state.sniperPolyWsStale || (snap && snap.polymarket_ws_connected === false) || isStaleCourt
     );
-    const defaultArbCards = [
-      {
-        token_id: '0xpoly_giannis_pts_31_5',
-        player_name: 'Giannis Antetokounmpo',
-        team: 'MIL',
-        market_label: 'PTS Over 31.5',
-        fair_prob_pct: 64,
-        implied_prob_pct: 58,
-        poly_ask_price: 0.58,
-        poly_edge_pct: 6.0,
-        sportsbook_book: 'DraftKings',
-        sportsbook_implied_prob_pct: 62,
-        sportsbook_odds: -110,
-        sportsbook_edge_pct: 2.0,
-        cross_venue_spread_pct: 4.0,
-        liquidity_usd: 2550,
-        depth_tooltip: '$500 available at $0.58, $1,200 at $0.59, $850 at $0.60',
-        best_venue: 'Polymarket',
-        action_label: 'View Polymarket Market',
-        action_url: 'https://polymarket.com/event/nba-giannis-antetokounmpo-points-over-31-5',
-        is_actionable_lime: true
-      },
-      {
-        token_id: '0x91a4f8b20c71e84d3a109c77f62b10e489a31c01',
-        player_name: 'Tyrese Maxey',
-        team: 'PHI',
-        market_label: 'PTS Over 26.5',
-        fair_prob_pct: 63,
-        implied_prob_pct: 56,
-        poly_ask_price: 0.55,
-        poly_edge_pct: 7.0,
-        sportsbook_book: 'DraftKings',
-        sportsbook_implied_prob_pct: 60,
-        sportsbook_odds: -115,
-        sportsbook_edge_pct: 3.0,
-        cross_venue_spread_pct: 4.0,
-        liquidity_usd: 3000,
-        depth_tooltip: '$620 available at $0.55, $1,400 at $0.56, $980 at $0.57',
-        best_venue: 'Polymarket',
-        action_label: 'View Polymarket Market',
-        action_url: 'https://polymarket.com/event/nba-tyrese-maxey-points-over-26-5',
-        is_actionable_lime: true
-      },
-      {
-        token_id: '0xpoly_tatum_pts_28_5',
-        player_name: 'Jayson Tatum',
-        team: 'BOS',
-        market_label: 'PTS Over 28.5',
-        fair_prob_pct: 61,
-        implied_prob_pct: 60,
-        poly_ask_price: 0.59,
-        poly_edge_pct: 1.0,
-        sportsbook_book: 'FanDuel',
-        sportsbook_implied_prob_pct: 54,
-        sportsbook_odds: -108,
-        sportsbook_edge_pct: 7.0,
-        cross_venue_spread_pct: -6.0,
-        liquidity_usd: 2500,
-        depth_tooltip: '$450 available at $0.59, $950 at $0.60, $1,100 at $0.61',
-        best_venue: 'FanDuel',
-        action_label: 'View FanDuel Quote',
-        action_url: '#',
-        is_actionable_lime: false
-      }
-    ];
     const arbCardsSource = (Array.isArray(state.sniperLiveArbCards) && state.sniperLiveArbCards.length > 0)
       ? state.sniperLiveArbCards
       : (Array.isArray(snap?.cross_venue_arb_board) && snap.cross_venue_arb_board.length > 0)
         ? snap.cross_venue_arb_board
-        : defaultArbCards;
+        : [];
 
-    const arbBoardHtml = arbCardsSource.slice(0, 4).map((card) => {
+    const arbBoardHtml = arbCardsSource.length === 0
+      ? '<div class="empty-arb-board font-mono text-xs text-muted" style="padding: 16px; text-align: center;">No qualifying cross-venue quotes in active snapshot.</div>'
+      : arbCardsSource.slice(0, 4).map((card) => {
       const polyEdge = Number(card.poly_edge_pct ?? ((Number(card.fair_prob_pct) - Number(card.implied_prob_pct)) || 0));
       const sbEdge = Number(card.sportsbook_edge_pct ?? ((Number(card.fair_prob_pct) - Number(card.sportsbook_implied_prob_pct)) || 0));
       const polyIsBest = (card.best_venue === 'Polymarket') || (polyEdge >= sbEdge);
@@ -8113,7 +8023,7 @@
     const winRate = report.win_rate_pct ?? beatCloseRate;
     const realizedRoi = report.realized_roi_pct ?? 0;
     const netPnl = report.net_pnl ?? 0;
-    const rootHash = report.ledger_root_hash || CLV_ROOT_HASH_FALLBACK;
+    const rootHash = report.ledger_root_hash || 'UNAVAILABLE';
 
     const kpiHtml = `
       <div class="clv-modal-shell font-mono select-none">
