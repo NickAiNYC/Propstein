@@ -33,20 +33,43 @@ def main() -> int:
         except Exception:
             pass
 
-    # If CLV report exists, construct paired cohort
+    # If CLV report exists, construct paired cohort with actual on-field outcomes
     if clv_path.is_file() and not observations:
         try:
+            stats_path = ROOT / "data" / "stats_2026.parquet"
+            w7_stats = {}
+            if stats_path.is_file():
+                import pandas as pd
+                stats_df = pd.read_parquet(stats_path)
+                w7_stats = stats_df[stats_df["week"] == 7].set_index("player_id").to_dict(orient="index")
+
             clv_data = json.loads(clv_path.read_text(encoding="utf-8"))
             ledger_rows = clv_data.get("ledger") or []
+            from scripts.fit_edge import devig
+            import numpy as np
+
             for row in ledger_rows:
+                pid = row.get("player_id")
+                line = float(row.get("trigger_line", 0.0))
+                market = row.get("market")
+                side = row.get("side", "OVER")
+
+                if pid in w7_stats:
+                    act = w7_stats[pid]
+                    actual = float(act.get("receptions" if market == "receptions" else "receiving_yards", 0.0) or 0.0)
+                    if abs(actual - line) < 1e-4:
+                        continue  # Exclude exact pushes from evaluable sample
+                    y = 1.0 if (actual > line if side == "OVER" else actual < line) else 0.0
+                else:
+                    st = row.get("status")
+                    if st in ("PUSH", "VOID", "DNP", "CANCELLED"):
+                        continue
+                    y = 1.0 if st == "BEAT_CLOSE" else 0.0
+
+                c_odds = row.get("closing_odds") or row.get("trigger_odds") or -115
+                p_mkt = devig(c_odds, -115)
                 edge = float(row.get("trigger_edge") or 0.0)
-                # Reconstruct implied entry prob and closing devig prob
-                # Standard American -115 -> ~0.5349 raw, ~0.50 devigged two-way
-                p_mkt = 0.50
-                p_mod = p_mkt + edge
-                # Status: BEAT_CLOSE -> 1, FADED -> 0, PUSH/TIE -> 0.5
-                st = row.get("status")
-                y = 1.0 if st == "BEAT_CLOSE" else (0.5 if st == "PUSH" else 0.0)
+                p_mod = float(np.clip(p_mkt + edge, 0.01, 0.99))
                 event_id = f"{row.get('team', '')}_{row.get('opponent', '')}" or "w7_event"
                 observations.append({
                     "p_model": p_mod,
