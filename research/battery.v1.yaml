@@ -1,0 +1,28 @@
+battery_id: propstein-receiving-v1
+frozen_at: "2026-11-04T17:30:00Z"
+n_variants: 6
+variants:
+  - id: resid-calib-band
+    description: "Residual conditioned on empirical calibration band bias alone"
+    hypothesis: "Prop markets tilt in 35-45% and 55-65% bands"
+  - id: resid-role-confidence
+    description: "Residual conditioned on starter certainty and snap concentration"
+    hypothesis: "Bench players face asymmetrical minutes truncation"
+  - id: resid-absence-shock
+    description: "Residual conditioned on confirmed vacated target share"
+    hypothesis: "Teammate absences non-linearly boost starting target share"
+  - id: resid-composite-l2
+    description: "Composite residual with L2 regularizer lambda=2.0"
+    hypothesis: "Regularized combination of band, role, and absence shocks"
+  - id: baseline-market-anchor
+    description: "Static market level baseline (zero residual delta)"
+    hypothesis: "Control variant representing closing line consensus"
+  - id: hier-shrinkage-empirical
+    description: "Hierarchical Empirical Bayes shrinkage on level"
+    hypothesis: "James-Stein shrinkage across position segments"
+correction: benjamini-hochberg
+fdr_nominal_alpha: 0.05
+null_simulation:
+  generator: proportional-devig
+  n_reps: 500
+  discovery_rule: "paired Brier diff < 0 and CI upper < 0"

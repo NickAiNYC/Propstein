@@ -1,0 +1,34 @@
+{
+  "n_samples": 370,
+  "market": "receiving_yards",
+  "ks_statistic": 0.08814,
+  "ks_pvalue": 0.00597,
+  "chisq_statistic": 50.595,
+  "chisq_pvalue": 0.0,
+  "is_uniform_at_05": false,
+  "decile_counts": [
+    57,
+    28,
+    31,
+    30,
+    37,
+    33,
+    35,
+    31,
+    20,
+    68
+  ],
+  "decile_frequencies": [
+    0.1541,
+    0.0757,
+    0.0838,
+    0.0811,
+    0.1,
+    0.0892,
+    0.0946,
+    0.0838,
+    0.0541,
+    0.1838
+  ],
+  "shape_diagnosis": "UNDERDISPERSED_LIGHT_TAILS (outcomes fall in extremes more than modeled)"
+}

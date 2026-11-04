@@ -1,0 +1,15 @@
+{
+  "n_pairs": 37,
+  "brier_model": 0.469833,
+  "brier_market": 0.25,
+  "paired_diff": 0.219833,
+  "paired_diff_ci95": [
+    0.153059,
+    0.284085
+  ],
+  "median_abs_gap_pts": 18.5,
+  "corr_model_market": 0.0,
+  "n_events": 7,
+  "is_copycat": false,
+  "paired_win_rate": 0.0541
+}

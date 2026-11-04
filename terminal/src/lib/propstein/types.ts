@@ -58,6 +58,19 @@ export const EVIDENCE_STATUS_META: Record<
   },
 };
 
+export interface PairedMarketComparison {
+  n_pairs: number;
+  brier_model: number;
+  brier_market: number;
+  paired_diff: number;
+  paired_diff_ci95: [number, number];
+  median_abs_gap_pts: number;
+  corr_model_market: number;
+  n_events: number;
+  is_copycat: boolean;
+  paired_win_rate: number;
+}
+
 /* ---------- sports ---------- */
 
 export type Sport = "nfl" | "nba";
