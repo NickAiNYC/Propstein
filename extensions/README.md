@@ -61,8 +61,8 @@ npm run test:e2e           # 6 scenarios, ~6s
 
 # Local demo loop (fixture page + API dev bypass):
 npm run demo               # serves demo/demo-sportsbook.html on :4173
-APP_ENV=development PROPWIRE_ALLOW_DEV_AUTH_BYPASS=1 \
-  uvicorn api.main:app --port 8000    # from the repository root
+APP_ENV=development PROPWIRE_ALLOW_DEV_AUTH_BYPASS=1 ALLOW_INSECURE_DEV_TOKENS=1 \
+  uvicorn api.main:app --port 8000    # from the repository root; or set EXTENSION_SESSION_SECRET instead of the insecure-token flag
 ```
 
 ### Loading the extension

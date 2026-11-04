@@ -17,8 +17,10 @@ Security design — implements the mitigations from docs/LIVE_SNIPER_AUDIT.md
   (S-1): unauthenticated callers receive nothing but the public health
   document.
 * ``jti`` revocation list + per-principal sliding-window rate limit on
-  session issuance (S-6). Revocation state is process-local — production
-  multi-worker deployments must move it to Redis (documented limitation).
+  session issuance (S-6). State sits in a pluggable store: Redis when
+  ``REDIS_URL`` is configured, in-memory for tests and single-process dev.
+  Production refuses to start when more than one web worker would share
+  only the in-memory store. Tokens carry an ``sv`` session-version claim.
 * ``EXTENSION_KILL_SWITCH=1`` disables the extension surface immediately:
   health reports the switch and all session/market routes return 503.
 
@@ -47,13 +49,27 @@ import base64
 import hashlib
 import hmac
 import json
+import logging
 import os
 import secrets
+import sys
 import time
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel, Field
+
+from api.session_store import (
+    _RATE_BUCKETS,
+    _REVOKED_JTI,
+    _SESSION_VERSIONS,
+    SessionStoreUnavailable,
+    configure_from_env,
+    get_store,
+    store_is_memory,
+    use_memory_store,
+    worker_count,
+)
 
 router = APIRouter()
 
@@ -78,16 +94,76 @@ def _dev_bypass_enabled() -> bool:
     return not _is_production() and os.environ.get("PROPWIRE_ALLOW_DEV_AUTH_BYPASS") == "1"
 
 
+_DEV_SESSION_SECRET = "propstein-extension-dev-secret"
+_INSECURE_DEV_WARNED = False
+_INSECURE_DEV_WARNING = (
+    "INSECURE DEVELOPMENT SECRET: ALLOW_INSECURE_DEV_TOKENS=1 and "
+    "EXTENSION_SESSION_SECRET is unset. Extension sessions are signed with "
+    "the built-in development secret. Never set ALLOW_INSECURE_DEV_TOKENS in production."
+)
+
+
+def _configured_session_secret() -> str:
+    return (os.environ.get("EXTENSION_SESSION_SECRET") or "").strip()
+
+
+def _insecure_dev_tokens_opted_in() -> bool:
+    """Explicit non-production opt-in. The flag does nothing when APP_ENV=production."""
+    return (not _is_production()) and os.environ.get("ALLOW_INSECURE_DEV_TOKENS") == "1"
+
+
+def _warn_insecure_dev_secret() -> None:
+    global _INSECURE_DEV_WARNED
+    if _INSECURE_DEV_WARNED:
+        return
+    _INSECURE_DEV_WARNED = True
+    logging.getLogger("propstein.security").warning(_INSECURE_DEV_WARNING)
+    print(_INSECURE_DEV_WARNING, file=sys.stderr)
+
+
 def _session_secret() -> str | None:
-    """Signing secret. Fail closed in production when unset."""
-    secret = os.environ.get("EXTENSION_SESSION_SECRET")
+    """Signing secret. Fail closed unless a real secret or the dev opt-in is set."""
+    secret = _configured_session_secret()
     if secret:
         return secret
-    if _is_production():
-        return None
-    # Deterministic non-production default: local dev and the test suite can
-    # exercise the full token flow without secrets; never valid in production.
-    return "propstein-extension-dev-secret"
+    if _insecure_dev_tokens_opted_in():
+        _warn_insecure_dev_secret()
+        return _DEV_SESSION_SECRET
+    return None
+
+
+def assert_session_secret_configured() -> None:
+    """Refuse process startup when sessions would be unsigned."""
+    if _configured_session_secret():
+        return
+    if _insecure_dev_tokens_opted_in():
+        _warn_insecure_dev_secret()
+        return
+    raise RuntimeError(
+        "Refusing to start: EXTENSION_SESSION_SECRET is unset. "
+        "Set a real signing secret, or set ALLOW_INSECURE_DEV_TOKENS=1 "
+        "outside production to use the built-in development secret."
+    )
+
+
+def enforce_runtime_security() -> None:
+    """Startup gate: signing secret, shared store, and multi-worker policy."""
+    assert_session_secret_configured()
+    configure_from_env()
+    workers = worker_count()
+    if _is_production() and store_is_memory():
+        if workers > 1:
+            raise RuntimeError(
+                "Refusing to start: production is configured for "
+                f"{workers} web workers but extension revocation and rate "
+                "limits are in the in-memory store. Set REDIS_URL so every "
+                "worker shares one store (or run a single worker)."
+            )
+        logging.getLogger("propstein.security").warning(
+            "Production is using the in-memory extension session store. "
+            "Revocation and rate limits will not be shared across processes. "
+            "Set REDIS_URL before raising the worker count."
+        )
 
 
 def _kill_switch_on() -> bool:
@@ -97,10 +173,6 @@ def _kill_switch_on() -> bool:
 # ---------------------------------------------------------------------------
 # Scoped session tokens — HMAC-SHA256, base64url segments
 # ---------------------------------------------------------------------------
-
-_REVOKED_JTI: dict[str, float] = {}  # jti -> expiration epoch (lazy-cleaned)
-_RATE_BUCKETS: dict[str, list[float]] = {}  # principal -> issuance timestamps
-
 
 def _b64url(data: bytes) -> str:
     return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
@@ -116,6 +188,10 @@ def issue_session_token(principal: str, ttl_seconds: int) -> tuple[str, dict]:
     if secret is None:
         raise HTTPException(503, "session signing is unavailable")
     now = int(time.time())
+    try:
+        session_version = get_store().session_version(principal)
+    except SessionStoreUnavailable:
+        raise HTTPException(503, "session store is unavailable")
     header = {"alg": "HS256", "typ": SESSION_TOKEN_TYPE}
     payload = {
         "sub": principal,
@@ -123,6 +199,7 @@ def issue_session_token(principal: str, ttl_seconds: int) -> tuple[str, dict]:
         "iat": now,
         "exp": now + ttl_seconds,
         "jti": secrets.token_hex(16),
+        "sv": session_version,
     }
     h = _b64url(json.dumps(header, separators=(",", ":")).encode())
     p = _b64url(json.dumps(payload, separators=(",", ":")).encode())
@@ -155,9 +232,18 @@ def verify_session_token(token: str) -> dict:
     if int(payload.get("exp", 0)) <= now:
         raise HTTPException(401, "session token expired — sign in again")
     jti = str(payload.get("jti", ""))
-    revoked_until = _REVOKED_JTI.get(jti)
-    if revoked_until is not None and revoked_until > now:
-        raise HTTPException(401, "session token has been revoked")
+    principal = str(payload.get("sub") or "")
+    try:
+        if get_store().is_revoked(jti, now):
+            raise HTTPException(401, "session token has been revoked")
+        try:
+            token_version = int(payload.get("sv"))
+        except (TypeError, ValueError):
+            raise HTTPException(401, "session token version is missing")
+        if token_version != get_store().session_version(principal):
+            raise HTTPException(401, "session token version is stale")
+    except SessionStoreUnavailable:
+        raise HTTPException(503, "session store is unavailable")
     return payload
 
 
@@ -179,12 +265,17 @@ def _principal_of(membership: dict) -> str:
 
 
 def _check_rate_limit(principal: str) -> None:
-    now = time.time()
-    window = [t for t in _RATE_BUCKETS.get(principal, []) if now - t < SESSION_RATE_WINDOW_SECONDS]
-    if len(window) >= SESSION_RATE_LIMIT:
+    try:
+        allowed = get_store().check_and_record(
+            principal,
+            time.time(),
+            SESSION_RATE_WINDOW_SECONDS,
+            SESSION_RATE_LIMIT,
+        )
+    except SessionStoreUnavailable:
+        raise HTTPException(503, "session store is unavailable")
+    if not allowed:
         raise HTTPException(429, "too many session issuance requests — slow down")
-    window.append(now)
-    _RATE_BUCKETS[principal] = window
 
 
 def _verify_membership(authorization: str | None) -> dict:
@@ -329,12 +420,10 @@ def extension_session_revoke(session: dict = Depends(require_scoped_session)) ->
     The revocation is honored until the token's own expiration passes."""
     jti = str(session.get("jti", ""))
     exp = int(session.get("exp", 0))
-    _REVOKED_JTI[jti] = float(exp)
-    # Lazy cleanup of expired revocation entries.
-    now = time.time()
-    for key, until in list(_REVOKED_JTI.items()):
-        if until <= now:
-            _REVOKED_JTI.pop(key, None)
+    try:
+        get_store().revoke(jti, float(exp))
+    except SessionStoreUnavailable:
+        raise HTTPException(503, "session store is unavailable")
     return {"revoked": True, "jti": jti, "untilEpoch": exp}
 
 

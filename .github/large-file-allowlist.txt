@@ -1,0 +1,29 @@
+# Newly added files larger than 500 KB fail CI unless listed here.
+# These paths are existing frozen snapshots and hash-gated artifacts.
+# Do not delete or move them to satisfy the size gate; append a new path
+# in the same commit that introduces another legitimate artifact.
+#
+# Included:
+#   - NFL freeze snapshot journals and published snapshot JSON
+#   - DRIVE-REC provenance corpora hashed by research/drive-rec-v2/verify_provenance.py
+#   - NFL parity golden snapshots under test/snapshots/nfl/
+
+research/drive-rec-v2/artifacts/candidate_predictions_2023.csv.gz
+research/drive-rec-v2/artifacts/candidate_predictions_2024.csv.gz
+research/drive-rec-v2/artifacts/candidate_predictions_2025.csv.gz
+research/drive-rec-v2/artifacts/candidate_predictions_2026.csv.gz
+research/drive-rec-v2/artifacts/incumbent_predictions_2023.csv.gz
+research/drive-rec-v2/artifacts/incumbent_predictions_2024.csv.gz
+research/drive-rec-v2/artifacts/incumbent_predictions_2025.csv.gz
+research/drive-rec-v2/artifacts/incumbent_predictions_2026.csv.gz
+snapshots/snapshots_2026_w1.jsonl
+snapshots/snapshots_2026_w7.jsonl
+snapshots/snapshots_2026_w8.jsonl
+snapshots_2026_w1.json
+snapshots_2026_w7.json
+test/snapshots/nfl/projections_slate_2026_w7.json
+test/snapshots/nfl/renders_cards_research_receptions.json
+test/snapshots/nfl/renders_table_anytime_td.json
+viewer/snapshots_2026_w1.json
+viewer/snapshots_2026_w7.json
+viewer/snapshots_2026_w8.json

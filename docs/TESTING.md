@@ -33,7 +33,7 @@ earned, documented whitelist delta.
 ## Dependency Lock (closed 2026-11-02)
 
 - `requirements.txt` = intent spec (floor ranges). `requirements.lock` = the reproducible reality: a clean-venv freeze of that spec, 68 exact pins, **suite-validated before locking** (355 passed / 2 skipped at lock time — notably under pandas 3.1 / numpy 2.5, newer majors than dev used).
-- CI installs the lock, never the ranges (`ci.yml`: both Python jobs). `pip-audit` audits the exact locked set.
+- CI installs the lock, never the ranges (`ci.yml`: both Python jobs). `scripts/pip_audit_gate.py` audits the locked set and the installed environment and fails on high/critical (unknown severity fails closed). CI upgrades pip to `>=26.2` before the audit.
 - `tests/test_dependency_lock.py` (in the normal pytest run) pins lock↔spec consistency and the validated quant-stack majors — a range bump without a lock refresh, or a silent major rollover, fails CI.
 - Refresh protocol is in the lock header: fresh venv → install spec → run the **full** suite → freeze → replace pins in the same PR.
 
@@ -81,7 +81,10 @@ switches, 390px viewport fits (`scrollWidth == clientWidth`).
 - `npm ci`
 - `npm run check:production`
 - `pip install -r requirements.lock pytest` + `PYTHONPATH=. pytest test/ tests/` (locked set; includes the lock-consistency tests)
-- `pip-audit` against the locked set (`continue-on-error` advisory)
+- `python scripts/pip_audit_gate.py` against the locked set and installed environment (blocking on high/critical)
+- `npm audit --prefix extensions --audit-level=high` (blocking)
+- Gitleaks secret scan (blocking; `.gitleaks.toml` allowlists reviewed fixture false positives)
+- `python3 scripts/check_large_files.py` rejects newly added files over 500 KB unless listed in `.github/large-file-allowlist.txt`
 - Vercel preview build
 - Post-deploy header and feed-cache probe (to add)
 

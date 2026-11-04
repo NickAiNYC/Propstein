@@ -1,0 +1,27 @@
+title = "PropStein secret scan"
+
+[extend]
+useDefault = true
+
+# Reviewed 2026-11-04 against a full-history scan. Every hit was
+# generic-api-key on a synthetic Polymarket token id, a sha256 dedup key,
+# or a unit-test placeholder. These rules are line-scoped so a real
+# credential on any other line still fails the scan.
+
+[[allowlists]]
+description = "Synthetic token_id assignments (fixture ids and 0x addresses), not credentials."
+regexTarget = "line"
+regexes = ['''(?i)["']?token_id["']?\s*[:=]\s*["']0x''']
+
+[[allowlists]]
+description = "sha256 dedup_key fields in sniper snapshots."
+regexTarget = "line"
+regexes = ['''(?i)["']dedup_key["']\s*:\s*["'][0-9a-fA-F]{32,}''']
+
+[[allowlists]]
+description = "Unit-test placeholder signing and Stripe secrets. Matched on the line, not the path, so other secrets in test files still fail."
+regexTarget = "line"
+regexes = [
+  '''EXTENSION_SESSION_SECRET["']\s*,\s*["'](?:test-secret-|super-secret-key-|pytest-only-)''',
+  '''STRIPE_WEBHOOK_SECRET["']\s*,\s*["']whsec_test_''',
+]

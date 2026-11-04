@@ -38,6 +38,13 @@ ENV_VARS = (
     "EXTENSION_SESSION_SECRET",
     "EXTENSION_KILL_SWITCH",
     "EXTENSION_SESSION_TTL_SECONDS",
+    "ALLOW_INSECURE_DEV_TOKENS",
+    "EXTENSION_SESSION_STORE",
+    "EXTENSION_SESSION_VERSION",
+    "REDIS_URL",
+    "WEB_CONCURRENCY",
+    "UVICORN_WORKERS",
+    "GUNICORN_WORKERS",
 )
 
 
@@ -53,11 +60,16 @@ def client():
 def _clean_env(monkeypatch):
     for var in ENV_VARS:
         monkeypatch.delenv(var, raising=False)
+    ext._INSECURE_DEV_WARNED = False
+    ext.use_memory_store()
     ext._REVOKED_JTI.clear()
     ext._RATE_BUCKETS.clear()
+    ext._SESSION_VERSIONS.clear()
     yield
+    ext.use_memory_store()
     ext._REVOKED_JTI.clear()
     ext._RATE_BUCKETS.clear()
+    ext._SESSION_VERSIONS.clear()
 
 
 @pytest.fixture
@@ -67,6 +79,7 @@ def dev_auth(monkeypatch, _clean_env):
     # these variables between setup and the request under test.
     monkeypatch.setenv("APP_ENV", "development")
     monkeypatch.setenv("PROPWIRE_ALLOW_DEV_AUTH_BYPASS", "1")
+    monkeypatch.setenv("ALLOW_INSECURE_DEV_TOKENS", "1")
 
 
 @pytest.fixture
@@ -376,6 +389,126 @@ def test_evaluate_unknown_player_is_no_coverage(client, dev_auth):
     assert r.json()["status"] == "NO_COVERAGE"
 
 
+class _FakeRedis:
+    """Enough of the Redis client for the session store's eval/get/set calls."""
+
+    def __init__(self):
+        self.kv: dict[str, str] = {}
+        self.zsets: dict[str, dict[str, float]] = {}
+
+    def ping(self):
+        return True
+
+    def get(self, key):
+        return self.kv.get(key)
+
+    def set(self, key, value, ex=None):
+        self.kv[key] = str(value)
+        return True
+
+    def eval(self, script, numkeys, key, now, window, limit, member):
+        now = float(now)
+        window = float(window)
+        limit = int(limit)
+        zset = self.zsets.setdefault(key, {})
+        expired = [item for item, score in zset.items() if score <= now - window]
+        for item in expired:
+            del zset[item]
+        if len(zset) >= limit:
+            return [0, len(zset)]
+        zset[member] = now
+        return [1, len(zset)]
+
+
+def test_startup_refuses_without_secret_or_opt_in(monkeypatch):
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.delenv("EXTENSION_SESSION_SECRET", raising=False)
+    monkeypatch.delenv("ALLOW_INSECURE_DEV_TOKENS", raising=False)
+    with pytest.raises(RuntimeError, match="Refusing to start"):
+        ext.enforce_runtime_security()
+
+
+def test_startup_ignores_insecure_flag_in_production(monkeypatch):
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.delenv("EXTENSION_SESSION_SECRET", raising=False)
+    monkeypatch.setenv("ALLOW_INSECURE_DEV_TOKENS", "1")
+    assert ext._session_secret() is None
+    with pytest.raises(RuntimeError, match="Refusing to start"):
+        ext.enforce_runtime_security()
+
+
+def test_dev_without_opt_in_refuses_to_start(monkeypatch):
+    monkeypatch.setenv("APP_ENV", "development")
+    monkeypatch.delenv("EXTENSION_SESSION_SECRET", raising=False)
+    monkeypatch.delenv("ALLOW_INSECURE_DEV_TOKENS", raising=False)
+    assert ext._session_secret() is None
+    with pytest.raises(RuntimeError, match="Refusing to start"):
+        ext.enforce_runtime_security()
+
+
+def test_dev_opt_in_uses_builtin_secret_and_warns(monkeypatch, capsys):
+    monkeypatch.setenv("APP_ENV", "development")
+    monkeypatch.delenv("EXTENSION_SESSION_SECRET", raising=False)
+    monkeypatch.setenv("ALLOW_INSECURE_DEV_TOKENS", "1")
+    ext._INSECURE_DEV_WARNED = False
+    assert ext._session_secret() == ext._DEV_SESSION_SECRET
+    assert "ALLOW_INSECURE_DEV_TOKENS=1" in capsys.readouterr().err
+    ext.enforce_runtime_security()
+
+
+def test_production_multi_worker_memory_store_refuses(monkeypatch):
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("EXTENSION_SESSION_SECRET", "real-session-secret")
+    monkeypatch.setenv("EXTENSION_SESSION_STORE", "memory")
+    monkeypatch.setenv("WEB_CONCURRENCY", "4")
+    with pytest.raises(RuntimeError, match="in-memory"):
+        ext.enforce_runtime_security()
+
+
+def test_production_multi_worker_redis_store_starts(monkeypatch):
+    from fastapi import HTTPException
+
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("EXTENSION_SESSION_SECRET", "real-session-secret")
+    monkeypatch.setenv("EXTENSION_SESSION_STORE", "redis")
+    monkeypatch.setenv("REDIS_URL", "redis://session-store.internal:6379/0")
+    monkeypatch.setenv("WEB_CONCURRENCY", "4")
+    fake = _FakeRedis()
+    monkeypatch.setattr("api.session_store.connect_redis", lambda url: fake)
+    ext.enforce_runtime_security()
+    token, payload = issue_session_token("mem_1", 600)
+    ext.get_store().revoke(payload["jti"], payload["exp"])
+    with pytest.raises(HTTPException) as caught:
+        verify_session_token(token)
+    assert caught.value.status_code == 401
+
+
+def test_redis_store_rate_limit_matches_memory_window():
+    from api.session_store import RATE_LIMIT_LUA, RedisSessionStore
+
+    assert "ZREMRANGEBYSCORE" in RATE_LIMIT_LUA
+    assert "count >= limit" in RATE_LIMIT_LUA
+    store = RedisSessionStore(_FakeRedis())
+    now = time.time()
+    for _ in range(10):
+        assert store.check_and_record("principal", now, 60, 10) is True
+    assert store.check_and_record("principal", now, 60, 10) is False
+
+
+def test_session_version_claim_rejects_stale_token(client, dev_auth):
+    data = _sign_in(client)
+    ext.get_store().set_session_version("dev-bypass", 2)
+    assert client.get("/api/v1/markets/model-coverage", headers=_bearer(data)).status_code == 401
+    fresh = _sign_in(client)
+    assert client.get("/api/v1/markets/model-coverage", headers=_bearer(fresh)).status_code == 200
+
+
+def test_extension_session_version_env_invalidates_tokens(client, dev_auth, monkeypatch):
+    data = _sign_in(client)
+    monkeypatch.setenv("EXTENSION_SESSION_VERSION", "2")
+    assert client.get("/api/v1/markets/model-coverage", headers=_bearer(data)).status_code == 401
+
+
 def test_drive_survival_formula_matches_extension_numerics():
     # Cross-check against the TypeScript implementation values
     # (extensions/packages/core/src/drive-reception-model.ts).
@@ -390,7 +523,9 @@ def test_drive_survival_formula_matches_extension_numerics():
 # ---------------------------------------------------------------------------
 
 
-def test_router_is_mounted_on_main_app():
+def test_router_is_mounted_on_main_app(monkeypatch):
+    # _clean_env removes the suite signing secret; startup now refuses without one.
+    monkeypatch.setenv("EXTENSION_SESSION_SECRET", "test-secret-0123456789")
     from api.main import app as main_app
 
     with TestClient(main_app) as main_client:
