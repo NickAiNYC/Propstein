@@ -3863,7 +3863,8 @@
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = research.length ? `Top ${Math.min(HOME_EDGE_LIMIT, research.length)} model signals` : modelRows.length ? 'Model fair lines' : 'Player prop research';
       setShowAll(research.length);
-      if (fallback) fallback.hidden = false;
+      // The status line already states the verification gate when research cards are visible.
+      if (fallback) fallback.hidden = research.length > 0 || modelRows.length > 0;
 
       // Render Drop-in Institutional Controls
       if (mountEl) {
