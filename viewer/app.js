@@ -192,7 +192,7 @@
     odds: { quotes: [] },
     filters: { search: '', market: adapter.defaultMarket, position: 'ALL', team: '', gameId: '', playMode: 'actionable', intent: 'all' },
     proView: 'all',
-    view: 'cards',
+    view: 'table',
     deferredInstall: null,
     selectedPlayerId: null,
     selectedExecutionPlayerId: null,

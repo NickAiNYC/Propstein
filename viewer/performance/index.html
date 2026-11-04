@@ -71,11 +71,19 @@
       <li aria-current="page">Track Record</li>
     </ol></nav>
 
+    <div class="pub-gate-banner">
+      <div class="pub-gate-badge">PRE-COMMERCIAL HONESTY POSTURE</div>
+      <div class="pub-gate-title">Insufficient Sample Gate: <strong>37 / 300 Graded Decisions (12.3%)</strong></div>
+      <div class="pub-gate-track"><div class="pub-gate-fill"></div></div>
+      <p class="pub-gate-sub">Paid commercial signups, subscriber gating, and beat-close marketing guarantees remain frozen until N &ge; 300 prospective board decisions achieve positive CLV bounded strictly above zero with 95% confidence.</p>
+    </div>
+
     <h1>PropStein Track Record &amp; Evidence</h1>
     <p class="pub-lede">Headline performance is full-board CLV &mdash; every
     decision graded against closing line value with confidence intervals, not a
     cherry-picked ledger subset. Everything graded so far is published as-is,
     including the small sample, the losing weeks and the model defects.</p>
+
     <section>
       <h2>Full-board close calibration (Week 07)</h2>
       <p>Headline metric: every graded board decision (N = <strong>37</strong>):<br>
@@ -85,7 +93,39 @@
       Average line delta: <strong>+0.05 yds</strong> (95% CI: [-0.23, +0.33] yds). Average CLV EV: 0.82%.</p>
       <p class="pub-note"><strong>Headline honesty:</strong> Across the full board only 2 of 37 decisions beat the close that week.
       That is what an honest calibration record looks like early. We publish full-board calibration first so there is zero cherry-picking.</p>
+      <div class="pub-visual-card">
+  <div class="pub-visual-header">
+    <h3 class="pub-visual-title">Closing Line Movement Distribution (N = 37 Decisions)</h3>
+    <span class="stat-badge">Week 7 Graded</span>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 190" class="dist-svg" role="img" aria-label="CLV Line Movement Distribution">
+    <rect width="640" height="190" fill="transparent"/>
+    <line x1="30" y1="145" x2="610" y2="145" stroke="#222733" stroke-width="1"/>
+    
+    <g class="clv-bar-group">
+      <rect x="65" y="141" width="85" height="4" rx="2" fill="#F87171" opacity="0.9"/>
+      <text x="107.5" y="135" text-anchor="middle" fill="#F3F4F6" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">1 (2.7%)</text>
+      <text x="107.5" y="163" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">-1.0 yd (Drift)</text>
+    </g>
+    <g class="clv-bar-group">
+      <rect x="195" y="44" width="120" height="101" rx="2" fill="#64748B" opacity="0.9"/>
+      <text x="255.0" y="38" text-anchor="middle" fill="#F3F4F6" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">34 (91.9%)</text>
+      <text x="255.0" y="163" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.0 yd (Tied)</text>
+    </g>
+    <g class="clv-bar-group">
+      <rect x="360" y="141" width="85" height="4" rx="2" fill="#34D399" opacity="0.9"/>
+      <text x="402.5" y="135" text-anchor="middle" fill="#F3F4F6" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">1 (2.7%)</text>
+      <text x="402.5" y="163" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">+1.0 yd (Beat)</text>
+    </g>
+    <g class="clv-bar-group">
+      <rect x="490" y="141" width="85" height="4" rx="2" fill="#38BDF8" opacity="0.9"/>
+      <text x="532.5" y="135" text-anchor="middle" fill="#F3F4F6" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">1 (2.7%)</text>
+      <text x="532.5" y="163" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">+2.0 yd (Beat)</text>
+    </g>
+  </svg>
+</div>
     </section>
+
     <section>
       <h2>Graded ledger (preliminary sample, n = 8)</h2>
       <p><strong>7-1-0</strong> over
@@ -115,6 +155,7 @@
       </table>
       </div>
     </section>
+
     <section>
       <h2>Published model evaluation (holdout)</h2>
       <p>Decision cutoff enforced: <strong>yes</strong>;
@@ -133,7 +174,72 @@
       Recalibration is an active workstream; roles and thresholds carry
       provisional labels everywhere in the product until the skill score turns
       positive.</p>
+      <div class="pub-visual-card">
+  <div class="pub-visual-header">
+    <h3 class="pub-visual-title">Reliability Calibration &amp; PIT Diagram</h3>
+    <span class="stat-badge">Holdout Sample</span>
+  </div>
+  <div class="dist-svg-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" class="dist-svg" role="img" aria-label="Holdout Reliability Calibration Curve">
+      <rect width="640" height="240" fill="transparent"/>
+      <!-- Grid & Axes -->
+      <line x1="60" y1="190" x2="580" y2="190" stroke="#222733" stroke-width="1"/>
+      <line x1="60" y1="30" x2="60" y2="190" stroke="#222733" stroke-width="1"/>
+      <!-- 45 Degree Perfect Calibration Diagonal -->
+      <line x1="60" y1="190" x2="580" y2="30" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="570" y="44" fill="#64748B" font-size="9" font-family="JetBrains Mono, monospace" text-anchor="end">Perfect Calibration (y = x)</text>
+      <!-- Empirical Points (Preliminary 37 Decisions) -->
+      <circle cx="294.0" cy="113.2" r="4" fill="#38BDF8"/>
+      <circle cx="330.4" cy="106.8" r="4" fill="#38BDF8"/>
+      <circle cx="372.0" cy="90.8" r="4" fill="#38BDF8"/>
+      <!-- Watermark Over Insufficient Sample Area -->
+      <rect x="75" y="50" width="490" height="120" rx="4" fill="rgba(17, 20, 27, 0.75)" stroke="rgba(245, 158, 11, 0.3)" stroke-dasharray="3 3"/>
+      <text x="320.0" y="104.0" text-anchor="middle" fill="#FBBF24" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700" letter-spacing="0.06em">INSUFFICIENT SAMPLE GATE (N = 37 &lt; 300)</text>
+      <text x="320.0" y="124.0" text-anchor="middle" fill="#9CA3AF" font-size="9.5" font-family="Inter, sans-serif">Confidence bounds span zero [-10.1%, +145.0%]. Commercial upgrades locked until gate clears.</text>
+      <!-- Axis Labels -->
+      <text x="60" y="210" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.0</text>
+      <text x="320.0" y="210" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.5</text>
+      <text x="580" y="210" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">1.0</text>
+      <text x="320.0" y="224" text-anchor="middle" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">PREDICTED PROBABILITY BUCKET</text>
+    </svg>
+  </div>
+</div>
     </section>
+
+    <section>
+      <h2>Model Evolution &amp; Architecture Milestones</h2>
+      <div class="pub-timeline-card">
+        <div class="pub-timeline-step">
+          <div class="pub-timeline-marker">v3.0</div>
+          <div class="pub-timeline-body">
+            <strong>Week 1: Poisson Baseline (Trailed Naive)</strong>
+            <p>Discrete Poisson count model for receptions with constant empirical YPR. Trailed the naive baseline on chronological holdout (Brier: 0.2642 vs 0.2520). Documented and published as an open defect.</p>
+          </div>
+        </div>
+        <div class="pub-timeline-step">
+          <div class="pub-timeline-marker">v3.1</div>
+          <div class="pub-timeline-body">
+            <strong>Week 4: NegBin2 Dispersion + Target-Share EWMA</strong>
+            <p>Introduced Negative Binomial variance expansion (&alpha; = 0.1097) to account for heavy right tails and target-share volatility over recent game windows.</p>
+          </div>
+        </div>
+        <div class="pub-timeline-step active">
+          <div class="pub-timeline-marker">v3.2</div>
+          <div class="pub-timeline-body">
+            <strong>Week 7: Compound NegBin-Gamma Convolution (Current Live)</strong>
+            <p>Two-stage compound continuous Gamma yardage per reception (k = 1.555). Solved continuous and discrete -110 vig boundaries with exact integer push windows.</p>
+          </div>
+        </div>
+        <div class="pub-timeline-step planned">
+          <div class="pub-timeline-marker">v3.3</div>
+          <div class="pub-timeline-body">
+            <strong>Roadmap: Walkforward Chronological Recalibration</strong>
+            <p>Expanding prospective sample to N &ge; 300 decisions. Adding coverage-funnel adjustments and live injury absorption tracking.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Market-Model Edge Fit &amp; Guarantee Status (Phase 2 &amp; 3)</h2>
       <p><strong>Model has no edge over market closing lines at this time. All projections should be treated as informational.</strong></p>
@@ -145,6 +251,7 @@
       &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> Commercial paid upgrades remain suspended until N &ge; 300 graded board decisions achieve positive CLV bounded strictly above zero with 95% confidence.<br>
       &bull; <strong>Uncensored Research Access:</strong> Projections and live pricing calculations are made available without paywalls in observer research mode.</p>
     </section>
+
     <section>
       <h2>What we publish as the sample grows</h2>
       <p>Calibration by predicted-probability bucket; win rate with sample

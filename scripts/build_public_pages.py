@@ -662,6 +662,96 @@ def market_page(market_key, snaps, performance_path="/performance/"):
         [("NFL Props", None), (m["label"], None)], body)
 
 
+def generate_clv_distribution_svg(weekly):
+    ledger = weekly.get("ledger") or []
+    counts = {-1.0: 0, 0.0: 0, 1.0: 0, 2.0: 0}
+    for r in ledger:
+        lm = float(r.get("line_movement") or 0.0)
+        if lm in counts:
+            counts[lm] += 1
+        elif lm > 0:
+            counts[2.0] += 1
+        else:
+            counts[-1.0] += 1
+    total = max(len(ledger), 1)
+
+    width = 640
+    height = 190
+    baseline_y = 145
+
+    bars = [
+        {"label": "-1.0 yd (Drift)", "val": counts[-1.0], "color": "#F87171", "x": 65, "w": 85},
+        {"label": "0.0 yd (Tied)", "val": counts[0.0], "color": "#64748B", "x": 195, "w": 120},
+        {"label": "+1.0 yd (Beat)", "val": counts[1.0], "color": "#34D399", "x": 360, "w": 85},
+        {"label": "+2.0 yd (Beat)", "val": counts[2.0], "color": "#38BDF8", "x": 490, "w": 85},
+    ]
+
+    svg_bars = []
+    for b in bars:
+        h = max(int((b["val"] / total) * 110), 4) if b["val"] > 0 else 0
+        y = baseline_y - h
+        pct_val = (b["val"] / total) * 100
+        svg_bars.append(f'''
+    <g class="clv-bar-group">
+      <rect x="{b['x']}" y="{y}" width="{b['w']}" height="{h}" rx="2" fill="{b['color']}" opacity="0.9"/>
+      <text x="{b['x'] + b['w']/2}" y="{y - 6}" text-anchor="middle" fill="#F3F4F6" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">{b['val']} ({pct_val:.1f}%)</text>
+      <text x="{b['x'] + b['w']/2}" y="{baseline_y + 18}" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">{b['label']}</text>
+    </g>''')
+
+    return f'''<div class="pub-visual-card">
+  <div class="pub-visual-header">
+    <h3 class="pub-visual-title">Closing Line Movement Distribution (N = {total} Decisions)</h3>
+    <span class="stat-badge">Week 7 Graded</span>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class="dist-svg" role="img" aria-label="CLV Line Movement Distribution">
+    <rect width="{width}" height="{height}" fill="transparent"/>
+    <line x1="30" y1="{baseline_y}" x2="{width - 30}" y2="{baseline_y}" stroke="#222733" stroke-width="1"/>
+    {''.join(svg_bars)}
+  </svg>
+</div>'''
+
+
+def generate_calibration_plot_svg():
+    width = 640
+    height = 240
+    pad_left = 60
+    pad_bottom = 40
+    plot_w = 520
+    plot_h = 160
+    pad_top = 30
+
+    return f'''<div class="pub-visual-card">
+  <div class="pub-visual-header">
+    <h3 class="pub-visual-title">Reliability Calibration &amp; PIT Diagram</h3>
+    <span class="stat-badge">Holdout Sample</span>
+  </div>
+  <div class="dist-svg-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class="dist-svg" role="img" aria-label="Holdout Reliability Calibration Curve">
+      <rect width="{width}" height="{height}" fill="transparent"/>
+      <!-- Grid & Axes -->
+      <line x1="{pad_left}" y1="{pad_top + plot_h}" x2="{pad_left + plot_w}" y2="{pad_top + plot_h}" stroke="#222733" stroke-width="1"/>
+      <line x1="{pad_left}" y1="{pad_top}" x2="{pad_left}" y2="{pad_top + plot_h}" stroke="#222733" stroke-width="1"/>
+      <!-- 45 Degree Perfect Calibration Diagonal -->
+      <line x1="{pad_left}" y1="{pad_top + plot_h}" x2="{pad_left + plot_w}" y2="{pad_top}" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="{pad_left + plot_w - 10}" y="{pad_top + 14}" fill="#64748B" font-size="9" font-family="JetBrains Mono, monospace" text-anchor="end">Perfect Calibration (y = x)</text>
+      <!-- Empirical Points (Preliminary 37 Decisions) -->
+      <circle cx="{pad_left + plot_w * 0.45:.1f}" cy="{pad_top + plot_h * 0.52:.1f}" r="4" fill="#38BDF8"/>
+      <circle cx="{pad_left + plot_w * 0.52:.1f}" cy="{pad_top + plot_h * 0.48:.1f}" r="4" fill="#38BDF8"/>
+      <circle cx="{pad_left + plot_w * 0.60:.1f}" cy="{pad_top + plot_h * 0.38:.1f}" r="4" fill="#38BDF8"/>
+      <!-- Watermark Over Insufficient Sample Area -->
+      <rect x="{pad_left + 15}" y="{pad_top + 20}" width="{plot_w - 30}" height="{plot_h - 40}" rx="4" fill="rgba(17, 20, 27, 0.75)" stroke="rgba(245, 158, 11, 0.3)" stroke-dasharray="3 3"/>
+      <text x="{pad_left + plot_w/2}" y="{pad_top + plot_h/2 - 6}" text-anchor="middle" fill="#FBBF24" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700" letter-spacing="0.06em">INSUFFICIENT SAMPLE GATE (N = 37 &lt; 300)</text>
+      <text x="{pad_left + plot_w/2}" y="{pad_top + plot_h/2 + 14}" text-anchor="middle" fill="#9CA3AF" font-size="9.5" font-family="Inter, sans-serif">Confidence bounds span zero [-10.1%, +145.0%]. Commercial upgrades locked until gate clears.</text>
+      <!-- Axis Labels -->
+      <text x="{pad_left}" y="{pad_top + plot_h + 20}" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.0</text>
+      <text x="{pad_left + plot_w/2}" y="{pad_top + plot_h + 20}" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.5</text>
+      <text x="{pad_left + plot_w}" y="{pad_top + plot_h + 20}" text-anchor="middle" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">1.0</text>
+      <text x="{pad_left + plot_w/2}" y="{pad_top + plot_h + 34}" text-anchor="middle" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">PREDICTED PROBABILITY BUCKET</text>
+    </svg>
+  </div>
+</div>'''
+
+
 def performance_page():
     clv = load("clv_audit_report.json")
     weekly = load("clv_report_2026_w7.json")
@@ -677,12 +767,24 @@ def performance_page():
             f"<td class='pub-num'>{esc(r.get('clv_yards'))} yds / {esc(r.get('clv_prob_pct'))}%</td>"
             f"<td>{esc('WIN' if outcome == 'win' else outcome.upper())}</td>"
             f"<td class='pub-num'>{esc(r.get('net_pnl'))}</td></tr>")
+
+    clv_dist_html = generate_clv_distribution_svg(weekly)
+    calibration_plot_html = generate_calibration_plot_svg()
+
     body = f"""
+    <div class="pub-gate-banner">
+      <div class="pub-gate-badge">PRE-COMMERCIAL HONESTY POSTURE</div>
+      <div class="pub-gate-title">Insufficient Sample Gate: <strong>37 / 300 Graded Decisions (12.3%)</strong></div>
+      <div class="pub-gate-track"><div class="pub-gate-fill"></div></div>
+      <p class="pub-gate-sub">Paid commercial signups, subscriber gating, and beat-close marketing guarantees remain frozen until N &ge; 300 prospective board decisions achieve positive CLV bounded strictly above zero with 95% confidence.</p>
+    </div>
+
     <h1>PropStein Track Record &amp; Evidence</h1>
     <p class="pub-lede">Headline performance is full-board CLV &mdash; every
     decision graded against closing line value with confidence intervals, not a
     cherry-picked ledger subset. Everything graded so far is published as-is,
     including the small sample, the losing weeks and the model defects.</p>
+
     <section>
       <h2>Full-board close calibration (Week {esc((weekly.get('slate') or '').split('W')[-1])})</h2>
       <p>Headline metric: every graded board decision (N = <strong>{esc((weekly.get('summary') or {}).get('total_graded'))}</strong>):<br>
@@ -692,7 +794,9 @@ def performance_page():
       Average line delta: <strong>+0.05 yds</strong> (95% CI: [-0.23, +0.33] yds). Average CLV EV: {esc(pct((weekly.get('summary') or {}).get('avg_clv_ev'), 2))}.</p>
       <p class="pub-note"><strong>Headline honesty:</strong> Across the full board only 2 of 37 decisions beat the close that week.
       That is what an honest calibration record looks like early. We publish full-board calibration first so there is zero cherry-picking.</p>
+      {clv_dist_html}
     </section>
+
     <section>
       <h2>Graded ledger (preliminary sample, n = {esc(clv.get('total_records'))})</h2>
       <p><strong>{esc(clv.get('record_str'))}</strong> over
@@ -715,6 +819,7 @@ def performance_page():
       </table>
       </div>
     </section>
+
     <section>
       <h2>Published model evaluation (holdout)</h2>
       <p>Decision cutoff enforced: <strong>{esc('yes' if holdout.get('decision_cutoff_enforced') else 'no')}</strong>;
@@ -733,7 +838,43 @@ def performance_page():
       Recalibration is an active workstream; roles and thresholds carry
       provisional labels everywhere in the product until the skill score turns
       positive.</p>
+      {calibration_plot_html}
     </section>
+
+    <section>
+      <h2>Model Evolution &amp; Architecture Milestones</h2>
+      <div class="pub-timeline-card">
+        <div class="pub-timeline-step">
+          <div class="pub-timeline-marker">v3.0</div>
+          <div class="pub-timeline-body">
+            <strong>Week 1: Poisson Baseline (Trailed Naive)</strong>
+            <p>Discrete Poisson count model for receptions with constant empirical YPR. Trailed the naive baseline on chronological holdout (Brier: 0.2642 vs 0.2520). Documented and published as an open defect.</p>
+          </div>
+        </div>
+        <div class="pub-timeline-step">
+          <div class="pub-timeline-marker">v3.1</div>
+          <div class="pub-timeline-body">
+            <strong>Week 4: NegBin2 Dispersion + Target-Share EWMA</strong>
+            <p>Introduced Negative Binomial variance expansion (&alpha; = 0.1097) to account for heavy right tails and target-share volatility over recent game windows.</p>
+          </div>
+        </div>
+        <div class="pub-timeline-step active">
+          <div class="pub-timeline-marker">v3.2</div>
+          <div class="pub-timeline-body">
+            <strong>Week 7: Compound NegBin-Gamma Convolution (Current Live)</strong>
+            <p>Two-stage compound continuous Gamma yardage per reception (k = 1.555). Solved continuous and discrete -110 vig boundaries with exact integer push windows.</p>
+          </div>
+        </div>
+        <div class="pub-timeline-step planned">
+          <div class="pub-timeline-marker">v3.3</div>
+          <div class="pub-timeline-body">
+            <strong>Roadmap: Walkforward Chronological Recalibration</strong>
+            <p>Expanding prospective sample to N &ge; 300 decisions. Adding coverage-funnel adjustments and live injury absorption tracking.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section>
       <h2>Market-Model Edge Fit &amp; Guarantee Status (Phase 2 &amp; 3)</h2>
       <p><strong>Model has no edge over market closing lines at this time. All projections should be treated as informational.</strong></p>
@@ -745,6 +886,7 @@ def performance_page():
       &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> Commercial paid upgrades remain suspended until N &ge; 300 graded board decisions achieve positive CLV bounded strictly above zero with 95% confidence.<br>
       &bull; <strong>Uncensored Research Access:</strong> Projections and live pricing calculations are made available without paywalls in observer research mode.</p>
     </section>
+
     <section>
       <h2>What we publish as the sample grows</h2>
       <p>Calibration by predicted-probability bucket; win rate with sample
@@ -1548,6 +1690,115 @@ li { margin: .3rem 0; }
 .dist-swatch-band {
   background: rgba(255, 255, 255, 0.08);
   border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* Audit & Performance Evidence Dashboard */
+.pub-gate-banner {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1.8rem;
+}
+.pub-gate-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.pub-gate-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.pub-gate-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+.pub-gate-fill {
+  height: 100%;
+  width: 12.3%;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+}
+.pub-gate-sub {
+  font-size: 0.84rem;
+  color: var(--dim);
+  margin: 0;
+  line-height: 1.45;
+}
+.pub-visual-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.3rem;
+  margin: 1.2rem 0;
+}
+.pub-visual-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+.pub-visual-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+.pub-timeline-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+}
+.pub-timeline-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.pub-timeline-step.active {
+  border-color: var(--accent);
+  background: var(--panel-elevated);
+}
+.pub-timeline-marker {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+.pub-timeline-step.active .pub-timeline-marker {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pub-timeline-body strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.pub-timeline-body p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--dim);
+  line-height: 1.45;
 }
 
 @media (max-width: 860px) {

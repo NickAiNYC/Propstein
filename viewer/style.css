@@ -15442,8 +15442,7 @@ body:not(.front-board-open) .injury-drawer-wrap, body:not(.front-board-open) .tr
 }
 @media (max-width: 768px) {
   body:not(.front-board-open) .pw-filterbar > :not(.mobile-league-nav) { display: none !important; }
-  body:not(.front-board-open) #mobileFilterStrip,
-  body:not(.front-board-open) .mobile-bottom-nav { display: none !important; }
+  body:not(.front-board-open) #mobileFilterStrip { display: none !important; }
   .front-menu-btn { min-height: 31px; padding: 6px 9px; font-size: 11px; }
   .front-explore-btn { margin-top: 0; }
   .front-pro-bar { align-items: start; flex-direction: column; gap: 6px; }
@@ -16126,6 +16125,150 @@ body {
   user-select: none;
   pointer-events: none;
   opacity: 0.55;
+}
+
+/* ── Unified ⌘K Command Palette Surface ── */
+.command-palette-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  border: 1px solid #222733;
+  border-radius: 8px;
+  background: #0B0D11;
+  padding: 0;
+  max-width: 580px;
+  width: 92vw;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: #F3F4F6;
+  overflow: hidden;
+  z-index: 10000;
+}
+.command-palette-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.cmd-palette-box {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+.cmd-palette-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #222733;
+  background: #11141B;
+}
+.cmd-palette-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #F3F4F6;
+  font-size: 15px;
+  font-family: inherit;
+}
+.cmd-palette-input::placeholder {
+  color: #6B7280;
+}
+.cmd-palette-kbd {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: #171B24;
+  border: 1px solid #222733;
+  color: #9CA3AF;
+}
+.cmd-palette-results {
+  overflow-y: auto;
+  padding: 8px;
+  max-height: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cmd-group-label {
+  font-size: 10px;
+  font-family: "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6B7280;
+  padding: 8px 12px 4px;
+}
+.cmd-item {
+  display: flex;
+  flex-direction: column;
+  padding: 9px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-decoration: none;
+  color: inherit;
+}
+.cmd-item:hover, .cmd-item.cmd-item-active {
+  background: #171B24;
+  outline: 1px solid rgba(56, 189, 248, 0.4);
+}
+.cmd-item-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cmd-item-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: #11141B;
+  border: 1px solid #222733;
+  color: #9CA3AF;
+}
+.cmd-item.cmd-item-active .cmd-item-badge {
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #38BDF8;
+}
+.cmd-item-desc {
+  font-size: 11.5px;
+  color: #9CA3AF;
+  margin-top: 2px;
+  line-height: 1.35;
+}
+.cmd-no-results {
+  padding: 24px;
+  text-align: center;
+  color: #6B7280;
+  font-size: 13px;
+}
+.cmd-palette-footer {
+  display: flex;
+  gap: 16px;
+  padding: 8px 16px;
+  border-top: 1px solid #222733;
+  background: #0E1117;
+  font-size: 11px;
+  color: #6B7280;
+}
+.cmd-footer-tip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.cmd-kbd-sm {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  background: #171B24;
+  border: 1px solid #222733;
+  color: #9CA3AF;
 }
 
 

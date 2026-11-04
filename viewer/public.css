@@ -447,6 +447,115 @@ li { margin: .3rem 0; }
   border: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
+/* Audit & Performance Evidence Dashboard */
+.pub-gate-banner {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1.8rem;
+}
+.pub-gate-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.pub-gate-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.pub-gate-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+.pub-gate-fill {
+  height: 100%;
+  width: 12.3%;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+}
+.pub-gate-sub {
+  font-size: 0.84rem;
+  color: var(--dim);
+  margin: 0;
+  line-height: 1.45;
+}
+.pub-visual-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.3rem;
+  margin: 1.2rem 0;
+}
+.pub-visual-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+.pub-visual-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+.pub-timeline-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+}
+.pub-timeline-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 0.85rem 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.pub-timeline-step.active {
+  border-color: var(--accent);
+  background: var(--panel-elevated);
+}
+.pub-timeline-marker {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+.pub-timeline-step.active .pub-timeline-marker {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pub-timeline-body strong {
+  display: block;
+  font-size: 0.92rem;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.pub-timeline-body p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--dim);
+  line-height: 1.45;
+}
+
 @media (max-width: 860px) {
   .pub-player-grid {
     grid-template-columns: 1fr;
