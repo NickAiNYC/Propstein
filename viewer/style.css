@@ -15973,4 +15973,47 @@ body.front-board-open .front-inline-search { position: sticky; top: 0; z-index: 
   .today-game-card:hover { transform: none; }
 }
 
+/* iPhone reading pass: keep the existing brand and evidence states legible. */
+@media (max-width: 650px) {
+  .front-inline-search label { font-size: 11px; letter-spacing: .08em; }
+  .snapshot-age-pill { font-size: 11px; line-height: 1.4; white-space: normal; }
+  .home-edge-heading h2 { font-size: clamp(23px, 6.4vw, 27px); line-height: 1.12; }
+  .home-edge-heading button, .home-edge-fallback button,
+  .home-edge-show-all, .front-explore-btn { font-size: 13px; }
+  .home-edge-status, .home-edge-fallback, .home-edge-empty,
+  .today-schedule-message { font-size: 13px; line-height: 1.5; }
+  .home-edge-card { gap: 11px; padding: 14px; }
+  .home-edge-player strong { font-size: 15px; font-weight: 600; line-height: 1.3; }
+  .home-edge-player span, .home-edge-line > span:last-child,
+  .home-research-label, .home-research-note { font-size: 11px !important; line-height: 1.4; }
+  .home-edge-line strong { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .home-edge-metrics small { font-size: 10px; }
+  .home-edge-metrics strong { font-size: 14px; }
+
+  #cardView:not(.compact-grid) .mobile-quant-row.quoted-card { padding: 13px !important; }
+  .mobile-quant-row .card-player-name { font-size: 16px !important; font-weight: 600 !important; line-height: 1.25 !important; }
+  .mobile-quant-row .card-team-matchup { font-size: 11px !important; line-height: 1.4 !important; }
+  .mobile-quant-row .uncal-tag { font-size: 10px !important; line-height: 1.2 !important; }
+  .mobile-quant-row .card-hero-edge { font-size: 12px !important; font-weight: 600 !important; }
+  .mobile-quant-row .card-edge-sub { font-size: 10px !important; line-height: 1.3 !important; letter-spacing: .02em !important; }
+  .mobile-quant-row .grid-col-lbl { font-size: 10px !important; font-weight: 600 !important; letter-spacing: .06em !important; }
+  .mobile-quant-row .grid-col-val { font-size: 15px !important; font-weight: 600 !important; }
+  .mobile-quant-row .grid-col-sub, .mobile-quant-row .dens-fair-sub,
+  .mobile-quant-row .card-ci-chip { font-size: 11px !important; line-height: 1.35 !important; }
+  .mobile-quant-row .dens-proj-val { font-size: 14px !important; font-weight: 600 !important; }
+  .mobile-quant-row .ou-mini-box { min-height: 30px; padding: 6px 8px; font-size: 11px; line-height: 1.2; }
+  .mobile-quant-row .ou-mini-box small { font-size: 11px; }
+  .mobile-quant-row .col-book .ou-mini-pair { flex-direction: row; }
+  .mobile-quant-row .card-btn-view, .mobile-quant-row .card-btn-log { min-height: 44px !important; height: 44px !important; }
+  .mobile-quant-row :is(.grid-col-val,.grid-col-sub,.card-proj-fair-row,.dens-proj-val,
+    .dens-fair-sub,.card-odds-pill,.card-ci-chip,.card-hero-edge,.ou-mini-box) {
+    font-variant-numeric: tabular-nums;
+  }
+}
+@media (max-width: 360px) {
+  .mobile-quant-row .card-proj-fair-row { flex-wrap: wrap; justify-content: flex-start; column-gap: 6px; row-gap: 3px; }
+  .mobile-quant-row .card-proj-fair-row .dens-proj-val { flex-basis: 100%; }
+  .mobile-quant-row .card-grid-col:not(.col-action) { padding: 9px 8px !important; }
+}
+
 

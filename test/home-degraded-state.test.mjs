@@ -18,6 +18,7 @@ test('stale homepage shows fair-line research when observed lines are unavailabl
   assert.match(cards, /MODEL FAIR · NO LIVE PRICE/);
   assert.match(cards, /no current edge or stake is available/);
   assert.doesNotMatch(cards, /Top 5 plays|verified edge/i);
+  assert.equal(registry.get('#homeEdgeFallback').hidden, true);
 });
 
 test('NFL research preview ranks and limits the daily model signals to eight', async () => {
@@ -44,4 +45,5 @@ test('NFL research preview ranks and limits the daily model signals to eight', a
   assert.ok(cards.indexOf('Player 10') < cards.indexOf('Player 9'));
   assert.doesNotMatch(cards, /Player 2<|Player 1</);
   assert.match(registry.get('#homeEdgeStatus').textContent, /8 of 10 model-ranked research lines/);
+  assert.equal(registry.get('#homeEdgeFallback').hidden, true);
 });
