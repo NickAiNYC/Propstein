@@ -248,9 +248,10 @@
     <section>
       <h2>Market-Model Edge Fit &amp; Guarantee Status (Phase 2 &amp; 3)</h2>
       <p><strong>Model has no edge over market closing lines at this time. All projections should be treated as informational.</strong></p>
-      <p>Chronological regression fitting <code>p = w &middot; p<sub>model</sub> + (1 - w) &middot; p<sub>market</sub></code> on active trigger decisions yields:<br>
-      &bull; <strong>w&#770; = 0.6742</strong> (Standard Error: 0.3957, <strong>95% CI: [-0.1013, +1.4497]</strong>, N = 37)<br>
-      Because the 95% confidence interval spans zero, there is no statistically significant evidence of closing line alpha over the market consensus.</p>
+      <p>Chronological regression fitting <code>p = w &middot; p<sub>model</sub> + (1 - w) &middot; p<sub>market</sub></code> yields:<br>
+      &bull; <strong>Full-board quoted evaluation:</strong> w&#770; = 0.7597 (Standard Error: 0.1835, 95% CI: [0.4001, 1.1193], N = 320 observations)<br>
+      &bull; <strong>Trigger decision cohort:</strong> w&#770; = 0.6742 (Standard Error: 0.3957, <strong>95% CI: [-0.1013, +1.4497]</strong>, N = 37)<br>
+      Because the decision-level 95% confidence interval spans zero and holdout Brier skill is negative (-12.51%), model projections are anchored to the devigged market prior with shrinkage toward w &approx; 0.25 to prevent overconfidence.</p>
       <p class="pub-note"><strong>Public actions in effect:</strong><br>
       &bull; <strong>Beat-Close Guarantee Suspended:</strong> Beating or tying a close on a small sample guarantees nothing about win rate or expected value. The marketing guarantee is publicly withdrawn.<br>
       &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> The <a href="https://github.com/NickAiNYC/Propstein/blob/main/docs/EDGE_GATE.md">preregistered commercial gate</a> requires 600 independently evaluable qualifying signals per sport, mean price CLV of at least +1.0 percentage point, and a strictly positive game-clustered lower confidence bound at one-sided &alpha; = 0.0125. N = 300 is a descriptive checkpoint, not an unlock. Compliance approval is also required. The 37 full-board decisions above are a separate published audit cohort, not the gate sample.<br>

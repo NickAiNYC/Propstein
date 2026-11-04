@@ -48,6 +48,11 @@
     return sum > 0 ? { over: overRaw / sum, under: underRaw / sum } : { over: 0.5, under: 0.5 };
   }
 
+  function marketAnchoredBlend(pModel, pMarketDevig, weight = 0.25) {
+    const w = Math.max(0, Math.min(1, num(weight, 0.25)));
+    return (1 - w) * num(pMarketDevig, 0.5) + w * num(pModel, 0.5);
+  }
+
   function regularizedGammaP(shape, value) {
     if (value <= 0) return 0;
     if (shape <= 0) return 1;
@@ -135,6 +140,7 @@
     americanToDecimal,
     impliedProbability,
     devig,
+    marketAnchoredBlend,
     regularizedGammaP,
     logGamma,
     createQuantMath,

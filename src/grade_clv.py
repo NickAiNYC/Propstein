@@ -196,6 +196,15 @@ def grade_clv_snapshots(
         total_line_deltas.append(line_movement)
         total_ev_gains.append(clv_ev)
 
+        t_opp = t_quote.get("under_odds" if side == "OVER" else "over_odds") or -110
+        c_opp = c_quote.get("under_odds" if side == "OVER" else "over_odds") or -110
+        try:
+            p_t_devig, _ = devig_two_way(t_odds, int(t_opp)) if side == "OVER" else devig_two_way(int(t_opp), t_odds)
+            p_c_devig, _ = devig_two_way(c_odds, int(c_opp)) if side == "OVER" else devig_two_way(int(c_opp), c_odds)
+            prob_clv = round(p_c_devig - p_t_devig, 4)
+        except (ValueError, TypeError):
+            prob_clv = 0.0
+
         entry = {
             "player_id": trigger_record.get("player_id"),
             "player_name": player_name,
@@ -211,6 +220,7 @@ def grade_clv_snapshots(
             "close_line": c_line,
             "close_odds": c_odds,
             "line_movement": round(line_movement, 2),
+            "prob_clv": prob_clv,
             "clv_ev": clv_ev,
             "status": status,
             "book": t_quote.get("book") or "DraftKings / Bovada Consensus",
