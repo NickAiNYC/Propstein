@@ -700,10 +700,14 @@
 
   function feedVerificationLabel(feed = state.odds) {
     const status = String((feed && feed.feed_status) || '').toUpperCase();
+    const health = feed === state.odds ? feedHealthStates() : null;
     const verifiedQuotes = Array.isArray(feed && feed.quotes)
       ? feed.quotes.filter((quote) => quoteState(quote) === 'verified').length
       : 0;
     if (status === 'FIXTURE' || adapter.fixturesOnly === true) return 'FIXTURE';
+    if (health && health.odds === 'error') return 'OFFLINE';
+    if (health && health.oddsFreshness === 'stale') return 'STALE';
+    if (health && health.oddsFreshness !== 'ok') return 'TIME UNKNOWN';
     if (verifiedQuotes > 0 && !status.includes('UNVERIFIED')) return 'VERIFIED';
     // Engine-graded middle state: every stamped quote passed the receipt
     // clause (two independent CLOB pulls hash-matched against the receipt
@@ -735,11 +739,18 @@
     const verified = (state.odds?.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
     const researchCount = Array.isArray(state.livePicks?.picks) ? state.livePicks.picks.length : 0;
     const researchSource = researchCount ? String(state.livePicks.source || 'Source unspecified') : 'No current research scan';
+    if (health.dataKind !== 'fixture' && (health.odds !== 'ok' || health.oddsFreshness !== 'ok')) {
+      const ingested = (state.odds?.quotes || []).length;
+      if ($('#marketState')) $('#marketState').textContent = `${ingested} observed quotes · feed ${label.toLowerCase()} · qualification paused.`;
+      if ($('#priceCheckText')) $('#priceCheckText').textContent = `${ingested} ingested · ${verified} receipt-verified · feed ${label.toLowerCase()}.`;
+    }
     if ($('#settingsFeedProvider')) $('#settingsFeedProvider').textContent = marketFeedSourceLabel();
     if ($('#settingsResearchSource')) $('#settingsResearchSource').textContent = researchSource;
     const receiptMatched = (state.odds?.quotes || []).filter((q) => q && q.verification_status === 'OBSERVED' && q.verification_receipt_id).length;
     if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent =
-      verified > 0 ? `${verified} feed-verified quotes`
+      health.odds !== 'ok' || health.oddsFreshness !== 'ok'
+        ? `${verified} receipt-verified quotes in current feed · feed ${label.toLowerCase()} · qualification paused`
+        : verified > 0 ? `${verified} feed-verified quotes`
         : receiptMatched > 0 ? `${receiptMatched} receipt-matched quotes · single-book feed — cross-book audit unlocks with a second sharp book`
         : '0 feed-verified quotes · independent audit pending';
     const blockers = [];
@@ -2503,6 +2514,9 @@
       const ageLabel = ageMin > 1440 ? `${Math.floor(ageMin / 1440)}d ago` : ageMin > 60 ? `${Math.floor(ageMin / 60)}h ago` : `${ageMin}m ago`;
       items.push(`<strong>ODDS STALE</strong><span>Last update ${ageLabel} (limit ${Math.round(health.thresholds.oddsStaleSeconds / 60)}m) — treat prices as historical.</span>`);
       if (tone === 'ok') tone = 'warn';
+    } else if (health.oddsFreshness === 'unknown' && health.dataKind !== 'fixture') {
+      items.push('<strong>ODDS TIME UNKNOWN</strong><span>The feed has no usable update timestamp. Prices are research only; qualification is paused.</span>');
+      if (tone === 'ok') tone = 'warn';
     }
     if (health.newsFeedFreshness === 'stale') {
       items.push('<strong>NEWS FEED STALE</strong><span>News watcher heartbeat older than 24h — the feed looks abandoned and automated sniper dispatch is suppressed.</span>');
@@ -2519,17 +2533,20 @@
     } else if (health.odds === 'error') {
       if (ribbonHealthTitle) ribbonHealthTitle.textContent = 'ODDS OFFLINE';
       if (ribbonHealthAge) ribbonHealthAge.textContent = '· Standby';
+    } else if (health.oddsFreshness === 'unknown') {
+      if (ribbonHealthTitle) ribbonHealthTitle.textContent = 'ODDS TIME UNKNOWN';
+      if (ribbonHealthAge) ribbonHealthAge.textContent = '· Research only';
     } else {
-      if (ribbonHealthTitle) ribbonHealthTitle.textContent = 'LIVE FRESH';
-      if (ribbonHealthAge) ribbonHealthAge.textContent = '· Connected';
+      if (ribbonHealthTitle) ribbonHealthTitle.textContent = health.dataKind === 'fixture' ? 'RESEARCH FIXTURE' : 'ODDS FRESH';
+      if (ribbonHealthAge) ribbonHealthAge.textContent = health.dataKind === 'fixture' ? '· Sample data' : '· Quote age within limit';
     }
 
     const mobileStatusPill = $('#mobileStatusPill');
     const mobileStatusText = $('#mobileStatusText');
     const boardEl = $('#slateBoard') || $('#cardView');
-    if (health.oddsFreshness === 'stale' || health.newsFreshness === 'stale') {
+    if (health.odds === 'error' || health.oddsFreshness === 'stale' || health.oddsFreshness === 'unknown' || health.newsFreshness === 'stale') {
       if (mobileStatusPill) mobileStatusPill.classList.add('is-stale-dot');
-      if (mobileStatusText) mobileStatusText.textContent = 'STALE';
+      if (mobileStatusText) mobileStatusText.textContent = feedVerificationLabel();
       if (boardEl) boardEl.classList.add('is-feed-stale');
     } else {
       if (mobileStatusPill) mobileStatusPill.classList.remove('is-stale-dot');
@@ -2679,6 +2696,7 @@
   function renderHeader() {
     const config = SLATES[state.slateKey];
     const activePolicy = policy();
+    const health = feedHealthStates();
     const ingested = state.odds.quotes.length;
     const verified = state.odds.quotes.filter((quote) => quoteState(quote) === 'verified').length;
     const teams = new Set(state.slate.flatMap((row) => [row.team, row.opponent_team]).filter(Boolean));
@@ -2704,6 +2722,8 @@
       if ($('#marketState')) $('#marketState').textContent = 'Historical slate. Games are closed and cannot be presented as actionable.';
     } else if (ingested === 0) {
       if ($('#marketState')) $('#marketState').textContent = 'No odds feed connected / 0 quotes ingested. Showing model projections and scoped fair lines only.';
+    } else if (health.odds !== 'ok' || health.oddsFreshness !== 'ok') {
+      if ($('#marketState')) $('#marketState').textContent = `${ingested} observed quotes · feed ${feedVerificationLabel().toLowerCase()} · qualification paused.`;
     } else if (verified === 0) {
       if ($('#marketState')) $('#marketState').textContent = `No verified price receipts / ${ingested} quotes ingested. Offers are visible, but action fields remain locked.`;
     } else {
@@ -3866,8 +3886,11 @@
 
       // Keep the short homepage status copy; detail remains in Settings.
       const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
+      const waitingOn = health.odds !== 'ok' || health.oddsFreshness !== 'ok'
+        ? `fresh timestamped odds (${feedVerificationLabel().toLowerCase()})`
+        : 'independent quote receipt';
       status.textContent = research.length
-        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
+        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} receipt-verified in snapshot. Qualification paused: waiting on ${waitingOn}.`
         : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
 
       const isPro = isProSubscriber();

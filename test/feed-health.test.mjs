@@ -143,13 +143,25 @@ test('snapshot pill appears after 30 minutes without changing the execution stal
   assert.equal(P.feedHealthStates().oddsFreshness, 'ok');
 });
 
-test('unverified NFL feed never renders a LIVE or VERIFIED status label', async () => {
+test('stale NFL feed leads with STALE even when its receipt status is unverified', async () => {
   const { sandbox } = buildSandbox();
   attachLocalDom(sandbox);
   const P = loadApp(sandbox);
   await P.loadSlate('2026_w7');
   assert.equal(P.state.odds.feed_status, 'UNVERIFIED_MANUAL_ONLY');
-  assert.equal(P.feedVerificationLabel(), 'UNVERIFIED');
+  assert.equal(P.feedVerificationLabel(), 'STALE');
+});
+
+test('missing odds update timestamp is TIME UNKNOWN and never shown as fresh', async () => {
+  const { sandbox } = buildSandbox();
+  const els = attachLocalDom(sandbox);
+  const P = loadApp(sandbox);
+  await P.loadSlate('2026_w7');
+  P.state.feedHealth.oddsUpdatedAt = null;
+  P.updateFeedHealthUI();
+  assert.equal(P.feedHealthStates().oddsFreshness, 'unknown');
+  assert.equal(P.feedVerificationLabel(), 'TIME UNKNOWN');
+  assert.match(els.get('dataQualityBanner').innerHTML, /no usable update timestamp/i);
 });
 
 test('abandoned news feed (>24h) fires the banner; dead-man latch stays independent (NFL live)', async () => {

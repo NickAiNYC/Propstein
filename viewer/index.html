@@ -74,7 +74,7 @@
           <img src="/propstein-logo-dark.png?v=2026_v179" alt="" aria-hidden="true" class="pw-brand-img pw-brand-light-only" height="52">
         </a>
         <div class="pw-telemetry-pod pw-desktop-only" aria-label="System telemetry">
-          <div class="pw-live-status-dot" id="mobileStatusPill" title="Live Odds Feed Active · Tap for Telemetry">
+          <div class="pw-live-status-dot" id="mobileStatusPill" title="Odds feed status pending · Tap for telemetry">
             <span class="polling-dot pulse"></span>
             <span class="pw-live-label" id="mobileStatusText">UNVERIFIED</span>
           </div>
@@ -142,7 +142,7 @@
         <!-- Live Odds Polling Countdown & Status Widget (Desktop only) -->
         <div class="live-polling-widget pw-desktop-only" id="livePollingWidget" title="Market quote feed status · Click to check again">
           <span class="polling-dot pulse"></span>
-          <span class="polling-timer" id="pollingTimerText">Telemetry active</span>
+          <span class="polling-timer" id="pollingTimerText">Checking feed status</span>
           <button type="button" class="polling-refresh-btn" id="manualPollBtn" aria-label="Poll fresh quotes now" title="Poll fresh quotes now">
             <svg class="poll-refresh-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M13.5 8A5.5 5.5 0 118 2.5c2 0 3.8.8 4.7 2.2M13.5 1.5v3.5H10"/>
@@ -153,7 +153,7 @@
         <!-- Receipt Status Pill (Desktop only) -->
         <div class="pw-receipt-badge pw-desktop-only" title="SHA-256 content receipt gate active · Unverified quotes fail closed">
           <span class="pw-receipt-dot"></span>
-          <span id="marketState" title="SHA-256 content receipt gate active · Unverified quotes fail closed">Receipts active</span>
+          <span id="marketState" title="SHA-256 content receipt gate active · Unverified quotes fail closed">Feed status pending</span>
         </div>
 
         <!-- Programmable Market Alerts Sniper (Desktop) -->
@@ -212,7 +212,7 @@
         <div class="chip-segment-group" data-eyebrow="MODE" role="radiogroup" aria-label="Dataset Mode">
           <button type="button" class="chip-pill active" data-mode="actionable" id="modeActionableBtn" role="radio" aria-checked="true" title="Show plays clearing edge gate">
             <span>ACTIVE</span>
-            <span class="chip-count-pill" id="actionableCount">33</span>
+            <span class="chip-count-pill" id="actionableCount">0</span>
           </button>
           <button type="button" class="chip-pill" data-mode="top" id="modeTopBtn" role="radio" aria-checked="false" title="Show Top Model Volume Plays">
             <span>TOP</span>
@@ -835,7 +835,7 @@
         </div>
 
         <div class="pricing-guarantee-box">
-          <p><strong>Paid signups frozen; Beat-Close Guarantee suspended.</strong> The current public record does not establish a live betting edge. Paid access stays closed until at least 300 prospectively graded board decisions show positive closing-line value with a 95% confidence interval above zero. See the <a href="/performance/">public performance record</a> for the latest results.</p>
+          <p><strong>Paid signups frozen; Beat-Close Guarantee suspended.</strong> The current public record does not establish a live betting edge. Paid access stays closed under the preregistered gate: 600 independently evaluable qualifying signals per sport, mean price CLV of at least +1.0 percentage point, a positive game-clustered lower bound at one-sided α = 0.0125, and compliance approval. N = 300 is descriptive only. See the <a href="/performance/">public performance record</a> for the latest results.</p>
         </div>
       </div>
     </form>
