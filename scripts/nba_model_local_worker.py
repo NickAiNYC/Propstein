@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from datetime import date, datetime, timedelta
@@ -82,6 +83,17 @@ def main() -> int:
     if not games.exists() or not odds.exists():
         print(f"today's schedule/odds are missing for {slate}; nothing committed.", file=sys.stderr)
         return 5
+    # publish_board appends to out/nba_board_history.jsonl. Start from the
+    # committed public chain each run; out/ is gitignored and may be empty or
+    # contain a previous failed attempt.
+    OUT.mkdir(parents=True, exist_ok=True)
+    public_history = FEED / "nba_board_history.jsonl"
+    working_history = OUT / "nba_board_history.jsonl"
+    if public_history.exists():
+        shutil.copyfile(public_history, working_history)
+    else:
+        working_history.unlink(missing_ok=True)
+
     code = run([sys.executable, "scripts/build_nba_pregame_research.py",
                 "--dataset-dir", str(OUT), "--games", str(games), "--odds", str(odds),
                 "--out", str(OUT), "--date", slate], env)
