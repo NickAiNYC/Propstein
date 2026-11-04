@@ -465,20 +465,46 @@ def market_page(market_key, snaps, performance_path="/performance/"):
         [("NFL Props", None), (m["label"], None)], body)
 
 
+def week_seven_relation(record, board):
+    """Describe value matches without asserting the two ledgers share row identity."""
+    market = {"rec_yds": "receiving_yards", "rec": "receptions"}.get(
+        record.get("market"), record.get("market"))
+    matches = [
+        (index + 1, row) for index, row in enumerate(board)
+        if row.get("player_name") == record.get("player")
+        and row.get("market") == market
+        and row.get("side") == record.get("side")
+        and row.get("trigger_line") == record.get("line")
+        and row.get("trigger_odds") == record.get("odds")
+    ]
+    if len(matches) != 1:
+        return "unlinked", "No matching Week 7 entry values"
+    index, row = matches[0]
+    if (row.get("close_line") == record.get("close_line")
+            and row.get("close_odds") == record.get("close_odds")):
+        return "values_align", f"Week 7 row {index}: entry and close values align"
+    return "close_differs", f"Week 7 row {index}: entry values align; close differs"
+
+
 def performance_page():
     clv = load("clv_audit_report.json")
     weekly = load("clv_report_2026_w7.json")
     holdout = load("holdout_eval_2026_w1.json")
     hmet = holdout.get("metrics") or {}
     rows = []
+    board = weekly.get("ledger") or []
+    relation_counts = {"values_align": 0, "close_differs": 0, "unlinked": 0}
     for r in (clv.get("records") or []):
         outcome = r.get("outcome") or ""
+        relation, relation_label = week_seven_relation(r, board)
+        relation_counts[relation] += 1
         rows.append(
             f"<tr><td>{esc(r.get('player'))}</td><td>{esc(r.get('market'))}</td>"
             f"<td>{esc(r.get('side'))} {esc(r.get('line'))}</td>"
             f"<td>{esc(r.get('odds'))}</td><td>{esc(r.get('close_line'))} ({esc(r.get('close_odds'))})</td>"
             f"<td class='pub-num'>{esc(r.get('clv_yards'))} yds / {esc(r.get('clv_prob_pct'))}%</td>"
             f"<td>{esc('WIN' if outcome == 'win' else outcome.upper())}</td>"
+            f"<td>{esc(relation_label)}</td>"
             f"<td class='pub-num'>{esc(r.get('net_pnl'))}</td></tr>")
     body = f"""
     <h1>PropStein Track Record &amp; Evidence</h1>
@@ -498,6 +524,17 @@ def performance_page():
     </section>
     <section>
       <h2>Graded ledger (preliminary sample, n = {esc(clv.get('total_records'))})</h2>
+      <p class="pub-note"><strong>How these records relate:</strong> The Week 7 full board contains
+      {esc(len(board))} model decisions; the graded ledger contains {esc(clv.get('total_records'))}
+      separately recorded entries. Comparing player, market, side, entry line, and entry odds finds
+      {esc(relation_counts['values_align'])} row whose entry and close values align,
+      {esc(relation_counts['close_differs'])} whose entry values align but closing values differ, and
+      {esc(relation_counts['unlinked'])} with no matching Week 7 entry values. The artifacts do not
+      share an event or decision ID, so these value matches do not establish that the eight entries
+      are a subset of the 37 decisions. The ledger does not add eight observations to the full-board
+      denominator or to the prospective commercial gate. Inspect the
+      <a href="/clv_report_2026_w7.json">Week 7 board data</a> and
+      <a href="/clv_audit_report.json">graded ledger data</a>.</p>
       <p><strong>{esc(clv.get('record_str'))}</strong> over
       <strong>{esc(clv.get('total_records'))}</strong> graded records &mdash;
       win rate {esc(clv.get('win_rate_pct'))}% (95% Wilson CI: [52.9%, 97.8%]), beat-close rate
@@ -513,7 +550,7 @@ def performance_page():
       <div class="pub-tablewrap">
       <table class="pub-table">
         <thead><tr><th>Player</th><th>Market</th><th>Bet</th><th>Odds</th>
-        <th>Close</th><th>CLV</th><th>Outcome</th><th>Net</th></tr></thead>
+        <th>Close</th><th>CLV</th><th>Outcome</th><th>Week 7 relation</th><th>Net</th></tr></thead>
         <tbody>{chr(10).join(rows)}</tbody>
       </table>
       </div>
@@ -545,7 +582,7 @@ def performance_page():
       Because the 95% confidence interval spans zero, there is no statistically significant evidence of closing line alpha over the market consensus.</p>
       <p class="pub-note"><strong>Public actions in effect:</strong><br>
       &bull; <strong>Beat-Close Guarantee Suspended:</strong> Beating or tying a close on a small sample guarantees nothing about win rate or expected value. The marketing guarantee is publicly withdrawn.<br>
-      &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> Commercial paid upgrades remain suspended until N &ge; 300 graded board decisions achieve positive CLV bounded strictly above zero with 95% confidence.<br>
+      &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> The <a href="https://github.com/NickAiNYC/Propstein/blob/main/docs/EDGE_GATE.md">preregistered commercial gate</a> requires 600 independently evaluable qualifying signals per sport, mean price CLV of at least +1.0 percentage point, and a strictly positive game-clustered lower confidence bound at one-sided &alpha; = 0.0125. N = 300 is a descriptive checkpoint, not an unlock. Compliance approval is also required. The 37 full-board decisions above are a separate published audit cohort, not the gate sample.<br>
       &bull; <strong>Uncensored Research Access:</strong> Projections and live pricing calculations are made available without paywalls in observer research mode.</p>
     </section>
     <section>
