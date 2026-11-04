@@ -176,7 +176,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
     # Verdict
     # Trigger CI includes 0: [-0.10, 1.45]
     ci_includes_zero = (ci_t[0] <= 0.0 <= ci_t[1])
-    sample_sufficient = len(df_trigger) >= 300
+    sample_sufficient = len(df_trigger) >= 600
 
     report = {
         "status": "PROVISIONAL_UNVALIDATED",
@@ -196,7 +196,8 @@ def run_edge_evaluation() -> Dict[str, Any]:
             "ci_95": ci_b
         },
         "holdout_w1_brier_skill_score_pct": w1_skill_pct,
-        "sample_threshold_target": 300,
+        "sample_threshold_target": 600,
+        "sample_checkpoint_descriptive": 300,
         "sample_sufficient": sample_sufficient,
         "action_required": {
             "state_no_edge_on_performance": True,
