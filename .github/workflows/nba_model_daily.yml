@@ -106,6 +106,9 @@ jobs:
           echo "NBA model window: $START .. $END (ET, stats.nba.com free path)"
           PYTHONPATH=. python3 src/nba_model/cli.py prepare --provider nbacom --start "$START" --end "$END"
           SLATE=$(TZ=America/New_York date +%F)
+          # Keep receipt history append-only across fresh Actions checkouts.
+          cp viewer/feeds/nba_model/nba_board_history.jsonl \
+            src/nba_model/out/nba_board_history.jsonl 2>/dev/null || true
           python3 scripts/build_nba_pregame_research.py \
             --dataset-dir src/nba_model/out \
             --games "viewer/nba_games_${SLATE}.json" \
