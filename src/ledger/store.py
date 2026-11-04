@@ -7,6 +7,7 @@ from decimal import Decimal
 from typing import Any
 
 import psycopg2
+from psycopg2.errors import UniqueViolation
 from psycopg2.extras import RealDictCursor
 
 from src.ledger.close_match import LINE_CHANGED, CloseQuote, MatchResult, match_close
@@ -388,6 +389,90 @@ def import_signal_row(conn, *, row: dict, cohort: str, source_name: str, locator
         })
     conn.commit()
     return "signal"
+
+
+def insert_amended_signal(
+    conn,
+    *,
+    event_id: str,
+    event_start_at: datetime,
+    provider_event_id: str | None,
+    amendment_id: str,
+    source_name: str,
+    source_record_sha256: str,
+    game_id: str | None,
+    player_id: str | None,
+    market: str | None,
+    model_version: str | None,
+    payload: dict,
+    captured_at: datetime,
+) -> str:
+    """Insert one prospective signal under a registered amendment.
+
+    A repeat of the same source hash does nothing. This function does not
+    update or delete an existing row.
+    """
+    if not str(event_id).strip():
+        raise LedgerUnavailable("MISSING_EVENT_ID", "event_id is required")
+    if not str(amendment_id).strip():
+        raise LedgerUnavailable("MISSING_AMENDMENT", "amendment_id is required")
+    if event_start_at.tzinfo is None or captured_at.tzinfo is None:
+        raise LedgerUnavailable("NAIVE_TIMESTAMP", "timestamps must include a timezone")
+    cohort = "prospective_full_board"
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT id::text FROM prospective_signals WHERE source_record_sha256 = %s",
+                (source_record_sha256,),
+            )
+            if cur.fetchone() is not None:
+                return "already_imported"
+            cur.execute(
+                """
+                INSERT INTO evidence_passports (cohort, subject_type, context_status)
+                VALUES (%s, 'prospective_signal', 'NOT_APPLICABLE')
+                RETURNING id
+                """,
+                (cohort,),
+            )
+            passport_id = str(cur.fetchone()["id"])
+            cur.execute(
+                """
+                INSERT INTO prospective_signals (
+                  passport_id, cohort, event_id, event_start_at, provider_event_id,
+                  amendment_id, source_name, source_record_sha256, game_id, player_id,
+                  market, model_version, payload_canonical, captured_at
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                RETURNING id
+                """,
+                (
+                    passport_id, cohort, event_id.strip(), event_start_at, provider_event_id,
+                    amendment_id, source_name, source_record_sha256, game_id, player_id,
+                    market, model_version, payload_canonical(payload), captured_at,
+                ),
+            )
+            signal_id = str(cur.fetchone()["id"])
+            _append_event(cur, passport_id=passport_id, event_type="passport_opened", payload={
+                "amendment_id": amendment_id,
+                "cohort": cohort,
+                "event_id": event_id.strip(),
+                "subject_type": "prospective_signal",
+            })
+            _append_event(cur, passport_id=passport_id, event_type="signal_recorded", payload={
+                "amendment_id": amendment_id,
+                "event_id": event_id.strip(),
+                "event_start_at": utc_canonical(event_start_at),
+                "provider_event_id": provider_event_id,
+                "signal_id": signal_id,
+                "source_name": source_name,
+                "source_record_sha256": source_record_sha256,
+            })
+        conn.commit()
+    except UniqueViolation:
+        conn.rollback()
+        return "already_imported"
+    return "imported"
 
 
 def _insert_gap(conn, *, row: dict, source_name: str, locator: str, cohort: str, missing: list[str]) -> None:

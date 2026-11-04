@@ -10,8 +10,11 @@ import psycopg2
 from src.ledger.gates import read_independent_gates
 from src.ledger.registry import RELEASE_ID, artifact_bytes, artifact_sha256
 
-MIGRATION_VERSION = "001_ledger_foundation"
-_SQL = Path(__file__).resolve().parents[2] / "db" / "migrations" / "001_ledger_foundation.sql"
+_MIGRATIONS = Path(__file__).resolve().parents[2] / "db" / "migrations"
+MIGRATIONS = (
+    ("001_ledger_foundation", _MIGRATIONS / "001_ledger_foundation.sql"),
+    ("002_amend001_nfl_event_key", _MIGRATIONS / "002_amend001_nfl_event_key.sql"),
+)
 
 
 def split_sql(script: str) -> list[str]:
@@ -61,16 +64,20 @@ def _applied(conn) -> set[str]:
 
 
 def apply_migrations(conn, *, root: Path) -> None:
-    if MIGRATION_VERSION not in _applied(conn):
-        script = _SQL.read_text(encoding="utf-8")
+    applied = _applied(conn)
+    for version, path in MIGRATIONS:
+        if version in applied:
+            continue
+        script = path.read_text(encoding="utf-8")
         with conn.cursor() as cur:
             for statement in split_sql(script):
                 cur.execute(statement)
             cur.execute(
                 "INSERT INTO schema_migrations (version) VALUES (%s)",
-                (MIGRATION_VERSION,),
+                (version,),
             )
         conn.commit()
+        applied.add(version)
     ensure_registration(conn)
     seed_gate_flags(conn, root)
     conn.commit()

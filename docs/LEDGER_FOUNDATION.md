@@ -65,7 +65,9 @@ If no hash-valid snapshot exists at or before `observed_at`, the response is `40
 
 ## Historical records that lack required evidence
 
-These files were not rewritten. Import stores a gap row with `event_id` and `event_start_at` null and leaves the original payload untouched. `kickoff_at`, `trigger_time`, and `close_time` are not promoted into the event columns.
+These files were not rewritten. The generic importer stores a gap row with `event_id` and `event_start_at` null and leaves the original payload untouched. It does not promote `kickoff_at`, `trigger_time`, or `close_time` into the event columns.
+
+AMEND-001 (`docs/protocol_amendments/AMEND-001-nfl-event-key.md`), effective 2026-11-01T00:00:00Z, is prospective only. Its importer copies a journal row's captured `game_id` into `event_id` and its captured `kickoff_at` into `event_start_at`, and stores a captured odds-provider id on nullable `provider_event_id`. That column is not a clustering key. The importer does not rewrite these files, does not apply to rows captured before that instant, and does not apply to the Week 7 37-row cohort.
 
 | Source | Records | Missing |
 |---|---:|---|

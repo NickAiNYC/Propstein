@@ -2,6 +2,7 @@
 
 game_id, kickoff_at, trigger_time, and close_time are not copied into
 event_id or event_start_at. Missing evidence is not reconstructed.
+AMEND-001 mapping lives in src/ledger/amend001.py and does not run here.
 """
 
 from __future__ import annotations
