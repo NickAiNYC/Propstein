@@ -386,6 +386,42 @@ test("OverlayManager: initializes closed shadow root with isolated styling", () 
   manager.destroy();
 });
 
+test("OverlayManager: locked / unvalidated slate renders RESEARCH ONLY without confident probabilities", () => {
+  const { document } = parseHTML(
+    '<!DOCTYPE html><html><body><div id="target">Target</div></body></html>'
+  );
+  const manager = new OverlayManager({ doc: document as any });
+  manager.init();
+
+  const target = document.getElementById("target")!;
+  const unvalidatedSignal: BackendLiveSignal = {
+    signalId: "sig-unval",
+    playerId: "p-test-2",
+    playerName: "Joel Embiid",
+    marketType: "pts",
+    selection: "OVER",
+    line: 32.5,
+    price: -115,
+    modelFairLine: 41.5,
+    pOver: 0.942,
+    gapPts: 9.0,
+    edgePct: 24.3,
+    verificationStatus: "VERIFIED",
+    gatePassed: false, // Model validation gate locked
+    capturedAt: new Date().toISOString(),
+  };
+
+  const overlay = manager.renderOverlay(target as any, unvalidatedSignal);
+  assert.ok(overlay !== null);
+  assert.ok(overlay?.innerHTML.includes("RESEARCH ONLY — LOCKED"));
+  assert.ok(!overlay?.innerHTML.includes("EDGE "));
+  assert.ok(overlay?.innerHTML.includes("RESEARCH ONLY"));
+  assert.ok(overlay?.innerHTML.includes("PENDING VALIDATION"));
+  assert.ok(!overlay?.innerHTML.includes("94.2%"));
+
+  manager.destroy();
+});
+
 // ---------------------------------------------------------------------------
 // 5. Multi-Book Repricing Lag Tracker
 // ---------------------------------------------------------------------------
@@ -398,11 +434,12 @@ test("WebSocketRelay tracks book lag and identifies slowest book", () => {
 
   relay.recordBookLag("fanduel", "pts", 1200);   // 1.2s -> avg 1.2s
 
-  const slowest = relay.getSlowestBookTelemetry("pts");
+  const slowest = relay.getLatestArrivalBookTelemetry("pts");
   assert.ok(slowest !== null);
   assert.equal(slowest?.book, "draftkings");
-  assert.equal(slowest?.avgRepriceLagMs, 4000);
-  assert.equal(slowest?.isSlowest, true);
+  assert.equal(slowest?.avgClientObservedArrivalLagMs, 4000);
+  assert.equal(slowest?.isLatestArrival, true);
+  assert.equal(slowest?.clientObserved, true);
 
   relay.destroy();
 });

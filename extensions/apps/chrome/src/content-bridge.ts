@@ -114,12 +114,71 @@ function scanAndMatchVisibleMarkets(): void {
     '[data-testid*="prop-card"], [data-testid*="market"], .sportsbook-market-row, .demobook-card, tr[data-testid*="row"]'
   );
 
+  const telemetryEvents: Array<{
+    book: string;
+    outcome: "MATCHED" | "AMBIGUOUS" | "NO_EXTRACTION" | "MULTI_MATCH" | "MARKET_UNSCOPEABLE";
+    details?: string;
+    client_latency_ms?: number;
+    timestamp: string;
+  }> = [];
+
+  const startScanTime = Date.now();
+
   for (const row of rows) {
     const extracted = extractMarketNodeFromElement(row, book);
-    if (!extracted) continue;
+    if (!extracted) {
+      telemetryEvents.push({
+        book,
+        outcome: "NO_EXTRACTION",
+        details: "DOM element missing expected player/market attributes",
+        client_latency_ms: Date.now() - startScanTime,
+        timestamp: new Date().toISOString(),
+      });
+      continue;
+    }
+
+    if (!extracted.rawMarket || extracted.rawMarket.toLowerCase().includes("unknown")) {
+      telemetryEvents.push({
+        book,
+        outcome: "MARKET_UNSCOPEABLE",
+        details: `Unscopeable market: ${extracted.rawMarket}`,
+        client_latency_ms: Date.now() - startScanTime,
+        timestamp: new Date().toISOString(),
+      });
+      continue;
+    }
 
     const matchedSignal = matchExtractedNodeToSignal(extracted, activeSignals, 1.5);
-    if (!matchedSignal) continue;
+    if (!matchedSignal) {
+      const name = (extracted.rawPlayer || "").trim().toLowerCase();
+      const candidates = activeSignals.filter((s) => s.playerName.toLowerCase().includes(name));
+      if (candidates.length > 1) {
+        telemetryEvents.push({
+          book,
+          outcome: "MULTI_MATCH",
+          details: `Multiple candidates for ${extracted.rawPlayer} (${candidates.length})`,
+          client_latency_ms: Date.now() - startScanTime,
+          timestamp: new Date().toISOString(),
+        });
+      } else {
+        telemetryEvents.push({
+          book,
+          outcome: "AMBIGUOUS",
+          details: `Line ${extracted.line} outside tolerance for ${extracted.rawPlayer}`,
+          client_latency_ms: Date.now() - startScanTime,
+          timestamp: new Date().toISOString(),
+        });
+      }
+      continue;
+    }
+
+    telemetryEvents.push({
+      book,
+      outcome: "MATCHED",
+      details: `${matchedSignal.playerName} ${matchedSignal.marketType} line=${matchedSignal.line}`,
+      client_latency_ms: Date.now() - startScanTime,
+      timestamp: new Date().toISOString(),
+    });
 
     // Find odds button to anchor overlay next to price
     const anchor = row.querySelector('button, [data-testid*="price"], [data-testid*="odds"]') || row;
@@ -131,6 +190,13 @@ function scanAndMatchVisibleMarkets(): void {
           anchor.click();
         }
       },
+    });
+  }
+
+  if (telemetryEvents.length > 0) {
+    void postToBackground({
+      type: "MATCH_TELEMETRY",
+      events: telemetryEvents,
     });
   }
 }

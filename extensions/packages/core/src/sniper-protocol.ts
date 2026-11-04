@@ -77,14 +77,18 @@ export interface PlacedAuditRecord {
   pOver: number;
   achievedPrice: number;
   auditReceiptSha256: string;
+  clientObservedLatencyMs?: number;
 }
 
 export interface BookRepriceTelemetry {
   book: string;
   marketType: string;
   sampleCount: number;
-  avgRepriceLagMs: number;
-  isSlowest: boolean;
+  avgClientObservedArrivalLagMs: number;
+  isLatestArrival: boolean;
+  clientObserved: true;
+  avgRepriceLagMs?: number; // legacy alias
+  isSlowest?: boolean; // legacy alias
 }
 
 export type AlertRoutingAction =

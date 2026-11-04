@@ -247,7 +247,7 @@ export class OverlayManager {
       : isLocked
       ? `
         <div class="ps-hero-banner ps-hero-locked">
-          <div>⚠ EDGE ${signal.edgePct.toFixed(1)}% — LOCKED</div>
+          <div>RESEARCH ONLY — LOCKED</div>
           <div class="ps-hero-sub">${verification.reasonText}</div>
         </div>
       `
@@ -265,7 +265,7 @@ export class OverlayManager {
       <div class="ps-grid">
         <div>
           <div class="ps-stat-label">Model Fair</div>
-          <div class="ps-stat-val">${signal.modelFairLine.toFixed(1)}</div>
+          <div class="ps-stat-val">${isLocked ? "RESEARCH ONLY" : signal.modelFairLine.toFixed(1)}</div>
         </div>
         <div>
           <div class="ps-stat-label">Market Line</div>
@@ -273,11 +273,11 @@ export class OverlayManager {
         </div>
         <div>
           <div class="ps-stat-label">P(Over)</div>
-          <div class="ps-stat-val">${(signal.pOver * 100).toFixed(1)}%</div>
+          <div class="ps-stat-val">${isLocked ? "PENDING VALIDATION" : (signal.pOver * 100).toFixed(1) + "%"}</div>
         </div>
         <div>
           <div class="ps-stat-label">Gap</div>
-          <div class="ps-stat-val">${signal.gapPts > 0 ? "+" : ""}${signal.gapPts.toFixed(1)} pts</div>
+          <div class="ps-stat-val">${isLocked ? "—" : (signal.gapPts > 0 ? "+" : "") + signal.gapPts.toFixed(1) + " pts"}</div>
         </div>
       </div>
       ${heroBanner}

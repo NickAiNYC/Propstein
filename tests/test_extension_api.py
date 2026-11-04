@@ -532,3 +532,48 @@ def test_router_is_mounted_on_main_app(monkeypatch):
         r = main_client.get("/api/v1/extension/health")
         assert r.status_code == 200
         assert r.json()["service"] == "propstein-extension-api"
+
+
+def test_extension_placements_and_telemetry_routes(client):
+    # 1. Placement route
+    placement_payload = {
+        "audit_id": "audit-test-1234",
+        "signal_id": "sig-test-5678",
+        "market_key": "maxey:pts:26.5",
+        "user_reported_price": -110,
+        "user_reported_line": 26.5,
+        "book": "draftkings",
+        "model_fair_line": 36.5,
+        "achieved_at": "2026-11-04T18:00:00Z",
+        "client_observed_latency_ms": 142,
+    }
+    resp = client.post("/api/v1/extension/placements", json=placement_payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["ok"] is True
+    assert data["audit_id"] == "audit-test-1234"
+    assert data["status"] == "RECORDED"
+
+    # 2. Telemetry batch route
+    telemetry_payload = {
+        "events": [
+            {
+                "book": "draftkings",
+                "outcome": "MATCHED",
+                "details": "player_last_name + market_scope + line_bucket",
+                "client_latency_ms": 85,
+                "timestamp": "2026-11-04T18:01:00Z",
+            },
+            {
+                "book": "fanduel",
+                "outcome": "AMBIGUOUS",
+                "details": "multiple players share surname on active slate",
+                "client_latency_ms": 110,
+                "timestamp": "2026-11-04T18:01:05Z",
+            },
+        ]
+    }
+    resp_telem = client.post("/api/v1/extension/telemetry", json=telemetry_payload)
+    assert resp_telem.status_code == 200
+    assert resp_telem.json()["ok"] is True
+    assert resp_telem.json()["count"] == 2

@@ -144,6 +144,9 @@ test('evidence integrity: dynamic copy lint bans promotional tout copy in public
     ...findFiles(path.join(ROOT, 'viewer'), ['.html', '.js']),
     path.join(ROOT, 'terminal/src/components/propstein/PerformancePage.tsx'),
     path.join(ROOT, 'terminal/src/components/propstein/PublicPages.tsx'),
+    ...findFiles(path.join(ROOT, 'extensions/packages/ui/src'), ['.ts', '.tsx', '.js']),
+    ...findFiles(path.join(ROOT, 'extensions/packages/core/src'), ['.ts', '.js']),
+    ...findFiles(path.join(ROOT, 'extensions/apps/chrome/src'), ['.ts', '.js']),
   ];
 
   const TOUT_PATTERNS = [
@@ -160,6 +163,8 @@ test('evidence integrity: dynamic copy lint bans promotional tout copy in public
     /does\s+not\s+(establish|provide|claim)\s+a\s+(live\s+betting\s+)?edge/i,
     /no\s+edge\s+claim/i,
     /edge\s+gate/i,
+    /no\s+bet\s+recommendation/i,
+    /cannot\s+produce\s+a\s+value\s+alert/i,
   ];
 
   for (const file of publicFiles) {
@@ -250,5 +255,31 @@ test('evidence integrity: ledger root fallback immunity in client applications',
   assert.ok(
     appJs.includes('LEDGER ROOT UNAVAILABLE'),
     "FAIL CLOSED: viewer/app.js must display 'LEDGER ROOT UNAVAILABLE' when root hash is missing"
+  );
+});
+
+test('evidence integrity: overlay lock states align with deriveCardState governance contract', () => {
+  const overlayManagerPath = path.join(ROOT, 'extensions/packages/ui/src/overlay-manager.ts');
+  assert.ok(fs.existsSync(overlayManagerPath), 'overlay-manager.ts missing');
+  const content = fs.readFileSync(overlayManagerPath, 'utf8');
+
+  // Hero banner on locked state must be RESEARCH ONLY — LOCKED, not tout copy
+  assert.ok(
+    content.includes('RESEARCH ONLY — LOCKED'),
+    'FAIL CLOSED: overlay-manager.ts must render RESEARCH ONLY — LOCKED when locked'
+  );
+  assert.ok(
+    !content.includes('EDGE ${signal.edgePct'),
+    'FAIL CLOSED: overlay-manager.ts must not render promotional EDGE % in locked hero banner'
+  );
+
+  // Unvalidated / locked cards must suppress confident probabilities
+  assert.ok(
+    content.includes('isLocked ? "RESEARCH ONLY" : signal.modelFairLine'),
+    'FAIL CLOSED: overlay-manager.ts must mask Model Fair to RESEARCH ONLY on locked cards'
+  );
+  assert.ok(
+    content.includes('isLocked ? "PENDING VALIDATION" :'),
+    'FAIL CLOSED: overlay-manager.ts must mask P(Over) to PENDING VALIDATION on locked cards'
   );
 });

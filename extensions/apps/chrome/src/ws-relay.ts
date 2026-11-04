@@ -127,8 +127,8 @@ export class WebSocketRelay {
     this.bookLatencyStats.set(key, cur);
   }
 
-  getSlowestBookTelemetry(marketType: string): BookRepriceTelemetry | null {
-    let slowest: BookRepriceTelemetry | null = null;
+  getLatestArrivalBookTelemetry(marketType: string): BookRepriceTelemetry | null {
+    let latest: BookRepriceTelemetry | null = null;
     let maxLag = -1;
 
     for (const [key, stat] of this.bookLatencyStats.entries()) {
@@ -138,17 +138,24 @@ export class WebSocketRelay {
       const avg = Math.round(stat.totalLagMs / stat.count);
       if (avg > maxLag) {
         maxLag = avg;
-        slowest = {
+        latest = {
           book: book || "unknown_book",
           marketType,
           sampleCount: stat.count,
+          avgClientObservedArrivalLagMs: avg,
           avgRepriceLagMs: avg,
+          isLatestArrival: true,
           isSlowest: true,
+          clientObserved: true,
         };
       }
     }
 
-    return slowest;
+    return latest;
+  }
+
+  getSlowestBookTelemetry(marketType: string): BookRepriceTelemetry | null {
+    return this.getLatestArrivalBookTelemetry(marketType);
   }
 
   setPanicKill(active: boolean): void {

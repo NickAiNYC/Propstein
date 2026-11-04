@@ -13,6 +13,7 @@ from src.features import (
     UnverifiedGameContextError,
     _prior_week_position_median,
     assert_context_known_at_cutoff,
+    assert_inactive_timestamp_before_cutoff,
     attach_game_context,
 )
 
@@ -158,3 +159,38 @@ def test_daily_autopilot_continues_schedule_without_model_or_picks(tmp_path, mon
     assert (viewer / "slate_2026_w9.json").read_text() == "[]\n"
     assert "Research board paused" in (viewer / "todays_board.html").read_text()
     assert (viewer / "injuries_2026_w9.json").exists()
+
+
+def test_inactive_timestamp_before_cutoff_enforcement() -> None:
+    player = pd.DataFrame({
+        "game_id": ["2026_08_BAL_BUF"],
+        "team": ["BAL"],
+        "pricing_cutoff_timestamp": ["2026-11-01T16:00:00Z"],
+    })
+
+    # 1. Missing cutoff in player rows fails
+    with pytest.raises(UnverifiedGameContextError, match="pricing_cutoff_timestamp"):
+        assert_inactive_timestamp_before_cutoff(
+            player.drop(columns=["pricing_cutoff_timestamp"]),
+            pd.DataFrame({"team": ["BAL"], "inactive_report_timestamp": ["2026-11-01T15:30:00Z"]}),
+        )
+
+    # 2. Missing inactive report timestamp fails
+    with pytest.raises(UnverifiedGameContextError, match="observed-at timestamp provenance"):
+        assert_inactive_timestamp_before_cutoff(
+            player,
+            pd.DataFrame({"team": ["BAL"], "status": ["OUT"]}),
+        )
+
+    # 3. Post-cutoff inactive report timestamp fails closed
+    with pytest.raises(UnverifiedGameContextError, match="after pricing cutoff"):
+        assert_inactive_timestamp_before_cutoff(
+            player,
+            pd.DataFrame({"team": ["BAL"], "inactive_report_timestamp": ["2026-11-01T16:00:01Z"]}),
+        )
+
+    # 4. Pre-cutoff inactive report passes
+    assert_inactive_timestamp_before_cutoff(
+        player,
+        pd.DataFrame({"team": ["BAL"], "inactive_report_timestamp": ["2026-11-01T15:30:00Z"]}),
+    )

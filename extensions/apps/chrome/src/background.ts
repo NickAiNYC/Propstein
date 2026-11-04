@@ -490,6 +490,7 @@ chrome.runtime.onMessage.addListener((msg: unknown, sender: never, sendResponse:
     "GET_ACTIVE_SIGNALS",
     "PANIC_KILL_SWITCH",
     "AUDIT_PLACED_RECORD",
+    "MATCH_TELEMETRY",
   ]);
   if (bridgeTypes.has(message.type)) {
     if (message.type === "GET_ACTIVE_SIGNALS") {
@@ -511,6 +512,31 @@ chrome.runtime.onMessage.addListener((msg: unknown, sender: never, sendResponse:
     }
     if (message.type === "AUDIT_PLACED_RECORD" && message.record) {
       appendAudit(message.record as any).catch(() => {});
+      const rec = message.record as Record<string, unknown>;
+      fetch(`${API_BASE_URL}/api/v1/extension/placements`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          audit_id: rec.recordId || rec.auditReceiptSha256 || `audit-${Date.now()}`,
+          signal_id: rec.signalId || "unknown_signal",
+          market_key: `${rec.playerName}:${rec.market}:${rec.displayedLine}`,
+          user_reported_price: rec.achievedPrice ?? -110,
+          user_reported_line: rec.displayedLine ?? 0,
+          book: rec.book ?? "unknown_book",
+          model_fair_line: rec.modelFairLine ?? null,
+          achieved_at: rec.timestamp || new Date().toISOString(),
+          client_observed_latency_ms: rec.clientObservedLatencyMs ?? null,
+        }),
+      }).catch(() => {});
+      sendResponse({ received: true });
+      return true;
+    }
+    if (message.type === "MATCH_TELEMETRY" && Array.isArray((message as any).events)) {
+      fetch(`${API_BASE_URL}/api/v1/extension/telemetry`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ events: (message as any).events }),
+      }).catch(() => {});
       sendResponse({ received: true });
       return true;
     }

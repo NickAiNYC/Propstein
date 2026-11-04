@@ -55,6 +55,7 @@ import secrets
 import sys
 import time
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel, Field
@@ -521,3 +522,91 @@ def markets_evaluate(payload: EvaluateRequest, session: dict = Depends(require_s
         "principal": session.get("sub"),
         "evaluatedAt": datetime.now(timezone.utc).isoformat(),
     }
+
+
+class PlacedAuditPayload(BaseModel):
+    audit_id: str = Field(..., min_length=4)
+    signal_id: str = Field(..., min_length=4)
+    market_key: str
+    user_reported_price: int
+    user_reported_line: float
+    book: str
+    model_fair_line: float | None = None
+    achieved_at: str
+    client_observed_latency_ms: int | None = None
+
+
+class MatchTelemetryEvent(BaseModel):
+    book: str
+    outcome: str  # MATCHED, AMBIGUOUS, NO_EXTRACTION, MULTI_MATCH, MARKET_UNSCOPEABLE
+    details: str | dict | None = None
+    client_latency_ms: int | None = None
+    timestamp: str | None = None
+
+
+class MatchTelemetryBatch(BaseModel):
+    events: list[MatchTelemetryEvent]
+
+
+@router.post("/api/v1/extension/placements")
+def record_extension_placement(payload: PlacedAuditPayload):
+    """Ingest user-reported [I placed it] audit record into Postgres research ledger."""
+    out_dir = Path(__file__).resolve().parent.parent / "viewer"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    log_file = out_dir / "extension_placements.jsonl"
+    record_dict = payload.model_dump()
+    record_dict["server_received_at"] = datetime.now(timezone.utc).isoformat()
+    with open(log_file, "a", encoding="utf-8") as f:
+        f.write(json.dumps(record_dict) + "\n")
+
+    db_url = os.environ.get("DATABASE_URL")
+    if db_url:
+        try:
+            import psycopg2
+            with psycopg2.connect(db_url) as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        INSERT INTO placements (
+                            id, signal_id, ticket_ref, book,
+                            achieved_line, achieved_odds, placed_at
+                        ) VALUES (
+                            %s, %s, %s, %s, %s, %s, %s
+                        ) ON CONFLICT (id) DO NOTHING
+                        """,
+                        (
+                            payload.audit_id,
+                            payload.signal_id,
+                            payload.audit_id,
+                            payload.book,
+                            payload.user_reported_line,
+                            payload.user_reported_price,
+                            payload.achieved_at,
+                        ),
+                    )
+        except Exception:
+            pass
+
+    return {
+        "ok": True,
+        "audit_id": payload.audit_id,
+        "status": "RECORDED",
+        "stored_at": record_dict["server_received_at"],
+    }
+
+
+@router.post("/api/v1/extension/telemetry")
+def record_extension_telemetry(payload: MatchTelemetryBatch):
+    """Record match-layer telemetry batches for real-book DOM performance evaluation."""
+    out_dir = Path(__file__).resolve().parent.parent / "viewer"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    log_file = out_dir / "extension_match_telemetry.jsonl"
+    received_at = datetime.now(timezone.utc).isoformat()
+    with open(log_file, "a", encoding="utf-8") as f:
+        for ev in payload.events:
+            d = ev.model_dump()
+            d["server_received_at"] = received_at
+            d["client_observed"] = True
+            f.write(json.dumps(d) + "\n")
+
+    return {"ok": True, "count": len(payload.events)}

@@ -78,6 +78,36 @@ def assert_context_known_at_cutoff(df: pd.DataFrame, games: pd.DataFrame) -> Non
                 )
 
 
+def assert_inactive_timestamp_before_cutoff(
+    player_rows: pd.DataFrame,
+    inactives_or_reports: pd.DataFrame,
+) -> None:
+    """Fail closed until inactive reports have verified pre-cutoff provenance.
+
+    The is_starter and absence_shock features redistribute volume based on
+    teammates who are out. That injury/inactive status must come from a
+    source timestamped strictly before pricing cutoff — never post-game box
+    score inactive designations.
+    """
+    if "pricing_cutoff_timestamp" not in player_rows.columns:
+        raise UnverifiedGameContextError("pricing_cutoff_timestamp is required for every pricing row")
+    if "inactive_report_timestamp" not in inactives_or_reports.columns:
+        raise UnverifiedGameContextError("inactive reports lack observed-at timestamp provenance")
+
+    key = "game_id" if "game_id" in inactives_or_reports.columns else "team"
+    if key not in player_rows.columns:
+        raise UnverifiedGameContextError(f"player rows lack join key: {key}")
+
+    joined = player_rows.merge(inactives_or_reports, on=key, how="inner")
+    for row in joined.itertuples():
+        cutoff = _aware_utc(getattr(row, "pricing_cutoff_timestamp"), "pricing_cutoff_timestamp")
+        observed = _aware_utc(getattr(row, "inactive_report_timestamp"), "inactive_report_timestamp")
+        if observed > cutoff:
+            raise UnverifiedGameContextError(
+                f"inactive report observed at {observed.isoformat()} is after pricing cutoff {cutoff.isoformat()}"
+            )
+
+
 # ----------------------------------------------------------------------------
 # Loading
 # ----------------------------------------------------------------------------
