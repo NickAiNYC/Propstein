@@ -1,0 +1,156 @@
+[
+ {
+  "game_id": "nba-20261104-PHI-DET",
+  "gameday": "2026-11-04",
+  "gametime": "19:00",
+  "gametime_et": "19:00",
+  "tipoff_utc": "2026-11-05T00:00:00Z",
+  "away_team": "PHI",
+  "home_team": "DET",
+  "odds_event_id": "91df86557819598ca270ba35410cfcfa",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-ATL-WAS",
+  "gameday": "2026-11-04",
+  "gametime": "19:10",
+  "gametime_et": "19:10",
+  "tipoff_utc": "2026-11-05T00:10:00Z",
+  "away_team": "ATL",
+  "home_team": "WAS",
+  "odds_event_id": "05200821a78e4f6db8131cff1652550f",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-CHA-BKN",
+  "gameday": "2026-11-04",
+  "gametime": "19:30",
+  "gametime_et": "19:30",
+  "tipoff_utc": "2026-11-05T00:30:00Z",
+  "away_team": "CHA",
+  "home_team": "BKN",
+  "odds_event_id": "6b33f8632d4dd100cba8453db82213fa",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-MIL-BOS",
+  "gameday": "2026-11-04",
+  "gametime": "19:40",
+  "gametime_et": "19:40",
+  "tipoff_utc": "2026-11-05T00:40:00Z",
+  "away_team": "MIL",
+  "home_team": "BOS",
+  "odds_event_id": "1cb12166c3eda270d40cc65b9b34459a",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-CHI-NYK",
+  "gameday": "2026-11-04",
+  "gametime": "19:40",
+  "gametime_et": "19:40",
+  "tipoff_utc": "2026-11-05T00:40:00Z",
+  "away_team": "CHI",
+  "home_team": "NYK",
+  "odds_event_id": "87d2b814c3f0d3691e9cebbf2de76295",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-CLE-OKC",
+  "gameday": "2026-11-04",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-11-05T01:00:00Z",
+  "away_team": "CLE",
+  "home_team": "OKC",
+  "odds_event_id": "38fdb396939e8aabebd93cb509618927",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-IND-MEM",
+  "gameday": "2026-11-04",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-05T01:10:00Z",
+  "away_team": "IND",
+  "home_team": "MEM",
+  "odds_event_id": "3469f522ffcacb13f88e6cd297adc110",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-UTA-NOP",
+  "gameday": "2026-11-04",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-05T01:10:00Z",
+  "away_team": "UTA",
+  "home_team": "NOP",
+  "odds_event_id": "0b5966b7b96eb844618eea8f215a0c71",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-MIN-HOU",
+  "gameday": "2026-11-04",
+  "gametime": "20:30",
+  "gametime_et": "20:30",
+  "tipoff_utc": "2026-11-05T01:30:00Z",
+  "away_team": "MIN",
+  "home_team": "HOU",
+  "odds_event_id": "b2557f74f4d7675ed3b76a4a064e0bc9",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-TOR-DEN",
+  "gameday": "2026-11-04",
+  "gametime": "21:00",
+  "gametime_et": "21:00",
+  "tipoff_utc": "2026-11-05T02:00:00Z",
+  "away_team": "TOR",
+  "home_team": "DEN",
+  "odds_event_id": "50bdc20ea9ea3c88d4bfa261b9b2307e",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-POR-PHX",
+  "gameday": "2026-11-04",
+  "gametime": "21:00",
+  "gametime_et": "21:00",
+  "tipoff_utc": "2026-11-05T02:00:00Z",
+  "away_team": "POR",
+  "home_team": "PHX",
+  "odds_event_id": "d3d91c40111aca301d41c9cdb9d64608",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-DAL-SAS",
+  "gameday": "2026-11-04",
+  "gametime": "21:30",
+  "gametime_et": "21:30",
+  "tipoff_utc": "2026-11-05T02:30:00Z",
+  "away_team": "DAL",
+  "home_team": "SAS",
+  "odds_event_id": "6b25f3932db93d4c5ad7658def2645bf",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-LAL-SAC",
+  "gameday": "2026-11-04",
+  "gametime": "22:10",
+  "gametime_et": "22:10",
+  "tipoff_utc": "2026-11-05T03:10:00Z",
+  "away_team": "LAL",
+  "home_team": "SAC",
+  "odds_event_id": "29988f1011d7738962e13e0a0beb693f",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261104-MIA-LAC",
+  "gameday": "2026-11-04",
+  "gametime": "22:40",
+  "gametime_et": "22:40",
+  "tipoff_utc": "2026-11-05T03:40:00Z",
+  "away_team": "MIA",
+  "home_team": "LAC",
+  "odds_event_id": "72c786e70ad9360fdc41e4c2a50fa788",
+  "_fixture": false
+ }
+]
