@@ -1230,7 +1230,7 @@ select {
 }
 .facet-input::placeholder { color: #cbd5e1; }
 
-/* Interactive Bankroll Risk Steppers */
+/* Header risk steppers */
 .risk-steppers-group {
   display: inline-flex;
   align-items: center;
@@ -8442,7 +8442,7 @@ body { background: #0b0e14; color: #ffffff; }
    HEADER DENSITY PASS (2026-10-27 owner review)
    The receipt badge duplicates the polling widget's trust signal and was
    the widest chip in the topbar; demote it below 1500px so the
-   logo / feed-status / slate / Gate / Kelly cluster breathes at 1280
+   logo / feed-status / slate / Gate cluster breathes at 1280
    (also retires the pre-existing 1280 topbar overflow). Wider cluster
    separation + tighter intra-cluster gaps so controls read as groups.
    ════════════════════════════════════════════════════════════════════════ */
@@ -12366,7 +12366,7 @@ dialog.detail-dialog .dialog-sheet-handle {
   opacity: 0.85;
 }
 
-/* Match Center Sub-Tab Bar (Lineups · Stats · Events · Commentary · Sniper Arbs) */
+/* Match Center Sub-Tab Bar (Lineups · Stats · Events · Commentary · Edge alerts) */
 .nba-match-center-tabs {
   display: flex;
   align-items: center;
@@ -12946,7 +12946,7 @@ dialog.detail-dialog .dialog-sheet-handle {
   color: var(--pw-text-muted);
 }
 
-/* 3-Pane Command Grid: Court Diagram (Left) | Sniper Feed (Center) | Cross-Venue Arb Board (Right) */
+/* 3-Pane Command Grid: Court Diagram (Left) | Alert feed (Center) | Cross-Venue Arb Board (Right) */
 @media (min-width: 1024px) {
   dialog.sniper-dialog .dialog-shell {
     width: min(1320px, 95vw) !important;
@@ -13555,7 +13555,7 @@ dialog.detail-dialog .dialog-sheet-handle {
   }
 }
 
-/* ── Verified Sniper Receipt Modal Styling ── */
+/* ── Verified receipt modal ── */
 .receipt-dialog {
   max-width: 580px !important;
   width: 95vw !important;
@@ -13695,7 +13695,7 @@ dialog.detail-dialog .dialog-sheet-handle {
   filter: brightness(1.1);
 }
 
-/* ── Sniper PRO Tier Gating & Paywall Overlays ── */
+/* ── Alert feed overlays ── */
 .is-tier-locked {
   position: relative !important;
 }
@@ -13838,7 +13838,7 @@ dialog.detail-dialog .dialog-sheet-handle {
 .tactical-map-body { display: block; }
 @media (max-width: 767px) {
   .tactical-map-toggle { display: flex; }
-  /* Sniper Feed + Arb Board come before the tactical court even in the Lineups tab */
+  /* Alert feed comes before the tactical court even in the Lineups tab */
   .nba-command-split-grid .nba-side-sniper-panel { order: 1; }
   .nba-command-split-grid .nba-arb-board-panel { order: 2; }
   .nba-command-split-grid .nba-tactical-card { order: 3; }
