@@ -1,0 +1,253 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   PROPSTEIN 2027 DESIGN SYSTEM
+   Graphite research terminal · sapphire accent
+   Canonical semantic token set — one source of truth.
+   ============================================================ */
+
+@theme inline {
+  /* shadcn semantic bridge */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-display: var(--font-geist), system-ui, sans-serif;
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* PropStein semantic palette */
+  --color-canvas: var(--ps-canvas);
+  --color-workspace: var(--ps-workspace);
+  --color-panel: var(--ps-panel);
+  --color-elevated: var(--ps-elevated);
+  --color-nav: var(--ps-nav);
+  --color-workscreen: var(--ps-workscreen);
+  --color-hairline: var(--ps-border);
+  --color-sapphire: var(--ps-sapphire);
+  --color-sapphire-hover: var(--ps-sapphire-hover);
+  --color-sapphire-surface: var(--ps-sapphire-surface);
+  --color-mint: var(--ps-mint);
+  --color-caution: var(--ps-caution);
+  --color-danger: var(--ps-danger);
+  --color-text: var(--ps-text);
+  --color-text-muted: var(--ps-text-muted);
+
+  /* spacing scale: 4 8 12 16 24 32 48 */
+  --spacing-ps-1: 4px;
+  --spacing-ps-2: 8px;
+  --spacing-ps-3: 12px;
+  --spacing-ps-4: 16px;
+  --spacing-ps-6: 24px;
+  --spacing-ps-8: 32px;
+  --spacing-ps-12: 48px;
+}
+
+:root,
+.dark {
+  /* radius: cards 10px, inner panels 8px, controls 6px — one system */
+  --radius: 0.625rem;
+
+  /* ---- PropStein 2027 canonical tokens (brand palette, Nov 2026) ---- */
+  --ps-canvas: #0b0d11;            /* graphite canvas */
+  --ps-workspace: #10141b;         /* deep graphite workspaces */
+  --ps-panel: #151b23;             /* charcoal surface — main content cards */
+  --ps-elevated: #1c2530;          /* elevated graphite — sheets, popovers */
+  --ps-nav: #151b23;               /* navigation band matches panels */
+  --ps-workscreen: #1a2230;        /* hover/active row surface */
+  --ps-border: #303948;            /* structural border */
+  --ps-border-soft: #232b38;       /* quieter inner hairline */
+  --ps-sapphire: #38bdf8;          /* sapphire primary accent */
+  --ps-sapphire-hover: #7dd3fc;    /* soft sapphire — emphasis, active */
+  --ps-sapphire-surface: #102b3b;  /* subtle selected surface */
+  --ps-mint: #d8ffc5;              /* secondary model reference markers */
+  --ps-caution: #f5b86b;           /* caution amber — uncertainty, warnings */
+  --ps-danger: #f87171;            /* true error/rejection only */
+  --ps-text: #f3f4f6;              /* main text */
+  --ps-text-muted: #a2adbc;        /* secondary text */
+
+  /* ---- shadcn mapping (dark-only product) ---- */
+  --background: var(--ps-canvas);
+  --foreground: var(--ps-text);
+  --card: var(--ps-panel);
+  --card-foreground: var(--ps-text);
+  --popover: var(--ps-elevated);
+  --popover-foreground: var(--ps-text);
+  --primary: var(--ps-sapphire);
+  --primary-foreground: #07121b;
+  --secondary: var(--ps-nav);
+  --secondary-foreground: var(--ps-text);
+  --muted: #1a2230;
+  --muted-foreground: var(--ps-text-muted);
+  --accent: var(--ps-sapphire-surface);
+  --accent-foreground: var(--ps-sapphire-hover);
+  --destructive: var(--ps-danger);
+  --border: var(--ps-border);
+  --input: var(--ps-border);
+  --ring: var(--ps-sapphire);
+
+  /* status vocabulary — one source of truth */
+  --status-verified: #7ee2a8;
+  --status-observed: var(--ps-caution);
+  --status-model: var(--ps-text-muted);
+  --status-stale: #f0a05a;
+  --status-archived: #8b96a8;
+  --status-unavailable: #6b7686;
+}
+
+/* chart series order: primary distribution, reference, uncertainty, grid
+   Reference-line colors follow the approved 2027 mockup:
+   market = mint (green) · median (fair line) = sapphire · mean = neutral gray */
+:root {
+  --chart-grid: #1d2634;
+  --chart-axis: #5c6a83;
+  --chart-tick: #8494ac;
+  --chart-series-pdf: var(--ps-sapphire);
+  --chart-series-cdf: #a5c9dd;
+  --chart-marker-median: var(--ps-sapphire);
+  --chart-marker-mean: var(--ps-text-muted);
+  --chart-marker-market: var(--ps-mint);
+  --chart-band-novalue: rgba(148, 163, 184, 0.10);
+  --chart-band-novalue-edge: rgba(148, 163, 184, 0.28);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-canvas text-text antialiased;
+    font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "tnum" 1; /* tabular numerals by default for data */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: rgba(56, 189, 248, 0.24);
+    color: var(--ps-text);
+  }
+  /* focus: visible, sapphire, consistent everywhere */
+  :focus-visible {
+    outline: 2px solid var(--ps-sapphire);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  /* scrollbars: thin graphite */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #26303f;
+    border-radius: 5px;
+    border: 2px solid var(--ps-canvas);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+  }
+}
+
+@layer utilities {
+  /* accessible skip link — hidden until keyboard-focused */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: auto;
+    height: auto;
+    overflow: visible;
+  }
+  .skip-link:focus,
+  .skip-link:focus-visible {
+    left: 8px;
+    top: 8px;
+    z-index: 100;
+    padding: 6px 12px;
+    border-radius: 3px;
+    background: var(--ps-sapphire);
+    color: #07121b;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  /* quantitative values: mono, tabular, right-aligned by convention */
+  .font-data {
+    font-family: var(--font-plex-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  /* headings — same Geist family, tighter tracking, heavier weight */
+  .font-display {
+    font-family: var(--font-geist), system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  /* micro data labels — used sparingly, never full sentences */
+  .label-micro {
+    font-size: 10.5px;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ps-text-muted);
+    font-weight: 500;
+  }
+  .panel {
+    background: var(--ps-panel);
+    border: 1px solid var(--ps-border-soft);
+    border-radius: 10px;
+  }
+  .panel-inset {
+    background: var(--ps-workspace);
+    border: 1px solid var(--ps-border-soft);
+    border-radius: 8px;
+  }
+  /* hairline separators */
+  .hairline-t {
+    border-top: 1px solid var(--ps-border);
+  }
+  .hairline-b {
+    border-bottom: 1px solid var(--ps-border);
+  }
+  /* safe-area helpers for iOS */
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+  /* reduce motion respect */
+  @media (prefers-reduced-motion: reduce) {
+    .motion-safe-anim {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
