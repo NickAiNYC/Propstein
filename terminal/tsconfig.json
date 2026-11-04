@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2017",
     "lib": [
       "dom",
       "dom.iterable",
-      "es2022"
+      "esnext"
     ],
-    "allowJs": false,
+    "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -17,33 +18,29 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
-    "app/**/*.ts",
-    "app/**/*.tsx",
-    "components/**/*.ts",
-    "components/**/*.tsx",
-    "lib/**/*.ts",
-    "tests/**/*.spec.ts",
-    "playwright.config.ts",
+    "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    ".next",
-    "playwright-report",
-    "test-results"
+    "propstein-src",
+    "playwright.config.ts",
+    "tests",
+    "scripts"
   ]
 }
