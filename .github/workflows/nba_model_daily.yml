@@ -2,19 +2,17 @@ name: NBA Model Daily Refresh (stats.nba.com — free)
 
 # The ingestion worker of the free topology: GitHub Actions cron runs the
 # nba_model pipeline against the official (keyless) stats.nba.com feeds and
-# commits the board/walk-forward artifacts to viewer/feeds/nba_model/ —
+# commits the research/board-refusal artifacts to viewer/feeds/nba_model/ —
 # git-as-cache; Vercel serves them statically. No paid API, no database.
 #
 # Exit semantics: the pipeline is fail-closed. A blocked or throttled run
-# fails RED (visible), never silently empty. Publish exit 10 = gates
-# REFUSED the board (expected while the model is uncalibrated or no odds
-# feed is wired) — the refusal artifact IS the honest artifact, and is
-# committed like any other.
+# fails RED (visible), never silently empty. Calibration, stale input, or
+# one-book coverage leaves the board REFUSED; research estimates remain
+# explicitly uncalibrated and are never ranked as recommendations.
 
 on:
   schedule:
-    - cron: '30 10 * * *'   # 06:30 ET — refresh after overnight games settle
-    - cron: '30 14 * * *'   # 10:30 ET — second pass for late west-coast finales
+    - cron: '30 17 * * *'   # 12:30 ET in winter / 13:30 ET in summer, after noon odds refresh
   workflow_dispatch:        # one-click live validation of the free path
 
 concurrency:
@@ -90,7 +88,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.lock
 
-      - name: Run the NBA model pipeline (prepare + publish)
+      - name: Prepare historical NBA box scores and join today's FanDuel points lines
         if: steps.probe.outputs.result == 'ok'
         run: |
           set -euo pipefail
@@ -107,13 +105,12 @@ jobs:
           )
           echo "NBA model window: $START .. $END (ET, stats.nba.com free path)"
           PYTHONPATH=. python3 src/nba_model/cli.py prepare --provider nbacom --start "$START" --end "$END"
-          set +e
-          PYTHONPATH=. python3 src/nba_model/cli.py publish --provider nbacom --start "$START" --end "$END"
-          code=$?
-          set -e
-          if [ "$code" -ne 0 ] && [ "$code" -ne 10 ]; then
-            echo "publish failed with exit $code"; exit "$code"
-          fi
+          SLATE=$(TZ=America/New_York date +%F)
+          python3 scripts/build_nba_pregame_research.py \
+            --dataset-dir src/nba_model/out \
+            --games "viewer/nba_games_${SLATE}.json" \
+            --odds "viewer/nba_odds_${SLATE}.json" \
+            --out src/nba_model/out --date "$SLATE"
 
       - name: Stage artifacts for the viewer feed
         if: steps.probe.outputs.result == 'ok'
@@ -121,7 +118,7 @@ jobs:
           mkdir -p viewer/feeds/nba_model
           cp src/nba_model/out/nba_board_*.json viewer/feeds/nba_model/ 2>/dev/null || true
           cp src/nba_model/out/nba_board_history.jsonl viewer/feeds/nba_model/ 2>/dev/null || true
-          cp src/nba_model/out/nba_walkforward_summary.json viewer/feeds/nba_model/ 2>/dev/null || true
+          cp src/nba_model/out/nba_research_*.json viewer/feeds/nba_model/ 2>/dev/null || true
           cp src/nba_model/out/nba_dataset_meta.json viewer/feeds/nba_model/ 2>/dev/null || true
           ls -la viewer/feeds/nba_model/
 
