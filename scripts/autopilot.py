@@ -15,10 +15,11 @@ PIPELINE (run mode, in order)
   2. Resolve the ACTIVE NFL week from the real schedule: the week owning the
      next kickoff at-or-after (now - 4h). The 4h grace keeps the board on the
      in-progress week through Monday night, then rolls to the next week.
-  3. Run src/week1.py only when game context has source capture times and
-     each player pricing row passes the cutoff guard. The standard nflverse
-     games.csv lacks those fields, so the model is blocked and old projections
-     are never copied forward as a new week's output.
+  3. Capture the active week's pregame ESPN context (spread, total, weather)
+     into the committed journal, then reapply the latest pre-cutoff rows onto
+     the fresh games.csv. Run src/week1.py only when every still-unstarted
+     game in that week has real capture times at or before kickoff. A missing
+     value blocks the model; old projections are never copied forward.
   4. Generate the viewer files for the week, matching the committed w7
      schemas exactly: games_/slate_/injuries_/snapshots_/current_picks_wN.
   5. Regenerate viewer/feeds/slate-index.json — the manifest the viewer
@@ -358,13 +359,25 @@ def run_model(season: int, week: int) -> bool:
     return sync_week_files(season, week)
 
 
-def game_context_has_capture_times() -> bool:
-    """Check the minimum provenance columns before attempting a new model run."""
-    import csv
+def game_context_has_capture_times(now: datetime | None = None) -> bool:
+    """True when every unstarted game in the active week has real pre-cutoff context.
 
-    with (DATA / "games.csv").open(newline="", encoding="utf-8") as stream:
-        fields = set(csv.DictReader(stream).fieldnames or [])
-    return {"spread_observed_at", "total_observed_at", "weather_observed_at"} <= fields
+    Column names alone are not enough: an empty ``weather_observed_at`` must
+    keep the model blocked. Weeks that have already kicked off are not priced.
+    """
+    from scripts.ingest_espn_game_context import csv_pricing_context_ready
+
+    if not (DATA / "games.csv").exists():
+        return False
+    return csv_pricing_context_ready(DATA / "games.csv", now or datetime.now(ET))
+
+
+def refresh_game_context(season: int, week: int) -> None:
+    """Capture this week's pregame lines. HTTP and partial slates write nothing."""
+    from scripts.ingest_espn_game_context import format_provenance_report, ingest_week
+
+    result = ingest_week(season, week)
+    print(format_provenance_report(result["report"]))
 
 
 def sync_week_files(season: int, week: int) -> bool:
@@ -749,7 +762,8 @@ def main() -> int:
 
     if args.plan:
         print(f"[plan] refresh feeds for season {season}")
-        if game_context_has_capture_times() and not args.skip_model:
+        print("[plan] capture ESPN pregame spread, total, and weather into the journal")
+        if game_context_has_capture_times(now) and not args.skip_model:
             print(f"[plan] run src/week1.py --season {season} --week {week}"
                   f"{' --odds' if os.environ.get('ODDS_API_KEY') else ' (no ODDS_API_KEY: fair lines only)'}")
         else:
@@ -765,12 +779,17 @@ def main() -> int:
         return 0
 
     refresh_feeds(season)
+    try:
+        refresh_game_context(season, week)
+    except Exception as exc:
+        print(f"[autopilot] ESPN game-context ingest failed; journal and games.csv were not "
+              f"updated by this fetch: {exc}", file=sys.stderr)
     if (DATA / "game_context_captures.jsonl").exists():
         from scripts.ingest_espn_game_context import reapply_captures_to_games_csv
         reapply_count = reapply_captures_to_games_csv()
         if reapply_count > 0:
             print(f"[autopilot] reapplied {reapply_count} verified game context captures from journal")
-    context_blocked = not game_context_has_capture_times()
+    context_blocked = not game_context_has_capture_times(now)
     if context_blocked:
         print("[autopilot] model BLOCKED: game spread, total, and weather lack capture times; "
               "refreshing independent feeds only")

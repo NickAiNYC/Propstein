@@ -1,7 +1,14 @@
 data/*.parquet
+# nflverse bulk schedule. Provenance is not stored here: autopilot reapplies
+# the committed journal below after every download. Do not force-add this file.
 data/games.csv
+# Raw scoreboard and summary-weather payloads are the audit trail. Keep the
+# JSON objects; ignore anything else dropped in the directory.
 data/raw_espn_captures/*
 !data/raw_espn_captures/*.json
+# Local jsonl logs stay untracked except the append-only game-context journal
+# and the two existing feed exceptions. The journal is small and is what CI
+# uses to restore capture times. It is not part of the frozen model hashes.
 *.jsonl
 !snapshots/*.jsonl
 !viewer/feeds/nba_model/*.jsonl

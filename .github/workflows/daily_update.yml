@@ -117,6 +117,9 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add \
+            data/game_context_captures.jsonl \
+            data/game_context_provenance_report.json \
+            data/raw_espn_captures \
             viewer/feeds \
             'viewer/games_*_w*.json' \
             'viewer/slate_*_w*.json' \
@@ -143,3 +146,7 @@ jobs:
           fi
           git commit -m "chore(data): autopilot slate refresh $(date -u +%F) [skip ci]"
           git push
+
+      - name: Fail if pricing context is missing
+        if: steps.window.outputs.should_run == 'true' && inputs.nba_only != true
+        run: PYTHONPATH=. python scripts/check_game_context_provenance.py

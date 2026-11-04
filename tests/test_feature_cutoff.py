@@ -126,6 +126,7 @@ def test_daily_autopilot_continues_schedule_without_model_or_picks(tmp_path, mon
     monkeypatch.setattr(autopilot, "FEEDS", viewer / "feeds")
     monkeypatch.setattr(autopilot, "ROOT", tmp_path)
     monkeypatch.setattr(autopilot, "refresh_feeds", lambda season: None)
+    monkeypatch.setattr(autopilot, "refresh_game_context", lambda season, week: None)
     monkeypatch.setattr(autopilot, "run_model", lambda *args: pytest.fail("blocked model ran"))
     monkeypatch.setattr(autopilot, "load_schedule", lambda now: (2026, [{
         "game_id": "2026_09_NE_KC", "season_i": 2026, "week_i": 9,
