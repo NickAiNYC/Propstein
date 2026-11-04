@@ -118,8 +118,8 @@
           <span id="marketState">64/64 Verified</span>
         </div>
 
-        <!-- Edge alerts (Desktop) -->
-        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Edge alerts (push and webhook)">
+        <!-- Market alerts (Desktop) -->
+        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Market alerts (push and webhook)">
           <span class="sniper-icon-symbol">🎯</span>
           <span>Alerts</span>
           <span class="sniper-active-badge" id="sniperActiveBadge" hidden>LIVE</span>
@@ -166,7 +166,7 @@
       <div class="pw-chip-scroll-row" id="mobileFilterStrip" role="toolbar" aria-label="Filter chips">
         <!-- Active vs All Mode Switcher -->
         <div class="chip-segment-group" role="radiogroup" aria-label="Dataset Mode">
-          <button type="button" class="chip-pill active" data-mode="actionable" id="modeActionableBtn" role="radio" aria-checked="true" title="Show plays clearing edge gate">
+          <button type="button" class="chip-pill active" data-mode="actionable" id="modeActionableBtn" role="radio" aria-checked="true" title="Show modeled forecasts">
             <span>ACTIVE</span>
             <span class="chip-count-pill" id="actionableCount">33</span>
           </button>
@@ -201,8 +201,8 @@
 
         <div class="chip-divider"></div>
 
-        <!-- Mobile edge-alert chip -->
-        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure edge alerts" title="Configure edge alerts">
+        <!-- Mobile market-alert chip -->
+        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure market alerts" title="Configure market alerts">
           <span>ALERTS</span>
           <span class="sniper-mobile-dot" id="mobileSniperDot" hidden></span>
         </button>
@@ -243,7 +243,7 @@
         <p class="first-run-intro">Empirical NFL prop terminal. Zero tout picks, zero marketing locks—transparent math, real-time odds tracking, and strict CLV accountability.</p>
         <div class="first-run-grid">
           <div class="first-run-step">
-            <div class="first-run-step-num">Step 1 · Identify Edge</div>
+            <div class="first-run-step-num">Step 1 · Review Distribution</div>
             <div class="first-run-step-title">Poisson/Gamma Distribution Fair Lines</div>
             <div class="first-run-step-desc">Negative Binomial target distributions paired with calibrated Gamma shape per catch estimate fair lines and un-vigged probabilities.</div>
           </div>
@@ -310,7 +310,7 @@
         </a>
       </div>
       <p class="compliance-disclaimer">
-        PropStein is an independent quantitative research terminal and computational decision-support tool. PropStein does not accept wagers, place bets, operate as a sportsbook, or provide financial or investment advice. All model expectations, de-vigged fair values, and Closing Line Value (CLV) metrics are statistical estimates derived from historical distribution models and verified sportsbook data feeds. Odds and availability subject to change. If you or someone you know has a gambling problem, crisis counseling and referral services can be accessed by calling 1-800-GAMBLER (1-800-426-2537).
+        Descriptive research record only. No performance, profitability, or predictive-advantage claim is implied. Not betting advice. 21+ where legal. If gambling is causing harm, call 1-800-GAMBLER. PropStein is an independent quantitative research terminal and computational decision-support tool. PropStein does not accept wagers, place bets, operate as a sportsbook, or provide financial or investment advice. All model expectations, de-vigged fair values, and Closing Line Value (CLV) metrics are statistical estimates derived from historical distribution models and verified sportsbook data feeds. Odds and availability subject to change.
       </p>
     </footer>
   </main>
@@ -345,7 +345,7 @@
         <!-- Execution gate stepper -->
         <div class="settings-section">
           <h3>Risk &amp; Execution Gate</h3>
-          <p class="settings-desc">Plays must clear the minimum edge threshold before entering Active recommendations.</p>
+          <p class="settings-desc">Signals must meet research threshold.</p>
           <div class="settings-stepper-card">
             <div class="settings-stepper-row">
               <div class="settings-stepper-meta">
@@ -420,7 +420,7 @@
           <h4>Player Signal Archetype</h4>
           <div class="signal-sheet-chips" id="signalSheetChips" role="radiogroup" aria-label="Signal Archetype">
             <button type="button" class="signal-chip-btn active" data-intent="all">All Signals</button>
-            <button type="button" class="signal-chip-btn" data-intent="edge">Highest Edge (&gt;10%)</button>
+            <button type="button" class="signal-chip-btn" data-intent="edge">Highest Model-Market Gap (&gt;10%)</button>
             <button type="button" class="signal-chip-btn" data-intent="surge">Role Surges (Injury Vacancies)</button>
             <button type="button" class="signal-chip-btn" data-intent="volume">High Floor (7+ Targets)</button>
             <button type="button" class="signal-chip-btn" data-intent="deep">Deep Threats (12+ aDOT)</button>
@@ -455,14 +455,14 @@
     </form>
   </dialog>
 
-  <!-- Edge alerts dialog -->
+  <!-- Market alerts dialog -->
   <dialog class="detail-dialog sniper-dialog" id="sniperDialog" aria-labelledby="sniperTitle">
     <form method="dialog" class="dialog-shell">
       <div class="dialog-sheet-handle" aria-hidden="true"></div>
       <div class="dialog-header">
         <div>
           <div class="eyebrow">Autonomous Market Telemetry</div>
-          <h2 id="sniperTitle">Edge alerts</h2>
+          <h2 id="sniperTitle">Market alerts</h2>
         </div>
         <button class="icon-button" value="cancel" aria-label="Close alerts">×</button>
       </div>

@@ -53,3 +53,4 @@ def test_pool_segments():
     pooled = pool_segments(data)
     assert len(pooled) == 3
     assert pooled["WR1"].shrinkage_weight > pooled["TE"].shrinkage_weight
+

@@ -15,7 +15,12 @@ from starlette.testclient import TestClient
 from src.crypto_utils import canonical_json_sha256
 from src.ledger.close_match import LINE_CHANGED, CloseQuote, match_close
 from src.ledger.context_gate import UNVERIFIED_CONTEXT, VERIFIED_CONTEXT, reference_context_status
-from src.ledger.gates import count_evaluable_signals, public_gate_flags, read_independent_gates
+from src.ledger.gates import (
+    count_evaluable_signals,
+    public_gate_flags,
+    read_independent_gates,
+    sign_gate_payload,
+)
 from src.ledger.historical_gaps import inventory_historical_gaps, summarize_gaps
 from src.ledger.language import find_forbidden
 from src.ledger.metrics import evaluate_prices
@@ -663,12 +668,13 @@ def test_paid_tier_pass_file_invariants_and_evaluable_count(app_conn, tmp_path):
     assert read_independent_gates(tmp_path)["paid_tier_clv"]["passed"] is False
 
     # Live ledger evaluable count function
-    evaluable = count_evaluable_signals(app_conn)
+    evaluable = count_evaluable_signals(app_conn, sport="nfl")
     assert isinstance(evaluable, int)
     assert evaluable >= 0
     # Live ledger does not have 600 evaluable rows yet, so gate with live conn stays closed
     good_payload = {
         "passed": True,
+        "sport": "nfl",
         "evaluable_count": 650,
         "mean_price_clv": 1.5,
         "ci_lower": 0.2,
@@ -677,7 +683,53 @@ def test_paid_tier_pass_file_invariants_and_evaluable_count(app_conn, tmp_path):
         "signature_sha256": "fake-sig",
     }
     pass_file.write_text(json.dumps(good_payload), encoding="utf-8")
-    assert read_independent_gates(tmp_path, conn=app_conn)["paid_tier_clv"]["passed"] is False
+    assert read_independent_gates(tmp_path, conn=app_conn, sport="nfl")["paid_tier_clv"]["passed"] is False
+
+    # Ambiguous CLV decimal without unit must fail (preventing the 0.02 bypass bug)
+    ambiguous_clv = dict(good_payload)
+    ambiguous_clv["mean_price_clv"] = 0.02
+    pass_file.write_text(json.dumps(ambiguous_clv), encoding="utf-8")
+    assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is False
+
+    # Explicit pp unit failure (< 1.0 pp)
+    bad_pp = dict(good_payload)
+    bad_pp["mean_price_clv"] = 0.02
+    bad_pp["clv_unit"] = "pp"
+    pass_file.write_text(json.dumps(bad_pp), encoding="utf-8")
+    assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is False
+
+    # Cross-sport isolation: NBA payload cannot open NFL gate
+    nba_payload = dict(good_payload)
+    nba_payload["sport"] = "nba"
+    pass_file.write_text(json.dumps(nba_payload), encoding="utf-8")
+    assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is False
+
+    # Canonical signature verification
+    signed = sign_gate_payload({
+        "passed": True,
+        "sport": "nfl",
+        "evaluable_count": 650,
+        "mean_price_clv_pp": 1.25,
+        "ci_lower": 0.15,
+        "rule_release_id": "RULE-2026-001",
+        "ledger_root_hash": "178e29974bf8748c",
+    })
+    pass_file.write_text(json.dumps(signed), encoding="utf-8")
+    # In offline mode with valid signature, it can verify
+    import os
+    os.environ["ALLOW_OFFLINE_GATE_VERIFICATION"] = "true"
+    os.environ["STRICT_GATE_SIGNATURES"] = "true"
+    try:
+        assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is True
+
+        # Tampering with signed payload causes signature verification to fail
+        tampered = dict(signed)
+        tampered["evaluable_count"] = 700
+        pass_file.write_text(json.dumps(tampered), encoding="utf-8")
+        assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is False
+    finally:
+        os.environ.pop("ALLOW_OFFLINE_GATE_VERIFICATION", None)
+        os.environ.pop("STRICT_GATE_SIGNATURES", None)
 
 
 def test_historical_inventory_lists_missing_evidence():

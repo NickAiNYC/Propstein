@@ -123,42 +123,69 @@ test('evidence integrity: behavioral evaluability filter against mock fixture', 
   assert.equal(evaluable[0].id, 'sig-1');
 });
 
-test('evidence integrity: copy lint bans promotional tout copy in public views', () => {
+test('evidence integrity: dynamic copy lint bans promotional tout copy in public views', () => {
+  function findFiles(dir, extensions, ignoreDirs = ['node_modules', '.next', '.git']) {
+    let results = [];
+    if (!fs.existsSync(dir)) return results;
+    const list = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of list) {
+      if (entry.isDirectory()) {
+        if (!ignoreDirs.includes(entry.name)) {
+          results = results.concat(findFiles(path.join(dir, entry.name), extensions, ignoreDirs));
+        }
+      } else if (extensions.some(ext => entry.name.endsWith(ext))) {
+        results.push(path.join(dir, entry.name));
+      }
+    }
+    return results;
+  }
+
   const publicFiles = [
-    path.join(ROOT, 'viewer/app.js'),
-    path.join(ROOT, 'viewer/index.html'),
-    path.join(ROOT, 'viewer/ledger.html'),
-    path.join(ROOT, 'viewer/audit.html'),
-    path.join(ROOT, 'viewer/performance/index.html'),
+    ...findFiles(path.join(ROOT, 'viewer'), ['.html', '.js']),
     path.join(ROOT, 'terminal/src/components/propstein/PerformancePage.tsx'),
+    path.join(ROOT, 'terminal/src/components/propstein/PublicPages.tsx'),
   ];
 
   const TOUT_PATTERNS = [
-    { pattern: /\b(value bet|best bet|lean over|lean under|beat the book|act now|before the line moves)\b/i, desc: 'tout betting CTA' },
+    { pattern: /\b(value bet|best bet|lean over|lean under|beat the book|act now|before the line moves|bet now|place this)\b/i, desc: 'tout betting CTA' },
     { pattern: /\b(guaranteed\s+(return|profit|win)|guaranteed\s+edge)\b/i, desc: 'guaranteed edge tout claim' },
-    { pattern: /\b(positive\s+ev\s+picks|lock\s+of\s+the\s+day)\b/i, desc: 'tout pick label' },
+    { pattern: /\b(positive\s+ev\s+picks?|\+ev\s+picks?|lock\s+of\s+the\s+day|lock\s+it\s+in)\b/i, desc: 'tout pick label' },
+    { pattern: /\b(edge\s+alerts?|highest\s+edge)\b/i, desc: 'tout edge alert label' },
+    { pattern: /\b(model\s+edge\s+after\s+haircut)\b/i, desc: 'misleading model edge claim' },
+    { pattern: /\b(snipe\s+this|sniper\s+alert)\b/i, desc: 'sniper tout label' },
+  ];
+
+  // Allowlist patterns for educational / governance disclaimers
+  const DISCLAIMER_ALLOWLIST = [
+    /does\s+not\s+(establish|provide|claim)\s+a\s+(live\s+betting\s+)?edge/i,
+    /no\s+edge\s+claim/i,
+    /edge\s+gate/i,
   ];
 
   for (const file of publicFiles) {
-    assert.ok(
-      fs.existsSync(file),
-      `FAIL CLOSED: Public file missing: ${path.relative(ROOT, file)}`
-    );
+    const relPath = path.relative(ROOT, file);
     const content = fs.readFileSync(file, 'utf8');
+
     for (const { pattern, desc } of TOUT_PATTERNS) {
-      assert.ok(
-        !pattern.test(content),
-        `FAIL CLOSED: Tout copy violation in ${path.relative(ROOT, file)}: found ${desc}`
-      );
+      if (pattern.test(content)) {
+        // Check if all occurrences are covered by allowlisted disclaimers
+        const lines = content.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          if (pattern.test(line)) {
+            const isAllowlisted = DISCLAIMER_ALLOWLIST.some(al => al.test(line));
+            assert.ok(
+              isAllowlisted,
+              `FAIL CLOSED: Tout copy violation in ${relPath}:${i + 1}: found ${desc} in line: "${line.trim()}"`
+            );
+          }
+        }
+      }
     }
   }
 
   // Verify performance page explicit disclaimers
   const perfContent = fs.readFileSync(path.join(ROOT, 'viewer/performance/index.html'), 'utf8');
-  assert.ok(
-    perfContent.includes("Descriptive record only. No performance, profitability, or predictive-advantage claim is implied."),
-    "viewer/performance/index.html must display the descriptive-only research disclaimer"
-  );
   assert.ok(
     perfContent.includes("0 / 600 Prospective Signals (0.0%)"),
     "viewer/performance/index.html banner must state 0 / 600 Prospective Signals"
@@ -180,4 +207,48 @@ test('evidence integrity: copy lint bans promotional tout copy in public views',
       `FAIL CLOSED: ${htmlFile} contains residual interactive modalGateMinus button`
     );
   }
+});
+
+test('evidence integrity: universal public disclaimer present across all public views', () => {
+  const UNIVERSAL_DISCLAIMER =
+    "Descriptive research record only. No performance, profitability, or predictive-advantage claim is implied. Not betting advice. 21+ where legal. If gambling is causing harm, call 1-800-GAMBLER.";
+
+  const requiredPages = [
+    'viewer/index.html',
+    'viewer/ledger.html',
+    'viewer/audit.html',
+    'viewer/performance/index.html',
+  ];
+
+  for (const page of requiredPages) {
+    const pagePath = path.join(ROOT, page);
+    assert.ok(fs.existsSync(pagePath), `Page missing: ${page}`);
+    const content = fs.readFileSync(pagePath, 'utf8');
+    assert.ok(
+      content.includes(UNIVERSAL_DISCLAIMER),
+      `FAIL CLOSED: Standardized universal disclaimer missing in ${page}`
+    );
+  }
+});
+
+test('evidence integrity: ledger root fallback immunity in client applications', () => {
+  const appJsPath = path.join(ROOT, 'viewer/app.js');
+  assert.ok(fs.existsSync(appJsPath), 'viewer/app.js missing');
+  const appJs = fs.readFileSync(appJsPath, 'utf8');
+
+  // Must not contain hardcoded fallback root hash
+  assert.ok(
+    !appJs.includes("|| '178e29974bf8748c'"),
+    "FAIL CLOSED: viewer/app.js contains hardcoded fallback root hash '178e29974bf8748c'"
+  );
+  assert.ok(
+    !appJs.includes('|| "178e29974bf8748c"'),
+    "FAIL CLOSED: viewer/app.js contains hardcoded fallback root hash \"178e29974bf8748c\""
+  );
+
+  // Must explicitly handle missing ledger root by presenting LEDGER ROOT UNAVAILABLE
+  assert.ok(
+    appJs.includes('LEDGER ROOT UNAVAILABLE'),
+    "FAIL CLOSED: viewer/app.js must display 'LEDGER ROOT UNAVAILABLE' when root hash is missing"
+  );
 });

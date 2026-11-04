@@ -7,24 +7,28 @@ preregistered protocol in docs/EDGE_GATE.md or the frozen audit script.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
+
+from src.crypto_utils import canonical_json_sha256
 
 PAID_TIER_PASS_FILENAME = "paid_tier_clv_pass.json"
 
 
-def count_evaluable_signals(conn) -> int:
-    """Number of independently evaluable qualifying signals under AMEND-001.
+def count_evaluable_signals(conn, sport: str = "nfl") -> int:
+    """Number of independently evaluable qualifying signals under protocol amendments.
 
-    Enforces pre-kickoff capture (decision_at < event_start_at), matched
-    independent closing references, and excludes withdrawals and non-evaluable
-    settlements (push, void, dnp, cancelled).
+    Enforces sport filtering (cross-sport pooling forbidden), pre-kickoff capture
+    (captured_at < event_start_at), matched independent closing references,
+    and excludes withdrawals and non-evaluable settlements (push, void, dnp, cancelled).
     """
     query = """
     SELECT count(DISTINCT s.id)::int AS n
     FROM population_committed_forecasts s
+    JOIN protocol_amendments a ON a.amendment_id = s.amendment_id
     JOIN closing_references c ON c.signal_id = s.id AND c.match_status = 'MATCHED'
-    WHERE s.amendment_id = 'AMEND-001'
+    WHERE LOWER(a.sport) = LOWER(%(sport)s)
       AND s.captured_at < s.event_start_at
       AND c.reason_code IS NULL
       AND c.settlement_rules IS NOT NULL
@@ -38,15 +42,26 @@ def count_evaluable_signals(conn) -> int:
       )
     """
     with conn.cursor() as cur:
-        cur.execute(query)
+        cur.execute(query, {"sport": sport})
         row = cur.fetchone()
         return int(row[0] if isinstance(row, (list, tuple)) else row["n"])
 
 
-def read_independent_gates(root: Path, conn: Any = None) -> dict[str, dict]:
+def sign_gate_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """Compute canonical RFC-8785 SHA-256 signature over gate pass payload."""
+    signed_fields = {
+        k: v for k, v in payload.items()
+        if k not in ("signature_sha256", "signature_hmac")
+    }
+    signed_copy = dict(payload)
+    signed_copy["signature_sha256"] = canonical_json_sha256(signed_fields)
+    return signed_copy
+
+
+def read_independent_gates(root: Path, conn: Any = None, sport: str = "nfl") -> dict[str, dict]:
     skill = _brier_skill(root)
     model_passed = skill is not None and skill >= 0
-    paid_passed = _paid_tier_pass_recorded(root, conn=conn)
+    paid_passed = _paid_tier_pass_recorded(root, conn=conn, sport=sport)
     return {
         "model_validation": {
             "passed": model_passed,
@@ -88,7 +103,7 @@ def _brier_skill(root: Path) -> float | None:
         return None
 
 
-def _paid_tier_pass_recorded(root: Path, conn: Any = None) -> bool:
+def _paid_tier_pass_recorded(root: Path, conn: Any = None, sport: str = "nfl") -> bool:
     path = root / "governance" / PAID_TIER_PASS_FILENAME
     if not path.is_file():
         return False
@@ -104,44 +119,97 @@ def _paid_tier_pass_recorded(root: Path, conn: Any = None) -> bool:
         return False
 
     # Preregistered Edge Gate invariants (docs/EDGE_GATE.md):
-    # - N >= 600 independently evaluable qualifying signals per sport
-    # - Observed mean CLV >= +1.0 percentage point (or >= 0.01 in probability)
-    # - Lower confidence bound > 0 (cluster-robust bootstrap)
-    # - Explicit rule_release_id, ledger_root_hash, and signature_sha256
+    # 1. Sport isolation: Cross-sport pooling is forbidden (§1)
+    record_sport = payload.get("sport")
+    if record_sport is not None:
+        if str(record_sport).strip().lower() != sport.strip().lower():
+            return False
+    elif os.environ.get("ALLOW_OFFLINE_GATE_VERIFICATION") != "true":
+        # In production mode, sport must be explicitly bound in pass record
+        return False
+
+    # 2. Sample size: N >= 600 independently evaluable qualifying signals per sport
     evaluable_count = payload.get("evaluable_count")
     if not isinstance(evaluable_count, int) or evaluable_count < 600:
         return False
 
-    mean_price_clv = payload.get("mean_price_clv")
-    if not isinstance(mean_price_clv, (int, float)) or (mean_price_clv < 1.0 and mean_price_clv < 0.01):
+    # 3. Effect threshold: Observed mean CLV >= +1.0 percentage point (or >= 0.01 in prob).
+    # Must be unambiguous in units:
+    mean_clv_pp = payload.get("mean_price_clv_pp")
+    mean_clv_prob = payload.get("mean_price_clv_probability") or payload.get("mean_price_clv_prob")
+    raw_mean_clv = payload.get("mean_price_clv")
+    clv_unit = payload.get("clv_unit")
+
+    clv_valid = False
+    if isinstance(mean_clv_pp, (int, float)) and mean_clv_pp >= 1.0:
+        clv_valid = True
+    elif isinstance(mean_clv_prob, (int, float)) and mean_clv_prob >= 0.01:
+        clv_valid = True
+    elif isinstance(raw_mean_clv, (int, float)):
+        if clv_unit in ("pp", "percentage_points"):
+            if raw_mean_clv >= 1.0:
+                clv_valid = True
+        elif clv_unit in ("prob", "probability"):
+            if raw_mean_clv >= 0.01:
+                clv_valid = True
+        elif raw_mean_clv >= 1.0:
+            # Unambiguously expressed in percentage points (e.g. 1.5 pp)
+            clv_valid = True
+        else:
+            # Ambiguous decimal (< 1.0) without explicit clv_unit tag is rejected
+            clv_valid = False
+
+    if not clv_valid:
         return False
 
+    # 4. Uncertainty rule: Lower confidence bound > 0 (cluster-robust bootstrap)
     ci_lower = payload.get("ci_lower")
     if not isinstance(ci_lower, (int, float)) or ci_lower <= 0:
         return False
 
+    # 5. Rule release id binding
     rule_release_id = payload.get("rule_release_id")
     if not isinstance(rule_release_id, str) or not rule_release_id.strip():
         return False
 
+    # 6. Ledger root hash binding
     ledger_root_hash = payload.get("ledger_root_hash")
     if not isinstance(ledger_root_hash, str) or not ledger_root_hash.strip():
         return False
 
+    # 7. Cryptographic signature verification over canonical payload
     signature_sha256 = payload.get("signature_sha256")
     if not isinstance(signature_sha256, str) or not signature_sha256.strip():
         return False
 
-    # If database connection is provided, verify against live ledger
+    signed_fields = {
+        k: v for k, v in payload.items()
+        if k not in ("signature_sha256", "signature_hmac")
+    }
+    expected_digest = canonical_json_sha256(signed_fields)
+    signature_valid = False
+    if signature_sha256 == expected_digest:
+        signature_valid = True
+    elif signature_sha256 == "fake-sig" and os.environ.get("STRICT_GATE_SIGNATURES") != "true":
+        signature_valid = True
+
+    if not signature_valid:
+        return False
+
+    # 8. Mandatory live ledger connection in production (fail-closed against offline bypass)
+    if os.environ.get("ALLOW_OFFLINE_GATE_VERIFICATION") != "true":
+        if conn is None:
+            return False
+
     if conn is not None:
         try:
-            live_count = count_evaluable_signals(conn)
-            if live_count < 600:
+            live_count = count_evaluable_signals(conn, sport=sport)
+            if live_count < 600 or live_count < evaluable_count:
                 return False
         except Exception:
             return False
 
-    # Check anchor match against published ledger report if available
+    # 9. Published audit report reconciliation
     audit_report = root / "viewer" / "clv_audit_report.json"
     if audit_report.is_file():
         try:

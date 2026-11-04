@@ -51,3 +51,4 @@ def test_evaluate_battery_from_yaml():
     assert "resid-calib-band" in res.discoveries_fdr_corrected
     # 0.035 should be filtered out by FDR
     assert "resid-role-confidence" not in res.discoveries_fdr_corrected
+

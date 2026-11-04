@@ -147,8 +147,8 @@
           <span id="marketState" title="SHA-256 content receipt gate active · Unverified quotes fail closed">Feed status pending</span>
         </div>
 
-        <!-- Edge alerts (Desktop) -->
-        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Edge alerts (push and webhook)">
+        <!-- Market alerts (Desktop) -->
+        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Market alerts (push and webhook)">
           <svg class="sniper-icon-symbol" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
           <span>Alerts</span>
           <span class="sniper-active-badge" id="sniperActiveBadge" hidden>LIVE</span>
@@ -239,8 +239,8 @@
 
         <div class="chip-divider"></div>
 
-        <!-- Mobile edge-alert chip -->
-        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure edge alerts" title="Configure edge alerts">
+        <!-- Mobile market-alert chip -->
+        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure market alerts" title="Configure market alerts">
           <span>ALERTS</span>
           <span class="sniper-mobile-dot" id="mobileSniperDot" hidden></span>
         </button>
@@ -529,7 +529,7 @@
         <a class="compliance-pill" href="/nfl/props/receptions/"><span>NFL Receptions Fair Lines</span></a>
       </nav>
       <p class="compliance-disclaimer">
-        PropStein is an independent quantitative research terminal and computational decision-support tool. PropStein does not accept wagers, place bets, operate as a sportsbook, or provide financial or investment advice. All model expectations, de-vigged fair values, and Closing Line Value (CLV) metrics are statistical estimates derived from historical distribution models and verified sportsbook data feeds. Odds and availability subject to change. If you or someone you know has a gambling problem, crisis counseling and referral services can be accessed by calling 1-800-GAMBLER (1-800-426-2537).
+        Descriptive research record only. No performance, profitability, or predictive-advantage claim is implied. Not betting advice. 21+ where legal. If gambling is causing harm, call 1-800-GAMBLER. PropStein is an independent quantitative research terminal and computational decision-support tool. PropStein does not accept wagers, place bets, operate as a sportsbook, or provide financial or investment advice. All model expectations, de-vigged fair values, and Closing Line Value (CLV) metrics are statistical estimates derived from historical distribution models and verified sportsbook data feeds. Odds and availability subject to change.
       </p>
       </details>
     </footer>
@@ -686,7 +686,7 @@
           <h4>Signal &amp; Role Context</h4>
           <div class="signal-sheet-chips" id="signalSheetChips" role="radiogroup" aria-label="Signal Archetype">
             <button type="button" class="signal-chip-btn active" data-intent="all">All Signals</button>
-            <button type="button" class="signal-chip-btn" data-intent="edge">Highest Edge (&gt;10%)</button>
+            <button type="button" class="signal-chip-btn" data-intent="edge">Highest Model-Market Gap (&gt;10%)</button>
             <button type="button" class="signal-chip-btn" data-intent="surge">Role Surges (Teammate OUT)</button>
             <button type="button" class="signal-chip-btn" data-intent="volume">Alpha Usage (&gt;25% Share)</button>
             <button type="button" class="signal-chip-btn" data-intent="deep">Deep Threats (&gt;12 aDOT)</button>
@@ -722,14 +722,14 @@
     </form>
   </dialog>
 
-  <!-- Edge alerts dialog -->
+  <!-- Market alerts dialog -->
   <dialog class="detail-dialog sniper-dialog" id="sniperDialog" aria-labelledby="sniperTitle">
     <form method="dialog" class="dialog-shell">
       <div class="dialog-sheet-handle" aria-hidden="true"></div>
       <div class="dialog-header">
         <div>
           <div class="eyebrow">Autonomous Market Telemetry</div>
-          <h2 id="sniperTitle">Edge alerts</h2>
+          <h2 id="sniperTitle">Market alerts</h2>
         </div>
         <button class="icon-button" value="cancel" aria-label="Close alerts">&times;</button>
       </div>

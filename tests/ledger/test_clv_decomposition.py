@@ -48,3 +48,4 @@ def test_summarize_cohort_decomposition():
     assert summary.mean_total_clv_pp > 0
     assert summary.line_beat_rate == 0.5
     assert summary.price_beat_rate == 0.5
+

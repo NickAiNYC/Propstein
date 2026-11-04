@@ -111,3 +111,4 @@ def summarize_cohort_decomposition(
         line_beat_rate=round(line_beats / n, 4),
         price_beat_rate=round(price_beats / n, 4),
     )
+

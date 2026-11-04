@@ -43,3 +43,4 @@ def test_randomized_pit_discrete_in_range():
     assert len(u) == len(actuals)
     assert np.all(u >= 0.0)
     assert np.all(u <= 1.0)
+

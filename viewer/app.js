@@ -1089,18 +1089,22 @@
           await openClvReport();
 
           const report = state.clvAuditReport;
-          const rootHash = (report?.ledger_root_hash || '178e29974bf8748c').toLowerCase();
+          const rootHash = report?.ledger_root_hash ? String(report.ledger_root_hash).toLowerCase() : null;
 
           // 1. Root Hash Prefix & Substring Verification
           if (rootParam) {
             const cleanRoot = rootParam.toLowerCase();
-            const isMatch = rootHash.startsWith(cleanRoot) || cleanRoot.startsWith(rootHash) || rootHash.includes(cleanRoot);
             const rootEl = $('#clvReportEyebrow');
             if (rootEl) {
-              if (isMatch) {
-                rootEl.innerHTML = `<span class="clv-root-tag" style="background:rgba(52,211,153,0.18); border:1px solid #10b981; color:#34d399; font-weight:bold; padding:3px 8px; border-radius:4px;">Verified Root #${esc(cleanRoot.slice(0, 16))}</span>`;
+              if (!rootHash) {
+                rootEl.innerHTML = `<span class="clv-root-tag" style="background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#f87171; font-weight:bold; padding:3px 8px; border-radius:4px;">LEDGER ROOT UNAVAILABLE</span>`;
               } else {
-                rootEl.innerHTML = `<span class="clv-root-tag" style="background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#f87171; font-weight:bold; padding:3px 8px; border-radius:4px;">Root #${esc(cleanRoot.slice(0, 16))} (Live Root: #${rootHash.slice(0, 16)})</span>`;
+                const isMatch = rootHash.startsWith(cleanRoot) || cleanRoot.startsWith(rootHash) || rootHash.includes(cleanRoot);
+                if (isMatch) {
+                  rootEl.innerHTML = `<span class="clv-root-tag" style="background:rgba(52,211,153,0.18); border:1px solid #10b981; color:#34d399; font-weight:bold; padding:3px 8px; border-radius:4px;">Verified Root #${esc(cleanRoot.slice(0, 16))}</span>`;
+                } else {
+                  rootEl.innerHTML = `<span class="clv-root-tag" style="background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#f87171; font-weight:bold; padding:3px 8px; border-radius:4px;">Root #${esc(cleanRoot.slice(0, 16))} (Live Root: #${rootHash.slice(0, 16)})</span>`;
+                }
               }
             }
           }
@@ -1946,7 +1950,7 @@
           setView(currentView === 'table' ? 'cards' : 'table');
           break;
 
-        case 's': // Edge alerts
+        case 's': // Market alerts
         case 'S':
           e.preventDefault();
           openSniperDialog('sniper_feed');
@@ -2082,7 +2086,7 @@
     if (signalGroup && adapter.intents) {
       const intents = [
         { id: 'all', label: 'All Signals' },
-        { id: 'edge', label: 'Highest Edge (>10%)' },
+        { id: 'edge', label: 'Highest Model-Market Gap (>10%)' },
         ...adapter.intents.map((i) => ({ id: i.id, label: `${i.label} Plays` })),
       ];
       signalGroup.innerHTML = intents.map((i, idx) => `<button type="button" class="signal-chip-btn${idx === 0 ? ' active' : ''}" data-intent="${esc(i.id)}">${esc(i.label)}</button>`).join('');
@@ -4473,7 +4477,7 @@
     const onCourt = Array.isArray(teamObj.on_court) ? teamObj.on_court : [];
     const bench = Array.isArray(teamObj.bench) ? teamObj.bench : [];
     const isSoccer = game.sport === 'soccer';
-    // Mission W3 (data > visuals): mobile lands on edge alerts so the alert
+    // Mission W3 (data > visuals): mobile lands on market alerts so the alert
     // feed and history are the first things visible; desktop keeps Lineups.
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
     const matchCenterTab = state.sniperMatchCenterTab || (isMobileViewport ? 'sniper' : 'lineups');
@@ -4782,7 +4786,7 @@
           <div class="nba-match-quarters">${esc(game.quarter_summary || '')}</div>
         </div>
 
-        <!-- Match Center Sub-Tabs (Lineups · Stats · Events · Commentary · Edge alerts) -->
+        <!-- Match Center Sub-Tabs (Lineups · Stats · Events · Commentary · Market alerts) -->
         <div class="nba-match-center-tabs" role="tablist" aria-label="Match Center Tabs">
           <button type="button" class="nba-mc-tab-btn ${matchCenterTab === 'lineups' ? 'active' : ''}" data-mc-tab="lineups">
             Lineups
@@ -4797,7 +4801,7 @@
             Commentary
           </button>
           <button type="button" class="nba-mc-tab-btn ${matchCenterTab === 'sniper' ? 'active' : ''}" data-mc-tab="sniper">
-            Edge alerts
+            Market alerts
           </button>
         </div>
 
@@ -5216,7 +5220,7 @@
           <kbd class="sniper-kbd">I</kbd>
         </button>
         <button type="button" class="sniper-tab-btn ${activeTab === 'sniper_feed' ? 'is-active active' : ''}" data-sniper-tab="sniper_feed" role="tab">
-          <span>Edge alerts</span>
+          <span>Market alerts</span>
           <span class="sniper-tab-count">${alerts.length}</span>
           <kbd class="sniper-kbd">S</kbd>
         </button>
@@ -5596,7 +5600,7 @@
                 Only alert me for Polymarket Arbs
               </button>
               <button type="button" class="sniper-edge-btn ${!routing.polymarketOnly ? 'active' : ''}" data-routing-scope="all_edges">
-                Alert me for all edge alerts
+                Alert me for all market alerts
               </button>
             </div>
           </div>
@@ -5633,7 +5637,7 @@
         <div class="sniper-card">
           <div class="sniper-toggle-row">
             <div class="sniper-toggle-label">
-              <span class="sniper-toggle-title">Edge alerts</span>
+              <span class="sniper-toggle-title">Market alerts</span>
               <span class="sniper-toggle-sub">Autonomously evaluate incoming orderbook ticks against execution criteria</span>
             </div>
             <label class="sniper-switch-wrap">
@@ -5718,10 +5722,10 @@
         saveSniperConfig(state.sniper);
         updateSniperUIBadges();
         if (state.sniper.enabled) {
-          toast('Edge alerts on. Polling will trigger instant 1-tap review alerts.');
+          toast('Market alerts on. Polling will trigger instant 1-tap review alerts.');
           checkSniperAlerts();
         } else {
-          toast('Edge alerts off.');
+          toast('Market alerts off.');
         }
       };
     }
@@ -5790,7 +5794,7 @@
             body: JSON.stringify({
               event: 'PROP_WIRE_TEST_PING',
               timestamp: new Date().toISOString(),
-              message: 'PropStein edge alerts connected',
+              message: 'PropStein market alerts connected',
               terminal: 'https://propstein.com'
             })
           });
@@ -5879,13 +5883,13 @@
           }
           if (box) {
             box.hidden = false;
-            box.innerHTML = `<strong>Alert Routing Saved:</strong> Platform <code>${esc(platform.toUpperCase())}</code> · Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All edge alerts'}</code> (300s Redis dedup lock active).`;
+            box.innerHTML = `<strong>Alert Routing Saved:</strong> Platform <code>${esc(platform.toUpperCase())}</code> · Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All market alerts'}</code> (300s Redis dedup lock active).`;
           }
           toast('Alert routing subscription saved.');
         } catch (_) {
           if (box) {
             box.hidden = false;
-            box.innerHTML = `<strong>Alert Routing Saved Locally:</strong> Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All edge alerts'}</code>.`;
+            box.innerHTML = `<strong>Alert Routing Saved Locally:</strong> Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All market alerts'}</code>.`;
           }
         }
       };
@@ -6338,7 +6342,7 @@
       }).catch(() => {});
     }
 
-    toast(`Edge alert: ${quote.player_name} ${side} ${quote.line} (+${(edge * 100).toFixed(1)}% Edge) · Tap to Confirm`, () => {
+    toast(`Market alert: ${quote.player_name} ${side} ${quote.line} (+${(edge * 100).toFixed(1)}% Gap) · Tap to Confirm`, () => {
       openOneTapConfirm(quote.player_id, quote.market);
     }, 6000);
   }

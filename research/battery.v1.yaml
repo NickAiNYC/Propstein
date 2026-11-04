@@ -26,3 +26,4 @@ null_simulation:
   generator: proportional-devig
   n_reps: 500
   discovery_rule: "paired Brier diff < 0 and CI upper < 0"
+
