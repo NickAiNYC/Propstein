@@ -46,21 +46,62 @@ export function quoteHold(overOdds: number, underOdds: number): number {
   return breakEvenProb(overOdds) + breakEvenProb(underOdds) - 1;
 }
 
-/* ---------- probability of clearing a line ---------- */
+/* ---------- probability of clearing a line (with integer push handling) ---------- */
 
-/** P(outcome ≥ line) — betting "over" wins ties pushed aside by .5 lines. */
+/** Checks whether a line is an integer line within numerical tolerance. */
+export function isWholeNumberLine(line: number): boolean {
+  return Math.abs(line - Math.round(line)) < 1e-4;
+}
+
+/** P(outcome > line), with Python-exact discrete and continuous integer push handling. */
 export function overProb(line: number, law: DistLaw): number {
+  const isWhole = isWholeNumberLine(line);
+  if (law.kind === "negbin") {
+    // Discrete receptions: on an integer line k, over strictly requires > k (wins on >= k + 1)
+    if (isWhole) {
+      const k = Math.round(line);
+      return 1 - lawCdf(k, law);
+    }
+    return 1 - lawCdf(Math.floor(line), law);
+  }
+  // Continuous yards compound: integer line L pushes on (L - 0.5, L + 0.5]
+  if (isWhole) {
+    const L = Math.round(line);
+    return Math.max(0, 1 - lawCdf(L + 0.5, law));
+  }
   return lawSurvival(line, law);
 }
 
-/** P(outcome ≤ line). */
+/** P(outcome < line), with Python-exact discrete and continuous integer push handling. */
 export function underProb(line: number, law: DistLaw): number {
-  const discrete = law.kind === "negbin";
-  if (discrete) {
-    // under a x.5 line means N ≤ floor(line); handle integer lines as push-free lower side
-    return 1 - lawSurvival(line, law);
+  const isWhole = isWholeNumberLine(line);
+  if (law.kind === "negbin") {
+    // Discrete receptions: on an integer line k, under strictly requires < k (wins on <= k - 1)
+    if (isWhole) {
+      const k = Math.round(line);
+      return k > 0 ? lawCdf(k - 1, law) : 0;
+    }
+    return lawCdf(Math.floor(line), law);
+  }
+  // Continuous yards compound: integer line L pushes on (L - 0.5, L + 0.5]
+  if (isWhole) {
+    const L = Math.round(line);
+    return Math.max(0, lawCdf(L - 0.5, law));
   }
   return lawCdf(line, law);
+}
+
+/** Push probability mass at integer lines (0 on half-point lines). */
+export function pushProb(line: number, law: DistLaw): number {
+  if (!isWholeNumberLine(line)) return 0;
+  if (law.kind === "negbin") {
+    const k = Math.round(line);
+    const cdfK = lawCdf(k, law);
+    const cdfPrior = k > 0 ? lawCdf(k - 1, law) : 0;
+    return Math.max(0, cdfK - cdfPrior);
+  }
+  const L = Math.round(line);
+  return Math.max(0, lawCdf(L + 0.5, law) - lawCdf(L - 0.5, law));
 }
 
 /* ---------- value boundaries ---------- */
@@ -162,7 +203,40 @@ export function compareMarket(
   return base;
 }
 
-/* ---------- CLV (closing line value) research metrics ---------- */
+/* ---------- CLV & Model Divergence Metrics ---------- */
+
+/**
+ * Model-vs-close line difference standardized by model σ: (close − fair)/σ.
+ * Per docs/EDGE_GATE.md §2, this is a diagnostic divergence measure, NOT CLV.
+ * It measures model disagreement with the market and never contributes to a pass decision.
+ */
+export function modelVsCloseDivergence(closeLine: number, fairLine: number, sd: number): number {
+  return sd > 0 ? (closeLine - fairLine) / sd : 0;
+}
+
+/** Standardized divergence alias kept for backwards compatibility. */
+export function standardizedClv(rec: { fairLine: number; closeLine: number; sd: number }): number {
+  return modelVsCloseDivergence(rec.closeLine, rec.fairLine, rec.sd);
+}
+
+/**
+ * Price CLV (the primary gate estimand, docs/EDGE_GATE.md §2):
+ * CLV_i = p_fair(entry, s) − p_fair(close, s)
+ * where p_fair is the de-vigged implied probability of side s.
+ * Positive CLV_i means the entry beat the close on that side.
+ */
+export function priceClv(entryFairProb: number, closeFairProb: number): number {
+  return entryFairProb - closeFairProb;
+}
+
+/**
+ * Line movement delta:
+ * For OVER: close_line − entry_line (positive ⇒ market moved up, beating the close)
+ * For UNDER: entry_line − close_line (positive ⇒ market moved down, beating the close)
+ */
+export function lineMovementDelta(side: "over" | "under", entryLine: number, closeLine: number): number {
+  return side === "over" ? closeLine - entryLine : entryLine - closeLine;
+}
 
 export interface ClvRecord {
   /** model fair line (median) at evaluation */
@@ -171,11 +245,6 @@ export interface ClvRecord {
   closeLine: number;
   /** model σ at evaluation */
   sd: number;
-}
-
-/** Standardized CLV: (close − fair)/σ. Calibrated model ⇒ mean ≈ 0. */
-export function standardizedClv(rec: ClvRecord): number {
-  return rec.sd > 0 ? (rec.closeLine - rec.fairLine) / rec.sd : 0;
 }
 
 export interface ClvSummary {
@@ -198,6 +267,6 @@ export function summarizeClv(records: ClvRecord[]): ClvSummary {
   const varSample = zs.reduce((a, b) => a + (b - mean) ** 2, 0) / Math.max(1, n - 1);
   const sd = Math.sqrt(varSample);
   const se = sd / Math.sqrt(n);
-  const beat = zs.filter((z) => z < 0).length / n; // close below fair ⇒ market moved toward model over side
+  const beat = zs.filter((z) => z < 0).length / n;
   return { n, mean, ci95: 1.96 * se, beatCloseRate: beat, sd };
 }

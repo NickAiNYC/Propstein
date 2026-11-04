@@ -19,6 +19,7 @@ test-py:
 
 test-node:
 	@npm test
+	@npm --prefix terminal run typecheck
 
 # Schema, registry, append-only chain, structural rules, cohort separation,
 # language lint, the published audit, and the existing Python and Node suites.

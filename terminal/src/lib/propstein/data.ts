@@ -456,16 +456,16 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     // yards: market not currently posted
   ],
   "zay-flowers": [
-    Q("receptions", 0.5, -110, -110, "VERIFIED", 4.6),
+    Q("receptions", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.6),
     Q("receiving_yards", 5, -105, -115, "OBSERVED_UNVERIFIED", 2.4),
   ],
   "mark-andrews": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 4.6),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.6),
     Q("receiving_yards", -4, -115, -105, "OBSERVED_UNVERIFIED", 2.4),
   ],
   "amon-ra-st-brown": [
-    Q("receptions", -0.5, -115, -105, "VERIFIED", 5.1),
-    Q("receiving_yards", 0, -110, -110, "VERIFIED", 5.1),
+    Q("receptions", -0.5, -115, -105, "OBSERVED_UNVERIFIED", 5.1),
+    Q("receiving_yards", 0, -110, -110, "OBSERVED_UNVERIFIED", 5.1),
   ],
   "sam-laporta": [
     Q("receptions", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.2),
@@ -476,12 +476,12 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     // yards MODEL_ONLY
   ],
   "justin-jefferson": [
-    Q("receptions", 0.5, -110, -110, "VERIFIED", 5.4),
-    Q("receiving_yards", -2.5, -115, -105, "VERIFIED", 5.4),
+    Q("receptions", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 5.4),
+    Q("receiving_yards", -2.5, -115, -105, "OBSERVED_UNVERIFIED", 5.4),
   ],
   "drake-london": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 4.9),
-    Q("receiving_yards", -5, -110, -110, "VERIFIED", 4.9),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.9),
+    Q("receiving_yards", -5, -110, -110, "OBSERVED_UNVERIFIED", 4.9),
   ],
   "kyle-pitts": [
     Q("receptions", -1, -105, -115, "STALE", 74),
@@ -492,8 +492,8 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     // yards UNAVAILABLE
   ],
   "jamarr-chase": [
-    Q("receptions", 0.5, -105, -115, "VERIFIED", 1.7),
-    Q("receiving_yards", -2.5, -110, -110, "VERIFIED", 1.7),
+    Q("receptions", 0.5, -105, -115, "OBSERVED_UNVERIFIED", 1.7),
+    Q("receiving_yards", -2.5, -110, -110, "OBSERVED_UNVERIFIED", 1.7),
   ],
   "tee-higgins": [
     Q("receptions", 1.5, -115, -105, "OBSERVED_UNVERIFIED", 2.6),
@@ -504,7 +504,7 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("receiving_yards", 4, -115, -105, "STALE", 62),
   ],
   "malik-nabers": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 4.2),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.2),
     Q("receiving_yards", -7, -110, -110, "OBSERVED_UNVERIFIED", 2.5),
   ],
   "aj-brown": [
@@ -520,8 +520,8 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("receiving_yards", -10, -110, -110, "OBSERVED_UNVERIFIED", 2.7),
   ],
   "garrett-wilson": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 4.4),
-    Q("receiving_yards", -6, -110, -110, "VERIFIED", 4.4),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.4),
+    Q("receiving_yards", -6, -110, -110, "OBSERVED_UNVERIFIED", 4.4),
   ],
   "tyreek-hill": [
     Q("receptions", -1, -110, -110, "OBSERVED_UNVERIFIED", 2.9),
@@ -529,14 +529,14 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
   ],
   "jaylen-waddle": [
     Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.9),
-    Q("receiving_yards", -7, -110, -110, "VERIFIED", 4.1),
+    Q("receiving_yards", -7, -110, -110, "OBSERVED_UNVERIFIED", 4.1),
   ],
   "travis-kelce": [
-    Q("receptions", 0.5, -110, -110, "VERIFIED", 4.8),
+    Q("receptions", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.8),
     Q("receiving_yards", -4, -110, -110, "OBSERVED_UNVERIFIED", 2.3),
   ],
   "rashee-rice": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 4.8),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.8),
     Q("receiving_yards", -5, -110, -110, "OBSERVED_UNVERIFIED", 2.3),
   ],
   "courtland-sutton": [
@@ -544,8 +544,8 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("receiving_yards", 6, -110, -110, "OBSERVED_UNVERIFIED", 3.4),
   ],
   "puka-nacua": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 5.2),
-    Q("receiving_yards", -2.5, -110, -110, "VERIFIED", 5.2),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 5.2),
+    Q("receiving_yards", -2.5, -110, -110, "OBSERVED_UNVERIFIED", 5.2),
   ],
   "davante-adams": [
     // both MODEL_ONLY — no quote captured yet this week
@@ -559,8 +559,8 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("receiving_yards", -5, -115, -105, "STALE", 68),
   ],
   "george-kittle": [
-    Q("receptions", 0.5, -110, -110, "VERIFIED", 4.7),
-    Q("receiving_yards", 0, -110, -110, "VERIFIED", 4.7),
+    Q("receptions", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.7),
+    Q("receiving_yards", 0, -110, -110, "OBSERVED_UNVERIFIED", 4.7),
   ],
   "jauan-jennings": [
     // both MODEL_ONLY
@@ -570,7 +570,7 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("receiving_yards", 3, -110, -110, "OBSERVED_UNVERIFIED", 3.9),
   ],
   "trey-mcbride": [
-    Q("receptions", -0.5, -110, -110, "VERIFIED", 4.7),
+    Q("receptions", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.7),
     Q("receiving_yards", -4, -105, -115, "OBSERVED_UNVERIFIED", 2.6),
   ],
   "keon-coleman": [
@@ -596,13 +596,13 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("assists", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 3.4),
   ],
   "nikola-jokic": [
-    Q("points", -1.5, -110, -110, "VERIFIED", 4.1),
-    Q("rebounds", 0.5, -115, -105, "VERIFIED", 4.1),
+    Q("points", -1.5, -110, -110, "OBSERVED_UNVERIFIED", 4.1),
+    Q("rebounds", 0.5, -115, -105, "OBSERVED_UNVERIFIED", 4.1),
     Q("assists", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.2),
   ],
   "luka-doncic": [
     Q("points", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.8),
-    Q("rebounds", -0.5, -110, -110, "VERIFIED", 4.4),
+    Q("rebounds", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.4),
     // assists MODEL_ONLY
   ],
   "stephen-curry": [
@@ -611,8 +611,8 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("assists", 0.5, -110, -110, "STALE", 71),
   ],
   "giannis-antetokounmpo": [
-    Q("points", -0.5, -110, -110, "VERIFIED", 4.0),
-    Q("rebounds", -0.5, -105, -115, "VERIFIED", 4.0),
+    Q("points", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.0),
+    Q("rebounds", -0.5, -105, -115, "OBSERVED_UNVERIFIED", 4.0),
     Q("assists", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.0),
   ],
   "paolo-banchero": [
@@ -621,7 +621,7 @@ const QUOTE_SEEDS: Record<string, QuoteSeed[]> = {
     Q("assists", 0.5, -115, -105, "OBSERVED_UNVERIFIED", 2.6),
   ],
   "jayson-tatum": [
-    Q("points", -0.5, -110, -110, "VERIFIED", 4.6),
+    Q("points", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 4.6),
     Q("rebounds", 0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.3),
     Q("assists", -0.5, -110, -110, "OBSERVED_UNVERIFIED", 2.3),
   ],
@@ -672,7 +672,7 @@ for (const [playerId, seeds] of Object.entries(QUOTE_SEEDS)) {
       source: CAPTURE_SOURCES.primary,
       capturedAt: hoursBeforeISO(seed.capturedHoursAgo),
       status: seed.status,
-      verifiedAgainst: seed.status === "VERIFIED" ? CAPTURE_SOURCES.verification : undefined,
+      verifiedAgainst: undefined,
     });
   }
 }

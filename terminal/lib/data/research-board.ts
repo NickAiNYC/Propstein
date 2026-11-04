@@ -16,10 +16,21 @@ WHERE amendment_id = 'AMEND-001'
 `;
 
 export const EVALUABLE_COUNT_SQL = `
-SELECT count(DISTINCT c.signal_id)::int AS n
-FROM population_closing_matches_committed c
-JOIN population_committed_forecasts s ON s.id = c.signal_id
+SELECT count(DISTINCT s.id)::int AS n
+FROM population_committed_forecasts s
+JOIN closing_references c ON c.signal_id = s.id AND c.match_status = 'MATCHED'
 WHERE s.amendment_id = 'AMEND-001'
+  AND s.decision_at < s.event_start_at
+  AND c.reason_code IS NULL
+  AND c.settlement_rules IS NOT NULL
+  AND NOT EXISTS (
+    SELECT 1 FROM withdrawals w WHERE w.signal_id = s.id
+  )
+  AND NOT EXISTS (
+    SELECT 1 FROM settlements st
+    WHERE st.signal_id = s.id
+      AND st.result IN ('push', 'void', 'dnp', 'cancelled')
+  )
 `;
 
 export const SIGNAL_SQL = `
