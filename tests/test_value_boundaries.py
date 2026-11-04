@@ -21,9 +21,11 @@ import pytest
 from src.value_boundaries import (
     MINUS_110_BREAKEVEN,
     fair_line_display,
+    fair_line_from_params,
     render_value_paragraph,
     side_probabilities,
     vig_boundaries,
+    yards_median,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -200,3 +202,23 @@ def test_snapshot_qualification_anchors_are_not_what_pages_print():
     assert ">73.0<" not in text
     assert ">58.2<" in text
     assert ">63.4<" in text
+
+
+def test_fair_line_from_params_is_the_median_not_a_stored_anchor():
+    """The display fair line is solved from the four parameters.
+
+    A.J. Brown's continuous median rounds to the published 61.0. Mack Hollins's
+    published parameters (the injury-conditional pair) have median ~45.66, so
+    the half-yard fair line is 45.5, not the pre-redistribution 30.0 stored on
+    the snapshot.
+    """
+    assert yards_median(**AJ) == pytest.approx(60.77, abs=0.02)
+    assert fair_line_from_params("receiving_yards", **AJ) == 61.0
+    hollins_median = yards_median(4.0923, 12.772, alpha=0.1097, k=1.555)
+    assert hollins_median == pytest.approx(45.66, abs=0.02)
+    assert fair_line_from_params(
+        "receiving_yards", 4.0923, 12.772, alpha=0.1097, k=1.555,
+    ) == 45.5
+    # Discrete receptions: the .5 hook closest to P(over) = 1/2.
+    assert fair_line_from_params("receptions", mu_rec=9.8767, alpha=0.1097) == 9.5
+    assert fair_line_from_params("receptions", mu_rec=4.0923, alpha=0.1097) == 3.5

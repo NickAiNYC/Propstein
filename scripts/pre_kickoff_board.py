@@ -16,7 +16,30 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 VIEWER_DIR = BASE_DIR / "viewer"
+
+from src.value_boundaries import fair_line_from_params  # noqa: E402
+
+
+def display_fair_line(snap: Dict[str, Any]):
+    """Median of the snapshot's published parameters, not a stored fair_line."""
+    proj = snap.get("projection") or {}
+    params = proj.get("distribution_params") or {}
+    market = snap.get("market")
+    mu = params.get("mu_rec")
+    if mu is None or params.get("alpha") is None or params.get("k") is None:
+        return proj.get("fair_line")
+    if market == "receiving_yards" and params.get("mu_ypr") is None:
+        return proj.get("fair_line")
+    return fair_line_from_params(
+        market,
+        mu,
+        params.get("mu_ypr") or 0.0,
+        alpha=params["alpha"],
+        k=params["k"],
+    )
 
 
 def generate_board(slate_key: str = "2026_w7") -> Dict[str, Any]:
@@ -71,7 +94,7 @@ def generate_board(slate_key: str = "2026_w7") -> Dict[str, Any]:
             "book": q.get("book", "Consensus"),
             "line": q.get("line"),
             "odds": q.get("over_odds") or q.get("odds"),
-            "fair_line": proj.get("fair_line"),
+            "fair_line": display_fair_line(s),
             "proj_volume": proj.get("proj_volume"),
             "role": (s.get("role") or {}).get("label", "none")
         })

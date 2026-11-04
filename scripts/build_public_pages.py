@@ -26,6 +26,7 @@ if ROOT not in sys.path:
 from src.value_boundaries import (  # noqa: E402
     fair_line_display,
     format_percent,
+    published_lines,
     render_value_paragraph,
     vig_boundaries,
 )
@@ -183,40 +184,95 @@ def write_page(rel_dir, html_text):
         f.write(html_text)
 
 
-def fmt_boundaries(snap):
-    """Model-derived -110 value sentence. Ignores frozen qualification anchors."""
-    if not snap:
-        return "Value boundaries not published for this snapshot."
-    proj = snap.get("projection") or {}
+def distribution_params(snap):
+    """The four published parameters. Missing any of them fails the build."""
+    proj = (snap or {}).get("projection") or {}
     params = proj.get("distribution_params") or {}
-    mu_rec = params.get("mu_rec")
-    if mu_rec is None:
-        return "Value boundaries not published for this snapshot."
+    market = (snap or {}).get("market")
+    name = (snap or {}).get("player_name", "unknown")
+    required = ["mu_rec", "alpha", "k"]
+    if market == "receiving_yards":
+        required.append("mu_ypr")
+    missing = [key for key in required if params.get(key) is None]
+    if missing:
+        raise ValueError(
+            f"missing distribution params {missing} for {name} {market}; "
+            "refusing to publish a number that cannot be recomputed"
+        )
+    return params
+
+
+def captured_quote_line(quote):
+    """Numeric book line, or None when the snapshot has no captured quote."""
+    status = (quote or {}).get("status") or "unquoted"
+    line = (quote or {}).get("line")
+    if status == "unquoted" or line is None or line == "":
+        return None
+    return float(line)
+
+
+_LINE_CACHE = {}
+
+
+def lines_for(snap):
+    """Fair line, mean, both P(over) values, and -110 roots from one solver."""
+    key = snap.get("snapshot_id")
+    cached = _LINE_CACHE.get(key)
+    if cached is not None:
+        return cached
+    params = distribution_params(snap)
+    shown = published_lines(
+        snap.get("market"),
+        params["mu_rec"],
+        params.get("mu_ypr") or 0.0,
+        alpha=params["alpha"],
+        k=params["k"],
+        quote_line=captured_quote_line(snap.get("quote")),
+    )
+    if key is not None:
+        _LINE_CACHE[key] = shown
+    return shown
+
+
+def fmt_line(value):
+    return f"{float(value):.1f}"
+
+
+def fmt_volume(value):
+    """Two decimals, dropping a trailing zero so 2.80 stays 2.8."""
+    text = f"{float(value):.2f}"
+    if text.endswith("0"):
+        text = text[:-1]
+    return text
+
+
+def fmt_boundaries(snap, fair_line):
+    """Model-derived -110 value sentence. Ignores frozen qualification anchors."""
+    params = distribution_params(snap)
     return render_value_paragraph(
         snap.get("market") or "receiving_yards",
-        proj.get("fair_line"),
-        mu_rec,
+        fair_line,
+        params["mu_rec"],
         params.get("mu_ypr") or 0.0,
-        alpha=params.get("alpha") if params.get("alpha") is not None else 0.1097,
-        k=params.get("k") if params.get("k") is not None else 1.555,
+        alpha=params["alpha"],
+        k=params["k"],
     )
 
 
 def assert_fair_line_invariants(snaps):
-    """Phase 1 invariant: Fair line = median of the stored distribution, always;
-    receptions use the nearest hook (.5) and show P(over). Assert this at publish time."""
+    """Published fair line is the median of the parameters on that snapshot.
+
+    Receptions stay on a .5 hook. A snapshot with no distribution parameters
+    fails the build instead of printing a stored number.
+    """
     for s in snaps:
         name = s.get("player_name", "unknown")
-        m = s.get("market")
-        proj = s.get("projection") or {}
-        fair = proj.get("fair_line")
-        p_over = proj.get("p_over")
-        assert fair is not None, f"fair_line missing for {name}"
-        assert p_over is not None, f"p_over missing for {name}"
-        assert 0.0 <= p_over <= 1.0, f"p_over out of bounds for {name}: {p_over}"
-
-        if m == "receptions":
-            assert fair % 1.0 == 0.5, f"receptions fair line {fair} not on hook (.5) for {name}"
+        shown = lines_for(s)
+        assert 0.0 <= shown.p_over_at_fair <= 1.0, f"p_over out of bounds for {name}"
+        if s.get("market") == "receptions":
+            assert shown.fair_line % 1.0 == 0.5, (
+                f"receptions fair line {shown.fair_line} not on hook (.5) for {name}"
+            )
 
 
 def assert_no_fixture_leakage(snaps):
@@ -256,11 +312,12 @@ def quote_block(quote):
 def player_market_page(snap, other_market_path, games_by_id, injuries_index):
     m = MARKETS[snap["market"]]
     name = snap["player_name"]
-    proj = snap.get("projection") or {}
     role = snap.get("role") or {}
-    fair = proj.get("fair_line")
-    vol = proj.get("proj_volume")
-    p_over = proj.get("p_over")
+    shown = lines_for(snap)
+    fair = fmt_line(shown.fair_line)
+    vol = fmt_volume(shown.proj_volume)
+    p_fair = pct(shown.p_over_at_fair)
+    p_quote = pct(shown.p_over_at_quote) if shown.p_over_at_quote is not None else "&mdash;"
     game = games_by_id.get(snap.get("game_id")) or {}
     matchup = f"{snap.get('team')} at {snap.get('opponent')}" if snap.get("team") else "matchup TBD"
     inj = injuries_index.get(snap.get("player_id"))
@@ -273,7 +330,7 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
                        f"the full model treatment.</p></section>")
     prov = role.get("provisional_note")
     prov_html = f"<p class='pub-note'>{esc(prov)}</p>" if prov else ""
-    params = (proj.get("distribution_params") or {})
+    params = ((snap.get("projection") or {}).get("distribution_params") or {})
     params_html = ""
     if params:
         params_html = ("<p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma "
@@ -294,12 +351,13 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
       <dl class="pub-stats">
         <div><dt>Fair line</dt><dd>{esc(fair)} {esc(m['unit'])}</dd></div>
         <div><dt>Projected volume</dt><dd>{esc(vol)} {esc(m['unit'])}</dd></div>
-        <div><dt>P(over) at fair</dt><dd>{esc(pct(p_over)) if p_over is not None else 'n/a'}</dd></div>
+        <div><dt>P(over) at fair line</dt><dd>{p_fair}</dd></div>
+        <div><dt>P(over) at quote</dt><dd>{p_quote}</dd></div>
         <div><dt>Role</dt><dd>{esc(role.get('label') or 'unlabeled')}</dd></div>
       </dl>
       {params_html}
       <h3>How to use the fair line</h3>
-      <p>{fmt_boundaries(snap)}</p>
+      <p>{fmt_boundaries(snap, shown.fair_line)}</p>
     </section>
     <section>
       <h2>Role evidence</h2>
@@ -340,12 +398,11 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
 def market_page(market_key, snaps, performance_path="/performance/"):
     m = MARKETS[market_key]
     rows = [s for s in snaps if s["market"] == market_key]
-    rows.sort(key=lambda s: (s.get("projection") or {}).get("proj_volume") or 0, reverse=True)
+    rows.sort(key=lambda s: lines_for(s).proj_volume, reverse=True)
     top = rows[:50]
     week = (snaps[0].get("slate") or "").split("W")[-1] if snaps else ""
     trs = []
     for s in top:
-        proj = s.get("projection") or {}
         q = s.get("quote") or {}
         q_odds = q.get("over_odds") if q.get("over_odds") is not None else q.get("odds")
         if q_odds is None and q.get("under_odds") is not None:
@@ -353,14 +410,15 @@ def market_page(market_key, snaps, performance_path="/performance/"):
         q_odds_str = f" ({esc(fmt_american(q_odds))})" if q_odds is not None else ""
         qtxt = (f"{esc(q.get('source'))} {esc(q.get('line'))}{q_odds_str}"
                 if q.get("line") else "<span class='pub-dim'>unquoted</span>")
+        shown = lines_for(s)
         trs.append(
             f"<tr><td><a href=\"/nfl/players/{esc(s['_slug'])}/{esc(m['slug'])}/\">"
             f"{esc(s['player_name'])}</a></td>"
             f"<td>{esc(s.get('team'))} vs {esc(s.get('opponent'))}</td>"
             f"<td>{esc(s.get('position'))}</td>"
-            f"<td class='pub-num'>{esc(proj.get('fair_line'))}</td>"
-            f"<td class='pub-num'>{esc(proj.get('proj_volume'))}</td>"
-            f"<td class='pub-num'>{esc(pct(proj.get('p_over'))) if proj.get('p_over') is not None else 'n/a'}</td>"
+            f"<td class='pub-num'>{esc(fmt_line(shown.fair_line))}</td>"
+            f"<td class='pub-num'>{esc(fmt_volume(shown.proj_volume))}</td>"
+            f"<td class='pub-num'>{esc(pct(shown.p_over_at_fair))}</td>"
             f"<td>{qtxt}</td></tr>")
     body = f"""
     <h1>NFL {esc(m['label'])} Props &ndash; Model Fair Lines (Week {esc(week)})</h1>
@@ -376,7 +434,7 @@ def market_page(market_key, snaps, performance_path="/performance/"):
     <div class="pub-tablewrap">
     <table class="pub-table">
       <thead><tr><th>Player</th><th>Matchup</th><th>Pos</th><th>Fair line</th>
-      <th>Proj volume</th><th>P(over)</th><th>Latest quote</th></tr></thead>
+      <th>Proj volume</th><th>P(over) at fair line</th><th>Latest quote</th></tr></thead>
       <tbody>
         {chr(10).join(trs)}
       </tbody>
