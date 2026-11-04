@@ -3514,6 +3514,9 @@ body {
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding-right: 12px;
 }
+.spec-col-quant {
+  padding-left: 12px;
+}
 .spec-header {
   display: flex;
   align-items: center;
@@ -15473,6 +15476,7 @@ body {
 .ruler-value-label.bottom { top: 2px; color: #b7e5ff; }
 .spec-grid-card { grid-template-columns: 1fr; }
 .spec-col-invalidation { border-right: 0; padding-right: 0; }
+.spec-col-quant { border-top: 1px solid rgba(255, 255, 255, 0.08); padding-left: 0; padding-top: 10px; }
 @media (max-width: 650px) {
   .detail-header-summary { max-width: 45vw; }
   .quant-ruler-header { align-items: flex-start; gap: 8px; flex-direction: column; }
