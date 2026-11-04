@@ -64,7 +64,11 @@ class VigBoundaries:
 
 @dataclass(frozen=True)
 class FairLineDisplay:
-    """Hundredths of a percent. The three shares sum to 10000 (100.00%)."""
+    """Outcome shares and push-adjusted fair odds at the displayed line.
+
+    The three shares sum to 10000 (100.00%). A push refunds the stake, so
+    fair odds use P(win) / (P(win) + P(lose)), not raw P(win).
+    """
 
     over_hundredths: int
     under_hundredths: int
@@ -407,12 +411,15 @@ def fair_line_display(
         market, mu_rec, mu_ypr, line, alpha=alpha, k=k,
     )
     over_h, under_h, push_h = percent_shares((p_over, p_under, p_push), digits=2)
+    settled = p_over + p_under
+    if settled <= 0:
+        raise ValueError("fair odds require a nonzero chance of settlement")
     return FairLineDisplay(
         over_hundredths=over_h,
         under_hundredths=under_h,
         push_hundredths=push_h,
-        over_odds=prob_to_american(p_over),
-        under_odds=prob_to_american(p_under),
+        over_odds=prob_to_american(p_over / settled),
+        under_odds=prob_to_american(p_under / settled),
     )
 
 
@@ -442,29 +449,36 @@ def render_value_paragraph(
     bounds = vig_boundaries(market, mu_rec, mu_ypr, alpha=alpha, k=k)
     if bounds.over_line is not None and bounds.under_line is not None:
         sentence = (
-            "At &minus;110 vig, the model sees value on the OVER at lines "
+            "At &minus;110, on non-push lines the model clears breakeven "
+            "on the OVER at lines "
             f"below <strong>{bounds.over_line:.1f}</strong> and on the UNDER "
             f"at lines above <strong>{bounds.under_line:.1f}</strong>. "
-            "Between those boundaries, neither side clears the vig-adjusted "
-            "breakeven."
+            "Between those boundaries, neither side clears the &minus;110 "
+            "breakeven on non-push lines."
         )
     elif bounds.over_line is not None:
         sentence = (
-            "At &minus;110 vig, the model sees value on the OVER at lines "
+            "At &minus;110, on non-push lines the model clears breakeven "
+            "on the OVER at lines "
             f"below <strong>{bounds.over_line:.1f}</strong>. The UNDER does "
             "not clear the vig-adjusted breakeven inside the modeled line range."
         )
     elif bounds.under_line is not None:
         sentence = (
-            "At &minus;110 vig, the model sees value on the UNDER at lines "
+            "At &minus;110, on non-push lines the model clears breakeven "
+            "on the UNDER at lines "
             f"above <strong>{bounds.under_line:.1f}</strong>. The OVER does "
             "not clear the vig-adjusted breakeven at any modeled line."
         )
     else:
         sentence = (
-            "At &minus;110 vig, neither side clears the vig-adjusted "
-            "breakeven inside the modeled line range."
+            "At &minus;110, neither side clears breakeven on non-push lines "
+            "inside the modeled line range."
         )
+    sentence += (
+        " A whole-number line can push; its expected return must be checked "
+        "using P(win) &times; 100/110 &minus; P(lose)."
+    )
     if fair_line is None:
         return sentence
     shown = fair_line_display(
@@ -472,7 +486,7 @@ def render_value_paragraph(
     )
     fair = (
         f" At the fair line (<strong>{_fmt_line(fair_line)}</strong>), "
-        f"no-vig breakeven odds are "
+        f"push-adjusted fair odds are "
         f"<strong>{_html_odds(shown.over_odds)} on the OVER</strong> "
         f"({format_percent(shown.over_hundredths)} win prob) and "
         f"<strong>{_html_odds(shown.under_odds)} on the UNDER</strong> "

@@ -83,9 +83,10 @@ def test_aj_brown_fair_line_display_sums_to_100():
     assert shown.over_hundredths == 4933
     assert shown.under_hundredths == 4975
     assert shown.push_hundredths == 92
-    # Favorite/underdog sign follows the probability. Both sides are dogs here.
-    assert shown.over_odds.startswith("+")
-    assert shown.under_odds.startswith("+")
+    # A push refunds the stake. Fair odds use settled outcomes, so both
+    # sides cannot be underdogs at the same line.
+    assert shown.over_odds == "+101"
+    assert shown.under_odds == "-101"
 
 
 def test_aj_brown_receptions_are_not_the_old_3_5_6_5_anchors():
@@ -141,7 +142,7 @@ def test_generated_pages_do_not_use_static_boundaries():
         rel = str(path.relative_to(VIEWER))
         if "dead band" in text or STATIC_DEAD_BAND in text:
             static_hits.append(rel)
-        if "vig-adjusted breakeven" not in text:
+        if "on non-push lines" not in text:
             missing.append(rel)
         match = BOUNDARY_RE.search(text)
         if match:
@@ -166,6 +167,8 @@ def test_generated_pages_do_not_use_static_boundaries():
     assert "49.33% win prob" in aj
     assert "49.75% win prob" in aj
     assert "0.92% push" in aj
+    assert "+101 on the OVER" in aj
+    assert "&minus;101 on the UNDER" in aj
 
     methodology = (VIEWER / "methodology" / "index.html").read_text()
     assert "dead band" not in methodology
