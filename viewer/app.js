@@ -201,7 +201,6 @@
     focusedIndex: -1,
     scenarioTargetShare: null,
     inlineSim: null,
-    bankroll: 5000,
     clvReport: null,
     portfolio: loadPortfolio(),
     watchlist: loadWatchlist(),
@@ -217,10 +216,6 @@
     userTier: 'free',
     slateScrollY: 0
   };
-  try {
-    const savedRoll = localStorage.getItem('propwire-bankroll');
-    if (savedRoll) state.bankroll = Math.max(100, Number(savedRoll));
-  } catch (_) {}
 
   const $ = (selector) => document.querySelector(selector);
   // Parity-proof DOM access for switcher/chrome elements (audit B2, fixed):
@@ -1176,8 +1171,6 @@
     // Interactive risk steppers (execution gate)
     const gateMinus = $('#gateMinus');
     const gatePlus = $('#gatePlus');
-    const capMinus = $('#capMinus');
-    const capPlus = $('#capPlus');
 
     function updateGate(delta) {
       triggerHaptic('light');
@@ -1186,24 +1179,9 @@
       renderBoard();
     }
 
-    function updateCap(delta) {
-      triggerHaptic('light');
-      const cur = Number(state.picks.unit_cap ?? state.picks.kelly_cap ?? 0.03);
-      const next = Math.max(0.005, Math.min(0.10, +( cur + delta ).toFixed(3)));
-      state.picks.unit_cap = next;
-      state.picks.kelly_cap = next;
-      renderHeader();
-      renderBoard();
-    }
-
     if (gateMinus && gatePlus) {
       gateMinus.addEventListener('click', () => updateGate(-0.01));
       gatePlus.addEventListener('click', () => updateGate(0.01));
-    }
-
-    if (capMinus && capPlus) {
-      capMinus.addEventListener('click', () => updateCap(-0.005));
-      capPlus.addEventListener('click', () => updateCap(0.005));
     }
 
     // Mobile Settings & Risk Sheet Controls
@@ -1264,17 +1242,10 @@
 
     const modalGateMinus = $('#modalGateMinus');
     const modalGatePlus = $('#modalGatePlus');
-    const modalCapMinus = $('#modalCapMinus');
-    const modalCapPlus = $('#modalCapPlus');
 
     if (modalGateMinus && modalGatePlus) {
       modalGateMinus.addEventListener('click', () => updateGate(-0.01));
       modalGatePlus.addEventListener('click', () => updateGate(0.01));
-    }
-
-    if (modalCapMinus && modalCapPlus) {
-      modalCapMinus.addEventListener('click', () => updateCap(-0.005));
-      modalCapPlus.addEventListener('click', () => updateCap(0.005));
     }
 
     const mobileSlateSelector = $('#mobileSlateSelector');
@@ -4760,7 +4731,7 @@
         depth_tooltip: '$450 available at $0.59, $950 at $0.60, $1,100 at $0.61',
         best_venue: 'FanDuel',
         action_label: 'View FanDuel Quote',
-        action_url: 'https://sportsbook.fanduel.com/navigation/nba',
+        action_url: '#',
         is_actionable_lime: false
       }
     ];
