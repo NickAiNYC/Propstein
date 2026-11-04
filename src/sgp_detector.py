@@ -20,8 +20,12 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from src.model import ReceivingModel, american_to_decimal, american_to_prob
-from src.parlay import Leg, ParlayPricer
+try:
+    from src.model import ReceivingModel, american_to_decimal, american_to_prob
+    from src.parlay import Leg, ParlayPricer
+except ImportError:
+    from model import ReceivingModel, american_to_decimal, american_to_prob
+    from parlay import Leg, ParlayPricer
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_SNAPSHOTS = ROOT / "viewer" / "snapshots_2026_w7.json"
@@ -216,7 +220,7 @@ class SGPDetector:
 def main():
     parser = argparse.ArgumentParser(description="PropStein SGP Under-Adjustment Detector")
     parser.add_argument("--snapshots", type=str, default=str(DEFAULT_SNAPSHOTS), help="Path to snapshots JSON")
-    parser.add_argument("--min-ev", type=float, default=5.0, help="Minimum EV percentage hurdle (e.g. 5.0 for 5%)")
+    parser.add_argument("--min-ev", type=float, default=5.0, help="Minimum EV percentage hurdle (e.g. 5.0 for 5%%)")
     parser.add_argument("--export", type=str, default=str(DEFAULT_OUTPUT), help="Output path for candidates JSON")
     args = parser.parse_args()
 

@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
 
 import numpy as np
 import pandas as pd
@@ -179,7 +180,6 @@ def build_slate(season: int, week: int, apply_week1_adjustments: bool = True,
         raise RuntimeError("no history available")
 
     games = load_games()
-    hist = attach_game_context(hist, games)
     hist = add_player_form(hist)
 
     # Take each player's most recent row; its *_f features already describe
@@ -250,7 +250,6 @@ def build_slate(season: int, week: int, apply_week1_adjustments: bool = True,
         if "away_score" in g_cand.columns:
             g_cand = g_cand[g_cand.away_score.isna()].copy()
         if "gameday" in g_cand.columns and "gametime" in g_cand.columns:
-            from datetime import datetime
             import zoneinfo
             try:
                 eastern = zoneinfo.ZoneInfo("America/New_York")
@@ -279,13 +278,29 @@ def build_slate(season: int, week: int, apply_week1_adjustments: bool = True,
                                 "implied_team_total", "implied_opp_total",
                                 "is_dome", "wind", "unposted_lines"], errors="ignore")
     slate = slate.merge(pairs, on="team", how="inner")
+    # Attach kickoff-based pricing cutoff timestamp so game context provenance can be verified
+    gid_to_game = games.set_index("game_id")
+    def _get_cutoff(gid: str) -> str:
+        if gid in gid_to_game.index:
+            row = gid_to_game.loc[gid]
+            gd = str(row.get("gameday") or "")
+            gt = str(row.get("gametime") or "13:00")
+            if gd:
+                from zoneinfo import ZoneInfo
+                try:
+                    dt = datetime.fromisoformat(f"{gd}T{gt}").replace(tzinfo=ZoneInfo("America/New_York"))
+                    return dt.astimezone(timezone.utc).isoformat()
+                except Exception:
+                    pass
+        return datetime.now(timezone.utc).isoformat()
+
+    slate["pricing_cutoff_timestamp"] = slate["game_id"].apply(_get_cutoff)
     slate = attach_game_context(slate, games)
 
     # Defence indices for the upcoming opponent, from prior data.
     defsrc = load_player_weeks()
     defsrc = defsrc[(defsrc.season < season) |
                     ((defsrc.season == season) & (defsrc.week < week))]
-    defsrc = attach_game_context(defsrc, games)
     defsrc = add_player_form(defsrc)
     defsrc = add_defense_adjustment(defsrc)
     latest_def = (defsrc.sort_values(["season", "week"])
