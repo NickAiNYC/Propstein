@@ -1,0 +1,34 @@
+{
+  "release_id": "slip_audit_structural_v1",
+  "scope": {
+    "sport": "NFL",
+    "markets": ["player_receptions", "player_reception_yds"]
+  },
+  "enabled_rules": [
+    "STRUCT_SAME_PLAYER",
+    "STRUCT_SAME_TEAM",
+    "STRUCT_SAME_GAME",
+    "STRUCT_DUPLICATE_SELECTION",
+    "OCR_LOW_CONFIDENCE",
+    "OCR_UNCONFIRMED",
+    "MISSING_REFERENCE",
+    "MARKET_UNSUPPORTED"
+  ],
+  "disabled_rules": [
+    "MODEL_LINE_MISMATCH",
+    "MODEL_PRICE_MISMATCH",
+    "JOINT_DEPENDENCE_HIGH",
+    "PAYOUT_DISTRIBUTION_MISMATCH",
+    "SCENARIO_SENSITIVITY",
+    "DISAGREEMENT_INVESTIGATION"
+  ],
+  "language_permissions": {
+    "edge": false,
+    "pick": false,
+    "stake": false
+  },
+  "parameters": {
+    "ocr_low_confidence_below": 0.8
+  },
+  "structural_disclaimer": "This is a structural observation only. It does not assess correlation, joint probability, payout adequacy, or whether any selection should be changed."
+}
