@@ -52,6 +52,39 @@ def devig(odds_over: Any, odds_under: Any) -> float:
     return p_o / total
 
 
+def fit_truncated_shrinkage_weight(
+    dm: np.ndarray, dy: np.ndarray, n_boot: int = 2000, seed: int = 42
+) -> tuple[float, float, list[float]]:
+    """Compute truncated shrinkage weight w in [0.0, 1.0] and percentile bootstrap CI.
+
+    Truncates tau^2 / raw regression weight at [0.0, 1.0] so the estimator and CI
+    are statistically consistent with shrinkage weights in [0, 1].
+    """
+    denom = np.sum(dm ** 2)
+    raw_w = float(np.sum(dm * dy) / denom) if denom > 0 else 0.0
+    w_hat = float(np.clip(raw_w, 0.0, 1.0))
+    res = dy - w_hat * dm
+    se = float(np.sqrt(np.sum(res ** 2) / max(1, len(dy) - 1) / denom)) if denom > 0 else 0.0
+
+    if len(dm) <= 1 or denom <= 0:
+        return w_hat, se, [w_hat, w_hat]
+
+    rng = np.random.default_rng(seed)
+    n = len(dm)
+    boot_w: list[float] = []
+    for _ in range(n_boot):
+        idx = rng.choice(n, size=n, replace=True)
+        b_dm = dm[idx]
+        b_dy = dy[idx]
+        b_denom = np.sum(b_dm ** 2)
+        b_w = float(np.sum(b_dm * b_dy) / b_denom) if b_denom > 0 else 0.0
+        boot_w.append(float(np.clip(b_w, 0.0, 1.0)))
+
+    ci_lower = round(float(np.percentile(boot_w, 2.5)), 4)
+    ci_upper = round(float(np.percentile(boot_w, 97.5)), 4)
+    return round(w_hat, 4), round(se, 4), [ci_lower, ci_upper]
+
+
 def run_edge_evaluation() -> Dict[str, Any]:
     stats_path = DATA_DIR / "stats_2026.parquet"
     if not stats_path.exists():
@@ -94,13 +127,9 @@ def run_edge_evaluation() -> Dict[str, Any]:
                 })
 
     df_trigger = pd.DataFrame(trigger_rows)
-    dm_t = df_trigger["p_model"] - df_trigger["p_market"]
-    dy_t = df_trigger["y"] - df_trigger["p_market"]
-    denom_t = np.sum(dm_t ** 2)
-    w_trigger = float(np.sum(dm_t * dy_t) / denom_t) if denom_t > 0 else 0.0
-    res_t = dy_t - w_trigger * dm_t
-    se_t = float(np.sqrt(np.sum(res_t ** 2) / (len(dy_t) - 1) / denom_t)) if len(dy_t) > 1 and denom_t > 0 else 0.0
-    ci_t = [round(w_trigger - 1.96 * se_t, 4), round(w_trigger + 1.96 * se_t, 4)]
+    dm_t = df_trigger["p_model"].values - df_trigger["p_market"].values
+    dy_t = df_trigger["y"].values - df_trigger["p_market"].values
+    w_trigger, se_t, ci_t = fit_truncated_shrinkage_weight(dm_t, dy_t, seed=42)
 
     # 2. Evaluate Board-wide Quoted Rows (all 164 quoted snapshots)
     snaps_path = VIEWER_DIR / "snapshots_2026_w7.json"
@@ -154,13 +183,9 @@ def run_edge_evaluation() -> Dict[str, Any]:
                 })
 
     df_board = pd.DataFrame(board_rows)
-    dm_b = df_board["p_model"] - df_board["p_market"]
-    dy_b = df_board["y"] - df_board["p_market"]
-    denom_b = np.sum(dm_b ** 2)
-    w_board = float(np.sum(dm_b * dy_b) / denom_b) if denom_b > 0 else 0.0
-    res_b = dy_b - w_board * dm_b
-    se_b = float(np.sqrt(np.sum(res_b ** 2) / (len(dy_b) - 1) / denom_b)) if len(dy_b) > 1 and denom_b > 0 else 0.0
-    ci_b = [round(w_board - 1.96 * se_b, 4), round(w_board + 1.96 * se_b, 4)]
+    dm_b = df_board["p_model"].values - df_board["p_market"].values
+    dy_b = df_board["y"].values - df_board["p_market"].values
+    w_board, se_b, ci_b = fit_truncated_shrinkage_weight(dm_b, dy_b, seed=42)
 
     # Holdout W1 Brier Skill Score
     h1_path = VIEWER_DIR / "holdout_eval_2026_w1.json"
@@ -174,8 +199,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
             pass
 
     # Verdict
-    # Trigger CI includes 0: [-0.10, 1.45]
-    ci_includes_zero = (ci_t[0] <= 0.0 <= ci_t[1])
+    ci_includes_zero = (ci_t[0] <= 0.0001)
     sample_sufficient = len(df_trigger) >= 600
 
     report = {

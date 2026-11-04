@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -16,6 +17,7 @@ from src.crypto_utils import canonical_json_sha256
 from src.ledger.close_match import LINE_CHANGED, CloseQuote, match_close
 from src.ledger.context_gate import UNVERIFIED_CONTEXT, VERIFIED_CONTEXT, reference_context_status
 from src.ledger.gates import (
+    PAID_TIER_PASS_FILENAME,
     count_evaluable_signals,
     public_gate_flags,
     read_independent_gates,
@@ -730,6 +732,47 @@ def test_paid_tier_pass_file_invariants_and_evaluable_count(app_conn, tmp_path):
     finally:
         os.environ.pop("ALLOW_OFFLINE_GATE_VERIFICATION", None)
         os.environ.pop("STRICT_GATE_SIGNATURES", None)
+
+
+def test_gate_hmac_authentication_rejects_forgery(tmp_path):
+    pass_file = tmp_path / "governance" / PAID_TIER_PASS_FILENAME
+    pass_file.parent.mkdir(parents=True, exist_ok=True)
+    secret = "super-secret-operator-signing-key-42"
+    os.environ["PROPSTEIN_GATE_HMAC_SECRET"] = secret
+    os.environ["ALLOW_OFFLINE_GATE_VERIFICATION"] = "true"
+
+    try:
+        valid_payload = {
+            "passed": True,
+            "sport": "nfl",
+            "evaluable_count": 650,
+            "mean_price_clv_pp": 1.25,
+            "ci_lower": 0.15,
+            "rule_release_id": "RULE-2026-001",
+            "ledger_root_hash": "178e29974bf8748c",
+        }
+        signed = sign_gate_payload(valid_payload, secret_key=secret)
+        pass_file.write_text(json.dumps(signed), encoding="utf-8")
+        assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is True
+
+        # Attacker recomputes valid sha256 checksum, but does not possess HMAC secret key
+        forged = dict(signed)
+        forged["evaluable_count"] = 800
+        # Forger updates sha256 checksum to match tampered fields
+        signed_fields = {k: v for k, v in forged.items() if k not in ("signature_sha256", "signature_hmac")}
+        from src.crypto_utils import canonical_json_sha256
+        forged["signature_sha256"] = canonical_json_sha256(signed_fields)
+        # But HMAC is still the old one (or guessed)
+        pass_file.write_text(json.dumps(forged), encoding="utf-8")
+        assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is False
+
+        # Attacker signs with wrong key
+        wrong_signed = sign_gate_payload(valid_payload, secret_key="wrong-key")
+        pass_file.write_text(json.dumps(wrong_signed), encoding="utf-8")
+        assert read_independent_gates(tmp_path, sport="nfl")["paid_tier_clv"]["passed"] is False
+    finally:
+        os.environ.pop("PROPSTEIN_GATE_HMAC_SECRET", None)
+        os.environ.pop("ALLOW_OFFLINE_GATE_VERIFICATION", None)
 
 
 def test_historical_inventory_lists_missing_evidence():

@@ -6,12 +6,13 @@ preregistered protocol in docs/EDGE_GATE.md or the frozen audit script.
 
 from __future__ import annotations
 
+import hmac
 import json
 import os
 from pathlib import Path
 from typing import Any
 
-from src.crypto_utils import canonical_json_sha256
+from src.crypto_utils import canonical_json_hmac_sha256, canonical_json_sha256
 
 PAID_TIER_PASS_FILENAME = "paid_tier_clv_pass.json"
 
@@ -47,14 +48,38 @@ def count_evaluable_signals(conn, sport: str = "nfl") -> int:
         return int(row[0] if isinstance(row, (list, tuple)) else row["n"])
 
 
-def sign_gate_payload(payload: dict[str, Any]) -> dict[str, Any]:
-    """Compute canonical RFC-8785 SHA-256 signature over gate pass payload."""
+def sign_gate_payload(
+    payload: dict[str, Any], secret_key: str | bytes | None = None
+) -> dict[str, Any]:
+    """Compute canonical RFC-8785 HMAC-SHA-256 signature and SHA-256 digest over gate pass payload.
+
+    Authenticity requires a private runtime HMAC secret (PROPSTEIN_GATE_HMAC_SECRET).
+    Plain SHA-256 is retained only as an integrity checksum.
+    """
+    key = (
+        secret_key
+        or os.environ.get("PROPSTEIN_GATE_HMAC_SECRET")
+        or os.environ.get("GATE_SIGNING_KEY")
+    )
+    if not key:
+        if (
+            os.environ.get("ALLOW_DEV_GATE_SIGNING") == "true"
+            or os.environ.get("ALLOW_OFFLINE_GATE_VERIFICATION") == "true"
+            or os.environ.get("PYTEST_CURRENT_TEST")
+        ):
+            key = "dev-insecure-fallback-secret-never-use-in-prod"
+        else:
+            raise ValueError(
+                "Cannot sign gate payload: PROPSTEIN_GATE_HMAC_SECRET is missing from environment"
+            )
+
     signed_fields = {
         k: v for k, v in payload.items()
         if k not in ("signature_sha256", "signature_hmac")
     }
     signed_copy = dict(payload)
     signed_copy["signature_sha256"] = canonical_json_sha256(signed_fields)
+    signed_copy["signature_hmac"] = canonical_json_hmac_sha256(signed_fields, key)
     return signed_copy
 
 
@@ -177,8 +202,9 @@ def _paid_tier_pass_recorded(root: Path, conn: Any = None, sport: str = "nfl") -
     if not isinstance(ledger_root_hash, str) or not ledger_root_hash.strip():
         return False
 
-    # 7. Cryptographic signature verification over canonical payload
+    # 7. Cryptographic authentication & tamper-evidence verification
     signature_sha256 = payload.get("signature_sha256")
+    signature_hmac = payload.get("signature_hmac")
     if not isinstance(signature_sha256, str) or not signature_sha256.strip():
         return False
 
@@ -186,15 +212,41 @@ def _paid_tier_pass_recorded(root: Path, conn: Any = None, sport: str = "nfl") -
         k: v for k, v in payload.items()
         if k not in ("signature_sha256", "signature_hmac")
     }
-    expected_digest = canonical_json_sha256(signed_fields)
-    signature_valid = False
-    if signature_sha256 == expected_digest:
-        signature_valid = True
-    elif signature_sha256 == "fake-sig" and os.environ.get("STRICT_GATE_SIGNATURES") != "true":
-        signature_valid = True
 
-    if not signature_valid:
+    # 7a. Checksum digest check
+    expected_digest = canonical_json_sha256(signed_fields)
+    digest_valid = False
+    if signature_sha256 == expected_digest:
+        digest_valid = True
+    elif signature_sha256 == "fake-sig" and os.environ.get("STRICT_GATE_SIGNATURES") != "true":
+        digest_valid = True
+
+    if not digest_valid:
         return False
+
+    # 7b. Authenticity check: HMAC-SHA-256 against runtime secret
+    secret_key = (
+        os.environ.get("PROPSTEIN_GATE_HMAC_SECRET")
+        or os.environ.get("GATE_SIGNING_KEY")
+    )
+    if os.environ.get("ALLOW_OFFLINE_GATE_VERIFICATION") != "true" and not secret_key:
+        # In production mode without the signing secret, fail closed!
+        return False
+
+    if secret_key:
+        if not isinstance(signature_hmac, str) or not signature_hmac.strip():
+            return False
+        expected_hmac = canonical_json_hmac_sha256(signed_fields, secret_key)
+        if not hmac.compare_digest(str(signature_hmac), str(expected_hmac)):
+            return False
+    elif os.environ.get("STRICT_GATE_SIGNATURES") == "true":
+        # Strict mode requires valid HMAC even offline
+        dev_key = "dev-insecure-fallback-secret-never-use-in-prod"
+        if not isinstance(signature_hmac, str) or not signature_hmac.strip():
+            return False
+        expected_hmac = canonical_json_hmac_sha256(signed_fields, dev_key)
+        if not hmac.compare_digest(str(signature_hmac), str(expected_hmac)):
+            return False
 
     # 8. Mandatory live ledger connection in production (fail-closed against offline bypass)
     if os.environ.get("ALLOW_OFFLINE_GATE_VERIFICATION") != "true":

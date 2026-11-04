@@ -50,3 +50,17 @@ def canonical_json_sha256(payload: Dict[str, Any]) -> str:
     """
     serialized = canonical_json_dumps(payload)
     return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def canonical_json_hmac_sha256(payload: Dict[str, Any], secret_key: str | bytes) -> str:
+    """
+    RFC-8785 compliant canonical JSON HMAC-SHA-256 authentication signature.
+    Prevents unauthorized forgery of gate and ledger payloads.
+    """
+    import hmac
+    serialized = canonical_json_dumps(payload)
+    if isinstance(secret_key, str):
+        key_bytes = secret_key.encode("utf-8")
+    else:
+        key_bytes = secret_key
+    return hmac.new(key_bytes, serialized.encode("utf-8"), hashlib.sha256).hexdigest()
