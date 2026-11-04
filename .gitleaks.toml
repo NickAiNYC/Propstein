@@ -14,4 +14,9 @@ regexes = [
   '''(?i)["']dedup_key["']\s*:\s*["'][0-9a-fA-F]{32,}["']''',
   '''EXTENSION_SESSION_SECRET["']\s*,\s*["'](?:test-secret-|super-secret-key-|pytest-only-)''',
   '''STRIPE_WEBHOOK_SECRET["']\s*,\s*["']whsec_test_''',
+  '''^\s*'[0-9a-fA-F]{64}'[,)]?\s*$''',
+]
+paths = [
+  '''db/migrations/.*''',
+  '''docs/protocol_amendments/.*''',
 ]

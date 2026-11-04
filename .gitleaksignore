@@ -1,0 +1,3 @@
+# Gitleaks ignore list for false positives
+# Format: <commit-sha>:<file-path>:<rule-id>:<line-number>
+67e2abca56c0139fb81e8d4037fe3e3b67e9550a:db/migrations/002_amend001_nfl_event_key.sql:generic-api-key:40
