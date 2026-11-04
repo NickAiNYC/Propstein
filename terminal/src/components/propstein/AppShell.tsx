@@ -266,7 +266,7 @@ function LeagueSwitcher() {
           </button>
         );
       })}
-      {["MLB", "NHL", "UFC"].map((s) => (
+      {["MLB", "NHL"].map((s) => (
         <button
           key={s}
           type="button"
@@ -456,7 +456,7 @@ function DesktopTopBar() {
           >
             <Search className="h-3.5 w-3.5" aria-hidden />
             <span className="flex-1 truncate">
-              Search players, teams, matchups…
+              Search players, teams, markets...
             </span>
             <kbd className="rounded-[3px] border border-hairline bg-workspace px-1 font-data text-[10px] text-text-muted">
               ⌘K

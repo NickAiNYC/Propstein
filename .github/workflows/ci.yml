@@ -131,6 +131,7 @@ jobs:
         run: |
           npm ci
           npm ci --prefix extensions --ignore-scripts
+          npm ci --prefix terminal --ignore-scripts
       - name: make verify
         env:
           LEDGER_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
