@@ -535,18 +535,12 @@ def performance_page():
       denominator or to the prospective commercial gate. Inspect the
       <a href="/clv_report_2026_w7.json">Week 7 board data</a> and
       <a href="/clv_audit_report.json">graded ledger data</a>.</p>
-      <p><strong>{esc(clv.get('record_str'))}</strong> over
-      <strong>{esc(clv.get('total_records'))}</strong> graded records &mdash;
-      win rate {esc(clv.get('win_rate_pct'))}% (95% Wilson CI: [52.9%, 97.8%]), beat-close rate
-      {esc(clv.get('beat_close_rate_pct'))}%, average close beating value
-      {esc(clv.get('avg_clv_prob_pct'))}% of implied probability, net P&amp;L
-      {esc(clv.get('net_pnl'))} on {esc(clv.get('total_staked'))} staked
-      (ROI {esc(clv.get('realized_roi_pct'))}%). Ledger root hash
-      <code>{esc(clv.get('ledger_root_hash'))}</code>.</p>
       <p class="pub-note"><strong>Read this honestly:</strong> {esc(clv.get('total_records'))}
-      records is a tiny sample. None of these rates are meaningful evidence of
+      records is a tiny sample. The rows below are the graded entries, not a
+      win-rate or return claim. None of these results are meaningful evidence of
       edge yet. We publish them below the full board so the methodology is auditable from
-      day one, and so there is no incentive to quietly drop bad weeks.</p>
+      day one, and so there is no incentive to quietly drop bad weeks. Ledger root hash
+      <code>{esc(clv.get('ledger_root_hash'))}</code>.</p>
       <div class="pub-tablewrap">
       <table class="pub-table">
         <thead><tr><th>Player</th><th>Market</th><th>Bet</th><th>Odds</th>
@@ -588,7 +582,7 @@ def performance_page():
     <section>
       <h2>What we publish as the sample grows</h2>
       <p>Calibration by predicted-probability bucket; win rate with sample
-      size; ROI with a confidence interval; maximum drawdown; splits by sport,
+      size; return with a confidence interval; maximum drawdown; splits by sport,
       market and model version; and losing weeks next to winning weeks, every
       week. The commitment is the record, not the highlight reel.</p>
     </section>"""

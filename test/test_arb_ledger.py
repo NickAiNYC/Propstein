@@ -142,7 +142,7 @@ def test_public_verify_landing_page():
     res = client.get("/verify/sub_alert_1")
     assert res.status_code == 200
     assert "text/html" in res.headers.get("content-type", "")
-    assert "Verified Sniper Receipt" in res.text
+    assert "Verified receipt" in res.text
     assert "No LLM in Decision Path" in res.text
 
     # Route at /verify without param also serves the landing page

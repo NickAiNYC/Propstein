@@ -109,7 +109,12 @@ test('robots.txt points at the sitemap', () => {
 test('performance page publishes the real graded record, honestly framed', () => {
   const clv = JSON.parse(fs.readFileSync(V('clv_audit_report.json'), 'utf8'));
   const html = fs.readFileSync(V('performance/index.html'), 'utf8');
-  assert.ok(html.includes(clv.record_str), 'ledger record string missing');
+  assert.ok(!html.includes('87.5%'), 'win-rate headline must not be published');
+  assert.ok(!html.includes(clv.record_str), 'win-loss record must not be a headline');
+  assert.ok(!/ROI\s+\d/.test(html), 'return figure must not be a headline');
+  for (const record of clv.records || []) {
+    assert.ok(html.includes(record.player), `graded row missing: ${record.player}`);
+  }
   assert.ok(html.includes(String(clv.total_records)), 'n missing');
   assert.ok(/tiny sample/i.test(html), 'sample-size honesty missing');
   assert.ok(/2 of 37|beat the close/i.test(html), 'full-board calibration missing');
