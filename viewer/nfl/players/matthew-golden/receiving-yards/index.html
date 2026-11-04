@@ -63,13 +63,19 @@
 <body>
 
   <header class="pub-header">
-    <a class="pub-brand" href="/">PropStein</a>
+    <div class="pub-header-left">
+      <a class="pub-brand" href="/">PROPSTEIN</a>
+      <span class="pub-header-badge">RESEARCH TERMINAL</span>
+    </div>
     <nav class="pub-nav">
-      <a href="/nfl/props/receiving-yards/">NFL Receiving Yards</a>
-      <a href="/nfl/props/receptions/">NFL Receptions</a>
-      <a href="/performance/">Track Record</a>
+      <a href="/">Overview</a>
+      <a href="/nfl/props/receiving-yards/">Markets</a>
+      <a href="/performance/">Performance</a>
       <a href="/methodology/">Methodology</a>
     </nav>
+    <div class="pub-header-right">
+      <a href="/performance/" class="pub-mode-badge">RESEARCH MODE</a>
+    </div>
   </header>
   <main class="pub-main">
     <nav class="pub-crumbs" aria-label="Breadcrumb"><ol>
@@ -79,45 +85,142 @@
       <li aria-current="page">Matthew Golden Receiving Yards</li>
     </ol></nav>
 
-    <h1>Matthew Golden &ndash; Receiving Yards: Model Fair Line &amp; Research</h1>
-    <p class="pub-lede">PropStein's pre-kickoff model projection for Matthew Golden
-    (WR, GB) in the
-    GB at DET game &mdash; receiving yards market, 2026-W07.
-    Snapshot taken <time datetime="2026-10-20T17:26:27.337974+00:00">2026-10-20 17:26 UTC</time>.</p>
-    <p class='pub-status pub-status-quoted'>Latest captured quote: <strong>Bovada Live Sportsbook API (Green Bay Packers @ Detroit Lions)</strong> 72.5 (-115) &mdash; status <strong>verified</strong>. <time datetime="2026-10-20T17:26:26.674050+00:00">observed 2026-10-20 17:26 UTC</time> Lines move; treat this as historical unless re-verified in the terminal.</p>
-    <section>
-      <h2>Model projection</h2>
-      <dl class="pub-stats">
-        <div><dt>Fair line</dt><dd>23.0 yds</dd></div>
-        <div><dt>Projected volume</dt><dd>29.27 yds</dd></div>
-        <div><dt>P(over) at fair</dt><dd>7.7%</dd></div>
-        <div><dt>Role</dt><dd>sustained_surge</dd></div>
-      </dl>
-      <p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma v3.2): mu_rec 2.1706, mu_ypr 13.4834, alpha 0.1097, k 1.555.</p>
-      <h3>How to use the fair line</h3>
-      <p>At &minus;110 vig, the model sees value on the OVER at lines below <strong>21.4</strong> and on the UNDER at lines above <strong>24.5</strong>. Between those boundaries, neither side clears the vig-adjusted breakeven. At the fair line (<strong>23.0</strong>), no-vig breakeven odds are <strong>+103 on the OVER</strong> (49.18% win prob) and <strong>+103 on the UNDER</strong> (49.30% win prob), with a <strong>1.52% push</strong>.</p>
-    </section>
-    <section>
-      <h2>Role evidence</h2>
-      <dl class="pub-stats">
-        <div><dt>Recent window</dt><dd>last_1_game</dd></div>
-        <div><dt>Baseline window</dt><dd>prior_8_games_ewma</dd></div>
-        <div><dt>Recent target share</dt><dd>30.0%</dd></div>
-        <div><dt>Baseline target share</dt><dd>16.2%</dd></div>
-        <div><dt>Career games</dt><dd>14</dd></div>
-      </dl>
-      <p class='pub-note'>Role labels and thresholds remain provisional pending chronological holdout validation.</p>
-    </section>
-    
-    <section>
-      <h2>Related research</h2>
-      <ul>
-        <li><a href="/nfl/players/matthew-golden/receptions/">Matthew Golden &ndash; other published market</a></li>
-        <li><a href="/nfl/props/receiving-yards/">All receiving yards fair lines &ndash; week 07</a></li>
-        <li><a href="/performance/">Published track record and calibration</a></li>
-        <li><a href="/methodology/">How the model works</a></li>
-      </ul>
-    </section>
+    <div class="pub-player-grid">
+      <div class="pub-player-main">
+        <h1>Matthew Golden &ndash; Receiving Yards: Model Fair Line &amp; Research</h1>
+        <p class="pub-lede">PropStein's pre-kickoff model projection for Matthew Golden
+        (WR, GB) in the
+        GB at DET game &mdash; receiving yards market, 2026-W07.
+        Snapshot taken <time datetime="2026-10-20T17:26:27.337974+00:00">2026-10-20 17:26 UTC</time>.</p>
+        <p class='pub-status pub-status-quoted'>Latest captured quote: <strong>Bovada Live Sportsbook API (Green Bay Packers @ Detroit Lions)</strong> 72.5 (-115) &mdash; status <strong>verified</strong>. <time datetime="2026-10-20T17:26:26.674050+00:00">observed 2026-10-20 17:26 UTC</time> Lines move; treat this as historical unless re-verified in the terminal.</p>
+        <div class="dist-chart-card">
+  <div class="dist-chart-top">
+    <div class="dist-chart-heading">
+      <span class="dist-chart-badge">QUANT MODEL</span>
+      <h3 class="dist-chart-title">Distribution &amp; Tail Probabilities</h3>
+    </div>
+    <div class="dist-chart-controls">
+      <label class="dist-tab-label">
+        <input type="radio" name="dist_761707" value="pdf" checked class="dist-radio-pdf">
+        <span class="dist-tab-btn">Density (PDF)</span>
+      </label>
+      <label class="dist-tab-label">
+        <input type="radio" name="dist_761707" value="cdf" class="dist-radio-cdf">
+        <span class="dist-tab-btn">Cumulative (CDF)</span>
+      </label>
+    </div>
+  </div>
+  <div class="dist-svg-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 210" class="dist-svg" role="img" aria-label="Quant Distribution for Matthew Golden">
+  <rect width="640" height="210" fill="transparent"/>
+  <line x1="46" y1="182" x2="616" y2="182" stroke="#222733" stroke-width="1"/>
+  <line x1="46.0" y1="182" x2="46.0" y2="186" stroke="#222733"/><text x="46.0" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.0</text><line x1="150.8" y1="182" x2="150.8" y2="186" stroke="#222733"/><text x="150.8" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">20.0</text><line x1="255.7" y1="182" x2="255.7" y2="186" stroke="#222733"/><text x="255.7" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">40.0</text><line x1="360.5" y1="182" x2="360.5" y2="186" stroke="#222733"/><text x="360.5" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">60.0</text><line x1="465.3" y1="182" x2="465.3" y2="186" stroke="#222733"/><text x="465.3" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">80.0</text><line x1="570.1" y1="182" x2="570.1" y2="186" stroke="#222733"/><text x="570.1" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">100.0</text>
+  <rect x="158.2" y="28" width="16.2" height="154" class="dist-vig-band" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.09)" stroke-dasharray="3 3"/><text x="166.3" y="44" text-anchor="middle" class="dist-vig-text" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono, monospace" letter-spacing="0.05em">NO-VALUE VIG BAND</text>
+  <g class="dist-pdf-layer">
+    <path d="M 48.6 182.0 L 48.6 129.3 L 56.8 81.7 L 65.1 60.8 L 73.3 49.4 L 81.5 43.1 L 89.7 39.7 L 98.0 38.2 L 106.2 38.0 L 114.4 38.8 L 122.6 40.2 L 130.8 42.2 L 139.1 44.7 L 147.3 47.5 L 155.5 50.7 L 163.7 54.0 L 172.0 57.5 L 180.2 61.2 L 188.4 65.0 L 196.6 68.9 L 204.9 72.8 L 213.1 76.7 L 221.3 80.7 L 229.5 84.6 L 237.7 88.5 L 246.0 92.4 L 254.2 96.2 L 262.4 100.0 L 270.6 103.7 L 278.9 107.2 L 287.1 110.8 L 295.3 114.2 L 303.5 117.5 L 311.8 120.7 L 320.0 123.8 L 328.2 126.7 L 336.4 129.6 L 344.6 132.4 L 352.9 135.1 L 361.1 137.6 L 369.3 140.0 L 377.5 142.4 L 385.8 144.6 L 394.0 146.7 L 402.2 148.8 L 410.4 150.7 L 418.7 152.6 L 426.9 154.3 L 435.1 156.0 L 443.3 157.5 L 451.5 159.0 L 459.8 160.4 L 468.0 161.8 L 476.2 163.0 L 484.4 164.2 L 492.7 165.4 L 500.9 166.4 L 509.1 167.4 L 517.3 168.4 L 525.5 169.3 L 533.8 170.1 L 542.0 170.9 L 550.2 171.6 L 558.4 172.3 L 566.7 173.0 L 574.9 173.6 L 583.1 174.2 L 591.3 174.7 L 599.6 175.2 L 607.8 175.7 L 616.0 176.1 L 616.0 182.0 Z" class="dist-pdf-area" fill="rgba(56,189,248,0.12)"/>
+    <path d="M 48.6 129.3 L 56.8 81.7 L 65.1 60.8 L 73.3 49.4 L 81.5 43.1 L 89.7 39.7 L 98.0 38.2 L 106.2 38.0 L 114.4 38.8 L 122.6 40.2 L 130.8 42.2 L 139.1 44.7 L 147.3 47.5 L 155.5 50.7 L 163.7 54.0 L 172.0 57.5 L 180.2 61.2 L 188.4 65.0 L 196.6 68.9 L 204.9 72.8 L 213.1 76.7 L 221.3 80.7 L 229.5 84.6 L 237.7 88.5 L 246.0 92.4 L 254.2 96.2 L 262.4 100.0 L 270.6 103.7 L 278.9 107.2 L 287.1 110.8 L 295.3 114.2 L 303.5 117.5 L 311.8 120.7 L 320.0 123.8 L 328.2 126.7 L 336.4 129.6 L 344.6 132.4 L 352.9 135.1 L 361.1 137.6 L 369.3 140.0 L 377.5 142.4 L 385.8 144.6 L 394.0 146.7 L 402.2 148.8 L 410.4 150.7 L 418.7 152.6 L 426.9 154.3 L 435.1 156.0 L 443.3 157.5 L 451.5 159.0 L 459.8 160.4 L 468.0 161.8 L 476.2 163.0 L 484.4 164.2 L 492.7 165.4 L 500.9 166.4 L 509.1 167.4 L 517.3 168.4 L 525.5 169.3 L 533.8 170.1 L 542.0 170.9 L 550.2 171.6 L 558.4 172.3 L 566.7 173.0 L 574.9 173.6 L 583.1 174.2 L 591.3 174.7 L 599.6 175.2 L 607.8 175.7 L 616.0 176.1" class="dist-pdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="54" y="44" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">PROBABILITY DENSITY f(x)</text>
+  </g>
+  <g class="dist-cdf-layer">
+    <path d="M 48.6 181.7 L 56.8 179.5 L 65.1 176.5 L 73.3 173.0 L 81.5 169.4 L 89.7 165.5 L 98.0 161.7 L 106.2 157.8 L 114.4 153.9 L 122.6 150.0 L 130.8 146.2 L 139.1 142.4 L 147.3 138.8 L 155.5 135.2 L 163.7 131.6 L 172.0 128.2 L 180.2 124.9 L 188.4 121.7 L 196.6 118.6 L 204.9 115.6 L 213.1 112.6 L 221.3 109.8 L 229.5 107.2 L 237.7 104.6 L 246.0 102.1 L 254.2 99.7 L 262.4 97.4 L 270.6 95.3 L 278.9 93.2 L 287.1 91.2 L 295.3 89.3 L 303.5 87.5 L 311.8 85.8 L 320.0 84.2 L 328.2 82.7 L 336.4 81.2 L 344.6 79.8 L 352.9 78.5 L 361.1 77.3 L 369.3 76.1 L 377.5 75.0 L 385.8 74.0 L 394.0 73.0 L 402.2 72.1 L 410.4 71.2 L 418.7 70.4 L 426.9 69.6 L 435.1 68.9 L 443.3 68.2 L 451.5 67.6 L 459.8 67.0 L 468.0 66.4 L 476.2 65.9 L 484.4 65.4 L 492.7 64.9 L 500.9 64.5 L 509.1 64.1 L 517.3 63.7 L 525.5 63.3 L 533.8 63.0 L 542.0 62.7 L 550.2 62.4 L 558.4 62.1 L 566.7 61.9 L 574.9 61.6 L 583.1 61.4 L 591.3 61.2 L 599.6 61.0 L 607.8 60.8 L 616.0 60.7" class="dist-cdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="54" y="44" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">CUMULATIVE PROBABILITY F(x)</text>
+  </g>
+  <line x1="166.6" y1="28" x2="166.6" y2="182" class="dist-ref-fair" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="166.6" y="20" text-anchor="middle" class="dist-ref-fair-text" fill="#38BDF8" font-size="10" font-family="JetBrains Mono, monospace" font-weight="700">Fair: 23.0</text>
+  <line x1="199.4" y1="28" x2="199.4" y2="182" class="dist-ref-mean" stroke="#FBBF24" stroke-width="1.5" stroke-dasharray="2 2"/><text x="199.4" y="20" text-anchor="middle" class="dist-ref-mean-text" fill="#FBBF24" font-size="10" font-family="JetBrains Mono, monospace">Mean: 29.3</text>
+  <line x1="426.0" y1="28" x2="426.0" y2="182" class="dist-ref-quote" stroke="#E5E7EB" stroke-width="1.5"/><text x="426.0" y="20" text-anchor="middle" class="dist-ref-quote-text" fill="#E5E7EB" font-size="10" font-family="JetBrains Mono, monospace">Quote: 72.5</text>
+</svg>
+  </div>
+  <div class="dist-chart-legend">
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-fair"></span> Fair Median (23.0)</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-mean"></span> Proj Mean (29.3)</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-band"></span> -110 Vig Dead-Band</span>
+  </div>
+</div>
+        <section>
+          <h2>Model projection</h2>
+          <dl class="pub-stats">
+            <div><dt>Fair line</dt><dd>23.0 yds</dd></div>
+            <div><dt>Projected volume</dt><dd>29.27 yds</dd></div>
+            <div><dt>P(over) at fair</dt><dd>7.7%</dd></div>
+            <div><dt>Role</dt><dd>sustained_surge</dd></div>
+          </dl>
+          <p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma v3.2): mu_rec 2.1706, mu_ypr 13.4834, alpha 0.1097, k 1.555.</p>
+          <h3>How to use the fair line</h3>
+          <p>At &minus;110 vig, the model sees value on the OVER at lines below <strong>21.4</strong> and on the UNDER at lines above <strong>24.5</strong>. Between those boundaries, neither side clears the vig-adjusted breakeven. At the fair line (<strong>23.0</strong>), no-vig breakeven odds are <strong>+103 on the OVER</strong> (49.18% win prob) and <strong>+103 on the UNDER</strong> (49.30% win prob), with a <strong>1.52% push</strong>.</p>
+        </section>
+        <section>
+          <h2>Role evidence</h2>
+          <dl class="pub-stats">
+            <div><dt>Recent window</dt><dd>last_1_game</dd></div>
+            <div><dt>Baseline window</dt><dd>prior_8_games_ewma</dd></div>
+            <div><dt>Recent target share</dt><dd>30.0%</dd></div>
+            <div><dt>Baseline target share</dt><dd>16.2%</dd></div>
+            <div><dt>Career games</dt><dd>14</dd></div>
+          </dl>
+          <p class='pub-note'>Role labels and thresholds remain provisional pending chronological holdout validation.</p>
+        </section>
+        
+        <section>
+          <h2>Related research</h2>
+          <ul>
+            <li><a href="/nfl/players/matthew-golden/receptions/">Matthew Golden &ndash; other published market</a></li>
+            <li><a href="/nfl/props/receiving-yards/">All receiving yards fair lines &ndash; week 07</a></li>
+            <li><a href="/performance/">Published track record and calibration</a></li>
+            <li><a href="/methodology/">How the model works</a></li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="pub-player-rail">
+        <div class="stat-cards-vertical">
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Model Fair Line</span>
+              <span class="stat-badge">50/50 Median</span>
+            </div>
+            <div class="stat-card-num">23.0 <span class="stat-unit">yds</span></div>
+            <div class="stat-card-sub">P(over) at fair: <strong>7.7%</strong></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Projected Volume</span>
+              <span class="stat-badge">Expected Mean</span>
+            </div>
+            <div class="stat-card-num">29.27 <span class="stat-unit">yds</span></div>
+            <div class="stat-card-sub">Unconditional expected production</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Market Quote</span>
+              <span class="stat-badge stat-badge-quoted">verified</span>
+            </div>
+            <div class="stat-card-num">72.5 <span class='stat-unit'>yds</span> (-115)</div>
+            <div class="stat-card-sub">Bovada Live Sportsbook API (Green Bay Packers @ Detroit Lions) &bull; Status: verified</div>
+          </div>
+        </div>
+
+        <div class="invalidation-card">
+          <h3 class="invalidation-title">Forecast Invalidation Triggers</h3>
+          <p class="invalidation-intro">Quantitative assumptions behind this projection. Any of these signals degrades or revokes the edge:</p>
+          <ul class="invalidation-list">
+            <li><strong>Target Share Shift:</strong> In-game distribution moves &gt; 5% from baseline (30.0% recent).</li>
+            <li><strong>Personnel Outage:</strong> Key teammate inactive altering pass volume or target concentration.</li>
+            <li><strong>Adverse Weather:</strong> Sustained winds &gt; 15 mph or heavy rain suppressing passing efficiency.</li>
+            <li><strong>Game Script Blowout:</strong> Spread margin &gt; 14 points forcing extreme run-heavy second-half pacing.</li>
+          </ul>
+        </div>
+
+        <div class="terminal-action-card">
+          <a href="/?player=matthew-golden" class="pub-btn-terminal">
+            <span>Open in PropStein Terminal</span>
+            <span>&rarr;</span>
+          </a>
+          <p class="terminal-action-sub">Live CLOB odds, order routing &amp; execution gates.</p>
+        </div>
+      </aside>
+    </div>
     <section class="pub-limitations">
       <h2>Model limitations</h2>
       

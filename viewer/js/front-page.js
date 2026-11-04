@@ -45,6 +45,16 @@
     inlineSearch?.focus();
     inlineSearch?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+  document.getElementById('headerSearchTrigger')?.addEventListener('click', openSearch);
+  document.getElementById('navMarkets')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    setBoardOpen(true, true);
+    document.getElementById('marketChipGroup')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  document.getElementById('navOverview')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('slateBoard')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
   document.addEventListener('keydown', (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();

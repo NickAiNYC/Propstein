@@ -18,6 +18,8 @@ import os
 import re
 import sys
 from datetime import datetime, timezone
+import numpy as np
+from scipy import stats
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
@@ -123,13 +125,19 @@ def page(title, description, canonical_path, breadcrumb, body,
     </section>""" if show_limitations else "")
     nav = """
   <header class="pub-header">
-    <a class="pub-brand" href="/">PropStein</a>
+    <div class="pub-header-left">
+      <a class="pub-brand" href="/">PROPSTEIN</a>
+      <span class="pub-header-badge">RESEARCH TERMINAL</span>
+    </div>
     <nav class="pub-nav">
-      <a href="/nfl/props/receiving-yards/">NFL Receiving Yards</a>
-      <a href="/nfl/props/receptions/">NFL Receptions</a>
-      <a href="/performance/">Track Record</a>
+      <a href="/">Overview</a>
+      <a href="/nfl/props/receiving-yards/">Markets</a>
+      <a href="/performance/">Performance</a>
       <a href="/methodology/">Methodology</a>
     </nav>
+    <div class="pub-header-right">
+      <a href="/performance/" class="pub-mode-badge">RESEARCH MODE</a>
+    </div>
   </header>"""
     return f"""<!doctype html>
 <html lang="en">
@@ -253,6 +261,164 @@ def quote_block(quote):
             f"treat this as historical unless re-verified in the terminal.</p>")
 
 
+def generate_distribution_svg(snap, vig_bounds):
+    market = snap.get("market") or "receiving_yards"
+    proj = snap.get("projection") or {}
+    params = proj.get("distribution_params") or {}
+    mu_rec = params.get("mu_rec")
+    if mu_rec is None:
+        return ""
+    fair_line = float(proj.get("fair_line") or 0.0)
+    proj_volume = float(proj.get("proj_volume") or fair_line)
+    quote = snap.get("quote") or {}
+    quote_line = float(quote.get("line")) if quote.get("line") is not None else None
+    alpha = float(params.get("alpha") if params.get("alpha") is not None else 0.1097)
+    k = float(params.get("k") if params.get("k") is not None else 1.555)
+    mu_ypr = float(params.get("mu_ypr") or 0.0)
+
+    width = 640
+    height = 210
+    pad_left = 46
+    pad_right = 24
+    pad_top = 28
+    pad_bottom = 28
+    plot_w = width - pad_left - pad_right
+    plot_h = height - pad_top - pad_bottom
+
+    if market == "receptions" or mu_ypr <= 0.0:
+        x_max = max(fair_line * 2.2, float(quote_line or 0) * 1.5, 10.0)
+        xs = np.arange(0, int(x_max) + 1)
+        r = 1.0 / alpha
+        p = r / (r + mu_rec)
+        pdf_pts = stats.nbinom.pmf(xs, r, p)
+        cdf_pts = stats.nbinom.cdf(xs, r, p)
+    else:
+        x_max = max(fair_line * 2.2, float(quote_line or 0) * 1.5, 80.0)
+        xs = np.linspace(0.5, x_max, 70)
+        r = 1.0 / alpha
+        p = r / (r + mu_rec)
+        ns = np.arange(1, 35)
+        pn = stats.nbinom.pmf(ns, r, p)
+        scale = mu_ypr / k
+        gamma_pdfs = stats.gamma.pdf(xs[:, None], a=ns[None, :] * k, scale=scale)
+        pdf_pts = np.dot(gamma_pdfs, pn)
+        gamma_cdfs = stats.gamma.cdf(xs[:, None], a=ns[None, :] * k, scale=scale)
+        cdf_pts = np.dot(gamma_cdfs, pn)
+
+    pdf_max = max(float(np.max(pdf_pts)), 1e-4)
+
+    def x_px(val):
+        return pad_left + (float(val) / x_max) * plot_w
+
+    def y_pdf_px(val):
+        return pad_top + plot_h - (float(val) / pdf_max) * (plot_h - 10)
+
+    def y_cdf_px(val):
+        return pad_top + plot_h - float(val) * (plot_h - 10)
+
+    pdf_d = []
+    pdf_area_d = [f"M {x_px(xs[0]):.1f} {pad_top + plot_h:.1f}"]
+    for x, y in zip(xs, pdf_pts):
+        xp = x_px(x)
+        yp = y_pdf_px(y)
+        pdf_d.append(f"{'M' if not pdf_d else 'L'} {xp:.1f} {yp:.1f}")
+        pdf_area_d.append(f"L {xp:.1f} {yp:.1f}")
+    pdf_area_d.append(f"L {x_px(xs[-1]):.1f} {pad_top + plot_h:.1f} Z")
+
+    cdf_d = []
+    for x, y in zip(xs, cdf_pts):
+        xp = x_px(x)
+        yp = y_cdf_px(y)
+        cdf_d.append(f"{'M' if not cdf_d else 'L'} {xp:.1f} {yp:.1f}")
+
+    ticks = []
+    step = 20.0 if x_max >= 70 else (10.0 if x_max >= 25 else 2.0)
+    cur = 0.0
+    while cur <= x_max:
+        xp = x_px(cur)
+        ticks.append(f'<line x1="{xp:.1f}" y1="{pad_top + plot_h}" x2="{xp:.1f}" y2="{pad_top + plot_h + 4}" stroke="#222733"/>')
+        ticks.append(f'<text x="{xp:.1f}" y="{pad_top + plot_h + 16}" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">{int(cur) if cur == int(cur) else cur:.1f}</text>')
+        cur += step
+
+    vig_rect = ""
+    if vig_bounds and vig_bounds.over_line is not None and vig_bounds.under_line is not None:
+        vx1 = max(pad_left, x_px(vig_bounds.over_line))
+        vx2 = min(pad_left + plot_w, x_px(vig_bounds.under_line))
+        if vx2 - vx1 > 2:
+            vw = vx2 - vx1
+            vig_rect = (
+                f'<rect x="{vx1:.1f}" y="{pad_top}" width="{vw:.1f}" height="{plot_h}" class="dist-vig-band" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.09)" stroke-dasharray="3 3"/>'
+                f'<text x="{vx1 + vw/2:.1f}" y="{pad_top + 16}" text-anchor="middle" class="dist-vig-text" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono, monospace" letter-spacing="0.05em">NO-VALUE VIG BAND</text>'
+            )
+
+    fx = x_px(fair_line)
+    fair_ref = (
+        f'<line x1="{fx:.1f}" y1="{pad_top}" x2="{fx:.1f}" y2="{pad_top + plot_h}" class="dist-ref-fair" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 3"/>'
+        f'<text x="{fx:.1f}" y="{pad_top - 8}" text-anchor="middle" class="dist-ref-fair-text" fill="#38BDF8" font-size="10" font-family="JetBrains Mono, monospace" font-weight="700">Fair: {fair_line:.1f}</text>'
+    )
+    mx = x_px(proj_volume)
+    mean_ref = ""
+    if abs(mx - fx) > 20:
+        mean_ref = (
+            f'<line x1="{mx:.1f}" y1="{pad_top}" x2="{mx:.1f}" y2="{pad_top + plot_h}" class="dist-ref-mean" stroke="#FBBF24" stroke-width="1.5" stroke-dasharray="2 2"/>'
+            f'<text x="{mx:.1f}" y="{pad_top - 8}" text-anchor="middle" class="dist-ref-mean-text" fill="#FBBF24" font-size="10" font-family="JetBrains Mono, monospace">Mean: {proj_volume:.1f}</text>'
+        )
+    quote_ref = ""
+    if quote_line is not None:
+        qx = x_px(quote_line)
+        quote_ref = (
+            f'<line x1="{qx:.1f}" y1="{pad_top}" x2="{qx:.1f}" y2="{pad_top + plot_h}" class="dist-ref-quote" stroke="#E5E7EB" stroke-width="1.5"/>'
+            f'<text x="{qx:.1f}" y="{pad_top - 8}" text-anchor="middle" class="dist-ref-quote-text" fill="#E5E7EB" font-size="10" font-family="JetBrains Mono, monospace">Quote: {quote_line:.1f}</text>'
+        )
+
+    svg_content = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" class="dist-svg" role="img" aria-label="Quant Distribution for {esc(snap.get('player_name', ''))}">
+  <rect width="{width}" height="{height}" fill="transparent"/>
+  <line x1="{pad_left}" y1="{pad_top + plot_h}" x2="{pad_left + plot_w}" y2="{pad_top + plot_h}" stroke="#222733" stroke-width="1"/>
+  {''.join(ticks)}
+  {vig_rect}
+  <g class="dist-pdf-layer">
+    <path d="{' '.join(pdf_area_d)}" class="dist-pdf-area" fill="rgba(56,189,248,0.12)"/>
+    <path d="{' '.join(pdf_d)}" class="dist-pdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="{pad_left + 8}" y="{pad_top + 16}" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">PROBABILITY DENSITY f(x)</text>
+  </g>
+  <g class="dist-cdf-layer">
+    <path d="{' '.join(cdf_d)}" class="dist-cdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="{pad_left + 8}" y="{pad_top + 16}" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">CUMULATIVE PROBABILITY F(x)</text>
+  </g>
+  {fair_ref}
+  {mean_ref}
+  {quote_ref}
+</svg>'''
+
+    unique_id = f"dist_{abs(hash(snap.get('player_id', '') + market)) % 1000000}"
+    return f'''<div class="dist-chart-card">
+  <div class="dist-chart-top">
+    <div class="dist-chart-heading">
+      <span class="dist-chart-badge">QUANT MODEL</span>
+      <h3 class="dist-chart-title">Distribution &amp; Tail Probabilities</h3>
+    </div>
+    <div class="dist-chart-controls">
+      <label class="dist-tab-label">
+        <input type="radio" name="{unique_id}" value="pdf" checked class="dist-radio-pdf">
+        <span class="dist-tab-btn">Density (PDF)</span>
+      </label>
+      <label class="dist-tab-label">
+        <input type="radio" name="{unique_id}" value="cdf" class="dist-radio-cdf">
+        <span class="dist-tab-btn">Cumulative (CDF)</span>
+      </label>
+    </div>
+  </div>
+  <div class="dist-svg-wrapper">
+    {svg_content}
+  </div>
+  <div class="dist-chart-legend">
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-fair"></span> Fair Median ({fair_line})</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-mean"></span> Proj Mean ({proj_volume:.1f})</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-band"></span> -110 Vig Dead-Band</span>
+  </div>
+</div>'''
+
+
 def player_market_page(snap, other_market_path, games_by_id, injuries_index):
     m = MARKETS[snap["market"]]
     name = snap["player_name"]
@@ -261,6 +427,7 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
     fair = proj.get("fair_line")
     vol = proj.get("proj_volume")
     p_over = proj.get("p_over")
+    quote = snap.get("quote") or {}
     game = games_by_id.get(snap.get("game_id")) or {}
     matchup = f"{snap.get('team')} at {snap.get('opponent')}" if snap.get("team") else "matchup TBD"
     inj = injuries_index.get(snap.get("player_id"))
@@ -282,46 +449,134 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
                        f"k {esc(params.get('k'))}.</p>")
     created = snap.get("created_at") or ""
     created_h = created[:16].replace("T", " ") if created else "unknown"
+
+    # Solve boundaries for distribution band
+    vig_bounds = None
+    mu_rec = params.get("mu_rec")
+    if mu_rec is not None:
+        vig_bounds = vig_boundaries(
+            snap.get("market"), mu_rec, params.get("mu_ypr") or 0.0,
+            alpha=params.get("alpha") if params.get("alpha") is not None else 0.1097,
+            k=params.get("k") if params.get("k") is not None else 1.555,
+        )
+
+    # Stat card 3: Market quote details
+    q_status = quote.get("status") or "unquoted"
+    q_line = quote.get("line")
+    q_odds = quote.get("over_odds") if quote.get("over_odds") is not None else quote.get("odds")
+    if q_odds is None and quote.get("under_odds") is not None:
+        q_odds = quote.get("under_odds")
+    q_odds_str = f" ({esc(fmt_american(q_odds))})" if q_odds is not None else ""
+    
+    if q_line is not None:
+        quote_num_disp = f"{esc(q_line)} <span class='stat-unit'>{esc(m['unit'])}</span>{q_odds_str}"
+        quote_source_disp = f"{esc(quote.get('source') or quote.get('book') or 'Book')} &bull; Status: {esc(q_status)}"
+        badge_cls = "stat-badge-quoted"
+    else:
+        quote_num_disp = "Unquoted"
+        quote_source_disp = "No active book quote captured"
+        badge_cls = ""
+
+    dist_chart_html = generate_distribution_svg(snap, vig_bounds)
+
+    recent_ts = role.get("recent_target_share")
+    recent_ts_str = esc(pct(recent_ts)) if recent_ts is not None else "n/a"
+
     body = f"""
-    <h1>{esc(name)} &ndash; {esc(m['label'])}: Model Fair Line &amp; Research</h1>
-    <p class="pub-lede">PropStein's pre-kickoff model projection for {esc(name)}
-    ({esc(snap.get('position') or '')}, {esc(snap.get('team') or '')}) in the
-    {esc(matchup)} game &mdash; {esc(m['label'].lower())} market, {esc(snap.get('slate') or '')}.
-    Snapshot taken <time datetime="{esc(created)}">{esc(created_h)} UTC</time>.</p>
-    {quote_block(snap.get('quote') or {})}
-    <section>
-      <h2>Model projection</h2>
-      <dl class="pub-stats">
-        <div><dt>Fair line</dt><dd>{esc(fair)} {esc(m['unit'])}</dd></div>
-        <div><dt>Projected volume</dt><dd>{esc(vol)} {esc(m['unit'])}</dd></div>
-        <div><dt>P(over) at fair</dt><dd>{esc(pct(p_over)) if p_over is not None else 'n/a'}</dd></div>
-        <div><dt>Role</dt><dd>{esc(role.get('label') or 'unlabeled')}</dd></div>
-      </dl>
-      {params_html}
-      <h3>How to use the fair line</h3>
-      <p>{fmt_boundaries(snap)}</p>
-    </section>
-    <section>
-      <h2>Role evidence</h2>
-      <dl class="pub-stats">
-        <div><dt>Recent window</dt><dd>{esc(role.get('recent_window') or 'n/a')}</dd></div>
-        <div><dt>Baseline window</dt><dd>{esc(role.get('baseline_window') or 'n/a')}</dd></div>
-        <div><dt>Recent target share</dt><dd>{esc(pct(role.get('recent_target_share'))) if role.get('recent_target_share') is not None else 'n/a'}</dd></div>
-        <div><dt>Baseline target share</dt><dd>{esc(pct(role.get('baseline_target_share'))) if role.get('baseline_target_share') is not None else 'n/a'}</dd></div>
-        <div><dt>Career games</dt><dd>{esc(role.get('career_games') or 'n/a')}</dd></div>
-      </dl>
-      {prov_html}
-    </section>
-    {injury_html}
-    <section>
-      <h2>Related research</h2>
-      <ul>
-        <li><a href="{esc(other_market_path)}">{esc(name)} &ndash; other published market</a></li>
-        <li><a href="/nfl/props/{esc(m['slug'])}/">All {esc(m['label'].lower())} fair lines &ndash; week {esc((snap.get('slate') or '').split('W')[-1])}</a></li>
-        <li><a href="/performance/">Published track record and calibration</a></li>
-        <li><a href="/methodology/">How the model works</a></li>
-      </ul>
-    </section>"""
+    <div class="pub-player-grid">
+      <div class="pub-player-main">
+        <h1>{esc(name)} &ndash; {esc(m['label'])}: Model Fair Line &amp; Research</h1>
+        <p class="pub-lede">PropStein's pre-kickoff model projection for {esc(name)}
+        ({esc(snap.get('position') or '')}, {esc(snap.get('team') or '')}) in the
+        {esc(matchup)} game &mdash; {esc(m['label'].lower())} market, {esc(snap.get('slate') or '')}.
+        Snapshot taken <time datetime="{esc(created)}">{esc(created_h)} UTC</time>.</p>
+        {quote_block(quote)}
+        {dist_chart_html}
+        <section>
+          <h2>Model projection</h2>
+          <dl class="pub-stats">
+            <div><dt>Fair line</dt><dd>{esc(fair)} {esc(m['unit'])}</dd></div>
+            <div><dt>Projected volume</dt><dd>{esc(vol)} {esc(m['unit'])}</dd></div>
+            <div><dt>P(over) at fair</dt><dd>{esc(pct(p_over)) if p_over is not None else 'n/a'}</dd></div>
+            <div><dt>Role</dt><dd>{esc(role.get('label') or 'unlabeled')}</dd></div>
+          </dl>
+          {params_html}
+          <h3>How to use the fair line</h3>
+          <p>{fmt_boundaries(snap)}</p>
+        </section>
+        <section>
+          <h2>Role evidence</h2>
+          <dl class="pub-stats">
+            <div><dt>Recent window</dt><dd>{esc(role.get('recent_window') or 'n/a')}</dd></div>
+            <div><dt>Baseline window</dt><dd>{esc(role.get('baseline_window') or 'n/a')}</dd></div>
+            <div><dt>Recent target share</dt><dd>{recent_ts_str}</dd></div>
+            <div><dt>Baseline target share</dt><dd>{esc(pct(role.get('baseline_target_share'))) if role.get('baseline_target_share') is not None else 'n/a'}</dd></div>
+            <div><dt>Career games</dt><dd>{esc(role.get('career_games') or 'n/a')}</dd></div>
+          </dl>
+          {prov_html}
+        </section>
+        {injury_html}
+        <section>
+          <h2>Related research</h2>
+          <ul>
+            <li><a href="{esc(other_market_path)}">{esc(name)} &ndash; other published market</a></li>
+            <li><a href="/nfl/props/{esc(m['slug'])}/">All {esc(m['label'].lower())} fair lines &ndash; week {esc((snap.get('slate') or '').split('W')[-1])}</a></li>
+            <li><a href="/performance/">Published track record and calibration</a></li>
+            <li><a href="/methodology/">How the model works</a></li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="pub-player-rail">
+        <div class="stat-cards-vertical">
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Model Fair Line</span>
+              <span class="stat-badge">50/50 Median</span>
+            </div>
+            <div class="stat-card-num">{esc(fair)} <span class="stat-unit">{esc(m['unit'])}</span></div>
+            <div class="stat-card-sub">P(over) at fair: <strong>{esc(pct(p_over)) if p_over is not None else 'n/a'}</strong></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Projected Volume</span>
+              <span class="stat-badge">Expected Mean</span>
+            </div>
+            <div class="stat-card-num">{esc(vol)} <span class="stat-unit">{esc(m['unit'])}</span></div>
+            <div class="stat-card-sub">Unconditional expected production</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Market Quote</span>
+              <span class="stat-badge {badge_cls}">{esc(q_status)}</span>
+            </div>
+            <div class="stat-card-num">{quote_num_disp}</div>
+            <div class="stat-card-sub">{quote_source_disp}</div>
+          </div>
+        </div>
+
+        <div class="invalidation-card">
+          <h3 class="invalidation-title">Forecast Invalidation Triggers</h3>
+          <p class="invalidation-intro">Quantitative assumptions behind this projection. Any of these signals degrades or revokes the edge:</p>
+          <ul class="invalidation-list">
+            <li><strong>Target Share Shift:</strong> In-game distribution moves &gt; 5% from baseline ({recent_ts_str} recent).</li>
+            <li><strong>Personnel Outage:</strong> Key teammate inactive altering pass volume or target concentration.</li>
+            <li><strong>Adverse Weather:</strong> Sustained winds &gt; 15 mph or heavy rain suppressing passing efficiency.</li>
+            <li><strong>Game Script Blowout:</strong> Spread margin &gt; 14 points forcing extreme run-heavy second-half pacing.</li>
+          </ul>
+        </div>
+
+        <div class="terminal-action-card">
+          <a href="/?player={esc(snap['_slug'])}" class="pub-btn-terminal">
+            <span>Open in PropStein Terminal</span>
+            <span>&rarr;</span>
+          </a>
+          <p class="terminal-action-sub">Live CLOB odds, order routing &amp; execution gates.</p>
+        </div>
+      </aside>
+    </div>"""
     title = f"{name} {m['label']} Props: Model Fair Line & Projection"
     desc = (f"Pre-kickoff model fair line for {name} {m['label'].lower()} "
             f"({snap.get('team')}'s {matchup}): fair {fair} {m['unit']}, projected "
@@ -847,68 +1102,468 @@ def responsible_gaming_page():
 
 def write_public_css():
     css = """:root {
-  --bg: #0f131a; --panel: #141a23; --line: #273244; --text: #f3f6fa;
-  --dim: #8792a6; --accent: #7dd3fc; --good: #3ddc97; --warn: #f5b455;
+  --bg: #0b0d11;
+  --panel: #11141b;
+  --panel-elevated: #171b24;
+  --line: #222733;
+  --line-light: #2d3545;
+  --text: #f3f4f6;
+  --dim: #9ca3af;
+  --muted: #6b7280;
+  --accent: #38bdf8;
+  --accent-dim: #0c2538;
+  --good: #34d399;
+  --warn: #fbbf24;
+  --danger: #f87171;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-pill: 999px;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text);
-  font: 16px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
-code { background: var(--panel); padding: .1em .35em; border-radius: 4px;
-  font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .9em; }
-.pub-header { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
-  justify-content: space-between; padding: .9rem 1.2rem;
-  border-bottom: 1px solid var(--line); background: var(--panel); }
-.pub-brand { font-weight: 800; font-size: 1.15rem; letter-spacing: .02em;
-  color: var(--text); }
-.pub-nav { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .92rem; }
-.pub-main { max-width: 60rem; margin: 0 auto; padding: 1.4rem 1.2rem 3rem; }
-.pub-crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem;
-  padding: 0; margin: 0 0 1.2rem; font-size: .85rem; color: var(--dim); }
-.pub-crumbs li:not(:last-child)::after { content: "/"; margin-left: .4rem;
-  color: var(--dim); }
+code {
+  background: var(--panel-elevated);
+  padding: .1em .35em;
+  border-radius: var(--radius-sm);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: .88em;
+  border: 1px solid var(--line);
+}
+.pub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.pub-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.pub-brand {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.pub-header-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+.pub-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.pub-nav a {
+  color: var(--dim);
+  transition: color 0.15s ease;
+}
+.pub-nav a:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+.pub-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.pub-mode-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+.pub-mode-badge:hover {
+  text-decoration: none;
+  filter: brightness(1.15);
+}
+.pub-main {
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 3.5rem;
+}
+.pub-crumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  padding: 0;
+  margin: 0 0 1.2rem;
+  font-size: .85rem;
+  color: var(--dim);
+}
+.pub-crumbs li:not(:last-child)::after {
+  content: "/";
+  margin-left: .4rem;
+  color: var(--dim);
+}
 h1 { font-size: 1.55rem; line-height: 1.25; margin: .2rem 0 .6rem; }
 h2 { font-size: 1.15rem; margin: 1.8rem 0 .5rem; }
 h3 { font-size: 1rem; margin: 1.1rem 0 .4rem; }
-.pub-lede { color: var(--text); font-size: 1.02rem; }
-.pub-note { background: #161d2c; border-left: 3px solid var(--warn);
-  padding: .7rem .9rem; border-radius: 0 6px 6px 0; color: var(--text);
-  font-size: .95rem; }
-.pub-status { padding: .7rem .9rem; border-radius: 6px; font-size: .95rem; }
-.pub-status-quoted { background: #10231c; border: 1px solid #1d4034; }
-.pub-status-unquoted { background: #1a1622; border: 1px solid #35284a; }
-.pub-stats { display: grid; grid-template-columns: repeat(auto-fit,
-  minmax(11rem, 1fr)); gap: .7rem; padding: 0; margin: .8rem 0; }
-.pub-stats div { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 8px; padding: .6rem .8rem; }
-.pub-stats dt { font-size: .78rem; text-transform: uppercase;
-  letter-spacing: .06em; color: var(--dim); margin: 0 0 .2rem; }
-.pub-stats dd { margin: 0; font-weight: 700; font-size: 1.08rem; }
+.pub-lede { color: var(--dim); font-size: 1.02rem; margin-bottom: 1.2rem; }
+.pub-note {
+  background: #161d2c;
+  border-left: 3px solid var(--warn);
+  padding: .7rem .9rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--text);
+  font-size: .92rem;
+}
+.pub-status { padding: .75rem 1rem; border-radius: var(--radius-md); font-size: .92rem; margin-bottom: 1.2rem; }
+.pub-status-quoted { background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.25); }
+.pub-status-unquoted { background: var(--panel-elevated); border: 1px solid var(--line); }
+.pub-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: .7rem;
+  padding: 0;
+  margin: .8rem 0;
+}
+.pub-stats div {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: .65rem .85rem;
+}
+.pub-stats dt {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--dim);
+  margin: 0 0 .2rem;
+}
+.pub-stats dd { margin: 0; font-weight: 700; font-size: 1.05rem; }
 .pub-params { color: var(--dim); font-size: .88rem; }
-section { margin: 1.4rem 0; }
+section { margin: 1.6rem 0; }
 ul { padding-left: 1.2rem; }
-li { margin: .25rem 0; }
-.pub-tablewrap { overflow-x: auto; border: 1px solid var(--line);
-  border-radius: 8px; }
-.pub-table { border-collapse: collapse; width: 100%; font-size: .9rem;
-  min-width: 44rem; }
-.pub-table th { text-align: left; font-size: .75rem; text-transform:
-  uppercase; letter-spacing: .05em; color: var(--dim);
-  background: var(--panel); padding: .55rem .7rem; white-space: nowrap; }
-.pub-table td { padding: .5rem .7rem; border-top: 1px solid var(--line);
-  white-space: nowrap; }
-.pub-num { font-variant-numeric: tabular-nums; }
+li { margin: .3rem 0; }
+.pub-tablewrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.pub-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: .88rem;
+  min-width: 44rem;
+}
+.pub-table th {
+  text-align: left;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--dim);
+  background: var(--panel);
+  padding: .6rem .8rem;
+  white-space: nowrap;
+}
+.pub-table td {
+  padding: .55rem .8rem;
+  border-top: 1px solid var(--line);
+  white-space: nowrap;
+}
+.pub-num { font-variant-numeric: tabular-nums; font-family: "JetBrains Mono", monospace; }
 .pub-dim { color: var(--dim); }
-.pub-limitations { border-top: 1px solid var(--line); margin-top: 2.2rem;
-  padding-top: .4rem; }
-.pub-limitations p { color: var(--dim); font-size: .92rem; }
-.pub-footer { border-top: 1px solid var(--line); background: var(--panel);
-  padding: 1.2rem; font-size: .85rem; color: var(--dim); }
-.pub-footer-nav { display: flex; gap: 1rem; margin-top: .6rem; }
+.pub-limitations {
+  border-top: 1px solid var(--line);
+  margin-top: 2.4rem;
+  padding-top: .6rem;
+}
+.pub-limitations p { color: var(--dim); font-size: .9rem; line-height: 1.6; }
+.pub-footer {
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  padding: 1.5rem;
+  font-size: .85rem;
+  color: var(--dim);
+}
+.pub-footer-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: .6rem; }
+
+/* --- 2-Column Institutional Player Layout --- */
+.pub-player-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 2rem;
+  align-items: start;
+}
+.pub-player-main { min-width: 0; }
+.pub-player-rail {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Stat Cards */
+.stat-cards-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+}
+.stat-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+.stat-card-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  font-weight: 600;
+}
+.stat-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  color: var(--dim);
+}
+.stat-badge-quoted {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: var(--good);
+}
+.stat-card-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.stat-unit {
+  font-size: 0.85rem;
+  color: var(--dim);
+  font-weight: 500;
+}
+.stat-card-sub {
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-top: 0.25rem;
+}
+
+/* Invalidation Panel */
+.invalidation-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+}
+.invalidation-title {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--warn);
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+.invalidation-intro {
+  font-size: 0.8rem;
+  color: var(--dim);
+  margin: 0 0 0.75rem;
+  line-height: 1.45;
+}
+.invalidation-list {
+  padding-left: 1.1rem;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+.invalidation-list li {
+  margin: 0.4rem 0;
+  line-height: 1.4;
+}
+.invalidation-list strong {
+  color: var(--text);
+}
+
+/* Terminal Action CTA */
+.terminal-action-card {
+  background: var(--panel-elevated);
+  border: 1px solid var(--line-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  text-align: center;
+}
+.pub-btn-terminal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.15s ease;
+}
+.pub-btn-terminal:hover {
+  background: var(--accent);
+  color: #0b0d11;
+  text-decoration: none;
+}
+.terminal-action-sub {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0;
+}
+
+/* Distribution Chart Card */
+.dist-chart-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem 1rem;
+  margin: 1.2rem 0 1.6rem;
+}
+.dist-chart-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.dist-chart-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.dist-chart-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+.dist-chart-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+.dist-radio-pdf, .dist-radio-cdf {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.dist-tab-btn {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-elevated);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.dist-chart-card:has(.dist-radio-pdf:checked) .dist-tab-label:first-child .dist-tab-btn,
+.dist-chart-card:has(.dist-radio-cdf:checked) .dist-tab-label:last-child .dist-tab-btn {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.dist-cdf-layer {
+  display: none;
+}
+.dist-chart-card:has(.dist-radio-cdf:checked) .dist-pdf-layer {
+  display: none;
+}
+.dist-chart-card:has(.dist-radio-cdf:checked) .dist-cdf-layer {
+  display: block;
+}
+.dist-svg-wrapper {
+  position: relative;
+  width: 100%;
+}
+.dist-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.dist-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.75rem;
+  color: var(--dim);
+}
+.dist-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.dist-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.dist-swatch-fair { background: var(--accent); }
+.dist-swatch-mean { background: var(--warn); }
+.dist-swatch-band {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 860px) {
+  .pub-player-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .pub-player-rail {
+    position: static;
+  }
+}
 @media (max-width: 640px) {
   h1 { font-size: 1.3rem; }
   .pub-main { padding: 1rem .9rem 2.4rem; }
+  .pub-header { padding: 0.75rem 1rem; }
+  .pub-nav { display: none; }
 }
 """
     with open(os.path.join(VIEWER, "public.css"), "w") as f:

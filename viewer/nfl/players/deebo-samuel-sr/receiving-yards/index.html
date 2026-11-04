@@ -63,13 +63,19 @@
 <body>
 
   <header class="pub-header">
-    <a class="pub-brand" href="/">PropStein</a>
+    <div class="pub-header-left">
+      <a class="pub-brand" href="/">PROPSTEIN</a>
+      <span class="pub-header-badge">RESEARCH TERMINAL</span>
+    </div>
     <nav class="pub-nav">
-      <a href="/nfl/props/receiving-yards/">NFL Receiving Yards</a>
-      <a href="/nfl/props/receptions/">NFL Receptions</a>
-      <a href="/performance/">Track Record</a>
+      <a href="/">Overview</a>
+      <a href="/nfl/props/receiving-yards/">Markets</a>
+      <a href="/performance/">Performance</a>
       <a href="/methodology/">Methodology</a>
     </nav>
+    <div class="pub-header-right">
+      <a href="/performance/" class="pub-mode-badge">RESEARCH MODE</a>
+    </div>
   </header>
   <main class="pub-main">
     <nav class="pub-crumbs" aria-label="Breadcrumb"><ol>
@@ -79,45 +85,142 @@
       <li aria-current="page">Deebo Samuel Sr. Receiving Yards</li>
     </ol></nav>
 
-    <h1>Deebo Samuel Sr. &ndash; Receiving Yards: Model Fair Line &amp; Research</h1>
-    <p class="pub-lede">PropStein's pre-kickoff model projection for Deebo Samuel Sr.
-    (WR, SF) in the
-    SF at ATL game &mdash; receiving yards market, 2026-W07.
-    Snapshot taken <time datetime="2026-10-20T05:42:06.138924+00:00">2026-10-20 05:42 UTC</time>.</p>
-    <p class='pub-status pub-status-unquoted'>No book quote was captured in this snapshot. The model numbers below stand alone.</p>
-    <section>
-      <h2>Model projection</h2>
-      <dl class="pub-stats">
-        <div><dt>Fair line</dt><dd>42.0 yds</dd></div>
-        <div><dt>Projected volume</dt><dd>47.82 yds</dd></div>
-        <div><dt>P(over) at fair</dt><dd>49.2%</dd></div>
-        <div><dt>Role</dt><dd>established_volume</dd></div>
-      </dl>
-      <p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma v3.2): mu_rec 4.1861, mu_ypr 11.4237, alpha 0.1097, k 1.555.</p>
-      <h3>How to use the fair line</h3>
-      <p>At &minus;110 vig, the model sees value on the OVER at lines below <strong>39.9</strong> and on the UNDER at lines above <strong>43.9</strong>. Between those boundaries, neither side clears the vig-adjusted breakeven. At the fair line (<strong>42.0</strong>), no-vig breakeven odds are <strong>+103 on the OVER</strong> (49.25% win prob) and <strong>+102 on the UNDER</strong> (49.54% win prob), with a <strong>1.21% push</strong>.</p>
-    </section>
-    <section>
-      <h2>Role evidence</h2>
-      <dl class="pub-stats">
-        <div><dt>Recent window</dt><dd>last_1_game</dd></div>
-        <div><dt>Baseline window</dt><dd>prior_8_games_ewma</dd></div>
-        <div><dt>Recent target share</dt><dd>20.6%</dd></div>
-        <div><dt>Baseline target share</dt><dd>22.9%</dd></div>
-        <div><dt>Career games</dt><dd>98</dd></div>
-      </dl>
-      <p class='pub-note'>Role labels and thresholds remain provisional pending chronological holdout validation.</p>
-    </section>
-    
-    <section>
-      <h2>Related research</h2>
-      <ul>
-        <li><a href="/nfl/players/deebo-samuel-sr/receptions/">Deebo Samuel Sr. &ndash; other published market</a></li>
-        <li><a href="/nfl/props/receiving-yards/">All receiving yards fair lines &ndash; week 07</a></li>
-        <li><a href="/performance/">Published track record and calibration</a></li>
-        <li><a href="/methodology/">How the model works</a></li>
-      </ul>
-    </section>
+    <div class="pub-player-grid">
+      <div class="pub-player-main">
+        <h1>Deebo Samuel Sr. &ndash; Receiving Yards: Model Fair Line &amp; Research</h1>
+        <p class="pub-lede">PropStein's pre-kickoff model projection for Deebo Samuel Sr.
+        (WR, SF) in the
+        SF at ATL game &mdash; receiving yards market, 2026-W07.
+        Snapshot taken <time datetime="2026-10-20T05:42:06.138924+00:00">2026-10-20 05:42 UTC</time>.</p>
+        <p class='pub-status pub-status-unquoted'>No book quote was captured in this snapshot. The model numbers below stand alone.</p>
+        <div class="dist-chart-card">
+  <div class="dist-chart-top">
+    <div class="dist-chart-heading">
+      <span class="dist-chart-badge">QUANT MODEL</span>
+      <h3 class="dist-chart-title">Distribution &amp; Tail Probabilities</h3>
+    </div>
+    <div class="dist-chart-controls">
+      <label class="dist-tab-label">
+        <input type="radio" name="dist_626303" value="pdf" checked class="dist-radio-pdf">
+        <span class="dist-tab-btn">Density (PDF)</span>
+      </label>
+      <label class="dist-tab-label">
+        <input type="radio" name="dist_626303" value="cdf" class="dist-radio-cdf">
+        <span class="dist-tab-btn">Cumulative (CDF)</span>
+      </label>
+    </div>
+  </div>
+  <div class="dist-svg-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 210" class="dist-svg" role="img" aria-label="Quant Distribution for Deebo Samuel Sr.">
+  <rect width="640" height="210" fill="transparent"/>
+  <line x1="46" y1="182" x2="616" y2="182" stroke="#222733" stroke-width="1"/>
+  <line x1="46.0" y1="182" x2="46.0" y2="186" stroke="#222733"/><text x="46.0" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.0</text><line x1="169.4" y1="182" x2="169.4" y2="186" stroke="#222733"/><text x="169.4" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">20.0</text><line x1="292.8" y1="182" x2="292.8" y2="186" stroke="#222733"/><text x="292.8" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">40.0</text><line x1="416.1" y1="182" x2="416.1" y2="186" stroke="#222733"/><text x="416.1" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">60.0</text><line x1="539.5" y1="182" x2="539.5" y2="186" stroke="#222733"/><text x="539.5" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">80.0</text>
+  <rect x="292.1" y="28" width="24.7" height="154" class="dist-vig-band" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.09)" stroke-dasharray="3 3"/><text x="304.5" y="44" text-anchor="middle" class="dist-vig-text" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono, monospace" letter-spacing="0.05em">NO-VALUE VIG BAND</text>
+  <g class="dist-pdf-layer">
+    <path d="M 49.1 182.0 L 49.1 149.2 L 57.3 122.1 L 65.5 107.7 L 73.7 97.6 L 81.9 89.6 L 90.2 82.9 L 98.4 76.9 L 106.6 71.6 L 114.8 66.7 L 123.0 62.3 L 131.2 58.3 L 139.5 54.7 L 147.7 51.5 L 155.9 48.6 L 164.1 46.1 L 172.3 44.0 L 180.5 42.2 L 188.8 40.7 L 197.0 39.6 L 205.2 38.8 L 213.4 38.2 L 221.6 38.0 L 229.8 38.0 L 238.1 38.3 L 246.3 38.8 L 254.5 39.6 L 262.7 40.6 L 270.9 41.8 L 279.1 43.1 L 287.4 44.7 L 295.6 46.4 L 303.8 48.2 L 312.0 50.2 L 320.2 52.3 L 328.4 54.6 L 336.7 56.9 L 344.9 59.3 L 353.1 61.8 L 361.3 64.3 L 369.5 67.0 L 377.7 69.6 L 385.9 72.3 L 394.2 75.0 L 402.4 77.8 L 410.6 80.5 L 418.8 83.3 L 427.0 86.0 L 435.2 88.8 L 443.5 91.5 L 451.7 94.2 L 459.9 96.9 L 468.1 99.6 L 476.3 102.2 L 484.5 104.8 L 492.8 107.4 L 501.0 109.9 L 509.2 112.4 L 517.4 114.9 L 525.6 117.2 L 533.8 119.6 L 542.1 121.9 L 550.3 124.1 L 558.5 126.3 L 566.7 128.4 L 574.9 130.5 L 583.1 132.5 L 591.4 134.4 L 599.6 136.3 L 607.8 138.2 L 616.0 140.0 L 616.0 182.0 Z" class="dist-pdf-area" fill="rgba(56,189,248,0.12)"/>
+    <path d="M 49.1 149.2 L 57.3 122.1 L 65.5 107.7 L 73.7 97.6 L 81.9 89.6 L 90.2 82.9 L 98.4 76.9 L 106.6 71.6 L 114.8 66.7 L 123.0 62.3 L 131.2 58.3 L 139.5 54.7 L 147.7 51.5 L 155.9 48.6 L 164.1 46.1 L 172.3 44.0 L 180.5 42.2 L 188.8 40.7 L 197.0 39.6 L 205.2 38.8 L 213.4 38.2 L 221.6 38.0 L 229.8 38.0 L 238.1 38.3 L 246.3 38.8 L 254.5 39.6 L 262.7 40.6 L 270.9 41.8 L 279.1 43.1 L 287.4 44.7 L 295.6 46.4 L 303.8 48.2 L 312.0 50.2 L 320.2 52.3 L 328.4 54.6 L 336.7 56.9 L 344.9 59.3 L 353.1 61.8 L 361.3 64.3 L 369.5 67.0 L 377.7 69.6 L 385.9 72.3 L 394.2 75.0 L 402.4 77.8 L 410.6 80.5 L 418.8 83.3 L 427.0 86.0 L 435.2 88.8 L 443.5 91.5 L 451.7 94.2 L 459.9 96.9 L 468.1 99.6 L 476.3 102.2 L 484.5 104.8 L 492.8 107.4 L 501.0 109.9 L 509.2 112.4 L 517.4 114.9 L 525.6 117.2 L 533.8 119.6 L 542.1 121.9 L 550.3 124.1 L 558.5 126.3 L 566.7 128.4 L 574.9 130.5 L 583.1 132.5 L 591.4 134.4 L 599.6 136.3 L 607.8 138.2 L 616.0 140.0" class="dist-pdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="54" y="44" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">PROBABILITY DENSITY f(x)</text>
+  </g>
+  <g class="dist-cdf-layer">
+    <path d="M 49.1 181.9 L 57.3 181.0 L 65.5 179.8 L 73.7 178.5 L 81.9 176.9 L 90.2 175.3 L 98.4 173.5 L 106.6 171.6 L 114.8 169.6 L 123.0 167.6 L 131.2 165.5 L 139.5 163.3 L 147.7 161.0 L 155.9 158.7 L 164.1 156.4 L 172.3 154.0 L 180.5 151.6 L 188.8 149.2 L 197.0 146.7 L 205.2 144.2 L 213.4 141.7 L 221.6 139.2 L 229.8 136.7 L 238.1 134.2 L 246.3 131.7 L 254.5 129.2 L 262.7 126.8 L 270.9 124.3 L 279.1 121.9 L 287.4 119.5 L 295.6 117.1 L 303.8 114.8 L 312.0 112.4 L 320.2 110.2 L 328.4 107.9 L 336.7 105.7 L 344.9 103.6 L 353.1 101.5 L 361.3 99.4 L 369.5 97.4 L 377.7 95.4 L 385.9 93.5 L 394.2 91.6 L 402.4 89.7 L 410.6 88.0 L 418.8 86.2 L 427.0 84.5 L 435.2 82.9 L 443.5 81.3 L 451.7 79.7 L 459.9 78.2 L 468.1 76.8 L 476.3 75.4 L 484.5 74.0 L 492.8 72.7 L 501.0 71.4 L 509.2 70.2 L 517.4 69.0 L 525.6 67.8 L 533.8 66.7 L 542.1 65.7 L 550.3 64.6 L 558.5 63.6 L 566.7 62.7 L 574.9 61.8 L 583.1 60.9 L 591.4 60.0 L 599.6 59.2 L 607.8 58.5 L 616.0 57.7" class="dist-cdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="54" y="44" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">CUMULATIVE PROBABILITY F(x)</text>
+  </g>
+  <line x1="305.1" y1="28" x2="305.1" y2="182" class="dist-ref-fair" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="305.1" y="20" text-anchor="middle" class="dist-ref-fair-text" fill="#38BDF8" font-size="10" font-family="JetBrains Mono, monospace" font-weight="700">Fair: 42.0</text>
+  <line x1="341.0" y1="28" x2="341.0" y2="182" class="dist-ref-mean" stroke="#FBBF24" stroke-width="1.5" stroke-dasharray="2 2"/><text x="341.0" y="20" text-anchor="middle" class="dist-ref-mean-text" fill="#FBBF24" font-size="10" font-family="JetBrains Mono, monospace">Mean: 47.8</text>
+  
+</svg>
+  </div>
+  <div class="dist-chart-legend">
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-fair"></span> Fair Median (42.0)</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-mean"></span> Proj Mean (47.8)</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-band"></span> -110 Vig Dead-Band</span>
+  </div>
+</div>
+        <section>
+          <h2>Model projection</h2>
+          <dl class="pub-stats">
+            <div><dt>Fair line</dt><dd>42.0 yds</dd></div>
+            <div><dt>Projected volume</dt><dd>47.82 yds</dd></div>
+            <div><dt>P(over) at fair</dt><dd>49.2%</dd></div>
+            <div><dt>Role</dt><dd>established_volume</dd></div>
+          </dl>
+          <p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma v3.2): mu_rec 4.1861, mu_ypr 11.4237, alpha 0.1097, k 1.555.</p>
+          <h3>How to use the fair line</h3>
+          <p>At &minus;110 vig, the model sees value on the OVER at lines below <strong>39.9</strong> and on the UNDER at lines above <strong>43.9</strong>. Between those boundaries, neither side clears the vig-adjusted breakeven. At the fair line (<strong>42.0</strong>), no-vig breakeven odds are <strong>+103 on the OVER</strong> (49.25% win prob) and <strong>+102 on the UNDER</strong> (49.54% win prob), with a <strong>1.21% push</strong>.</p>
+        </section>
+        <section>
+          <h2>Role evidence</h2>
+          <dl class="pub-stats">
+            <div><dt>Recent window</dt><dd>last_1_game</dd></div>
+            <div><dt>Baseline window</dt><dd>prior_8_games_ewma</dd></div>
+            <div><dt>Recent target share</dt><dd>20.6%</dd></div>
+            <div><dt>Baseline target share</dt><dd>22.9%</dd></div>
+            <div><dt>Career games</dt><dd>98</dd></div>
+          </dl>
+          <p class='pub-note'>Role labels and thresholds remain provisional pending chronological holdout validation.</p>
+        </section>
+        
+        <section>
+          <h2>Related research</h2>
+          <ul>
+            <li><a href="/nfl/players/deebo-samuel-sr/receptions/">Deebo Samuel Sr. &ndash; other published market</a></li>
+            <li><a href="/nfl/props/receiving-yards/">All receiving yards fair lines &ndash; week 07</a></li>
+            <li><a href="/performance/">Published track record and calibration</a></li>
+            <li><a href="/methodology/">How the model works</a></li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="pub-player-rail">
+        <div class="stat-cards-vertical">
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Model Fair Line</span>
+              <span class="stat-badge">50/50 Median</span>
+            </div>
+            <div class="stat-card-num">42.0 <span class="stat-unit">yds</span></div>
+            <div class="stat-card-sub">P(over) at fair: <strong>49.2%</strong></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Projected Volume</span>
+              <span class="stat-badge">Expected Mean</span>
+            </div>
+            <div class="stat-card-num">47.82 <span class="stat-unit">yds</span></div>
+            <div class="stat-card-sub">Unconditional expected production</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Market Quote</span>
+              <span class="stat-badge ">unquoted</span>
+            </div>
+            <div class="stat-card-num">Unquoted</div>
+            <div class="stat-card-sub">No active book quote captured</div>
+          </div>
+        </div>
+
+        <div class="invalidation-card">
+          <h3 class="invalidation-title">Forecast Invalidation Triggers</h3>
+          <p class="invalidation-intro">Quantitative assumptions behind this projection. Any of these signals degrades or revokes the edge:</p>
+          <ul class="invalidation-list">
+            <li><strong>Target Share Shift:</strong> In-game distribution moves &gt; 5% from baseline (20.6% recent).</li>
+            <li><strong>Personnel Outage:</strong> Key teammate inactive altering pass volume or target concentration.</li>
+            <li><strong>Adverse Weather:</strong> Sustained winds &gt; 15 mph or heavy rain suppressing passing efficiency.</li>
+            <li><strong>Game Script Blowout:</strong> Spread margin &gt; 14 points forcing extreme run-heavy second-half pacing.</li>
+          </ul>
+        </div>
+
+        <div class="terminal-action-card">
+          <a href="/?player=deebo-samuel-sr" class="pub-btn-terminal">
+            <span>Open in PropStein Terminal</span>
+            <span>&rarr;</span>
+          </a>
+          <p class="terminal-action-sub">Live CLOB odds, order routing &amp; execution gates.</p>
+        </div>
+      </aside>
+    </div>
     <section class="pub-limitations">
       <h2>Model limitations</h2>
       

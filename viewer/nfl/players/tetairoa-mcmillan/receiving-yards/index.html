@@ -63,13 +63,19 @@
 <body>
 
   <header class="pub-header">
-    <a class="pub-brand" href="/">PropStein</a>
+    <div class="pub-header-left">
+      <a class="pub-brand" href="/">PROPSTEIN</a>
+      <span class="pub-header-badge">RESEARCH TERMINAL</span>
+    </div>
     <nav class="pub-nav">
-      <a href="/nfl/props/receiving-yards/">NFL Receiving Yards</a>
-      <a href="/nfl/props/receptions/">NFL Receptions</a>
-      <a href="/performance/">Track Record</a>
+      <a href="/">Overview</a>
+      <a href="/nfl/props/receiving-yards/">Markets</a>
+      <a href="/performance/">Performance</a>
       <a href="/methodology/">Methodology</a>
     </nav>
+    <div class="pub-header-right">
+      <a href="/performance/" class="pub-mode-badge">RESEARCH MODE</a>
+    </div>
   </header>
   <main class="pub-main">
     <nav class="pub-crumbs" aria-label="Breadcrumb"><ol>
@@ -79,45 +85,142 @@
       <li aria-current="page">Tetairoa McMillan Receiving Yards</li>
     </ol></nav>
 
-    <h1>Tetairoa McMillan &ndash; Receiving Yards: Model Fair Line &amp; Research</h1>
-    <p class="pub-lede">PropStein's pre-kickoff model projection for Tetairoa McMillan
-    (WR, CAR) in the
-    CAR at TB game &mdash; receiving yards market, 2026-W07.
-    Snapshot taken <time datetime="2026-10-20T05:42:06.138924+00:00">2026-10-20 05:42 UTC</time>.</p>
-    <p class='pub-status pub-status-unquoted'>No book quote was captured in this snapshot. The model numbers below stand alone.</p>
-    <section>
-      <h2>Model projection</h2>
-      <dl class="pub-stats">
-        <div><dt>Fair line</dt><dd>45.5 yds</dd></div>
-        <div><dt>Projected volume</dt><dd>52.91 yds</dd></div>
-        <div><dt>P(over) at fair</dt><dd>49.9%</dd></div>
-        <div><dt>Role</dt><dd>established_volume</dd></div>
-      </dl>
-      <p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma v3.2): mu_rec 3.5463, mu_ypr 14.9186, alpha 0.1097, k 1.555.</p>
-      <h3>How to use the fair line</h3>
-      <p>At &minus;110 vig, the model sees value on the OVER at lines below <strong>43.1</strong> and on the UNDER at lines above <strong>47.8</strong>. Between those boundaries, neither side clears the vig-adjusted breakeven. At the fair line (<strong>45.5</strong>), no-vig breakeven odds are <strong>+100 on the OVER</strong> (49.92% win prob) and <strong>&minus;100 on the UNDER</strong> (50.08% win prob).</p>
-    </section>
-    <section>
-      <h2>Role evidence</h2>
-      <dl class="pub-stats">
-        <div><dt>Recent window</dt><dd>last_1_game</dd></div>
-        <div><dt>Baseline window</dt><dd>prior_8_games_ewma</dd></div>
-        <div><dt>Recent target share</dt><dd>20.0%</dd></div>
-        <div><dt>Baseline target share</dt><dd>22.1%</dd></div>
-        <div><dt>Career games</dt><dd>17</dd></div>
-      </dl>
-      <p class='pub-note'>Role labels and thresholds remain provisional pending chronological holdout validation.</p>
-    </section>
-    
-    <section>
-      <h2>Related research</h2>
-      <ul>
-        <li><a href="/nfl/players/tetairoa-mcmillan/receptions/">Tetairoa McMillan &ndash; other published market</a></li>
-        <li><a href="/nfl/props/receiving-yards/">All receiving yards fair lines &ndash; week 07</a></li>
-        <li><a href="/performance/">Published track record and calibration</a></li>
-        <li><a href="/methodology/">How the model works</a></li>
-      </ul>
-    </section>
+    <div class="pub-player-grid">
+      <div class="pub-player-main">
+        <h1>Tetairoa McMillan &ndash; Receiving Yards: Model Fair Line &amp; Research</h1>
+        <p class="pub-lede">PropStein's pre-kickoff model projection for Tetairoa McMillan
+        (WR, CAR) in the
+        CAR at TB game &mdash; receiving yards market, 2026-W07.
+        Snapshot taken <time datetime="2026-10-20T05:42:06.138924+00:00">2026-10-20 05:42 UTC</time>.</p>
+        <p class='pub-status pub-status-unquoted'>No book quote was captured in this snapshot. The model numbers below stand alone.</p>
+        <div class="dist-chart-card">
+  <div class="dist-chart-top">
+    <div class="dist-chart-heading">
+      <span class="dist-chart-badge">QUANT MODEL</span>
+      <h3 class="dist-chart-title">Distribution &amp; Tail Probabilities</h3>
+    </div>
+    <div class="dist-chart-controls">
+      <label class="dist-tab-label">
+        <input type="radio" name="dist_501610" value="pdf" checked class="dist-radio-pdf">
+        <span class="dist-tab-btn">Density (PDF)</span>
+      </label>
+      <label class="dist-tab-label">
+        <input type="radio" name="dist_501610" value="cdf" class="dist-radio-cdf">
+        <span class="dist-tab-btn">Cumulative (CDF)</span>
+      </label>
+    </div>
+  </div>
+  <div class="dist-svg-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 210" class="dist-svg" role="img" aria-label="Quant Distribution for Tetairoa McMillan">
+  <rect width="640" height="210" fill="transparent"/>
+  <line x1="46" y1="182" x2="616" y2="182" stroke="#222733" stroke-width="1"/>
+  <line x1="46.0" y1="182" x2="46.0" y2="186" stroke="#222733"/><text x="46.0" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">0.0</text><line x1="159.9" y1="182" x2="159.9" y2="186" stroke="#222733"/><text x="159.9" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">20.0</text><line x1="273.8" y1="182" x2="273.8" y2="186" stroke="#222733"/><text x="273.8" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">40.0</text><line x1="387.7" y1="182" x2="387.7" y2="186" stroke="#222733"/><text x="387.7" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">60.0</text><line x1="501.5" y1="182" x2="501.5" y2="186" stroke="#222733"/><text x="501.5" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">80.0</text><line x1="615.4" y1="182" x2="615.4" y2="186" stroke="#222733"/><text x="615.4" y="198" text-anchor="middle" class="dist-tick-num" fill="#9CA3AF" font-size="10" font-family="JetBrains Mono, monospace">100.0</text>
+  <rect x="291.4" y="28" width="26.8" height="154" class="dist-vig-band" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.09)" stroke-dasharray="3 3"/><text x="304.8" y="44" text-anchor="middle" class="dist-vig-text" fill="#9CA3AF" font-size="9" font-family="JetBrains Mono, monospace" letter-spacing="0.05em">NO-VALUE VIG BAND</text>
+  <g class="dist-pdf-layer">
+    <path d="M 48.8 182.0 L 48.8 146.4 L 57.1 114.2 L 65.3 97.5 L 73.5 86.3 L 81.7 78.0 L 89.9 71.4 L 98.2 65.9 L 106.4 61.3 L 114.6 57.2 L 122.8 53.7 L 131.0 50.7 L 139.3 48.0 L 147.5 45.7 L 155.7 43.7 L 163.9 42.1 L 172.1 40.7 L 180.4 39.6 L 188.6 38.8 L 196.8 38.3 L 205.0 38.0 L 213.2 38.0 L 221.5 38.2 L 229.7 38.6 L 237.9 39.2 L 246.1 40.0 L 254.3 40.9 L 262.6 42.1 L 270.8 43.3 L 279.0 44.8 L 287.2 46.3 L 295.4 48.0 L 303.7 49.8 L 311.9 51.7 L 320.1 53.8 L 328.3 55.8 L 336.5 58.0 L 344.8 60.2 L 353.0 62.5 L 361.2 64.8 L 369.4 67.2 L 377.6 69.6 L 385.9 72.1 L 394.1 74.6 L 402.3 77.1 L 410.5 79.5 L 418.7 82.1 L 426.9 84.6 L 435.2 87.1 L 443.4 89.6 L 451.6 92.0 L 459.8 94.5 L 468.0 96.9 L 476.3 99.4 L 484.5 101.8 L 492.7 104.1 L 500.9 106.4 L 509.1 108.8 L 517.4 111.0 L 525.6 113.2 L 533.8 115.4 L 542.0 117.6 L 550.2 119.7 L 558.5 121.7 L 566.7 123.8 L 574.9 125.7 L 583.1 127.7 L 591.3 129.6 L 599.6 131.4 L 607.8 133.2 L 616.0 134.9 L 616.0 182.0 Z" class="dist-pdf-area" fill="rgba(56,189,248,0.12)"/>
+    <path d="M 48.8 146.4 L 57.1 114.2 L 65.3 97.5 L 73.5 86.3 L 81.7 78.0 L 89.9 71.4 L 98.2 65.9 L 106.4 61.3 L 114.6 57.2 L 122.8 53.7 L 131.0 50.7 L 139.3 48.0 L 147.5 45.7 L 155.7 43.7 L 163.9 42.1 L 172.1 40.7 L 180.4 39.6 L 188.6 38.8 L 196.8 38.3 L 205.0 38.0 L 213.2 38.0 L 221.5 38.2 L 229.7 38.6 L 237.9 39.2 L 246.1 40.0 L 254.3 40.9 L 262.6 42.1 L 270.8 43.3 L 279.0 44.8 L 287.2 46.3 L 295.4 48.0 L 303.7 49.8 L 311.9 51.7 L 320.1 53.8 L 328.3 55.8 L 336.5 58.0 L 344.8 60.2 L 353.0 62.5 L 361.2 64.8 L 369.4 67.2 L 377.6 69.6 L 385.9 72.1 L 394.1 74.6 L 402.3 77.1 L 410.5 79.5 L 418.7 82.1 L 426.9 84.6 L 435.2 87.1 L 443.4 89.6 L 451.6 92.0 L 459.8 94.5 L 468.0 96.9 L 476.3 99.4 L 484.5 101.8 L 492.7 104.1 L 500.9 106.4 L 509.1 108.8 L 517.4 111.0 L 525.6 113.2 L 533.8 115.4 L 542.0 117.6 L 550.2 119.7 L 558.5 121.7 L 566.7 123.8 L 574.9 125.7 L 583.1 127.7 L 591.3 129.6 L 599.6 131.4 L 607.8 133.2 L 616.0 134.9" class="dist-pdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="54" y="44" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">PROBABILITY DENSITY f(x)</text>
+  </g>
+  <g class="dist-cdf-layer">
+    <path d="M 48.8 181.9 L 57.1 181.0 L 65.3 179.8 L 73.5 178.3 L 81.7 176.7 L 89.9 174.9 L 98.2 173.1 L 106.4 171.2 L 114.6 169.2 L 122.8 167.1 L 131.0 165.0 L 139.3 162.9 L 147.5 160.7 L 155.7 158.5 L 163.9 156.2 L 172.1 153.9 L 180.4 151.6 L 188.6 149.3 L 196.8 147.0 L 205.0 144.7 L 213.2 142.3 L 221.5 140.0 L 229.7 137.7 L 237.9 135.4 L 246.1 133.1 L 254.3 130.8 L 262.6 128.5 L 270.8 126.2 L 279.0 124.0 L 287.2 121.8 L 295.4 119.6 L 303.7 117.5 L 311.9 115.3 L 320.1 113.2 L 328.3 111.2 L 336.5 109.2 L 344.8 107.2 L 353.0 105.2 L 361.2 103.3 L 369.4 101.4 L 377.6 99.6 L 385.9 97.8 L 394.1 96.0 L 402.3 94.3 L 410.5 92.6 L 418.7 91.0 L 426.9 89.4 L 435.2 87.8 L 443.4 86.3 L 451.6 84.8 L 459.8 83.4 L 468.0 82.0 L 476.3 80.6 L 484.5 79.3 L 492.7 78.0 L 500.9 76.8 L 509.1 75.6 L 517.4 74.4 L 525.6 73.3 L 533.8 72.2 L 542.0 71.1 L 550.2 70.1 L 558.5 69.1 L 566.7 68.2 L 574.9 67.2 L 583.1 66.3 L 591.3 65.5 L 599.6 64.6 L 607.8 63.8 L 616.0 63.1" class="dist-cdf-curve" fill="none" stroke="#38BDF8" stroke-width="2"/>
+    <text x="54" y="44" class="dist-layer-label" fill="#6B7280" font-size="9" font-family="JetBrains Mono, monospace">CUMULATIVE PROBABILITY F(x)</text>
+  </g>
+  <line x1="305.1" y1="28" x2="305.1" y2="182" class="dist-ref-fair" stroke="#38BDF8" stroke-width="1.5" stroke-dasharray="4 3"/><text x="305.1" y="20" text-anchor="middle" class="dist-ref-fair-text" fill="#38BDF8" font-size="10" font-family="JetBrains Mono, monospace" font-weight="700">Fair: 45.5</text>
+  <line x1="347.3" y1="28" x2="347.3" y2="182" class="dist-ref-mean" stroke="#FBBF24" stroke-width="1.5" stroke-dasharray="2 2"/><text x="347.3" y="20" text-anchor="middle" class="dist-ref-mean-text" fill="#FBBF24" font-size="10" font-family="JetBrains Mono, monospace">Mean: 52.9</text>
+  
+</svg>
+  </div>
+  <div class="dist-chart-legend">
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-fair"></span> Fair Median (45.5)</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-mean"></span> Proj Mean (52.9)</span>
+    <span class="dist-legend-item"><span class="dist-swatch dist-swatch-band"></span> -110 Vig Dead-Band</span>
+  </div>
+</div>
+        <section>
+          <h2>Model projection</h2>
+          <dl class="pub-stats">
+            <div><dt>Fair line</dt><dd>45.5 yds</dd></div>
+            <div><dt>Projected volume</dt><dd>52.91 yds</dd></div>
+            <div><dt>P(over) at fair</dt><dd>49.9%</dd></div>
+            <div><dt>Role</dt><dd>established_volume</dd></div>
+          </dl>
+          <p class='pub-params'>Distribution parameters (NegBin&ndash;Gamma v3.2): mu_rec 3.5463, mu_ypr 14.9186, alpha 0.1097, k 1.555.</p>
+          <h3>How to use the fair line</h3>
+          <p>At &minus;110 vig, the model sees value on the OVER at lines below <strong>43.1</strong> and on the UNDER at lines above <strong>47.8</strong>. Between those boundaries, neither side clears the vig-adjusted breakeven. At the fair line (<strong>45.5</strong>), no-vig breakeven odds are <strong>+100 on the OVER</strong> (49.92% win prob) and <strong>&minus;100 on the UNDER</strong> (50.08% win prob).</p>
+        </section>
+        <section>
+          <h2>Role evidence</h2>
+          <dl class="pub-stats">
+            <div><dt>Recent window</dt><dd>last_1_game</dd></div>
+            <div><dt>Baseline window</dt><dd>prior_8_games_ewma</dd></div>
+            <div><dt>Recent target share</dt><dd>20.0%</dd></div>
+            <div><dt>Baseline target share</dt><dd>22.1%</dd></div>
+            <div><dt>Career games</dt><dd>17</dd></div>
+          </dl>
+          <p class='pub-note'>Role labels and thresholds remain provisional pending chronological holdout validation.</p>
+        </section>
+        
+        <section>
+          <h2>Related research</h2>
+          <ul>
+            <li><a href="/nfl/players/tetairoa-mcmillan/receptions/">Tetairoa McMillan &ndash; other published market</a></li>
+            <li><a href="/nfl/props/receiving-yards/">All receiving yards fair lines &ndash; week 07</a></li>
+            <li><a href="/performance/">Published track record and calibration</a></li>
+            <li><a href="/methodology/">How the model works</a></li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="pub-player-rail">
+        <div class="stat-cards-vertical">
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Model Fair Line</span>
+              <span class="stat-badge">50/50 Median</span>
+            </div>
+            <div class="stat-card-num">45.5 <span class="stat-unit">yds</span></div>
+            <div class="stat-card-sub">P(over) at fair: <strong>49.9%</strong></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Projected Volume</span>
+              <span class="stat-badge">Expected Mean</span>
+            </div>
+            <div class="stat-card-num">52.91 <span class="stat-unit">yds</span></div>
+            <div class="stat-card-sub">Unconditional expected production</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-top">
+              <span class="stat-card-label">Market Quote</span>
+              <span class="stat-badge ">unquoted</span>
+            </div>
+            <div class="stat-card-num">Unquoted</div>
+            <div class="stat-card-sub">No active book quote captured</div>
+          </div>
+        </div>
+
+        <div class="invalidation-card">
+          <h3 class="invalidation-title">Forecast Invalidation Triggers</h3>
+          <p class="invalidation-intro">Quantitative assumptions behind this projection. Any of these signals degrades or revokes the edge:</p>
+          <ul class="invalidation-list">
+            <li><strong>Target Share Shift:</strong> In-game distribution moves &gt; 5% from baseline (20.0% recent).</li>
+            <li><strong>Personnel Outage:</strong> Key teammate inactive altering pass volume or target concentration.</li>
+            <li><strong>Adverse Weather:</strong> Sustained winds &gt; 15 mph or heavy rain suppressing passing efficiency.</li>
+            <li><strong>Game Script Blowout:</strong> Spread margin &gt; 14 points forcing extreme run-heavy second-half pacing.</li>
+          </ul>
+        </div>
+
+        <div class="terminal-action-card">
+          <a href="/?player=tetairoa-mcmillan" class="pub-btn-terminal">
+            <span>Open in PropStein Terminal</span>
+            <span>&rarr;</span>
+          </a>
+          <p class="terminal-action-sub">Live CLOB odds, order routing &amp; execution gates.</p>
+        </div>
+      </aside>
+    </div>
     <section class="pub-limitations">
       <h2>Model limitations</h2>
       
