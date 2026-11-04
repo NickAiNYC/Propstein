@@ -51,12 +51,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ufc.css?v=2026_v200">
-  <link rel="stylesheet" href="/style.css?v=2026_v223">
+  <link rel="stylesheet" href="/style.css?v=2026_v225">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v221" defer></script>
   <script src="/js/quant-math.js?v=2026_v215" defer></script>
-  <script src="/app.js?v=2026_v223" defer></script>
+  <script src="/app.js?v=2026_v225" defer></script>
   <script src="/js/sports/ufc.js?v=2026_v200" defer></script>
   <script src="/js/today-schedule.js?v=2026_v207" defer></script>
   <script src="/js/front-page.js?v=2026_v210" defer></script>
@@ -306,13 +306,16 @@
           <button type="button" id="homeEdgeOpenBoard">View player board <span aria-hidden="true">↗</span></button>
         </div>
       </div>
-      <div id="dfsModeSelector" class="dfs-mode-selector" role="group" aria-label="DFS and Edge Mode Selector">
-        <button type="button" class="dfs-mode-btn active" data-preset="SPORTSBOOK_EV">Sportsbook +EV</button>
-        <button type="button" class="dfs-mode-btn" data-preset="PRIZEPICKS_5FLEX">PrizePicks 5-Flex (54.2%)</button>
-        <button type="button" class="dfs-mode-btn" data-preset="PRIZEPICKS_2POWER">PrizePicks 2-Power (57.7%)</button>
-        <button type="button" class="dfs-mode-btn" data-preset="UNDERDOG_3STANDARD">Underdog 3-Pick (55.0%)</button>
-      </div>
-      <div id="dfsOptimalSlipWrap" class="dfs-slip-wrap" hidden></div>
+      <details class="research-mode-details">
+        <summary>Compare research formats <span aria-hidden="true">⌄</span></summary>
+        <div id="dfsModeSelector" class="dfs-mode-selector" role="group" aria-label="DFS and Edge Mode Selector">
+          <button type="button" class="dfs-mode-btn active" data-preset="SPORTSBOOK_EV">Sportsbook +EV</button>
+          <button type="button" class="dfs-mode-btn" data-preset="PRIZEPICKS_5FLEX">PrizePicks 5-Flex (54.2%)</button>
+          <button type="button" class="dfs-mode-btn" data-preset="PRIZEPICKS_2POWER">PrizePicks 2-Power (57.7%)</button>
+          <button type="button" class="dfs-mode-btn" data-preset="UNDERDOG_3STANDARD">Underdog 3-Pick (55.0%)</button>
+        </div>
+        <div id="dfsOptimalSlipWrap" class="dfs-slip-wrap" hidden></div>
+      </details>
       <p class="home-edge-status" id="homeEdgeStatus">Loading data and checking price status…</p>
       <div class="home-edge-list" id="homeEdgeList"></div>
       <button type="button" id="homeEdgeShowAll" class="home-edge-show-all" aria-expanded="false" hidden></button>
