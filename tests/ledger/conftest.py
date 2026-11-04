@@ -23,6 +23,16 @@ def _with_database(dsn: str, database: str) -> str:
 
 
 def _local_admin_dsn() -> str:
+    for candidate in (
+        "postgresql://postgres@localhost:5432/postgres",
+        f"postgresql://{os.environ.get('USER', 'postgres')}@localhost:5432/postgres",
+    ):
+        try:
+            conn = psycopg2.connect(candidate, connect_timeout=1)
+            conn.close()
+            return candidate
+        except Exception:
+            pass
     password = secrets.token_hex(16)
     subprocess.check_call(
         [

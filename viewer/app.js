@@ -7,7 +7,7 @@
   //   §2  Storage migration                      §13 Render pipeline
   //   §3  Persistence I/O (ledger/watchlist)     §14 Portfolio risk & sniper
   //   §4  Application state + helpers            §15 Board atoms (rows/cards)
-  //   §5  Team identity (logos)                  §16 Evaluation core (gate/Kelly)
+  //   §5  Team identity (logos)                  §16 Evaluation core (model gates & limits)
   //   §6  Distribution visuals                   §17 Navigation & toasts
   //   §7  Device feedback & polling              §18 Ledger mutations & I/O
   //   §8  Odds polling pipeline                  §19 Portfolio & CLV dialogs
@@ -1188,7 +1188,10 @@
 
     function updateCap(delta) {
       triggerHaptic('light');
-      state.picks.kelly_cap = Math.max(0.005, Math.min(0.10, +( (Number(state.picks.kelly_cap) || 0.03) + delta ).toFixed(3)));
+      const cur = Number(state.picks.unit_cap ?? state.picks.kelly_cap ?? 0.03);
+      const next = Math.max(0.005, Math.min(0.10, +( cur + delta ).toFixed(3)));
+      state.picks.unit_cap = next;
+      state.picks.kelly_cap = next;
       renderHeader();
       renderBoard();
     }
@@ -2656,7 +2659,7 @@
 
   function policy() {
     const gate = Number(state.picks.gate_edge);
-    const cap = Number(state.picks.kelly_cap);
+    const cap = Number(state.picks.unit_cap ?? state.picks.kelly_cap);
     return Number.isFinite(gate) && Number.isFinite(cap) ? { gate, cap } : null;
   }
 
@@ -2807,7 +2810,7 @@
       // injuries vacate minutes. The adapter label owns the unit wording.
       if (item.vacated_targets || item.vacated_minutes) {
         quantImpact = adapter.labels.injuredQuantImpact.vacated(item);
-      } else if (item.notes && item.notes.includes('0.50x Kelly Stake Cap')) {
+      } else if (item.notes && (item.notes.includes('0.50x Kelly Stake Cap') || item.notes.includes('0.50x Variance Cap'))) {
         quantImpact = 'Elevated variance';
       } else if (statusUpper.includes('LIMITED')) {
         quantImpact = 'Snap Cap Risk · Target Redistribution';
@@ -3068,7 +3071,7 @@
       if (state.bottomTab !== 'watchlist' && !isHistorical && playMode === 'actionable' && state.filters.market !== 'anytime_td' && !findQuote(row, state.filters.market)) return false;
       if (playMode === 'top') {
         if (adapter.topPlays && adapter.topPlays.source === 'ev_ranked') {
-          // EV-ranked Top Plays (adapter-driven, e.g. NBA): hide rows without
+          // Ranked priority board (adapter-driven, e.g. NBA): hide rows without
           // a bookable quote or with incomplete projection inputs — partial
           // math must never render as a ranked play (user-approved default).
           if (!findQuote(row, state.filters.market)) return false;
@@ -3114,7 +3117,7 @@
         return num(qB.edge) - num(qA.edge);
       });
     } else if (state.filters.playMode === 'top' && adapter.topPlays && adapter.topPlays.source === 'ev_ranked') {
-      // Top Plays order (audit H5 revision): EV per unit desc, then
+      // Priority board order (audit H5 revision): Expected value desc, then
       // probability edge desc, then MODEL CONFIDENCE — narrower adapter
       // distribution interval first, because receipt coverage is a
       // data-availability signal, not a quality signal, and must never
@@ -4714,7 +4717,7 @@
         liquidity_usd: 2550,
         depth_tooltip: '$500 available at $0.58, $1,200 at $0.59, $850 at $0.60',
         best_venue: 'Polymarket',
-        action_label: 'BUY YES on Polymarket',
+        action_label: 'View Polymarket Market',
         action_url: 'https://polymarket.com/event/nba-giannis-antetokounmpo-points-over-31-5',
         is_actionable_lime: true
       },
@@ -4735,7 +4738,7 @@
         liquidity_usd: 3000,
         depth_tooltip: '$620 available at $0.55, $1,400 at $0.56, $980 at $0.57',
         best_venue: 'Polymarket',
-        action_label: 'BUY YES on Polymarket',
+        action_label: 'View Polymarket Market',
         action_url: 'https://polymarket.com/event/nba-tyrese-maxey-points-over-26-5',
         is_actionable_lime: true
       },
@@ -4756,7 +4759,7 @@
         liquidity_usd: 2500,
         depth_tooltip: '$450 available at $0.59, $950 at $0.60, $1,100 at $0.61',
         best_venue: 'FanDuel',
-        action_label: 'BET OVER on FanDuel',
+        action_label: 'View FanDuel Quote',
         action_url: 'https://sportsbook.fanduel.com/navigation/nba',
         is_actionable_lime: false
       }
@@ -4781,8 +4784,8 @@
       const actionText = isPolyWsDisconnected
         ? 'ORDERBOOK STALE — ALERTS SUPPRESSED'
         : polyIsBest
-          ? `Action: BUY YES on Polymarket`
-          : `Action: BET OVER on ${card.sportsbook_book || 'DraftKings'}`;
+          ? `Market: Polymarket ($${polyPriceDollars})`
+          : `Market: ${card.sportsbook_book || 'DraftKings'} (${sbOddsStr})`;
 
       const entryLineNum = parseFloat((card.market_label || '24.5').replace(/[^0-9.]/g, '')) || 24.5;
       const bestEdgeNum = polyIsBest ? polyEdge : sbEdge;
@@ -5427,7 +5430,7 @@
                 market: al.book || 'DraftKings',
                 quarter_clock: 'Q2 4:12',
                 date_label: '29 Oct, 2026',
-                stake: Number(al.kelly_stake || 0.025),
+                stake: Number(al.unit_weight || al.kelly_stake || 0.025),
                 clv_pct: +(Number(al.clv_expectation || 0.042) * 100).toFixed(1),
                 closing_line: +(Number(al.line) + 1.0).toFixed(1),
                 source_hash: al.source_hash,
@@ -6043,7 +6046,7 @@
         } catch (_) {
           if (box) {
             box.hidden = false;
-            box.innerHTML = `<strong>Webhook Test Payload (Preview):</strong><pre class="arb-routing-payload-pre">🟢 *Giannis Antetokounmpo | PTS Over 31.5*\nFair Prob: 64%\nPolymarket: 58% ($0.58)\nEdge: +6.0%\nTop-3 Depth: $500 @ $0.58, $1,200 @ $0.59\n[🔗 BUY YES ON POLYMARKET](https://polymarket.com/event/nba-giannis-antetokounmpo-points-over-31-5)</pre>`;
+            box.innerHTML = `<strong>Webhook Test Payload (Preview):</strong><pre class="arb-routing-payload-pre">🟢 *Giannis Antetokounmpo | PTS Over 31.5*\nFair Prob: 64%\nPolymarket: 58% ($0.58)\nEdge: +6.0%\nTop-3 Depth: $500 @ $0.58, $1,200 @ $0.59\n[🔗 View Polymarket Market](https://polymarket.com/event/nba-giannis-antetokounmpo-points-over-31-5)</pre>`;
           }
         }
       };
@@ -6231,7 +6234,7 @@
         liquidity_usd: 2650,
         depth_tooltip: '$550 available at $0.58, $1,200 at $0.59, $900 at $0.60',
         best_venue: 'Polymarket',
-        action_label: 'BUY YES on Polymarket',
+        action_label: 'View Polymarket Market',
         action_url: `https://polymarket.com/event/nba-${String(subIn.player_id || subIn.name).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
         is_actionable_lime: true
       };
@@ -6552,9 +6555,8 @@
   }
 
   // ── v176 decision-card helpers ─────────────────────────────────────────
-  /** Normal-approximation P(win) + half-Kelly (cap 3%) shared by the line
-   *  simulator tray and the card sim readout so both always agree. This is
-   *  the documented approximation, NOT exact compound NegBin/Gamma pricing. */
+  /** Normal-approximation P(win) shared by the line simulator tray and the
+   *  card sim readout. NOT exact compound NegBin/Gamma pricing. */
   function approxSimMath(adjProj, line, odds, dist) {
     const decOdds = odds > 0 ? (odds / 100) + 1 : (100 / Math.abs(odds)) + 1;
     const stdDev = Math.max(1, (dist.high - dist.low) / 2.56);
@@ -6567,9 +6569,9 @@
     if (!isOver) pWin = 1 - pWin;
     pWin = Math.min(0.95, Math.max(0.05, pWin));
     const b = decOdds - 1;
-    const rawKelly = Math.max(0, (pWin * b - (1 - pWin)) / b);
-    const cappedKelly = Math.min(rawKelly * 0.5, 0.03);
-    return { pWin, kelly: cappedKelly };
+    const rawAlloc = Math.max(0, (pWin * b - (1 - pWin)) / b);
+    const cappedAlloc = Math.min(rawAlloc * 0.5, 0.03);
+    return { pWin, alloc: cappedAlloc, kelly: cappedAlloc };
   }
 
   /** Compact distribution strip for the v176 card: 80% band + fair/proj
@@ -6811,7 +6813,7 @@
         ? state.simulatedLines[row.player_id]
         : null;
       const simOpen = state.inlineSim && state.inlineSim.pid === row.player_id;
-      let simKellyHtml = '';
+      let simCapHtml = '';
       const distTitle = dist.isTd
         ? `Anytime TD probability ${(dist.prob * 100).toFixed(0)}% (approx. share model)`
         : `Approximate 80% model range ${dist.low}-${dist.high} · fair ${fairVal.toFixed(1)} (grey tick) · projection ${dist.proj.toFixed(1)} (chartreuse tick)${simVal !== null ? ` · simulated line ${simVal.toFixed(1)} (blue tick)` : ''}`;
@@ -6826,7 +6828,7 @@
             <span class="card-money-lbl">FAIR</span>
             <span class="card-money-val fair font-mono">${fairVal.toFixed(1)}</span>
           </div>
-          ${simKellyHtml}
+          ${simCapHtml}
           <div class="card-dist-block" title="${esc(distTitle)}">
             <span class="card-ci-chip">${dist.isTd ? `P(TD) ${(dist.prob * 100).toFixed(0)}%` : `80% CI ${dist.low}–${dist.high}`}</span>
             ${cardDistStripSvg(dist, { simLine: simVal })}
@@ -6843,7 +6845,7 @@
       const isFlatJuice = evaluation.odds === -110;
       const juiceLabel = isFlatJuice ? 'Flat -110' : oddsText(evaluation.odds);
       const juiceClass = isFlatJuice ? 'flat-odds' : (evaluation.odds <= -115 ? 'heavy-juice' : 'plus-money');
-      const kellyChipHtml = '';
+      const capChipHtml = '';
       const distTitle = dist.isTd
         ? `Anytime TD probability ${(dist.prob * 100).toFixed(0)}% (approx. share model)`
         : `Approximate 80% model range ${dist.low}-${dist.high} · fair ${fairVal.toFixed(1)} (grey tick) · projection ${dist.proj.toFixed(1)} (chartreuse tick) · book line ${evaluation.line.toFixed(1)} (blue tick)`;
@@ -6861,7 +6863,7 @@
             ${hasPositiveEdge ? `<span class="card-edge-badge-lime">+${edgePctDisplay}%</span>` : ''}
             <span class="font-mono dens-fair-sub">FAIR ${fairVal.toFixed(1)}</span>
           </div>
-          ${kellyChipHtml}
+          ${capChipHtml}
           <div class="card-dist-block" title="${esc(distTitle)}">
             <span class="card-ci-chip">${dist.isTd ? `P(TD) ${(dist.prob * 100).toFixed(0)}%` : `80% CI ${dist.low}–${dist.high}`}</span>
             ${cardDistStripSvg(dist, { bookLine: dist.isTd ? null : evaluation.line })}
@@ -6910,7 +6912,7 @@
       </article>`;
   }
 
-  // ── §16. Evaluation core — fair value, gate/Kelly, cell renderers ─────
+  // ── §16. Evaluation core — fair value, model gate, cell renderers ─────
 
   function fairValue(row) {
     return marketDef().fair(row);
@@ -7040,7 +7042,7 @@
     let stake = 0;
     if (actionable) {
       const supplied = num(evaluation.actionable_stake, NaN);
-      stake = Number.isFinite(supplied) && supplied > 0 ? Math.min(supplied, activePolicy.cap) : Math.min(kellyFromEvaluation(quote, evaluation, side), activePolicy.cap);
+      stake = Number.isFinite(supplied) && supplied > 0 ? Math.min(supplied, activePolicy.cap) : Math.min(unitAllocFromEvaluation(quote, evaluation, side), activePolicy.cap);
     }
     const tone = closed ? 'closed' : volatilityHalt ? 'caution' : dataCheck && qState === 'verified' ? 'caution' : actionable ? 'actionable' : '';
     return {
@@ -7069,7 +7071,7 @@
     };
   }
 
-  function kellyFromEvaluation(quote, evaluation, side) {
+  function unitAllocFromEvaluation(quote, evaluation, side) {
     if (!quote) return 0.03;
     const probabilities = devig(quote.over_odds, quote.under_odds);
     const marketProbability = side === 'UNDER' ? probabilities.under : probabilities.over;
@@ -7079,6 +7081,7 @@
     const b = decimal - 1;
     return Math.max(0, (b * winProbability - (1 - winProbability)) / b);
   }
+  const kellyFromEvaluation = unitAllocFromEvaluation;
 
   function detectBookDiscrepancy(row) {
     if (!row) return null;
