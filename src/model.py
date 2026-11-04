@@ -243,3 +243,19 @@ def prob_to_american(p: float | np.ndarray, vig: float = 0.045):
     p_posted = np.clip(p * (1 + vig / 2), 1e-4, 0.9999)
     dec = 1.0 / p_posted
     return np.where(dec >= 2.0, (dec - 1) * 100.0, -100.0 / (dec - 1))
+
+
+def market_anchored_blend(
+    p_model: float,
+    p_market_devig: float,
+    weight: float = 0.25,
+) -> float:
+    """Blend model estimate with the devigged market prior.
+
+    When out-of-sample Brier skill is not yet positive, anchoring to the
+    closing market prior with shrinkage weight w in [0.2, 0.3] prevents
+    overconfident tail bets while preserving relative edge signal.
+    """
+    w = max(0.0, min(1.0, float(weight)))
+    return (1.0 - w) * float(p_market_devig) + w * float(p_model)
+
