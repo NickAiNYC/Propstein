@@ -1,18 +1,21 @@
 .PHONY: all test verify verify-audit verify-ledger test-py test-node clean
 
+PYTHON ?= $(shell if [ -f .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
+PYTEST ?= $(shell if [ -f .venv/bin/pytest ]; then echo .venv/bin/pytest; else echo pytest; fi)
+
 all: test
 
 # Reproducible audit of the published frozen artifacts.
 verify-audit:
-	@PYTHONPATH=. python3 scripts/verify_audit.py
+	@PYTHONPATH=. $(PYTHON) scripts/verify_audit.py
 
 # Ledger migration, registry hash, append-only invariants, and cohort checks.
 verify-ledger:
-	@PYTHONPATH=. python3 scripts/verify_ledger.py
+	@PYTHONPATH=. $(PYTHON) scripts/verify_ledger.py
 
 # Python suite. Ledger tests run in verify-ledger so this target does not repeat them.
 test-py:
-	@PYTHONPATH=. pytest test/ tests/ -q --tb=short --ignore=tests/ledger
+	@PYTHONPATH=. $(PYTEST) test/ tests/ -q --tb=short --ignore=tests/ledger
 
 test-node:
 	@npm test

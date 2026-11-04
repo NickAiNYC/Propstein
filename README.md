@@ -35,7 +35,7 @@ We publish our full calibration record as-is, without cherry-picking:
   - In our Week 1 holdout evaluation, the model's Brier score ($0.2813$) trailed the naive baseline ($0.2500$), resulting in a **$-12.51\%$ Brier skill score**.
   - We treat this as an open defect under active recalibration, not marketing spin.
 - **Commercial Gate Active**:
-  - Because the decision 95% CI spans zero ($[-0.1013, +1.4497]$), paid subscriptions are frozen, quant tiers are waitlisted, and all marketing beat-close guarantees are withdrawn until $N \ge 300$ prospective decisions demonstrate statistically significant alpha.
+  - Because the decision 95% CI spans zero ($[-0.1013, +1.4497]$), paid subscriptions are frozen, quant tiers are waitlisted, and all marketing beat-close guarantees are withdrawn until $N \ge 600$ independently evaluable qualifying signals per sport demonstrate statistically significant alpha ($N = 300$ is an interim descriptive checkpoint, not an unlock; see [docs/EDGE_GATE.md](docs/EDGE_GATE.md)).
 
 ---
 
@@ -84,10 +84,10 @@ viewer/
 ## 5. Running Tests Locally
 
 ```bash
-# Python suite (456 tests)
+# Python suite (542 tests)
 make test-py
 
-# Node.js suite (289 tests)
+# Node.js suite (294 tests)
 make test-node
 
 # Complete verification & test run
