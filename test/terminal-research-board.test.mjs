@@ -72,12 +72,16 @@ test("gate counter uses the supplied view count, including zero", () => {
   assert.equal(formatGateCount(472), "472 / 600");
   const board = assembleResearchBoard({
     now: NOW,
-    gateCount: 0,
+    evaluableCount: 0,
+    committedCount: 472,
     signals: [fixtureSignal(), fixtureSignal({ eventId: "2026_10_CCC_DDD", gameId: "2026_10_CCC_DDD" })],
     snapshots: [],
   });
   assert.equal(board.cards.length, 2);
   assert.equal(board.gateLabel, "0 / 600");
+  assert.equal(board.evaluableLabel, "0 / 600");
+  assert.equal(board.committedCount, 472);
+  assert.equal(board.committedLabel, "472 committed forecasts");
 });
 
 test("model version and divergence come from captured snapshot fields", () => {

@@ -15,6 +15,13 @@ FROM population_committed_forecasts
 WHERE amendment_id = 'AMEND-001'
 `;
 
+export const EVALUABLE_COUNT_SQL = `
+SELECT count(DISTINCT c.signal_id)::int AS n
+FROM population_closing_matches_committed c
+JOIN population_committed_forecasts s ON s.id = c.signal_id
+WHERE s.amendment_id = 'AMEND-001'
+`;
+
 export const SIGNAL_SQL = `
 SELECT event_id, event_start_at, provider_event_id, amendment_id,
        game_id, player_id, market, model_version, captured_at, payload_canonical
@@ -58,6 +65,10 @@ export type GameChip = {
 
 export type ResearchBoard = {
   gateLabel: string;
+  evaluableCount: number;
+  evaluableLabel: string;
+  committedCount: number;
+  committedLabel: string;
   modelVersion: string;
   weekLabel: string;
   games: GameChip[];
@@ -227,7 +238,9 @@ function quotesFrom(payload: Record<string, unknown>, now: Date): QuoteDisplay[]
 export function assembleResearchBoard(input: {
   signals: LedgerSignal[];
   snapshots: SnapshotRow[];
-  gateCount: number | null;
+  gateCount?: number | null;
+  evaluableCount?: number | null;
+  committedCount?: number | null;
   now: Date;
 }): ResearchBoard {
   const index = new Map<string, SnapshotRow>();
@@ -310,8 +323,23 @@ export function assembleResearchBoard(input: {
     }))
     .sort((a, b) => a.kickoff.localeCompare(b.kickoff) || a.eventId.localeCompare(b.eventId));
 
+  const evaluableCount =
+    input.evaluableCount !== undefined
+      ? input.evaluableCount
+      : input.gateCount !== undefined
+        ? input.gateCount
+        : null;
+  const committedCount =
+    input.committedCount !== undefined
+      ? input.committedCount
+      : input.signals.length;
+
   return {
-    gateLabel: formatGateCount(input.gateCount),
+    gateLabel: formatGateCount(evaluableCount),
+    evaluableCount: evaluableCount ?? 0,
+    evaluableLabel: formatGateCount(evaluableCount),
+    committedCount: committedCount ?? 0,
+    committedLabel: committedCount !== null ? `${committedCount} committed forecasts` : UNAVAILABLE,
     modelVersion: versions.length ? versions.join(", ") : UNAVAILABLE,
     weekLabel: slates.size ? [...slates].sort().join(", ") : UNAVAILABLE,
     games: gameChips,
@@ -325,6 +353,8 @@ export function renderResearchBoardText(board: ResearchBoard): string {
   const lines = [
     "Model status",
     `Version ${board.modelVersion}`,
+    `Evaluable signals ${board.evaluableLabel}`,
+    `Committed forecasts ${board.committedCount}`,
     `Confirmatory count ${board.gateLabel}`,
     `Week slate ${board.weekLabel}`,
     ...board.games.map((game) => `${game.eventId} ${game.kickoff}`),
@@ -412,7 +442,12 @@ function mapSignal(row: Record<string, unknown>): LedgerSignal | null {
   };
 }
 
-async function readLedger(databaseUrl: string | undefined): Promise<{ signals: LedgerSignal[]; gateCount: number } | null> {
+async function readLedger(databaseUrl: string | undefined): Promise<{
+  signals: LedgerSignal[];
+  gateCount: number;
+  evaluableCount: number;
+  committedCount: number;
+} | null> {
   if (!databaseUrl) return null;
   const { Client } = await import("pg");
   const client = new Client({ connectionString: databaseUrl });
@@ -420,11 +455,24 @@ async function readLedger(databaseUrl: string | undefined): Promise<{ signals: L
     await client.connect();
     const count = await client.query<{ n: number }>(GATE_COUNT_SQL);
     const raw = count.rows[0]?.n;
-    const gateCount = typeof raw === "number" ? raw : Number(raw);
-    if (!Number.isInteger(gateCount) || gateCount < 0) return null;
+    const committedCount = typeof raw === "number" ? raw : Number(raw);
+    if (!Number.isInteger(committedCount) || committedCount < 0) return null;
+
+    let evaluableCount = 0;
+    try {
+      const evalRes = await client.query<{ n: number }>(EVALUABLE_COUNT_SQL);
+      const evalRaw = evalRes.rows[0]?.n;
+      const parsedEval = typeof evalRaw === "number" ? evalRaw : Number(evalRaw);
+      if (Number.isInteger(parsedEval) && parsedEval >= 0) {
+        evaluableCount = parsedEval;
+      }
+    } catch {
+      evaluableCount = 0;
+    }
+
     const listed = await client.query<Record<string, unknown>>(SIGNAL_SQL);
     const signals = listed.rows.map((row) => mapSignal(row)).filter((row): row is LedgerSignal => row !== null);
-    return { signals, gateCount };
+    return { signals, gateCount: evaluableCount, evaluableCount, committedCount };
   } catch {
     return null;
   } finally {
@@ -437,21 +485,32 @@ export async function loadResearchBoard(input?: {
   snapshotDir?: string;
   snapshots?: SnapshotRow[];
   databaseUrl?: string;
-  ledger?: { signals: LedgerSignal[]; gateCount: number | null };
+  ledger?: {
+    signals: LedgerSignal[];
+    gateCount?: number | null;
+    evaluableCount?: number | null;
+    committedCount?: number | null;
+  };
 }): Promise<ResearchBoard> {
   const now = input?.now ?? new Date();
   const snapshots = input?.snapshots ?? readSnapshotRows(input?.snapshotDir);
   let signals: LedgerSignal[] = [];
   let gateCount: number | null = null;
+  let evaluableCount: number | null = null;
+  let committedCount: number | null = null;
   if (input?.ledger) {
     signals = input.ledger.signals;
-    gateCount = input.ledger.gateCount;
+    gateCount = input.ledger.gateCount ?? null;
+    evaluableCount = input.ledger.evaluableCount ?? input.ledger.gateCount ?? null;
+    committedCount = input.ledger.committedCount ?? null;
   } else {
     const loaded = await readLedger(input?.databaseUrl ?? process.env.DATABASE_URL);
     if (loaded) {
       signals = loaded.signals;
       gateCount = loaded.gateCount;
+      evaluableCount = loaded.evaluableCount;
+      committedCount = loaded.committedCount;
     }
   }
-  return assembleResearchBoard({ signals, snapshots, gateCount, now });
+  return assembleResearchBoard({ signals, snapshots, gateCount, evaluableCount, committedCount, now });
 }

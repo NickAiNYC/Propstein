@@ -13,7 +13,12 @@ export function ResearchBoardView({ board }: { board: ResearchBoard }) {
           Read-only. Figures appear only when the ledger or a frozen snapshot captured them.
         </p>
       </header>
-      <ModelStatusPanel modelVersion={board.modelVersion} gateLabel={board.gateLabel} />
+      <ModelStatusPanel
+        modelVersion={board.modelVersion}
+        evaluableLabel={board.evaluableLabel}
+        committedCount={board.committedCount}
+        gateLabel={board.gateLabel}
+      />
       <WeekSlateStrip weekLabel={board.weekLabel} games={board.games} />
       <div className="space-y-3">
         {board.cards.length === 0 ? (
