@@ -2,9 +2,17 @@ name: News Watcher Poll
 
 # The news watcher is a one-shot poll here — scripts/news_watcher.py is a
 # persistent-loop program by design, and no host runs that loop today. This
-# schedule is the watcher's ONLY host: every 30 minutes it performs one real
+# workflow is the watcher's ONLY host: every 30 minutes it performs one real
 # network poll of the upstream feed and commits the resulting heartbeat
 # (last_polled_at) so the deployed terminal stops showing an abandoned feed.
+#
+# GitHub's schedule event is best-effort. Under load it delays ticks and
+# drops some entirely (no run is created, so the Actions list stays empty).
+# A run on main therefore re-dispatches itself when it finishes. The cron
+# below is the cold start that gets the chain going again if a handoff is
+# lost. The follow-up run waits until 30 minutes after the last COMMITTED
+# heartbeat before it polls, so a dropped cron does not also become a tight
+# loop.
 #
 # Honesty contract:
 #   - The heartbeat timestamp is committed only when the fetch actually
@@ -12,44 +20,223 @@ name: News Watcher Poll
 #     a failed run commits nothing, so the site keeps its last VERIFIED-good
 #     heartbeat and the 24h feed-abandonment banner can still fire truthfully).
 #   - The 300s dead-man switch (autonomous dispatch latch) is intentionally
-#     NOT satisfied by this cadence. Dispatch stays suppressed until a real
-#     persistent watcher exists. Do not widen the dead-man to "fix" that.
+#     NOT satisfied by this cadence. CADENCE_SECONDS stays 1800. Dispatch
+#     stays suppressed until a real persistent watcher exists. Do not shrink
+#     the wait to "fix" that.
+#   - poll_now is fail-closed: only an explicit true skips the wait. A manual
+#     Run workflow with the box unchecked still polls immediately when the
+#     committed heartbeat is already older than 30 minutes.
 
 on:
   schedule:
-    - cron: '5,35 * * * *'
+    # Off the documented high-load minutes (:00 and :30, and the old :05/:35
+    # pair that sat on that pile-up). Changing the cron also re-registers the
+    # schedule actor. Delivery is still best-effort; the handoff below is
+    # what keeps the 30-minute gap when a tick is dropped.
+    - cron: '11,41 * * * *'
   workflow_dispatch:
+    inputs:
+      poll_now:
+        description: 'Poll even if the last committed heartbeat is younger than 30 minutes. Leave unchecked for a normal run.'
+        type: boolean
+        default: false
 
+# Own group. The previous group, "autopilot", is shared with daily_update,
+# odds_freshness, freeze_sunday_early, and freeze_ufc. cancel-in-progress
+# false still keeps only one pending run per group, so a newer odds or
+# autopilot tick cancels a news run that has not started yet. In-progress
+# polls (including the cadence wait and the push) are never cancelled.
 concurrency:
-  group: autopilot
+  group: news-watcher
   cancel-in-progress: false
 
 jobs:
   poll-and-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # 30-minute cadence wait, plus clone, poll, and push retries.
+    timeout-minutes: 45
     permissions:
       contents: write
+      # GITHUB_TOKEN may create workflow_dispatch runs. Required for the handoff.
+      actions: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Enough history that a rebase onto a busy main usually applies.
+          # The publish step still rebuilds the commit on origin/main if it
+          # does not.
+          fetch-depth: 20
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
 
-      - name: Poll news feed (real network poll; red on upstream failure)
-        run: python scripts/news_watcher.py --once --fail-on-fetch-error
-
-      - name: Publish verified-good heartbeat
+      - name: Poll on the 30-minute cadence and publish the heartbeat
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CADENCE_SECONDS: "1800"
+          POLL_NOW: ${{ github.event.inputs.poll_now }}
         run: |
+          set -euo pipefail
+          CADENCE_SECONDS="${CADENCE_SECONDS:-1800}"
+          POLL_NOW="${POLL_NOW:-false}"
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/news_watcher_state.json viewer/news_watcher_state.json public/news_watcher_state.json
-          if git diff --cached --quiet; then
-            echo "No heartbeat change to publish."
-            exit 0
+          export GIT_EDITOR=true
+          export GIT_TERMINAL_PROMPT=0
+
+          sleep_for() {
+            local remaining="$1"
+            local step
+            while [ "$remaining" -gt 0 ]; do
+              step=60
+              if [ "$remaining" -lt "$step" ]; then
+                step="$remaining"
+              fi
+              sleep "$step"
+              remaining=$((remaining - step))
+              echo "cadence wait remaining ${remaining}s"
+            done
+          }
+
+          seconds_until_due() {
+            python3 - <<'PY'
+          import json, os, sys
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          cadence = int(os.environ["CADENCE_SECONDS"])
+          wait = 0
+          try:
+              path = Path("data/news_watcher_state.json")
+              raw = json.loads(path.read_text()).get("last_polled_at") if path.exists() else None
+              if raw:
+                  ts = datetime.fromisoformat(str(raw))
+                  if ts.tzinfo is None:
+                      ts = ts.replace(tzinfo=timezone.utc)
+                  age = (datetime.now(timezone.utc) - ts).total_seconds()
+                  wait = int(max(0, min(cadence, cadence - age)))
+                  print(f"committed heartbeat age_s={age:.0f} wait_s={wait}", file=sys.stderr)
+              else:
+                  print("no committed heartbeat; polling now", file=sys.stderr)
+          except Exception as exc:
+              print(f"could not read heartbeat age ({exc}); polling now", file=sys.stderr)
+              wait = 0
+          print(wait)
+          PY
+          }
+
+          publish_heartbeat() {
+            local files=(data/news_watcher_state.json viewer/news_watcher_state.json public/news_watcher_state.json)
+            git add "${files[@]}"
+            if git diff --cached --quiet; then
+              echo "No heartbeat change to publish."
+              return 0
+            fi
+            local tmp
+            tmp=$(mktemp -d)
+            cp data/news_watcher_state.json "$tmp/data.json"
+            cp viewer/news_watcher_state.json "$tmp/viewer.json"
+            cp public/news_watcher_state.json "$tmp/public.json"
+            git commit -m "chore(data): news watcher heartbeat [skip ci]"
+            local attempt
+            for attempt in 1 2 3 4 5; do
+              git rebase --abort >/dev/null 2>&1 || true
+              if git pull --rebase --autostash origin main && git push origin HEAD:main; then
+                echo "Published heartbeat on attempt ${attempt}."
+                return 0
+              fi
+              echo "Publish attempt ${attempt} did not land; rebuilding the commit on origin/main."
+              git rebase --abort >/dev/null 2>&1 || true
+              git fetch origin main
+              git reset --hard origin/main
+              mkdir -p data viewer public
+              cp "$tmp/data.json" data/news_watcher_state.json
+              cp "$tmp/viewer.json" viewer/news_watcher_state.json
+              cp "$tmp/public.json" public/news_watcher_state.json
+              git add "${files[@]}"
+              if git diff --cached --quiet; then
+                echo "Heartbeat already matches origin/main."
+                return 0
+              fi
+              git commit -m "chore(data): news watcher heartbeat [skip ci]"
+              sleep $((attempt * 2))
+            done
+            echo "Failed to publish heartbeat after 5 attempts."
+            return 1
+          }
+
+          handoff() {
+            if [ "${GITHUB_REF:-}" != "refs/heads/main" ]; then
+              echo "Not on main; not scheduling the next poll."
+              return 0
+            fi
+            local queued=0 st c
+            for st in queued waiting requested pending; do
+              c=$(gh api "/repos/${GITHUB_REPOSITORY}/actions/workflows/news_watcher.yml/runs?status=${st}&per_page=1" --jq '.total_count // 0' || echo 0)
+              queued=$((queued + c))
+            done
+            if [ "$queued" -gt 0 ]; then
+              echo "A news-watcher run is already queued (${queued}); leaving the cadence to it."
+              return 0
+            fi
+            local attempt
+            for attempt in 1 2 3 4 5; do
+              if gh workflow run news_watcher.yml --ref main -f poll_now=false; then
+                echo "Scheduled the next poll."
+                return 0
+              fi
+              echo "Dispatch attempt ${attempt} failed; retrying."
+              sleep $((attempt * 2))
+            done
+            echo "Could not dispatch the next poll. The cron cold start remains the backup."
+            return 1
+          }
+
+          waited=0
+          if [ "$POLL_NOW" != "true" ]; then
+            wait_s=$(seconds_until_due)
+            case "$wait_s" in
+              ''|*[!0-9]*)
+                echo "Unreadable cadence wait '${wait_s}'; polling now."
+                wait_s=0
+                ;;
+            esac
+            waited="$wait_s"
+            if [ "$waited" -gt 0 ]; then
+              echo "Waiting ${waited}s so polls stay ${CADENCE_SECONDS}s apart."
+              sleep_for "$waited"
+            fi
+          else
+            echo "poll_now is set; polling without waiting."
           fi
-          git commit -m "chore(data): news watcher heartbeat [skip ci]"
-          git push
+
+          poll_rc=0
+          python scripts/news_watcher.py --once --fail-on-fetch-error || poll_rc=$?
+          if [ "$poll_rc" -eq 0 ]; then
+            if [ "${GITHUB_REF:-}" = "refs/heads/main" ]; then
+              publish_heartbeat || poll_rc=$?
+            else
+              echo "Not on main; leaving the verified heartbeat uncommitted."
+            fi
+          else
+            echo "Fetch failed; not committing a heartbeat."
+          fi
+
+          if [ "$poll_rc" -ne 0 ]; then
+            extra=$((CADENCE_SECONDS - waited))
+            if [ "$extra" -gt 0 ]; then
+              echo "Holding ${extra}s before the next attempt so a failure cannot tight-loop."
+              sleep_for "$extra"
+            fi
+          fi
+
+          handoff_rc=0
+          handoff || handoff_rc=$?
+          if [ "$poll_rc" -ne 0 ]; then
+            exit "$poll_rc"
+          fi
+          exit "$handoff_rc"
