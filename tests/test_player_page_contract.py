@@ -62,6 +62,11 @@ QUOTE_LINE_RE = re.compile(
     r"([0-9]+(?:\.[0-9]+)?)",
     re.DOTALL,
 )
+FAIR_ODDS_RE = re.compile(
+    r"push-adjusted fair odds are <strong>((?:&minus;|-|\+)\d+) on the OVER</strong> "
+    r".*?<strong>((?:&minus;|-|\+)\d+) on the UNDER</strong>",
+    re.DOTALL,
+)
 EM_DASHES = {"—", "&mdash;", "&#8212;", "–"}
 
 
@@ -119,6 +124,29 @@ def _p_over(market: str, mu_rec, mu_ypr, alpha, k, line: float) -> float:
     r = 1.0 / alpha
     p = r / (r + mu_rec)
     return float(stats.nbinom.sf(np.floor(line), r, p))
+
+
+def _side_probs(market: str, mu_rec, mu_ypr, alpha, k, line: float) -> tuple[float, float]:
+    """Independent win/loss probabilities, excluding the refunded push."""
+    if market == "receiving_yards":
+        if abs(line - round(line)) < 1e-8:
+            return (
+                _p_yards_over(mu_rec, mu_ypr, line + 0.5, alpha, k),
+                1.0 - _p_yards_over(mu_rec, mu_ypr, line - 0.5, alpha, k),
+            )
+        over = _p_yards_over(mu_rec, mu_ypr, line, alpha, k)
+        return over, 1.0 - over
+    r = 1.0 / alpha
+    p = r / (r + mu_rec)
+    over = float(stats.nbinom.sf(np.floor(line), r, p))
+    under = float(stats.nbinom.cdf(np.ceil(line) - 1, r, p))
+    return over, under
+
+
+def _fair_american(win: float, lose: float) -> str:
+    if win >= lose:
+        return str(-round(100 * win / lose))
+    return f"+{round(100 * lose / win)}"
 
 
 def _solve(gap, lo: float, hi: float, *, increasing: bool) -> float | None:
@@ -287,6 +315,21 @@ def _check(path: Path) -> list[str]:
                 f"{rel}: P(over) at fair line {fair_pct}% != {expected_pct:.2f}% "
                 f"at {rendered_fair}"
             )
+        odds_m = FAIR_ODDS_RE.search(text)
+        if odds_m is None:
+            failures.append(f"{rel}: push-adjusted fair odds missing")
+        else:
+            over_win, under_win = _side_probs(
+                market, mu_rec, mu_ypr, alpha, k, rendered_fair,
+            )
+            expected_over = _fair_american(over_win, under_win)
+            expected_under = _fair_american(under_win, over_win)
+            printed = tuple(token.replace("&minus;", "-") for token in odds_m.groups())
+            if printed != (expected_over, expected_under):
+                failures.append(
+                    f"{rel}: fair odds {printed} != push-adjusted "
+                    f"{(expected_over, expected_under)}"
+                )
     if unquoted or quote_line_m is None:
         if quote_pct is not None:
             failures.append(
