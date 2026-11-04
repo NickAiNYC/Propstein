@@ -1,0 +1,333 @@
+// PropStein — Evidence-First Research Terminal
+// Database schema (SQLite in the reference deployment; PostgreSQL in production
+// with identical models — see the exported specification for the DDL mapping).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Users & sessions
+// ---------------------------------------------------------------------------
+
+model User {
+  id              String   @id @default(cuid())
+  pseudonym       String   @unique
+  plan            String   @default("pro") // free | pro
+  retainDefault   Boolean  @default(false)
+  createdAtUtc    DateTime @default(now())
+  slips           SlipUpload[]
+  assessments     Assessment[]
+  ledgerEntries   LedgerEntry[]
+  alertPrefs      AlertPreference[]
+  alerts          AlertEvent[]
+  entitlements    Entitlement[]
+}
+
+model SessionToken {
+  id          String    @id @default(cuid())
+  jti         String    @unique
+  userId      String
+  kind        String // web | extension
+  scopes      String // space-separated
+  issuedAtUtc DateTime  @default(now())
+  expiresAtUtc DateTime
+  revokedAtUtc DateTime?
+}
+
+// ---------------------------------------------------------------------------
+// Slip ingestion (module 1)
+// ---------------------------------------------------------------------------
+
+model SlipUpload {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  sourceType     String // manual_entry | screenshot_upload | extension_observation
+  rawCaptureRef  String? // object-storage key, only if retention opted in
+  ocrProvider    String? // e.g. vlm-extract-v1 | paste-parser-v1 | none
+  ocrConfidence  Float?
+  extractedJson  String // extracted fields as JSON
+  retained       Boolean   @default(false)
+  deletedAtUtc   DateTime?
+  confirmedAtUtc DateTime?
+  createdAtUtc   DateTime  @default(now())
+  assessments    Assessment[]
+}
+
+// ---------------------------------------------------------------------------
+// Assessments (Hurdle Router output, pre-ledger)
+// ---------------------------------------------------------------------------
+
+model Assessment {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  slipUploadId    String?
+  slipUpload      SlipUpload? @relation(fields: [slipUploadId], references: [id])
+  inputJson       String // canonical HurdleInput
+  snapshotHash    String
+  resultJson      String // HurdleResult + model block + provenance
+  scenario        String   @default("none")
+  createdAtUtc    DateTime @default(now())
+  ledgerEntry     LedgerEntry?
+}
+
+// ---------------------------------------------------------------------------
+// Immutable ledger (module 3)
+// ---------------------------------------------------------------------------
+
+model LedgerEntry {
+  ledgerId                String   @id
+  userId                  String
+  user                    User     @relation(fields: [userId], references: [id])
+  assessmentId            String?  @unique
+  assessment              Assessment? @relation(fields: [assessmentId], references: [id])
+  sourceType              String
+  sport                   String
+  league                  String
+  eventId                 String
+  gameClusterId           String
+  playerId                String
+  playerName              String
+  market                  String
+  selection               String // over | under
+  line                    Float
+  enteredAmericanOdds     Int
+  enteredCounterpartOdds  Int
+  enteredImpliedProbability Float
+  breakEvenProbability    Float
+  book                    String
+  capturedAtUtc           DateTime
+  snapshotHash            String
+  modelVersion            String?
+  modelCoverage           String   @default("none") // calibrated | uncalibrated | none
+  modelProbability        Float?
+  modelUncertaintyLower   Float?
+  modelUncertaintyUpper   Float?
+  priceAssessment         String
+  provenanceJson          String
+  wagerAmount             Float? // user-entered, record only
+  entryHash               String
+  duplicateOfLedgerId     String?
+  correlationGroup        String?
+  correlationReason       String?
+  createdAtUtc            DateTime @default(now())
+  revisions               LedgerRevision[]
+  snapshots               MarketSnapshot[]
+  closingReference        ClosingReference?
+  settlement              Settlement?
+  alerts                  AlertEvent[]
+
+  @@index([userId, createdAtUtc])
+  @@index([sport])
+  @@index([gameClusterId])
+}
+
+model LedgerRevision {
+  id             String    @id @default(cuid())
+  ledgerEntryId  String
+  ledgerEntry    LedgerEntry @relation(fields: [ledgerEntryId], references: [ledgerId])
+  revisionNo     Int
+  reasonCode     String
+  reasonText     String
+  actor          String
+  changedFieldsJson String
+  priorHash      String
+  newHash        String
+  createdAtUtc   DateTime  @default(now())
+
+  @@unique([ledgerEntryId, revisionNo])
+}
+
+// ---------------------------------------------------------------------------
+// Market snapshots & closing references
+// ---------------------------------------------------------------------------
+
+model MarketSnapshot {
+  id                    String   @id @default(cuid())
+  ledgerEntryId         String?
+  ledgerEntry           LedgerEntry? @relation(fields: [ledgerEntryId], references: [ledgerId])
+  assessmentId          String?
+  provider              String
+  book                  String
+  sport                 String
+  market                String
+  selection             String
+  line                  Float
+  overAmericanOdds      Int
+  underAmericanOdds     Int
+  capturedAtUtc         DateTime
+  rawRef                String?
+  snapshotHash          String
+  createdAtUtc          DateTime @default(now())
+}
+
+model ClosingReference {
+  id                     String   @id @default(cuid())
+  ledgerEntryId          String   @unique
+  ledgerEntry            LedgerEntry @relation(fields: [ledgerEntryId], references: [ledgerId])
+  provider               String?
+  capturedAtUtc          DateTime?
+  overAmericanOdds       Int?
+  underAmericanOdds      Int?
+  americanOdds           Int? // side-specific
+  impliedProbability     Float?
+  fairProbability        Float?
+  quality                String   @default("missing") // fresh | stale | missing | conflicting
+  secondSourceJson       String?
+  independenceVerified   Boolean  @default(true)
+  integrityHash          String?
+  createdAtUtc           DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Settlements
+// ---------------------------------------------------------------------------
+
+model Settlement {
+  id             String    @id @default(cuid())
+  ledgerEntryId  String    @unique
+  ledgerEntry    LedgerEntry @relation(fields: [ledgerEntryId], references: [ledgerId])
+  status         String    @default("pending") // pending | settled | void | canceled | push | dnp
+  result         String? // win | loss | push | void
+  reasonCode     String?
+  actualValue    Float?
+  source         String
+  settledAtUtc   DateTime?
+  createdAtUtc   DateTime  @default(now())
+  updatedAtUtc   DateTime  @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Alerts (module 6)
+// ---------------------------------------------------------------------------
+
+model AlertEvent {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
+  ledgerEntryId    String?
+  ledgerEntry      LedgerEntry? @relation(fields: [ledgerEntryId], references: [ledgerId])
+  type             String
+  message          String
+  snapshotTimeUtc  DateTime
+  sourceProvider   String
+  delivered        Boolean  @default(true)
+  batchKey         String?
+  suppressedReason String?
+  createdAtUtc     DateTime @default(now())
+  readAtUtc        DateTime?
+
+  @@index([userId, createdAtUtc])
+}
+
+model AlertPreference {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  alertType String
+  enabled   Boolean  @default(true)
+
+  @@unique([userId, alertType])
+}
+
+// ---------------------------------------------------------------------------
+// Entitlements (server-side verification only)
+// ---------------------------------------------------------------------------
+
+model Entitlement {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  surface    String // market_comparison | closing_reference | model_panel | alerts
+  scope      String // sport or "*" (never pooled across sports for evidence)
+  status     String // active | expired | denied
+  source     String // plan:free | plan:pro | ops
+  expiresAtUtc DateTime?
+  createdAtUtc DateTime @default(now())
+
+  @@unique([userId, surface, scope])
+}
+
+// ---------------------------------------------------------------------------
+// Audit events (structured logging persistence)
+// ---------------------------------------------------------------------------
+
+model AuditEvent {
+  id           String   @id @default(cuid())
+  actorId      String
+  action       String
+  targetType   String
+  targetId     String?
+  requestId    String
+  metadataJson String   @default("{}")
+  createdAtUtc DateTime @default(now())
+
+  @@index([createdAtUtc])
+}
+
+// ---------------------------------------------------------------------------
+// Preregistered gate (statistical and data rules)
+// ---------------------------------------------------------------------------
+
+model GateSignal {
+  id             String   @id @default(cuid())
+  sport          String
+  signalId       String
+  gameClusterId  String
+  playerId       String   @default("")
+  clvPp          Float
+  evaluable      Boolean  @default(true)
+  reasonCode     String?
+  modelVersion   String?
+  recordedAtUtc  DateTime
+  attemptScope   Int      @default(1) // prospective attempt the signal belongs to
+
+  @@unique([sport, signalId])
+  @@index([sport, attemptScope])
+}
+
+model GateAttempt {
+  id               String   @id @default(cuid())
+  sport            String
+  attemptNo        Int
+  nEvaluable       Int
+  distinctClusters Int
+  meanClvPp        Float
+  bootstrapLbPp    Float
+  verdict          String // PENDING | IN_PROGRESS | INTERIM | PASS | FAIL | INCONCLUSIVE | RETIRED
+  seed             Int
+  replicates       Int
+  modelVersionsJson String  @default("[]")
+  notesJson        String   @default("[]")
+  evaluatedAtUtc   DateTime
+
+  @@unique([sport, attemptNo])
+}
+
+model ComplianceApproval {
+  id           String   @id @default(cuid())
+  sport        String
+  status       String // granted | denied | pending
+  approver     String
+  note         String   @default("")
+  recordedAtUtc DateTime @default(now())
+
+  @@unique([sport])
+}
+
+// ---------------------------------------------------------------------------
+// System flags (kill switches, model outages)
+// ---------------------------------------------------------------------------
+
+model SystemFlag {
+  key        String   @id
+  value      String
+  updatedAtUtc DateTime @updatedAt
+}
