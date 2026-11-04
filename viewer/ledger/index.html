@@ -44,11 +44,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=2026_v208">
+  <link rel="stylesheet" href="/style.css?v=2026_v226">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v179" defer></script>
-  <script src="/app.js?v=2026_v208" defer></script>
+  <script src="/app.js?v=2026_v226" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#slateBoard">Skip to slate</a>
@@ -364,8 +364,18 @@
         </div>
 
         <div class="settings-section">
+          <h3>Bankroll Sizing</h3>
+          <p class="settings-desc">Recommended dollar stakes are computed from this bankroll baseline.</p>
+          <div class="settings-input-card">
+            <label class="settings-bankroll-label" for="settingsBankrollInput">Bankroll $</label>
+            <input type="number" id="settingsBankrollInput" class="settings-bankroll-input" min="100" max="1000000" step="100" value="5000">
+          </div>
+        </div>
+
+        <!-- Public access remains research-only until the evidence gate clears. -->
+        <div class="settings-section">
           <h3>Membership Access</h3>
-          <p class="settings-desc">Paid access is closed until the published evidence gate is met. Paid signups frozen. Quant waitlisted. <a href="/performance/">Public performance record</a>.</p>
+          <p class="settings-desc">Observer research mode. New paid access is frozen while live performance is being validated.</p>
         </div>
 
         <!-- Slate Selection -->
