@@ -71,7 +71,7 @@ def test_schema_has_required_tables_and_no_stake_column(admin_conn):
             "slip_audits", "slip_legs", "rule_registry", "rule_registrations",
             "audit_findings", "ledger_events", "closing_references", "settlements",
             "attestations", "historical_evidence_gaps", "intended_quotes", "placements",
-            "withdrawals", "gate_flag_events",
+            "withdrawals", "gate_flag_events", "protocol_amendments",
         }
         assert required <= tables
         cur.execute(
