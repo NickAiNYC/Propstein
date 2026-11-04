@@ -9,6 +9,19 @@
     { "source": "/verify/:id*", "destination": "/verify.html" },
     { "source": "/verify", "destination": "/verify.html" }
   ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "propstein.vercel.app"
+        }
+      ],
+      "destination": "https://propstein.com/$1",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
