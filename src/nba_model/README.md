@@ -55,11 +55,24 @@ Exit codes: `0` ok · `2` missing API key · `3` tier lacks box scores ·
 `4` rate limit · `5` network/no-data · `6` bad args · `10` publish
 REFUSED by gates (a refusal artifact is still written, with reasons).
 
-## Production data path (FREE — stats.nba.com, D7 owner call)
+## Pregame research path (FREE — stats.nba.com, D7 owner call)
 
 ```bash
-PYTHONPATH=. python3 src/nba_model/cli.py prepare --provider nbacom --start 2026-10-20 --end 2026-11-02
+python3 src/nba_model/cli.py prepare --provider nbacom --start 2026-10-20 --end 2026-11-03
+python3 scripts/build_nba_pregame_research.py \
+  --dataset-dir src/nba_model/out \
+  --games viewer/nba_games_2026-11-04.json \
+  --odds viewer/nba_odds_2026-11-04.json \
+  --out src/nba_model/out --date 2026-11-04
 ```
+
+The pregame bridge resolves FanDuel player names against official NBA player IDs
+and teams in today's scheduled games. It rejects ambiguous identities and
+synthetic inputs, uses only completed box scores before the slate, and writes
+`nba_research_<date>.json` plus `nba_board_<date>_REFUSED.json`. Research
+probabilities are explicitly **uncalibrated**; no edge ranking or recommendation
+is emitted. The bridge currently has no injury feed and only one book, and
+there is no scored historical quote sample. Its board must remain REFUSED.
 
 `--provider nbacom` is the FREE, keyless default: official stats.nba.com
 league feeds (`leaguegamefinder` + `boxscoretraditionalv2`) with endpoint

@@ -4,7 +4,7 @@
 NBA's official feeds block datacenter IPs (empirically confirmed
 2026-11-03: stats.nba.com blackholes cloud hosts including GitHub Actions
 runners; cdn.nba.com Akamai-403s them — see src/nba_model/DECISIONS.md
-D7). This script runs the SAME pipeline the Actions workflow would run,
+D7). This script runs the same pregame research pipeline as Actions,
 from a residential IP (your machine, or a self-hosted runner pointed at
 it), and commits the artifacts to viewer/feeds/nba_model/ — the exact
 commit the workflow would have made. Git stays the cache layer; Vercel
@@ -15,11 +15,11 @@ Usage:
   python3 scripts/nba_model_local_worker.py --push          # run + commit + push
   python3 scripts/nba_model_local_worker.py --season-start 2026-10-20
 
-Schedule it with cron/launchd, e.g. weekdays 07:00 ET:
-  0 7 * * *  cd /path/to/Propstein && python3 scripts/nba_model_local_worker.py --push
+Schedule it after the daily FanDuel feed is committed, e.g. 13:00 ET:
+  0 13 * * * cd /path/to/Propstein && python3 scripts/nba_model_local_worker.py --push
 
-Exit codes mirror the CLI: 0 ok (gates REFUSED counts as ok — the refusal
-artifact is the honest outcome); any provider failure exits non-zero and
+Exit codes mirror the CLI: 0 ok (gates REFUSED is the honest outcome);
+any provider or identity-join failure exits non-zero and
 commits NOTHING (fail-closed, no partial artifacts).
 """
 
@@ -29,8 +29,9 @@ import argparse
 import os
 import subprocess
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "src" / "nba_model" / "out"
@@ -40,7 +41,7 @@ SEASON_START_DEFAULT = "2026-10-20"
 ARTIFACTS = [
     "nba_board_*.json",
     "nba_board_history.jsonl",
-    "nba_walkforward_summary.json",
+    "nba_research_*.json",
     "nba_dataset_meta.json",
 ]
 
@@ -60,7 +61,8 @@ def main() -> int:
     ap.add_argument("--push", action="store_true", help="git push after committing")
     args = ap.parse_args()
 
-    end = date.today() - timedelta(days=1)   # data through yesterday ET
+    today = datetime.now(ZoneInfo("America/New_York")).date()
+    end = today - timedelta(days=1)   # data through yesterday ET
     start = max(date.fromisoformat(args.season_start),
                 end - timedelta(days=max(0, args.days - 1)))
     window = (start.isoformat(), end.isoformat())
@@ -74,16 +76,18 @@ def main() -> int:
         print("prepare failed — fail-closed, nothing committed.", file=sys.stderr)
         return 5
 
-    code = run([sys.executable, "src/nba_model/cli.py", "publish",
-                "--provider", "nbacom", "--start", window[0], "--end", window[1]],
-               env)
-    if code not in (0, 10):
-        print(f"publish failed with exit {code} — fail-closed, nothing committed.",
-              file=sys.stderr)
+    slate = today.isoformat()
+    games = REPO / "viewer" / f"nba_games_{slate}.json"
+    odds = REPO / "viewer" / f"nba_odds_{slate}.json"
+    if not games.exists() or not odds.exists():
+        print(f"today's schedule/odds are missing for {slate}; nothing committed.", file=sys.stderr)
+        return 5
+    code = run([sys.executable, "scripts/build_nba_pregame_research.py",
+                "--dataset-dir", str(OUT), "--games", str(games), "--odds", str(odds),
+                "--out", str(OUT), "--date", slate], env)
+    if code != 0:
+        print("pregame research join failed — nothing committed.", file=sys.stderr)
         return code
-    if code == 10:
-        print("publish REFUSED by gates (expected while uncalibrated / no odds "
-              "feed wired) — committing the refusal artifact as the honest record.")
 
     FEED.mkdir(parents=True, exist_ok=True)
     copied = 0
@@ -105,7 +109,7 @@ def main() -> int:
         print("No artifact changes — nothing to commit.")
         return 0
     if run(git + ["commit", "-m",
-                  f"chore(data): NBA model local-worker refresh {date.today().isoformat()} [skip ci]"],
+                  f"chore(data): NBA model local-worker refresh {slate} [skip ci]"],
            env) != 0:
         return 1
     if args.push:

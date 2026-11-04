@@ -1,0 +1,59 @@
+{
+ "receipt": {
+  "status": "REFUSED",
+  "locked_at": "2026-11-04T23:09:20Z",
+  "sha256": "e907ab3a6df525b28a4d843ca91e59ac26ad7f8a30e85349025ec09dc8ca78fd",
+  "prev_sha256": "9fd7ce3c20b7bfcf76bfee399a11c017dffc3a64f937ca96b49c1492f789a523",
+  "model_version": "nba-points-v1.0.0"
+ },
+ "status": "REFUSED",
+ "slate_date": "2026-11-04",
+ "reasons": [
+  "min_predictions: n=0 scored predictions (need 300)",
+  "reliability_slope: slope undefined — predictions degenerate or n too small",
+  "brier_vs_naive: Brier scores unavailable",
+  "boxscore_recency: latest data 2026-11-02 ET-end, 42.2h old (limit 30h)",
+  "quote_recency: latest quote 2026-11-04T22:27:00Z (42.3 min old, limit 10 min)"
+ ],
+ "gates": {
+  "calibration": {
+   "gate": "calibration",
+   "all_passed": false,
+   "checks": [
+    {
+     "name": "min_predictions",
+     "passed": false,
+     "detail": "n=0 scored predictions (need 300)"
+    },
+    {
+     "name": "reliability_slope",
+     "passed": false,
+     "detail": "slope undefined — predictions degenerate or n too small"
+    },
+    {
+     "name": "brier_vs_naive",
+     "passed": false,
+     "detail": "Brier scores unavailable"
+    }
+   ]
+  },
+  "freshness": {
+   "gate": "freshness",
+   "all_passed": false,
+   "checks": [
+    {
+     "name": "boxscore_recency",
+     "passed": false,
+     "detail": "latest data 2026-11-02 ET-end, 42.2h old (limit 30h)"
+    },
+    {
+     "name": "quote_recency",
+     "passed": false,
+     "detail": "latest quote 2026-11-04T22:27:00Z (42.3 min old, limit 10 min)"
+    }
+   ]
+  }
+ },
+ "n_predictions": 0,
+ "generated_at": "2026-11-04T23:09:20Z"
+}
