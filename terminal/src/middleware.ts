@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkPreviewAuth } from "@/lib/propstein/auth";
+import { handlePreviewMiddleware } from "@/lib/propstein/auth";
 
 export function middleware(req: NextRequest) {
-  const result = checkPreviewAuth(req.headers.get("authorization"), process.env);
+  const result = handlePreviewMiddleware(req, process.env);
   if (result.authorized) {
     return NextResponse.next();
   }
 
-  if (result.status === 503) {
-    return new NextResponse("Preview not configured", { status: 503 });
-  }
-
-  return new NextResponse("Unauthorized", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="PropStein Terminal Preview"',
-    },
+  return new NextResponse(result.reason, {
+    status: result.status,
+    headers: result.headers,
   });
 }
 

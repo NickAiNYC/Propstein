@@ -16,6 +16,10 @@ import urllib.request
 from datetime import datetime
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from scripts.ingest_espn_game_context import (
     ET,
     NFLVERSE_GAMES_URL,

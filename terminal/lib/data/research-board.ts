@@ -20,7 +20,7 @@ SELECT count(DISTINCT s.id)::int AS n
 FROM population_committed_forecasts s
 JOIN closing_references c ON c.signal_id = s.id AND c.match_status = 'MATCHED'
 WHERE s.amendment_id = 'AMEND-001'
-  AND s.decision_at < s.event_start_at
+  AND s.captured_at < s.event_start_at
   AND c.reason_code IS NULL
   AND c.settlement_rules IS NOT NULL
   AND NOT EXISTS (

@@ -151,10 +151,10 @@
       const raw = localStorage.getItem(STORE.sniperConfig);
       return raw ? JSON.parse(raw) : {
         enabled: false,
-        minEdge: 0.15,
+        minHurdleDelta: 0.15,
         gateMetOnly: true,
         marketScope: 'ALL',
-        browserNotify: true,
+        browserNotify: false,
         webhookUrl: '',
         alerted: {},
         events: []
@@ -162,10 +162,10 @@
     } catch (_) {
       return {
         enabled: false,
-        minEdge: 0.15,
+        minHurdleDelta: 0.15,
         gateMetOnly: true,
         marketScope: 'ALL',
-        browserNotify: true,
+        browserNotify: false,
         webhookUrl: '',
         alerted: {},
         events: []
@@ -6248,9 +6248,9 @@
   }
 
   function checkSniperAlerts() {
-    if (!state.sniper || !state.sniper.enabled) return;
+    if (!state.sniper || !state.sniper.enabled || state.userTier === 'free') return;
     const quotes = state.odds.quotes || [];
-    const minEdge = Number(state.sniper.minEdge) || 0.15;
+    const minHurdleDelta = Number(state.sniper.minHurdleDelta ?? state.sniper.minEdge) || 0.15;
     const gateMetOnly = state.sniper.gateMetOnly !== false;
     if (!state.sniperCooldowns) state.sniperCooldowns = {};
 
@@ -6260,7 +6260,7 @@
       const expectedReturn = Number(ev.expected_return || 0);
       const qualified = !gateMetOnly || (ev.is_qualified && expectedReturn > 0);
 
-      if (edge >= minEdge && qualified) {
+      if (edge >= minHurdleDelta && qualified) {
         // Volatility Circuit Breaker: Halt alerts on extreme line drift (> 1.5σ)
         const row = (state.slate || []).find((r) => r.player_id === quote.player_id);
         if (row) {
@@ -6280,6 +6280,7 @@
   }
 
   function dispatchSniperAlert(quote, edge, expectedReturn) {
+    if (state.userTier === 'free') return; // Observer mode: all push/webhook alerts inert
     triggerHaptic('heavy');
     const side = quote.evaluation?.best_side || 'OVER';
     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

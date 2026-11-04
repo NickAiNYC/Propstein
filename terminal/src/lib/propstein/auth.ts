@@ -14,6 +14,7 @@ export interface AuthResult {
   authorized: boolean;
   status?: number;
   reason?: string;
+  headers?: Record<string, string>;
 }
 
 export function checkPreviewAuth(
@@ -48,3 +49,25 @@ export function checkPreviewAuth(
 
   return { authorized: false, status: 401, reason: "Unauthorized" };
 }
+
+export function handlePreviewMiddleware(
+  req: { headers: { get: (name: string) => string | null } },
+  env: Record<string, string | undefined> = process.env
+): AuthResult {
+  const result = checkPreviewAuth(req.headers.get("authorization"), env);
+  if (result.authorized) {
+    return { authorized: true };
+  }
+  if (result.status === 503) {
+    return { authorized: false, status: 503, reason: "Preview not configured" };
+  }
+  return {
+    authorized: false,
+    status: 401,
+    reason: "Unauthorized",
+    headers: {
+      "WWW-Authenticate": 'Basic realm="PropStein Terminal Preview"',
+    },
+  };
+}
+
