@@ -1,6 +1,6 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-11-04T02:47:44Z",
+  "generated_at": "2026-11-04T01:08:41Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
@@ -57,18 +57,18 @@
         "2026_w9": {
           "season": 2026,
           "week": 9,
-          "shortLabel": "W9 Live",
-          "state": "Upcoming slate \u00b7 Nov 5-9",
+          "shortLabel": "W9 Research",
+          "state": "Model refresh blocked: untimestamped game context",
           "slate": "slate_2026_w9.json",
           "games": "games_2026_w9.json",
-          "picks": "current_picks_2026_w9.json",
+          "picks": null,
           "livePicks": null,
           "injuries": "injuries_2026_w9.json",
-          "odds": "live_odds_feed.json",
+          "odds": null,
           "snapshots": "snapshots_2026_w9.json",
           "historical": false,
-          "modelContextStatus": "AVAILABLE",
-          "actionLocked": false
+          "modelContextStatus": "BLOCKED_UNTIMESTAMPED",
+          "actionLocked": true
         }
       }
     },

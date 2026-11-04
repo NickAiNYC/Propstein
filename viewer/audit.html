@@ -44,11 +44,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=2026_v223">
+  <link rel="stylesheet" href="/style.css?v=2026_v226">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v179" defer></script>
-  <script src="/app.js?v=2026_v208" defer></script>
+  <script src="/app.js?v=2026_v226" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#slateBoard">Skip to slate</a>
@@ -101,13 +101,6 @@
             <span id="gateVal" class="pw-stepper-val">10%</span>
             <button type="button" class="pw-step-btn" id="gatePlus" aria-label="Increase gate">+</button>
           </div>
-          <span class="pw-risk-sep">|</span>
-          <div class="pw-stepper" title="Kelly Cap: Maximum bankroll allocation per play">
-            <span class="pw-stepper-label">Kelly Cap</span>
-            <button type="button" class="pw-step-btn" id="capMinus" aria-label="Decrease Kelly cap">−</button>
-            <span id="capVal" class="pw-stepper-val">3.0%</span>
-            <button type="button" class="pw-step-btn" id="capPlus" aria-label="Increase Kelly cap">+</button>
-          </div>
         </div>
 
         <!-- Live Odds Polling Countdown & Status Widget (Desktop only) -->
@@ -127,10 +120,10 @@
           <span id="marketState">64/64 Verified</span>
         </div>
 
-        <!-- Programmable Market Alerts Sniper (Desktop) -->
-        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Programmable Sniper Alerts (Push &amp; Webhook)">
+        <!-- Edge alerts (Desktop) -->
+        <button type="button" id="sniperBtn" class="pw-btn-nav pw-btn-sniper pw-desktop-only" title="Edge alerts (push and webhook)">
           <span class="sniper-icon-symbol">🎯</span>
-          <span>Sniper</span>
+          <span>Alerts</span>
           <span class="sniper-active-badge" id="sniperActiveBadge" hidden>LIVE</span>
         </button>
 
@@ -210,9 +203,9 @@
 
         <div class="chip-divider"></div>
 
-        <!-- Mobile Sniper Trigger Chip -->
-        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure Sniper Alerts" title="Configure Sniper Alerts">
-          <span>SNIPER</span>
+        <!-- Mobile edge-alert chip -->
+        <button type="button" class="chip-pill chip-sniper-btn" id="mobileSniperBtn" aria-label="Configure edge alerts" title="Configure edge alerts">
+          <span>ALERTS</span>
           <span class="sniper-mobile-dot" id="mobileSniperDot" hidden></span>
         </button>
 
@@ -280,7 +273,7 @@
     <section class="data-board" aria-label="Player slate">
       <noscript>
         <div style="padding: 14px 18px; margin-bottom: 16px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: #f59e0b; font-family: var(--sans); font-size: 13px;">
-          <strong>JavaScript Required:</strong> PropStein is a client-side quantitative terminal. 390 projected receivers across 15 Week 7 matchups are rendered dynamically from static JSON data feeds (<code>slate_2026_w7.json</code>). Please enable JavaScript to access live odds comparison, Kelly calculations, and personal CLV tracking.
+          <strong>JavaScript Required:</strong> PropStein is a client-side quantitative terminal. 390 projected receivers across 15 Week 7 matchups are rendered dynamically from static JSON data feeds (<code>slate_2026_w7.json</code>). Please enable JavaScript to access live odds comparison, quote comparison and personal CLV tracking.
         </div>
       </noscript>
       <div class="table-scroll desktop-table-container" id="tableView" tabindex="0" aria-label="Scrollable player table">
@@ -351,7 +344,7 @@
         <button class="icon-button" value="cancel" aria-label="Close settings">×</button>
       </div>
       <div class="dialog-body settings-body" id="settingsContent">
-        <!-- Execution Gate & Kelly Cap Steppers (44px touch targets) -->
+        <!-- Execution gate stepper -->
         <div class="settings-section">
           <h3>Risk &amp; Execution Gate</h3>
           <p class="settings-desc">Plays must clear the minimum edge threshold before entering Active recommendations.</p>
@@ -367,22 +360,9 @@
                 <button type="button" class="touch-step-btn" id="modalGatePlus" aria-label="Increase gate">+</button>
               </div>
             </div>
-            <div class="settings-divider"></div>
-            <div class="settings-stepper-row">
-              <div class="settings-stepper-meta">
-                <span class="settings-stepper-title">Kelly Cap</span>
-                <span class="settings-stepper-sub">Max bankroll fraction</span>
-              </div>
-              <div class="touch-stepper">
-                <button type="button" class="touch-step-btn" id="modalCapMinus" aria-label="Decrease Kelly cap">−</button>
-                <span id="modalCapVal" class="touch-step-val">3.0%</span>
-                <button type="button" class="touch-step-btn" id="modalCapPlus" aria-label="Increase Kelly cap">+</button>
-              </div>
-            </div>
           </div>
         </div>
 
-        <!-- Bankroll Sizing -->
         <div class="settings-section">
           <h3>Bankroll Sizing</h3>
           <p class="settings-desc">Recommended dollar stakes are computed from this bankroll baseline.</p>
@@ -392,24 +372,10 @@
           </div>
         </div>
 
-        <!-- Commercial Membership Tier Switcher -->
+        <!-- Public access remains research-only until the evidence gate clears. -->
         <div class="settings-section">
-          <h3>Membership Tier (Gating Engine)</h3>
-          <p class="settings-desc">Switch membership tier to evaluate the hard edge value gate.</p>
-          <div class="tier-switcher-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
-            <button type="button" class="tier-pill-btn" data-set-tier="free">
-              <span class="tier-pill-name" style="display:block; font-weight:700; font-size:12px;">Observer</span>
-              <span class="tier-pill-price" style="display:block; font-size:10px; color:#94a3b8;">Free</span>
-            </button>
-            <button type="button" class="tier-pill-btn active" data-set-tier="sharp">
-              <span class="tier-pill-name" style="display:block; font-weight:700; font-size:12px; color:#B6F36B;">Sharp</span>
-              <span class="tier-pill-price" style="display:block; font-size:10px; color:#94a3b8;">$29/mo</span>
-            </button>
-            <button type="button" class="tier-pill-btn" data-set-tier="quant">
-              <span class="tier-pill-name" style="display:block; font-weight:700; font-size:12px;">Quant</span>
-              <span class="tier-pill-price" style="display:block; font-size:10px; color:#94a3b8;">$99/mo</span>
-            </button>
-          </div>
+          <h3>Membership Access</h3>
+          <p class="settings-desc">Observer research mode. New paid access is frozen while live performance is being validated.</p>
         </div>
 
         <!-- Slate Selection -->
@@ -502,16 +468,16 @@
     </form>
   </dialog>
 
-  <!-- Programmable Sniper Market Alerts Dialog -->
+  <!-- Edge alerts dialog -->
   <dialog class="detail-dialog sniper-dialog" id="sniperDialog" aria-labelledby="sniperTitle">
     <form method="dialog" class="dialog-shell">
       <div class="dialog-sheet-handle" aria-hidden="true"></div>
       <div class="dialog-header">
         <div>
           <div class="eyebrow">Autonomous Market Telemetry</div>
-          <h2 id="sniperTitle">🎯 Sniper Market Alerts</h2>
+          <h2 id="sniperTitle">Edge alerts</h2>
         </div>
-        <button class="icon-button" value="cancel" aria-label="Close sniper dialog">×</button>
+        <button class="icon-button" value="cancel" aria-label="Close alerts">×</button>
       </div>
       <div class="dialog-body" id="sniperContent"></div>
     </form>
@@ -544,44 +510,10 @@
         <button class="icon-button" value="cancel" aria-label="Close pricing">×</button>
       </div>
       <div class="dialog-body" id="pricingContent">
-        <div class="pricing-tier-grid">
-          <div class="pricing-tier-card featured" data-tier="free">
-            <div class="tier-featured-pill">OPEN RESEARCH ACCESS</div>
-            <div class="tier-badge highlight">Observer</div>
-            <div class="tier-price">$0 <span>/ mo</span></div>
-            <p class="tier-tagline">Model fair lines and public performance research.</p>
-            <ul class="tier-feature-list">
-              <li>Full slate model fair lines</li>
-              <li>Quote status and source timestamps</li>
-              <li>Public calibration and CLV record</li>
-              <li>Research calculations, clearly marked when unverified</li>
-            </ul>
-            <button type="button" class="tier-cta-btn secondary" disabled>Current access: Observer</button>
-          </div>
-
-          <div class="pricing-tier-card" data-tier="sharp">
-            <div class="tier-badge">Sharp (Pro)</div>
-            <div class="tier-price">Paused</div>
-            <p class="tier-tagline">New paid access is frozen while live edge remains unproven.</p>
-            <ul class="tier-feature-list">
-              <li>Research tools remain available in Observer mode</li>
-              <li>Edge and Kelly outputs are estimates, not validated picks</li>
-              <li>No actionable live Sniper alerts are offered</li>
-            </ul>
-            <button type="button" class="tier-cta-btn secondary" disabled>Paid signups frozen</button>
-          </div>
-
-          <div class="pricing-tier-card" data-tier="quant">
-            <div class="tier-badge">Quant (API)</div>
-            <div class="tier-price">Waitlist</div>
-            <p class="tier-tagline">Programmatic access is under evaluation and is not for sale.</p>
-            <ul class="tier-feature-list">
-              <li>Public snapshots show their own timestamps</li>
-              <li>Public Polymarket refresh runs every 4 hours — same as every tier; no faster ingestion exists at any tier</li>
-              <li>API scope and cadence will be published before launch</li>
-            </ul>
-            <button type="button" class="tier-cta-btn secondary" disabled>Quant waitlisted</button>
-          </div>
+        <div class="pricing-closed-note">
+          <p><strong>Paid access is closed</strong> until the published evidence gate is met. Paid signups frozen. Quant waitlisted.</p>
+          <p>Observer research stays open. Public Polymarket refresh runs every 4 hours — same as every tier; no faster ingestion exists at any tier.</p>
+          <p>See the <a href="/performance/">public performance record</a>.</p>
         </div>
 
         <div class="pricing-community-row">
@@ -590,7 +522,7 @@
         </div>
 
         <div class="pricing-guarantee-box">
-          <p><strong>Paid signups frozen; Beat-Close Guarantee suspended.</strong> The current public record does not establish a live betting edge. Paid access stays closed until at least 300 prospectively graded board decisions show positive closing-line value with a 95% confidence interval above zero. See the <a href="/performance/">public performance record</a> for the latest results.</p>
+          <p><strong>Paid signups frozen; Beat-Close Guarantee suspended.</strong> The current public record does not establish a live betting edge. Paid access stays closed under the preregistered gate: 600 independently evaluable qualifying signals per sport, mean price CLV of at least +1.0 percentage point, a positive game-clustered lower bound at one-sided α = 0.0125, and compliance approval. N = 300 is descriptive only. See the <a href="/performance/">public performance record</a> for the latest results.</p>
         </div>
       </div>
     </form>

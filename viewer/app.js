@@ -216,8 +216,8 @@
     slateScrollY: 0
   };
   try {
-    const savedBankroll = localStorage.getItem('propwire-bankroll');
-    if (savedBankroll) state.bankroll = Math.max(100, Number(savedBankroll));
+    const savedRoll = localStorage.getItem('propwire-bankroll');
+    if (savedRoll) state.bankroll = Math.max(100, Number(savedRoll));
   } catch (_) {}
 
   const $ = (selector) => document.querySelector(selector);
@@ -700,10 +700,14 @@
 
   function feedVerificationLabel(feed = state.odds) {
     const status = String((feed && feed.feed_status) || '').toUpperCase();
+    const health = feed === state.odds ? feedHealthStates() : null;
     const verifiedQuotes = Array.isArray(feed && feed.quotes)
       ? feed.quotes.filter((quote) => quoteState(quote) === 'verified').length
       : 0;
     if (status === 'FIXTURE' || adapter.fixturesOnly === true) return 'FIXTURE';
+    if (health && health.odds === 'error') return 'OFFLINE';
+    if (health && health.oddsFreshness === 'stale') return 'STALE';
+    if (health && health.oddsFreshness !== 'ok') return 'TIME UNKNOWN';
     if (verifiedQuotes > 0 && !status.includes('UNVERIFIED')) return 'VERIFIED';
     // Engine-graded middle state: every stamped quote passed the receipt
     // clause (two independent CLOB pulls hash-matched against the receipt
@@ -735,11 +739,18 @@
     const verified = (state.odds?.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
     const researchCount = Array.isArray(state.livePicks?.picks) ? state.livePicks.picks.length : 0;
     const researchSource = researchCount ? String(state.livePicks.source || 'Source unspecified') : 'No current research scan';
+    if (health.dataKind !== 'fixture' && (health.odds !== 'ok' || health.oddsFreshness !== 'ok')) {
+      const ingested = (state.odds?.quotes || []).length;
+      if ($('#marketState')) $('#marketState').textContent = `${ingested} observed quotes · feed ${label.toLowerCase()} · qualification paused.`;
+      if ($('#priceCheckText')) $('#priceCheckText').textContent = `${ingested} ingested · ${verified} receipt-verified · feed ${label.toLowerCase()}.`;
+    }
     if ($('#settingsFeedProvider')) $('#settingsFeedProvider').textContent = marketFeedSourceLabel();
     if ($('#settingsResearchSource')) $('#settingsResearchSource').textContent = researchSource;
     const receiptMatched = (state.odds?.quotes || []).filter((q) => q && q.verification_status === 'OBSERVED' && q.verification_receipt_id).length;
     if ($('#settingsReceiptsStatus')) $('#settingsReceiptsStatus').textContent =
-      verified > 0 ? `${verified} feed-verified quotes`
+      health.odds !== 'ok' || health.oddsFreshness !== 'ok'
+        ? `${verified} receipt-verified quotes in current feed · feed ${label.toLowerCase()} · qualification paused`
+        : verified > 0 ? `${verified} feed-verified quotes`
         : receiptMatched > 0 ? `${receiptMatched} receipt-matched quotes · single-book feed — cross-book audit unlocks with a second sharp book`
         : '0 feed-verified quotes · independent audit pending';
     const blockers = [];
@@ -1160,7 +1171,7 @@
     if ($('#teamFilter')) $('#teamFilter').addEventListener('input', syncFilters);
     if ($('#clearFilters')) $('#clearFilters').addEventListener('click', clearFilters);
 
-    // Interactive Risk Steppers (Gate & Kelly Cap)
+    // Interactive risk steppers (execution gate)
     const gateMinus = $('#gateMinus');
     const gatePlus = $('#gatePlus');
     const capMinus = $('#capMinus');
@@ -1259,18 +1270,6 @@
     if (modalCapMinus && modalCapPlus) {
       modalCapMinus.addEventListener('click', () => updateCap(-0.005));
       modalCapPlus.addEventListener('click', () => updateCap(0.005));
-    }
-
-    const settingsBankrollInput = $('#settingsBankrollInput');
-    if (settingsBankrollInput) {
-      settingsBankrollInput.value = state.bankroll || 5000;
-      settingsBankrollInput.addEventListener('input', (e) => {
-        const val = Math.max(100, Number(e.target.value) || 5000);
-        state.bankroll = val;
-        try { localStorage.setItem('propwire-bankroll', String(val)); } catch (_) {}
-        const detailBankroll = $('#kellyBankrollInput');
-        if (detailBankroll) detailBankroll.value = val;
-      });
     }
 
     const mobileSlateSelector = $('#mobileSlateSelector');
@@ -1727,7 +1726,7 @@
       }
     }, { passive: true });
 
-    // Wire Sniper Trigger Buttons
+    // Wire edge-alert trigger buttons
     const sniperBtn = $('#sniperBtn');
     if (sniperBtn) {
       sniperBtn.addEventListener('click', () => {
@@ -1998,7 +1997,7 @@
           setView(currentView === 'table' ? 'cards' : 'table');
           break;
 
-        case 's': // Sniper Feed
+        case 's': // Edge alerts
         case 'S':
           e.preventDefault();
           openSniperDialog('sniper_feed');
@@ -2030,7 +2029,7 @@
           toggleInjuries();
           break;
 
-        case 'e': // Explain Edge (toggle reasoning chains in Sniper Feed)
+        case 'e': // Explain Edge (toggle reasoning chains in the alert feed)
         case 'E':
           e.preventDefault();
           state.sniperExplainAll = !state.sniperExplainAll;
@@ -2503,6 +2502,9 @@
       const ageLabel = ageMin > 1440 ? `${Math.floor(ageMin / 1440)}d ago` : ageMin > 60 ? `${Math.floor(ageMin / 60)}h ago` : `${ageMin}m ago`;
       items.push(`<strong>ODDS STALE</strong><span>Last update ${ageLabel} (limit ${Math.round(health.thresholds.oddsStaleSeconds / 60)}m) — treat prices as historical.</span>`);
       if (tone === 'ok') tone = 'warn';
+    } else if (health.oddsFreshness === 'unknown' && health.dataKind !== 'fixture') {
+      items.push('<strong>ODDS TIME UNKNOWN</strong><span>The feed has no usable update timestamp. Prices are research only; qualification is paused.</span>');
+      if (tone === 'ok') tone = 'warn';
     }
     if (health.newsFeedFreshness === 'stale') {
       items.push('<strong>NEWS FEED STALE</strong><span>News watcher heartbeat older than 24h — the feed looks abandoned and automated sniper dispatch is suppressed.</span>');
@@ -2519,17 +2521,20 @@
     } else if (health.odds === 'error') {
       if (ribbonHealthTitle) ribbonHealthTitle.textContent = 'ODDS OFFLINE';
       if (ribbonHealthAge) ribbonHealthAge.textContent = '· Standby';
+    } else if (health.oddsFreshness === 'unknown') {
+      if (ribbonHealthTitle) ribbonHealthTitle.textContent = 'ODDS TIME UNKNOWN';
+      if (ribbonHealthAge) ribbonHealthAge.textContent = '· Research only';
     } else {
-      if (ribbonHealthTitle) ribbonHealthTitle.textContent = 'LIVE FRESH';
-      if (ribbonHealthAge) ribbonHealthAge.textContent = '· Connected';
+      if (ribbonHealthTitle) ribbonHealthTitle.textContent = health.dataKind === 'fixture' ? 'RESEARCH FIXTURE' : 'ODDS FRESH';
+      if (ribbonHealthAge) ribbonHealthAge.textContent = health.dataKind === 'fixture' ? '· Sample data' : '· Quote age within limit';
     }
 
     const mobileStatusPill = $('#mobileStatusPill');
     const mobileStatusText = $('#mobileStatusText');
     const boardEl = $('#slateBoard') || $('#cardView');
-    if (health.oddsFreshness === 'stale' || health.newsFreshness === 'stale') {
+    if (health.odds === 'error' || health.oddsFreshness === 'stale' || health.oddsFreshness === 'unknown' || health.newsFreshness === 'stale') {
       if (mobileStatusPill) mobileStatusPill.classList.add('is-stale-dot');
-      if (mobileStatusText) mobileStatusText.textContent = 'STALE';
+      if (mobileStatusText) mobileStatusText.textContent = feedVerificationLabel();
       if (boardEl) boardEl.classList.add('is-feed-stale');
     } else {
       if (mobileStatusPill) mobileStatusPill.classList.remove('is-stale-dot');
@@ -2679,15 +2684,13 @@
   function renderHeader() {
     const config = SLATES[state.slateKey];
     const activePolicy = policy();
+    const health = feedHealthStates();
     const ingested = state.odds.quotes.length;
     const verified = state.odds.quotes.filter((quote) => quoteState(quote) === 'verified').length;
     const teams = new Set(state.slate.flatMap((row) => [row.team, row.opponent_team]).filter(Boolean));
     if ($('#gateChip')) $('#gateChip').textContent = activePolicy ? `Gate ${pct(activePolicy.gate, 0)}` : 'Gate missing';
-    if ($('#capChip')) $('#capChip').textContent = activePolicy ? `Kelly cap ${pct(activePolicy.cap, 1)}` : 'Kelly cap missing';
     if ($('#gateVal')) $('#gateVal').textContent = activePolicy ? pct(activePolicy.gate, 0) : '—';
-    if ($('#capVal')) $('#capVal').textContent = activePolicy ? pct(activePolicy.cap, 1) : '—';
     if ($('#modalGateVal')) $('#modalGateVal').textContent = activePolicy ? pct(activePolicy.gate, 0) : '—';
-    if ($('#modalCapVal')) $('#modalCapVal').textContent = activePolicy ? pct(activePolicy.cap, 1) : '—';
     if ($('#slateState')) $('#slateState').textContent = config.state;
     if ($('#tickerLine')) {
       $('#tickerLine').innerHTML = [
@@ -2704,6 +2707,8 @@
       if ($('#marketState')) $('#marketState').textContent = 'Historical slate. Games are closed and cannot be presented as actionable.';
     } else if (ingested === 0) {
       if ($('#marketState')) $('#marketState').textContent = 'No odds feed connected / 0 quotes ingested. Showing model projections and scoped fair lines only.';
+    } else if (health.odds !== 'ok' || health.oddsFreshness !== 'ok') {
+      if ($('#marketState')) $('#marketState').textContent = `${ingested} observed quotes · feed ${feedVerificationLabel().toLowerCase()} · qualification paused.`;
     } else if (verified === 0) {
       if ($('#marketState')) $('#marketState').textContent = `No verified price receipts / ${ingested} quotes ingested. Offers are visible, but action fields remain locked.`;
     } else {
@@ -2799,7 +2804,7 @@
       if (item.vacated_targets || item.vacated_minutes) {
         quantImpact = adapter.labels.injuredQuantImpact.vacated(item);
       } else if (item.notes && item.notes.includes('0.50x Kelly Stake Cap')) {
-        quantImpact = '0.50x Kelly Stake Cap · Elevated Variance';
+        quantImpact = 'Elevated variance';
       } else if (statusUpper.includes('LIMITED')) {
         quantImpact = 'Snap Cap Risk · Target Redistribution';
       } else if (statusUpper.includes('BYE')) {
@@ -3483,26 +3488,7 @@
 
     gateBar.innerHTML = `
       <div class="pro-gate-card ps-whop-gate">
-        <div class="ps-whop-gate-top">
-          <div>
-            <div class="ps-dfs-kicker">PROPSTEIN PRO &amp; PICK'EM PASS</div>
-            <div class="ps-whop-gate-copy">Unlock full 5-Flex slips, fair lines &amp; Discord webhook alerts.</div>
-          </div>
-          <a href="${WHOP_CHECKOUT_URL}" target="_blank" rel="noopener" class="ps-copy-slip-btn">
-            Get Pass ($39/mo)
-          </a>
-        </div>
-        <div class="ps-pass-input-row">
-          <input
-            type="text"
-            id="psPassKeyInput"
-            class="ps-pass-input"
-            placeholder="Enter Whop / Pro Key (e.g. PS-PRO-...)"
-            autocomplete="off"
-          />
-          <button type="button" id="psVerifyPassBtn" class="ps-pass-submit-btn">Unlock</button>
-        </div>
-        <div id="psPassError" class="ps-pass-error" hidden>Invalid key format. Expected PS-PRO-XXXX or WHOP-XXXX.</div>
+        <p>Paid access is closed until the published evidence gate is met. <a href="/performance/">Performance record</a>.</p>
       </div>
     `;
 
@@ -3843,7 +3829,8 @@
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = research.length ? `Top ${Math.min(HOME_EDGE_LIMIT, research.length)} model signals` : modelRows.length ? 'Model fair lines' : 'Player prop research';
       setShowAll(research.length);
-      if (fallback) fallback.hidden = false;
+      // The status line already states the verification gate when research cards are visible.
+      if (fallback) fallback.hidden = research.length > 0 || modelRows.length > 0;
 
       // Render Drop-in Institutional Controls
       if (mountEl) {
@@ -3866,8 +3853,11 @@
 
       // Keep the short homepage status copy; detail remains in Settings.
       const verifiedQuotes = (state.odds.quotes || []).filter((quote) => quoteState(quote) === 'verified').length;
+      const waitingOn = health.odds !== 'ok' || health.oddsFreshness !== 'ok'
+        ? `fresh timestamped odds (${feedVerificationLabel().toLowerCase()})`
+        : 'independent quote receipt';
       status.textContent = research.length
-        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} verified. Qualification paused: waiting on independent quote receipt.`
+        ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} receipt-verified in snapshot. Qualification paused: waiting on ${waitingOn}.`
         : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
 
       const isPro = isProSubscriber();
@@ -3953,10 +3943,7 @@
         <div class="home-edge-metrics"><span><small>${idx === 0 ? 'FLAGSHIP WIN' : 'MODEL WIN'}</small><strong>${(winProb * 100).toFixed(1)}%</strong></span><span><small>EDGE</small><strong>+${(evaluation.edge * 100).toFixed(1)}%</strong></span><span><small>EV</small><strong data-mode-edge-badge>+${(evaluation.ev * 100).toFixed(1)}%</strong></span></div>
       </article>`;
     }).join('') + (!isPro && plays.length > 1 ? `<div class="pro-gate-card">
-      <span class="pro-gate-badge">PRO ALL-ACCESS PASS</span>
-      <h4>Unlock All ${plays.length} Verified Plays</h4>
-      <p>Access our entire quantified edge board, instant Discord alert webhooks, and optimal DFS slip generator.</p>
-      <a href="https://whop.com/propstein" target="_blank" rel="noopener noreferrer" class="pro-gate-cta">Get Pro Access for $39/mo →</a>
+      <p>Paid access is closed until the published evidence gate is met. <a href="/performance/">Performance record</a>.</p>
     </div>` : '');
     syncBoardRowsToMode(activeBoardMode, BOARD_MODES[activeBoardMode]);
   }
@@ -4030,7 +4017,7 @@
         if (pod1Val) pod1Val.textContent = '74.2%';
         if (pod1Sub) pod1Sub.textContent = 'Goal: 60% · Calibrated';
         if (pod2Val) pod2Val.textContent = gatePct;
-        if (pod2Sub) pod2Sub.textContent = activePolicy ? `Kelly Cap ${(activePolicy.cap * 100).toFixed(1)}% Max` : 'Kelly Cap 3.0% Max';
+        if (pod2Sub) pod2Sub.textContent = 'Minimum edge gate';
         if (pod3Val) pod3Val.textContent = String(totalModeled);
         if (pod3Sub) pod3Sub.textContent = `${state.odds.quotes.length} ingested lines`;
       }
@@ -4535,8 +4522,8 @@
     const onCourt = Array.isArray(teamObj.on_court) ? teamObj.on_court : [];
     const bench = Array.isArray(teamObj.bench) ? teamObj.bench : [];
     const isSoccer = game.sport === 'soccer';
-    // Mission W3 (data > visuals): mobile lands on Sniper & Arbs so the Sniper
-    // Feed + Arb Board are the first things visible; desktop keeps Lineups.
+    // Mission W3 (data > visuals): mobile lands on edge alerts so the alert
+    // feed and history are the first things visible; desktop keeps Lineups.
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
     const matchCenterTab = state.sniperMatchCenterTab || (isMobileViewport ? 'sniper' : 'lineups');
     // Tactical map: collapsed by default on mobile; explicit user choice wins.
@@ -4692,7 +4679,7 @@
           <span>Fair <strong>${Number(item.fair_line).toFixed(1)}</strong> · ${esc(item.book)} (${item.odds > 0 ? '+' + item.odds : item.odds})</span>
           <div class="sniper-sub-tools">
             <span class="sniper-sub-age">${isStaleCourt ? 'STALE (95.0s · HALTED)' : `Feed Age: ${Number(item.feed_age_s || 2.4).toFixed(1)}s`}</span>
-            <button type="button" class="sniper-share-receipt-btn" data-share-receipt="${esc(payloadJson)}" title="Share Verified SHA-256 Sniper Receipt">
+            <button type="button" class="sniper-share-receipt-btn" data-share-receipt="${esc(payloadJson)}" title="Share verified receipt">
               ${shieldIconSvg}
               <span>Share Receipt</span>
             </button>
@@ -4846,7 +4833,7 @@
               <span>${esc(actionText)}</span>
               <span aria-hidden="true">↗</span>
             </a>
-            <button type="button" class="sniper-share-receipt-btn is-arb-card-share" data-share-receipt="${esc(arbReceiptJson)}" title="Share Verified SHA-256 Sniper Receipt">
+            <button type="button" class="sniper-share-receipt-btn is-arb-card-share" data-share-receipt="${esc(arbReceiptJson)}" title="Share verified receipt">
               ${shieldIconSvg}
               <span>Share Receipt</span>
             </button>
@@ -4872,7 +4859,7 @@
 
         ${isStaleCourt ? `
           <div class="nba-stale-kill-banner">
-            <strong>CRITICAL — PBP FEED STALE (3 Consecutive Poll Failures):</strong> Lineup diagram greyed out and SniperAgent execution halted until live play-by-play stream recovers.
+            <strong>CRITICAL — PBP FEED STALE (3 Consecutive Poll Failures):</strong> Lineup diagram greyed out and alert checks paused until the live play-by-play stream recovers.
           </div>
         ` : ''}
 
@@ -4907,7 +4894,7 @@
           <div class="nba-match-quarters">${esc(game.quarter_summary || '')}</div>
         </div>
 
-        <!-- Match Center Sub-Tabs (Lineups · Stats · Events · Commentary · Sniper Arbs) -->
+        <!-- Match Center Sub-Tabs (Lineups · Stats · Events · Commentary · Edge alerts) -->
         <div class="nba-match-center-tabs" role="tablist" aria-label="Match Center Tabs">
           <button type="button" class="nba-mc-tab-btn ${matchCenterTab === 'lineups' ? 'active' : ''}" data-mc-tab="lineups">
             Lineups
@@ -4922,7 +4909,7 @@
             Commentary
           </button>
           <button type="button" class="nba-mc-tab-btn ${matchCenterTab === 'sniper' ? 'active' : ''}" data-mc-tab="sniper">
-            Sniper &amp; Arbs
+            Edge alerts
           </button>
         </div>
 
@@ -4935,7 +4922,7 @@
               <div class="nba-side-sniper-panel ${isFreeTier ? 'is-tier-locked' : ''}">
                 <div class="nba-side-sniper-hdr">
                   <div>
-                    <div class="nba-side-sniper-title">Live Substitution Sniper Feed</div>
+                    <div class="nba-side-sniper-title">Live substitution alerts</div>
                     <div class="nba-side-sniper-sub">Spatial court triggers &rarr; Bayesian recalc on last-known odds</div>
                   </div>
                   <span class="sniper-live-pulse-badge">${isStaleCourt ? 'HALTED' : isFreeTier ? 'PAUSED' : 'LIVE 5s PBP'}</span>
@@ -4958,7 +4945,7 @@
               </div>
             </div>
           ` : `
-            <!-- Lineups View: Tactical Formation Pitch/Court + Bench + Sniper Split -->
+            <!-- Lineups View: Tactical Formation Pitch/Court + Bench + alert split -->
             <div class="nba-command-split-grid">
               <!-- Left Column: Tactical Team Lineup Card + Pitch/Court Formation -->
               <div class="nba-tactical-card ${isStaleCourt ? 'is-greyed-stale' : ''}">
@@ -5067,11 +5054,11 @@
               </div>
           </div>
 
-          <!-- Center Column: Live Substitution Sniper Feed (Spatial Court -> Actionable Bet) -->
+          <!-- Center Column: Live substitution alerts (Spatial Court -> Actionable Bet) -->
           <div class="nba-side-sniper-panel ${isFreeTier ? 'is-tier-locked' : ''}">
             <div class="nba-side-sniper-hdr">
               <div>
-                <div class="nba-side-sniper-title">Live Substitution Sniper Feed</div>
+                <div class="nba-side-sniper-title">Live substitution alerts</div>
                 <div class="nba-side-sniper-sub">Spatial court triggers &rarr; Bayesian recalc on last-known odds</div>
               </div>
               <span class="sniper-live-pulse-badge">${isStaleCourt ? 'HALTED' : isFreeTier ? 'PAUSED' : 'LIVE 5s PBP'}</span>
@@ -5081,7 +5068,7 @@
             </div>
             ${isFreeTier ? `
               <div class="pro-lock-gate-overlay">
-                <button type="button" class="pro-lock-badge" data-open-pricing>Live Sniper paused</button>
+                <button type="button" class="pro-lock-badge" data-open-pricing>Live alerts paused</button>
                 <span class="pro-lock-subtext">No validated live edge or actionable alerts are available.</span>
               </div>
             ` : ''}
@@ -5105,7 +5092,7 @@
             </div>
             ${isPolyWsDisconnected ? `
               <div class="arb-stale-guard-banner">
-                <strong>STALE ORDERBOOK GUARD:</strong> Polymarket CLOB WebSocket disconnected. Prices greyed out and Polymarket SniperAlerts suppressed.
+                <strong>STALE ORDERBOOK GUARD:</strong> Polymarket CLOB WebSocket disconnected. Prices greyed out and Polymarket alerts suppressed.
               </div>
             ` : ''}
             <div class="nba-arb-cards-list ${isFreeTier ? 'pro-blur-target' : ''}" id="nbaArbCardsList">
@@ -5139,7 +5126,6 @@
     const edgePct = Number(data.edge_pct || 6.0).toFixed(1);
     const clvPct = Number(data.clv_pct || 5.8).toFixed(1);
     const closingLine = Number(data.closing_line || (+entryLine + 1.0)).toFixed(1);
-    const stakePct = (Number(data.stake || data.kelly_stake || 0.025) * 100).toFixed(1);
     const fairProb = Math.round(Number(data.fair_prob || 0.62) * 100);
     const impliedProb = Math.round(Number(data.implied_prob || 0.54) * 100);
     const quarterClock = data.quarter_clock || 'Q2 4:12';
@@ -5192,10 +5178,6 @@
           <div class="receipt-quant-cell">
             <span class="receipt-cell-lbl">P(Fair) vs P(Imp)</span>
             <span class="receipt-cell-val">${esc(fairProb)}% / ${esc(impliedProb)}%</span>
-          </div>
-          <div class="receipt-quant-cell">
-            <span class="receipt-cell-lbl">Kelly Stake</span>
-            <span class="receipt-cell-val">${esc(stakePct)}%</span>
           </div>
         </div>
 
@@ -5273,7 +5255,7 @@
             ctx.fillStyle = '#a1a1aa';
             ctx.font = '16px monospace';
             ctx.fillText(`Entry: ${entryLine}  →  Close: ${closingLine}  (CLV: +${clvPct}%)`, 32, 206);
-            ctx.fillText(`Model Fair: ${fairLine}  |  Kelly: ${stakePct}%  |  ${quarterClock}`, 32, 238);
+            ctx.fillText(`Model Fair: ${fairLine}  |  ${quarterClock}`, 32, 238);
 
             ctx.fillStyle = '#71717a';
             ctx.font = '12px monospace';
@@ -5334,24 +5316,19 @@
     const isGranted = typeof Notification !== 'undefined' && Notification.permission === 'granted';
 
     const arbLedger = snap.arb_ledger || {
-      total_graded_alerts: clvSummary.closed_count || 8,
-      average_clv_beat_pct: 5.8,
-      clv_beat_rate_pct: clvSummary.pct_beating_close || 87.5,
-      win_rate_pct: 75.0,
-      roi_pct: 6.7,
-      cumulative_clv_ev: 46.4,
+      total_graded_alerts: clvSummary.closed_count || 0,
       receipts: []
     };
     const shieldIconTabSvg = `<svg class="receipt-shield-svg" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.5l5.5 2v4.2c0 3.5-2.3 5.8-5.5 6.8-3.2-1-5.5-3.3-5.5-6.8V3.5L8 1.5z"/><path d="M5.6 8.1l1.7 1.7 3.3-3.4"/></svg>`;
 
     const agenticTabsHtml = `
-      <div class="sniper-terminal-tabs" role="tablist" aria-label="Sniper Terminal Views">
+      <div class="sniper-terminal-tabs" role="tablist" aria-label="Alert views">
         <button type="button" class="sniper-tab-btn sniper-tab-lineups ${activeTab === 'lineups' ? 'is-active active' : ''}" data-sniper-tab="lineups" role="tab">
           <span>Lineups</span>
           <kbd class="sniper-kbd">I</kbd>
         </button>
         <button type="button" class="sniper-tab-btn ${activeTab === 'sniper_feed' ? 'is-active active' : ''}" data-sniper-tab="sniper_feed" role="tab">
-          <span>Sniper Feed</span>
+          <span>Edge alerts</span>
           <span class="sniper-tab-count">${alerts.length}</span>
           <kbd class="sniper-kbd">S</kbd>
         </button>
@@ -5366,7 +5343,7 @@
           <kbd class="sniper-kbd">P</kbd>
         </button>
         <button type="button" class="sniper-tab-btn ${activeTab === 'arb_history' ? 'is-active active' : ''}" data-sniper-tab="arb_history" role="tab">
-          <span>Arb History &amp; PnL</span>
+          <span>History</span>
           <span class="sniper-tab-count">${arbLedger.total_graded_alerts || alerts.length || 8}</span>
           <kbd class="sniper-kbd">H</kbd>
         </button>
@@ -5417,7 +5394,7 @@
               </div>
               <div class="sniper-edge-cluster">
                 <div class="sniper-edge-pill">+${Number(al.edge_pct).toFixed(2)}% EDGE</div>
-                <div class="sniper-bps-sub">+${Math.round(Number(al.mispricing_bps || al.edge_pct * 100))} bps · Kelly ${(Number(al.kelly_stake || 0.01) * 100).toFixed(2)}%</div>
+                <div class="sniper-bps-sub">+${Math.round(Number(al.mispricing_bps || al.edge_pct * 100))} bps</div>
               </div>
             </div>
             <div class="sniper-metrics-strip">
@@ -5452,7 +5429,7 @@
                 source_hash: al.source_hash,
                 receipt_hash: al.source_hash,
                 model_version: al.model_version || 'propwire-dist-v2.4'
-              })))}" title="Share Verified SHA-256 Sniper Receipt">
+              })))}" title="Share verified receipt">
                 ${shieldIconTabSvg}
                 <span>Share Receipt</span>
               </button>
@@ -5480,7 +5457,7 @@
         <div class="sniper-sim-bar">
           <div>
             <strong>Live Late-Scratch Stress Test (SLA &lt; 5,000ms)</strong>
-            <div style="font-size:11px; color:var(--muted);">SportFeeds Webhook (Embiid OUT) &rarr; Redis Stream &rarr; LangGraph &rarr; ProjectionRecalcAgent &rarr; SniperAgent</div>
+            <div style="font-size:11px; color:var(--muted);">SportFeeds Webhook (Embiid OUT) &rarr; Redis Stream &rarr; LangGraph &rarr; ProjectionRecalcAgent &rarr; alert check</div>
           </div>
           <button type="button" class="sniper-sim-btn" id="sniperSimulateScratchBtn">Simulate Late Scratch</button>
         </div>
@@ -5666,7 +5643,7 @@
         <div class="sniper-card">
           <div class="arb-ledger-head">
             <div>
-              <div class="sniper-section-title arb-ledger-title">Arb History &amp; PnL Ledger (Auto-Graded CLV)</div>
+              <div class="sniper-section-title arb-ledger-title">Alert history</div>
               <div class="arb-routing-subnote">Cryptographically signed SHA-256 historical performance ledger (<code>clv = (Entry_Odds - Closing_Odds) / Closing_Odds</code>)</div>
             </div>
             <a href="/api/sniper/history?limit=100" target="_blank" rel="noopener noreferrer" class="sniper-deeplink-btn">Export Ledger JSON ↗</a>
@@ -5675,25 +5652,10 @@
           <div class="sniper-kpi-grid arb-ledger-kpi-grid">
             <div class="sniper-kpi-cell arb-ledger-kpi-cell">
               <div class="arb-ledger-kpi-label">GRADED ALERTS</div>
-              <div class="arb-ledger-kpi-val">${arbLedger.total_graded_alerts || 8}</div>
-            </div>
-            <div class="sniper-kpi-cell arb-ledger-kpi-cell">
-              <div class="arb-ledger-kpi-label">AVG CLV BEAT</div>
-              <div class="arb-ledger-kpi-val is-lime">+${Number(arbLedger.average_clv_beat_pct || 5.8).toFixed(1)}%</div>
-            </div>
-            <div class="sniper-kpi-cell arb-ledger-kpi-cell">
-              <div class="arb-ledger-kpi-label">CLV BEAT RATE</div>
-              <div class="arb-ledger-kpi-val">${Number(arbLedger.clv_beat_rate_pct || 87.5).toFixed(1)}%</div>
-            </div>
-            <div class="sniper-kpi-cell arb-ledger-kpi-cell">
-              <div class="arb-ledger-kpi-label">WIN RATE</div>
-              <div class="arb-ledger-kpi-val">${Number(arbLedger.win_rate_pct || 75.0).toFixed(1)}%</div>
-            </div>
-            <div class="sniper-kpi-cell arb-ledger-kpi-cell">
-              <div class="arb-ledger-kpi-label">EST. ROI</div>
-              <div class="arb-ledger-kpi-val is-lime">+${Number(arbLedger.roi_pct || 6.7).toFixed(1)}%</div>
+              <div class="arb-ledger-kpi-val">${Number(arbLedger.total_graded_alerts || 0)}</div>
             </div>
           </div>
+          <p class="arb-routing-subnote">Win rate and return are not summarized here. Graded results and limitations are on the <a href="/performance/">performance page</a>.</p>
 
           <div class="table-scroll">
             <table class="slate-table sniper-poly-table">
@@ -5734,7 +5696,6 @@
               <label class="arb-routing-label" for="routingTelegramInput">Connect Telegram (Chat ID or Bot Webhook)</label>
               <div class="arb-routing-telegram-row">
                 <input type="text" id="routingTelegramInput" class="sniper-webhook-input" placeholder="-100192837465 or @propwire_channel" value="${esc(routing.telegramChatId || '')}">
-                <a href="https://t.me/PropWireSniperBot" target="_blank" rel="noopener noreferrer" class="sniper-deeplink-btn">Open Bot ↗</a>
               </div>
               <span class="arb-routing-hint">Delivers Markdown alerts with Top-3 CLOB VWAP depth &amp; 1-tap Polymarket deep-link.</span>
             </div>
@@ -5747,7 +5708,7 @@
                 Only alert me for Polymarket Arbs
               </button>
               <button type="button" class="sniper-edge-btn ${!routing.polymarketOnly ? 'active' : ''}" data-routing-scope="all_edges">
-                Alert me for all Sniper Edges
+                Alert me for all edge alerts
               </button>
             </div>
           </div>
@@ -5784,7 +5745,7 @@
         <div class="sniper-card">
           <div class="sniper-toggle-row">
             <div class="sniper-toggle-label">
-              <span class="sniper-toggle-title">Active Market Sniper</span>
+              <span class="sniper-toggle-title">Edge alerts</span>
               <span class="sniper-toggle-sub">Autonomously evaluate incoming orderbook ticks against execution criteria</span>
             </div>
             <label class="sniper-switch-wrap">
@@ -5843,7 +5804,7 @@
 
         <!-- Real-Time Event Telemetry Feed with One-Tap Confirm -->
         <div class="sniper-card">
-          <div class="sniper-section-title">Live Sniper Event Telemetry (Human-Confirmed Ledger Flow)</div>
+          <div class="sniper-section-title">Live alert events</div>
           <div style="font-size:11px; color:var(--muted); margin-bottom:8px;">Alerts do not auto-write to your ledger. Tap below to review and confirm in one conscious action.</div>
           <div class="sniper-feed-list" id="sniperFeedList">
             ${(sniper.events && sniper.events.length > 0) ? sniper.events.map((ev) => `
@@ -5869,10 +5830,10 @@
         saveSniperConfig(state.sniper);
         updateSniperUIBadges();
         if (state.sniper.enabled) {
-          toast('Sniper Activated: Polling will trigger instant 1-tap review alerts.');
+          toast('Edge alerts on. Polling will trigger instant 1-tap review alerts.');
           checkSniperAlerts();
         } else {
-          toast('Sniper Deactivated.');
+          toast('Edge alerts off.');
         }
       };
     }
@@ -5941,7 +5902,7 @@
             body: JSON.stringify({
               event: 'PROP_WIRE_TEST_PING',
               timestamp: new Date().toISOString(),
-              message: 'PropStein Autonomous Market Sniper Connected!',
+              message: 'PropStein edge alerts connected',
               terminal: 'https://propstein.com'
             })
           });
@@ -6030,13 +5991,13 @@
           }
           if (box) {
             box.hidden = false;
-            box.innerHTML = `<strong>Alert Routing Saved:</strong> Platform <code>${esc(platform.toUpperCase())}</code> · Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All Sniper Edges'}</code> (300s Redis dedup lock active).`;
+            box.innerHTML = `<strong>Alert Routing Saved:</strong> Platform <code>${esc(platform.toUpperCase())}</code> · Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All edge alerts'}</code> (300s Redis dedup lock active).`;
           }
           toast('Alert routing subscription saved.');
         } catch (_) {
           if (box) {
             box.hidden = false;
-            box.innerHTML = `<strong>Alert Routing Saved Locally:</strong> Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All Sniper Edges'}</code>.`;
+            box.innerHTML = `<strong>Alert Routing Saved Locally:</strong> Gate <code>+${Number(r.minEdgeGate || 4.0).toFixed(1)}%</code> · Mode <code>${r.polymarketOnly ? 'Polymarket Arbs Only' : 'All edge alerts'}</code>.`;
           }
         }
       };
@@ -6453,7 +6414,7 @@
 
     if (state.sniper.browserNotify && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
       try {
-        const notif = new Notification(`PropStein Sniper: ${quote.player_name}`, {
+        const notif = new Notification(`PropStein alert: ${quote.player_name}`, {
           body: `${side} ${quote.line} (${oddsText(side === 'UNDER' ? quote.under_odds : quote.over_odds)}) · Edge +${(edge * 100).toFixed(1)}% · Tap to confirm`,
           icon: 'icon-192.png'
         });
@@ -6488,7 +6449,7 @@
       }).catch(() => {});
     }
 
-    toast(`SNIPER ALERT: ${quote.player_name} ${side} ${quote.line} (+${(edge * 100).toFixed(1)}% Edge) · Tap to Confirm`, () => {
+    toast(`Edge alert: ${quote.player_name} ${side} ${quote.line} (+${(edge * 100).toFixed(1)}% Edge) · Tap to Confirm`, () => {
       openOneTapConfirm(quote.player_id, quote.market);
     }, 6000);
   }
@@ -6654,7 +6615,7 @@
     const rawEdge = simLine > 0 ? ((adjProj - simLine) / simLine) : 0;
     const edgePctVal = rawEdge * 100;
     const isOver = adjProj >= simLine;
-    const { pWin, kelly: cappedKelly } = approxSimMath(adjProj, simLine, simOdds, dist);
+    const { pWin } = approxSimMath(adjProj, simLine, simOdds, dist);
 
     return `
       <div class="csim-panel" data-csim-player="${esc(pid)}">
@@ -6682,9 +6643,8 @@
           <span class="csim-ro"><span class="csim-ro-k">Side</span><span class="csim-ro-v">${sketchSideArrow(isOver ? 'OVER' : 'UNDER', 13)} ${isOver ? 'OVER' : 'UNDER'}</span></span>
           <span class="csim-ro"><span class="csim-ro-k">Edge</span><span class="csim-ro-v ${edgePctVal > 0 ? 'pos' : 'neg'}">${edgePctVal > 0 ? '+' : ''}${edgePctVal.toFixed(1)}%</span></span>
           <span class="csim-ro"><span class="csim-ro-k" title="Normal approximation of the model fair distribution (clamped 5–95%). Not a de-vigged market probability.">P(Win) Model Approx.</span><span class="csim-ro-v">${(pWin * 100).toFixed(1)}%</span></span>
-          <span class="csim-ro"><span class="csim-ro-k" title="Half-Kelly, hard-capped at 3% of bankroll.">Kelly (½·cap 3%)</span><span class="csim-ro-v ${cappedKelly > 0 ? 'pos' : ''}">${(cappedKelly * 100).toFixed(1)}%</span></span>
         </div>
-        <div class="sim-approx-note" role="note">Approximate stress-test: P(Win) uses a normal approximation of the model distribution — not exact compound NegBin/Gamma pricing — and the suggested stake is half-Kelly capped at 3% of bankroll.</div>
+        <div class="sim-approx-note" role="note">Approximate stress-test: P(Win) uses a normal approximation of the model distribution — not exact compound NegBin/Gamma pricing.</div>
         <div class="csim-actions">
           <button type="button" class="csim-clear" data-sim-clear="${esc(pid)}">Clear Simulation</button>
         </div>
@@ -6848,11 +6808,6 @@
         : null;
       const simOpen = state.inlineSim && state.inlineSim.pid === row.player_id;
       let simKellyHtml = '';
-      if (simVal !== null) {
-        const simOdds = (state.simulatedOdds && state.simulatedOdds[row.player_id] !== undefined) ? state.simulatedOdds[row.player_id] : -110;
-        const simMath = approxSimMath(dist.proj, simVal, simOdds, dist);
-        simKellyHtml = `<span class="card-kelly-chip" title="Half-Kelly stake, hard-capped at 3% of bankroll. Approximate sizing from the simulated line — not betting advice.">½K ${(simMath.kelly * 100).toFixed(1)}%</span>`;
-      }
       const distTitle = dist.isTd
         ? `Anytime TD probability ${(dist.prob * 100).toFixed(0)}% (approx. share model)`
         : `Approximate 80% model range ${dist.low}-${dist.high} · fair ${fairVal.toFixed(1)} (grey tick) · projection ${dist.proj.toFixed(1)} (chartreuse tick)${simVal !== null ? ` · simulated line ${simVal.toFixed(1)} (blue tick)` : ''}`;
@@ -6884,9 +6839,7 @@
       const isFlatJuice = evaluation.odds === -110;
       const juiceLabel = isFlatJuice ? 'Flat -110' : oddsText(evaluation.odds);
       const juiceClass = isFlatJuice ? 'flat-odds' : (evaluation.odds <= -115 ? 'heavy-juice' : 'plus-money');
-      const kellyChipHtml = (execution && execution.allowed && Number(evaluation.stake) > 0 && !dist.isTd)
-        ? `<span class="card-kelly-chip" title="Half-Kelly stake, hard-capped at 3% of bankroll (approximate sizing — not betting advice).">½K ${(evaluation.stake * 100).toFixed(1)}%</span>`
-        : '';
+      const kellyChipHtml = '';
       const distTitle = dist.isTd
         ? `Anytime TD probability ${(dist.prob * 100).toFixed(0)}% (approx. share model)`
         : `Approximate 80% model range ${dist.low}-${dist.high} · fair ${fairVal.toFixed(1)} (grey tick) · projection ${dist.proj.toFixed(1)} (chartreuse tick) · book line ${evaluation.line.toFixed(1)} (blue tick)`;
@@ -7662,7 +7615,6 @@
   function executionSlipMarkup(row, evaluation, decision) {
     const observed = evaluation.quote?.observed_at ? new Date(evaluation.quote.observed_at) : null;
     const timestamp = observed && Number.isFinite(observed.getTime()) ? observed.toLocaleString() : 'Missing';
-    const stakeDollars = (num(state.bankroll, 5000) * num(evaluation.stake)).toFixed(2);
     const offers = executionOffers(row);
     const reasons = decision.allowed ? ['Verified receipt', 'Fresh odds and news', `Clears ${pct(policy()?.gate || 0, 0)} gate`] : [decision.message];
     return `
@@ -7676,7 +7628,6 @@
         <div><span>Price</span><strong>${esc(evaluation.side || '—')} ${Number(evaluation.line).toFixed(1)} · ${oddsText(evaluation.odds)}</strong></div>
         <div><span>Model fair</span><strong>${Number(fairValue(row)).toFixed(1)}</strong></div>
         <div><span>Edge</span><strong>${signedPct(evaluation.edge)}</strong></div>
-        <div><span>Kelly stake</span><strong>${pct(evaluation.stake, 2)} · $${stakeDollars}</strong></div>
       </section>
       <section class="execution-checks ${decision.allowed ? '' : 'has-block'}">
         <h4>${decision.allowed ? 'Guard checks passed' : 'Blocking reason'}</h4>
@@ -7842,7 +7793,7 @@
       toast('No props to export');
       return;
     }
-    const headers = ['Player', 'Team', 'Opp', 'Pos', 'Market', 'Side', 'BookLine', 'Odds', 'ModelFair', 'ModelProj', 'EdgePct', 'KellyStakePct'];
+    const headers = ['Player', 'Team', 'Opp', 'Pos', 'Market', 'Side', 'BookLine', 'Odds', 'ModelFair', 'ModelProj', 'EdgePct'];
     const lines = [headers.join(',')];
     rows.forEach(r => {
       const ev = evaluateRow(r);
@@ -7858,8 +7809,7 @@
         ev.odds || '',
         dist.fair.toFixed(1),
         dist.proj.toFixed(1),
-        (ev.edge * 100).toFixed(1),
-        (ev.stake * 100).toFixed(1)
+        (ev.edge * 100).toFixed(1)
       ].join(','));
     });
     const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -8203,18 +8153,6 @@
             </span>
             <span class="clv-kpi-sub">De-vigged vs Kickoff Close</span>
           </div>
-          <div class="clv-kpi-box">
-            <span class="clv-kpi-lbl">Graded Record</span>
-            <span class="clv-kpi-val text-white">${recordStr}</span>
-            <span class="clv-kpi-sub">Win Rate: ${winRate}%</span>
-          </div>
-          <div class="clv-kpi-box">
-            <span class="clv-kpi-lbl">Realized ROI / P&L</span>
-            <span class="clv-kpi-val ${netPnl >= 0 ? 'text-volt' : 'text-danger'}">
-              ${realizedRoi >= 0 ? `+${realizedRoi}%` : `${realizedRoi}%`}
-            </span>
-            <span class="clv-kpi-sub">Net: ${netPnl >= 0 ? `+$${Number(netPnl).toFixed(2)}` : `-$${Math.abs(Number(netPnl)).toFixed(2)}`}</span>
-          </div>
         </div>
 
         <!-- Scrollable Ticket Audit Table -->
@@ -8227,7 +8165,7 @@
                 <th>Kickoff Close</th>
                 <th>CLV (Yds / Prob)</th>
                 <th>Actual / Grade</th>
-                <th class="th-num">Net P&L</th>
+                <th class="th-num">Net</th>
               </tr>
             </thead>
             <tbody>
@@ -8461,7 +8399,6 @@
             <div><span>State:</span> <b>${evaluation.state === 'verified' ? 'Feed verified' : 'Unverified'}</b></div>
             <div><span>Source:</span> <b>${esc(bookName)} quote</b></div>
             <div><span>Gate Hurdle:</span> <b>${policy() ? pct(policy().gate, 0) : '10%'}</b></div>
-            <div><span>Kelly Cap:</span> <b>${policy() ? pct(policy().cap, 1) : '3.0%'}</b></div>
           </div>
         </div>
       </div>
@@ -8628,31 +8565,7 @@
       });
     }
 
-    // 3. Kelly Calculator Bankroll Input & Gate Override
-    const bankrollInput = $('#kellyBankrollInput');
-    if (bankrollInput) {
-      bankrollInput.addEventListener('input', (e) => {
-        const val = Math.max(0, Number(e.target.value) || 0);
-        state.bankroll = val;
-        try { localStorage.setItem('propwire-bankroll', String(val)); } catch (_) {}
-        const stakeAmt = $('#kellyWagerDollars');
-        const stakePct = $('#kellyWagerPct');
-        const ticketStake = $('#ticketStakeInput');
-
-        const isGated = evaluation.state === 'verified' && evaluation.edge > 0 && evaluation.edge < (policy()?.gate || 0.10);
-        const isOverridden = Boolean(state.gateOverride?.[row.player_id]);
-        const fullKelly = kellyFromEvaluation(evaluation.quote, evaluation, evaluation.side);
-        const cappedFraction = Math.min(fullKelly, policy()?.cap || 0.03);
-        const effectiveFraction = evaluation.state !== 'verified' ? 0
-          : isGated && isOverridden ? cappedFraction : evaluation.stake || 0;
-
-        const wDollars = (val * effectiveFraction).toFixed(2);
-        if (stakeAmt) stakeAmt.textContent = `$${wDollars}`;
-        if (stakePct) stakePct.textContent = `(${ (effectiveFraction * 100).toFixed(2) }% of bankroll)`;
-        if (ticketStake) ticketStake.value = wDollars;
-      });
-    }
-
+    // 3. Gate override (the sizing calculator is not shown)
     const overrideBtn = $('#overrideGateBtn');
     if (overrideBtn) {
       overrideBtn.addEventListener('click', () => {
@@ -8821,19 +8734,8 @@
       simEdge = Math.abs(simEdge);
     }
 
-    const bankroll = Number(state.bankroll) || 5000;
     const isGated = evaluation.state === 'verified' && evaluation.edge > 0 && evaluation.edge < (policy()?.gate || 0.10);
     const isOverridden = Boolean(state.gateOverride?.[row.player_id]);
-
-    const fullKellyFraction = kellyFromEvaluation(evaluation.quote, evaluation, evaluation.side);
-    const cappedKellyFraction = Math.min(fullKellyFraction, policy()?.cap || 0.03);
-
-    let effectiveStakeFraction = Number(evaluation.stake) || 0.0;
-    if (isGated && isOverridden) {
-      effectiveStakeFraction = cappedKellyFraction;
-    }
-    const wagerDollars = (bankroll * effectiveStakeFraction).toFixed(2);
-    const wagerPct = (effectiveStakeFraction * 100).toFixed(2);
 
     const priceStat = evaluation.state === 'none'
       ? '<div class="detail-stat"><span>Book Offer</span><strong>No quote</strong></div>'
@@ -8849,8 +8751,8 @@
     const actionStat = evaluation.state === 'none'
       ? `<div class="detail-stat"><span>Projection</span><strong>${projection.toFixed(1)}</strong></div>`
       : evaluation.state === 'ingested'
-        ? `<div class="detail-stat metric-lock"><span>Price check</span><strong>${SVG_ICONS.lock} ${signedPct(evaluation.edge)}</strong><small class="cell-sub">Stake 0.00%</small></div>`
-        : `<div class="detail-stat ${evaluation.tone}"><span>Price check</span><strong>${signedPct(evaluation.edge)}</strong><small class="cell-sub">Return ${signedPct(evaluation.ev)} · Stake ${pct(effectiveStakeFraction, 2)}</small></div>`;
+        ? `<div class="detail-stat metric-lock"><span>Price check</span><strong>${SVG_ICONS.lock} ${signedPct(evaluation.edge)}</strong><small class="cell-sub">Unverified quote</small></div>`
+        : `<div class="detail-stat ${evaluation.tone}"><span>Price check</span><strong>${signedPct(evaluation.edge)}</strong><small class="cell-sub">Return ${signedPct(evaluation.ev)}</small></div>`;
 
     const surgeSection = beneficiary ? `
       <div class="detail-section">
@@ -8865,29 +8767,10 @@
         </div>
       </div>` : '';
 
-    const kellyCalcSection = evaluation.state !== 'none' ? `
-      <div class="kelly-calc-box">
-        <div class="kelly-calc-header">
-          <h4>
-            <svg class="prop-icon icon-volume" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" style="width:13px;height:13px;"><path d="M2 10h3l3 4V2L5 6H2v4z"/></svg>
-            Interactive Kelly Bet Sizing Calculator
-          </h4>
-          <span style="font: 600 10.5px/1 var(--mono); color: var(--muted);">Kelly cap ${policy() ? pct(policy().cap, 1) : '3.0%'}</span>
-        </div>
-        <div class="kelly-calc-row">
-          <label class="kelly-input-wrap">
-            <span>Bankroll $</span>
-            <input type="number" id="kellyBankrollInput" min="100" max="1000000" step="100" value="${bankroll}">
-          </label>
-          <div class="kelly-result-card">
-            <span class="kelly-stake-amt" id="kellyWagerDollars">$${wagerDollars}</span>
-            <span class="kelly-stake-pct" id="kellyWagerPct">(${wagerPct}% of bankroll)</span>
-            ${isGated ? `
-              <span class="${isOverridden ? 'badge-overridden' : 'badge-gated'}" id="kellyGateBadge">${isOverridden ? 'Overridden (Uncapped)' : 'Gated (<10.0% Edge)'}</span>
-              <button type="button" class="override-gate-btn ${isOverridden ? 'active' : ''}" id="overrideGateBtn">${isOverridden ? 'Enforce Gate' : 'Override Gate'}</button>
-            ` : ''}
-          </div>
-        </div>
+    const gateOverrideSection = isGated ? `
+      <div class="detail-section">
+        <span class="${isOverridden ? 'badge-overridden' : 'badge-gated'}" id="gateOverrideBadge">${isOverridden ? 'Gate overridden for this row' : 'Below the execution gate'}</span>
+        <button type="button" class="override-gate-btn ${isOverridden ? 'active' : ''}" id="overrideGateBtn">${isOverridden ? 'Enforce Gate' : 'Override Gate'}</button>
       </div>
     ` : '';
 
@@ -8947,8 +8830,8 @@
       <!-- What-If Simulator + Teammate Ripple Preview -->
       ${scenarioSection}
 
-      <!-- Kelly Calculator with Gate Override -->
-      ${kellyCalcSection}
+      <!-- Gate override -->
+      ${gateOverrideSection}
 
       <!-- 2-Column Institutional Spec Grid -->
       <div class="detail-two-col">
@@ -8961,7 +8844,7 @@
       </div>
 
       <!-- Inline Execution Ticket (CLV Ledger) -->
-      ${executionTicketMarkup(row, evaluation, wagerDollars)}
+      ${executionTicketMarkup(row, evaluation, '')}
 
       <!-- Institutional 2-Column Terminal Specification Grid (Replacing Text-Heavy Footer) -->
       <div class="spec-grid-card">
@@ -8987,7 +8870,7 @@
       <div class="detail-sticky-bar">
         <div class="sticky-bar-info">
           <span class="sticky-verdict">${evaluation.side || 'OVER'} ${evaluation.line ? evaluation.line.toFixed(1) : fair.toFixed(1)} <small class="text-dim">(${oddsText(evaluation.odds)})</small></span>
-          <span class="sticky-edge ${evaluation.edge > 0 ? 'text-accent' : 'text-dim'}">${signedPct(evaluation.edge)} edge · $${wagerDollars} (${wagerPct}%)</span>
+          <span class="sticky-edge ${evaluation.edge > 0 ? 'text-accent' : 'text-dim'}">${signedPct(evaluation.edge)} edge</span>
         </div>
         <button type="button" class="detail-sticky-log-btn ${isLogged ? 'logged' : ''}" id="modalStickyLogBtn">
           Review ticket

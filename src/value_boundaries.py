@@ -29,6 +29,8 @@ import math
 from dataclasses import dataclass
 from functools import lru_cache
 
+import numpy as np
+from scipy import stats
 from scipy.optimize import brentq
 
 from src.freeze_slate import (
@@ -62,7 +64,11 @@ class VigBoundaries:
 
 @dataclass(frozen=True)
 class FairLineDisplay:
-    """Hundredths of a percent. The three shares sum to 10000 (100.00%)."""
+    """Outcome shares and push-adjusted fair odds at the displayed line.
+
+    The three shares sum to 10000 (100.00%). A push refunds the stake, so
+    fair odds use P(win) / (P(win) + P(lose)), not raw P(win).
+    """
 
     over_hundredths: int
     under_hundredths: int
@@ -284,6 +290,115 @@ def format_percent(hundredths: int) -> str:
     return f"{sign}{hundredths // 100}.{hundredths % 100:02d}%"
 
 
+def yards_median(
+    mu_rec: float,
+    mu_ypr: float,
+    alpha: float = 0.1097,
+    k: float = 1.555,
+) -> float:
+    """Continuous compound median: the line where P(Y > line) = 0.5.
+
+    This is ``ReceivingModel.yards_quantile(..., 0.5)``. It is not the mean
+    (``mu_rec * mu_ypr``) and it does not use the integer push window.
+    """
+    return float(_model(alpha, k).yards_quantile(float(mu_rec), float(mu_ypr), 0.5))
+
+
+def _nearest_half_yard(median: float) -> float:
+    """Display grid used for yards fair lines (nearest 0.5 yard)."""
+    return float(np.round(float(median) * 2.0) / 2.0)
+
+
+def receptions_fair_line(mu_rec: float, alpha: float = 0.1097) -> float:
+    """Half-point hook whose raw Negative-Binomial P(over) is closest to 1/2.
+
+    Same choice as the slate fair line: compare P(N > n-1) and P(N > n) for
+    n = the NB median count, and take the closer .5 line. A tie keeps the
+    higher hook.
+    """
+    mu_rec = float(mu_rec)
+    r = 1.0 / float(alpha)
+    p = r / (r + mu_rec)
+    n = int(stats.nbinom.ppf(0.5, r, p))
+    lo = max(n - 1, 0)
+    sf_lo = float(stats.nbinom.sf(lo, r, p))
+    sf_hi = float(stats.nbinom.sf(n, r, p))
+    if abs(sf_lo - 0.5) < abs(sf_hi - 0.5):
+        return float(lo + 0.5)
+    return float(n + 0.5)
+
+
+def fair_line_from_params(
+    market: str,
+    mu_rec: float,
+    mu_ypr: float = 0.0,
+    alpha: float = 0.1097,
+    k: float = 1.555,
+) -> float:
+    """Fair line published from the distribution parameters on the page.
+
+    Yards: continuous median, on the half-yard grid.
+    Receptions: half-point hook closest to P(over) = 1/2.
+    """
+    if _is_yards(market):
+        return _nearest_half_yard(yards_median(mu_rec, mu_ypr, alpha=alpha, k=k))
+    if market == "receptions":
+        return receptions_fair_line(mu_rec, alpha=alpha)
+    raise ValueError(f"unsupported market: {market}")
+
+
+def projected_volume(market: str, mu_rec: float, mu_ypr: float = 0.0) -> float:
+    """Mean of the published distribution. Yards are mu_rec * mu_ypr."""
+    mu_rec = float(mu_rec)
+    if _is_yards(market):
+        return round(mu_rec * float(mu_ypr), 2)
+    if market == "receptions":
+        return round(mu_rec, 2)
+    raise ValueError(f"unsupported market: {market}")
+
+
+@dataclass(frozen=True)
+class PublishedLines:
+    """Numbers the public page prints, all derived from the four parameters."""
+
+    fair_line: float
+    proj_volume: float
+    p_over_at_fair: float
+    p_over_at_quote: float | None
+    boundaries: VigBoundaries
+
+
+def published_lines(
+    market: str,
+    mu_rec: float,
+    mu_ypr: float = 0.0,
+    alpha: float = 0.1097,
+    k: float = 1.555,
+    quote_line: float | None = None,
+) -> PublishedLines:
+    """Fair line, mean, both P(over) figures, and the -110 roots.
+
+    ``quote_line`` is the captured book number. ``None`` means no quote, and
+    ``p_over_at_quote`` stays ``None`` so the page can print an em dash.
+    """
+    fair = fair_line_from_params(market, mu_rec, mu_ypr, alpha=alpha, k=k)
+    p_fair = side_probabilities(
+        market, mu_rec, mu_ypr, fair, alpha=alpha, k=k,
+    )[0]
+    p_quote = None
+    if quote_line is not None:
+        p_quote = side_probabilities(
+            market, mu_rec, mu_ypr, float(quote_line), alpha=alpha, k=k,
+        )[0]
+    return PublishedLines(
+        fair_line=fair,
+        proj_volume=projected_volume(market, mu_rec, mu_ypr),
+        p_over_at_fair=p_fair,
+        p_over_at_quote=p_quote,
+        boundaries=vig_boundaries(market, mu_rec, mu_ypr, alpha=alpha, k=k),
+    )
+
+
 def fair_line_display(
     market: str,
     mu_rec: float,
@@ -296,12 +411,15 @@ def fair_line_display(
         market, mu_rec, mu_ypr, line, alpha=alpha, k=k,
     )
     over_h, under_h, push_h = percent_shares((p_over, p_under, p_push), digits=2)
+    settled = p_over + p_under
+    if settled <= 0:
+        raise ValueError("fair odds require a nonzero chance of settlement")
     return FairLineDisplay(
         over_hundredths=over_h,
         under_hundredths=under_h,
         push_hundredths=push_h,
-        over_odds=prob_to_american(p_over),
-        under_odds=prob_to_american(p_under),
+        over_odds=prob_to_american(p_over / settled),
+        under_odds=prob_to_american(p_under / settled),
     )
 
 
@@ -331,29 +449,36 @@ def render_value_paragraph(
     bounds = vig_boundaries(market, mu_rec, mu_ypr, alpha=alpha, k=k)
     if bounds.over_line is not None and bounds.under_line is not None:
         sentence = (
-            "At &minus;110 vig, the model sees value on the OVER at lines "
+            "At &minus;110, on non-push lines the model clears breakeven "
+            "on the OVER at lines "
             f"below <strong>{bounds.over_line:.1f}</strong> and on the UNDER "
             f"at lines above <strong>{bounds.under_line:.1f}</strong>. "
-            "Between those boundaries, neither side clears the vig-adjusted "
-            "breakeven."
+            "Between those boundaries, neither side clears the &minus;110 "
+            "breakeven on non-push lines."
         )
     elif bounds.over_line is not None:
         sentence = (
-            "At &minus;110 vig, the model sees value on the OVER at lines "
+            "At &minus;110, on non-push lines the model clears breakeven "
+            "on the OVER at lines "
             f"below <strong>{bounds.over_line:.1f}</strong>. The UNDER does "
             "not clear the vig-adjusted breakeven inside the modeled line range."
         )
     elif bounds.under_line is not None:
         sentence = (
-            "At &minus;110 vig, the model sees value on the UNDER at lines "
+            "At &minus;110, on non-push lines the model clears breakeven "
+            "on the UNDER at lines "
             f"above <strong>{bounds.under_line:.1f}</strong>. The OVER does "
             "not clear the vig-adjusted breakeven at any modeled line."
         )
     else:
         sentence = (
-            "At &minus;110 vig, neither side clears the vig-adjusted "
-            "breakeven inside the modeled line range."
+            "At &minus;110, neither side clears breakeven on non-push lines "
+            "inside the modeled line range."
         )
+    sentence += (
+        " A whole-number line can push; its expected return must be checked "
+        "using P(win) &times; 100/110 &minus; P(lose)."
+    )
     if fair_line is None:
         return sentence
     shown = fair_line_display(
@@ -361,7 +486,7 @@ def render_value_paragraph(
     )
     fair = (
         f" At the fair line (<strong>{_fmt_line(fair_line)}</strong>), "
-        f"no-vig breakeven odds are "
+        f"push-adjusted fair odds are "
         f"<strong>{_html_odds(shown.over_odds)} on the OVER</strong> "
         f"({format_percent(shown.over_hundredths)} win prob) and "
         f"<strong>{_html_odds(shown.under_odds)} on the UNDER</strong> "

@@ -128,30 +128,35 @@
 
     <section>
       <h2>Graded ledger (preliminary sample, n = 8)</h2>
-      <p><strong>7-1-0</strong> over
-      <strong>8</strong> graded records &mdash;
-      win rate 87.5% (95% Wilson CI: [52.9%, 97.8%]), beat-close rate
-      100.0%, average close beating value
-      4.29% of implied probability, net P&amp;L
-      549.64 on 790.0 staked
-      (ROI 69.57%). Ledger root hash
-      <code>178e29974bf8748c</code>.</p>
+      <p class="pub-note"><strong>How these records relate:</strong> The Week 7 full board contains
+      37 model decisions; the graded ledger contains 8
+      separately recorded entries. Comparing player, market, side, entry line, and entry odds finds
+      1 row whose entry and close values align,
+      2 whose entry values align but closing values differ, and
+      5 with no matching Week 7 entry values. The artifacts do not
+      share an event or decision ID, so these value matches do not establish that the eight entries
+      are a subset of the 37 decisions. The ledger does not add eight observations to the full-board
+      denominator or to the prospective commercial gate. Inspect the
+      <a href="/clv_report_2026_w7.json">Week 7 board data</a> and
+      <a href="/clv_audit_report.json">graded ledger data</a>.</p>
       <p class="pub-note"><strong>Read this honestly:</strong> 8
-      records is a tiny sample. None of these rates are meaningful evidence of
+      records is a tiny sample. The rows below are the graded entries, not a
+      win-rate or return claim. None of these results are meaningful evidence of
       edge yet. We publish them below the full board so the methodology is auditable from
-      day one, and so there is no incentive to quietly drop bad weeks.</p>
+      day one, and so there is no incentive to quietly drop bad weeks. Ledger root hash
+      <code>178e29974bf8748c</code>.</p>
       <div class="pub-tablewrap">
       <table class="pub-table">
         <thead><tr><th>Player</th><th>Market</th><th>Bet</th><th>Odds</th>
-        <th>Close</th><th>CLV</th><th>Outcome</th><th>Net</th></tr></thead>
-        <tbody><tr><td>Amon-Ra St. Brown</td><td>rec_yds</td><td>OVER 78.5</td><td>-115</td><td>81.5 (-115)</td><td class='pub-num'>3.0 yds / 4.97%</td><td>WIN</td><td class='pub-num'>104.35</td></tr>
-<tr><td>Hunter Henry</td><td>rec_yds</td><td>OVER 31.5</td><td>-115</td><td>33.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>86.96</td></tr>
-<tr><td>DeMario Douglas</td><td>rec_yds</td><td>OVER 34.5</td><td>-110</td><td>36.5 (-115)</td><td class='pub-num'>2.0 yds / 4.33%</td><td>WIN</td><td class='pub-num'>90.91</td></tr>
-<tr><td>Jaxon Smith-Njigba</td><td>rec_yds</td><td>OVER 100.5</td><td>170</td><td>103.5 (160)</td><td class='pub-num'>3.0 yds / 6.41%</td><td>LOSS</td><td class='pub-num'>-80.0</td></tr>
-<tr><td>Chris Olave</td><td>rec_yds</td><td>OVER 75.5</td><td>-115</td><td>77.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>86.96</td></tr>
-<tr><td>A.J. Brown</td><td>rec_yds</td><td>UNDER 69.5</td><td>-105</td><td>67.5 (-115)</td><td class='pub-num'>2.0 yds / 5.35%</td><td>WIN</td><td class='pub-num'>95.24</td></tr>
-<tr><td>Colston Loveland</td><td>rec_yds</td><td>OVER 44.5</td><td>-115</td><td>46.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>86.96</td></tr>
-<tr><td>DK Metcalf</td><td>rec_yds</td><td>UNDER 54.5</td><td>-115</td><td>52.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td class='pub-num'>78.26</td></tr></tbody>
+        <th>Close</th><th>CLV</th><th>Outcome</th><th>Week 7 relation</th><th>Net</th></tr></thead>
+        <tbody><tr><td>Amon-Ra St. Brown</td><td>rec_yds</td><td>OVER 78.5</td><td>-115</td><td>81.5 (-115)</td><td class='pub-num'>3.0 yds / 4.97%</td><td>WIN</td><td>Week 7 row 8: entry values align; close differs</td><td class='pub-num'>104.35</td></tr>
+<tr><td>Hunter Henry</td><td>rec_yds</td><td>OVER 31.5</td><td>-115</td><td>33.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td>Week 7 row 1: entry and close values align</td><td class='pub-num'>86.96</td></tr>
+<tr><td>DeMario Douglas</td><td>rec_yds</td><td>OVER 34.5</td><td>-110</td><td>36.5 (-115)</td><td class='pub-num'>2.0 yds / 4.33%</td><td>WIN</td><td>Week 7 row 2: entry values align; close differs</td><td class='pub-num'>90.91</td></tr>
+<tr><td>Jaxon Smith-Njigba</td><td>rec_yds</td><td>OVER 100.5</td><td>170</td><td>103.5 (160)</td><td class='pub-num'>3.0 yds / 6.41%</td><td>LOSS</td><td>No matching Week 7 entry values</td><td class='pub-num'>-80.0</td></tr>
+<tr><td>Chris Olave</td><td>rec_yds</td><td>OVER 75.5</td><td>-115</td><td>77.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td>No matching Week 7 entry values</td><td class='pub-num'>86.96</td></tr>
+<tr><td>A.J. Brown</td><td>rec_yds</td><td>UNDER 69.5</td><td>-105</td><td>67.5 (-115)</td><td class='pub-num'>2.0 yds / 5.35%</td><td>WIN</td><td>No matching Week 7 entry values</td><td class='pub-num'>95.24</td></tr>
+<tr><td>Colston Loveland</td><td>rec_yds</td><td>OVER 44.5</td><td>-115</td><td>46.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td>No matching Week 7 entry values</td><td class='pub-num'>86.96</td></tr>
+<tr><td>DK Metcalf</td><td>rec_yds</td><td>UNDER 54.5</td><td>-115</td><td>52.5 (-115)</td><td class='pub-num'>2.0 yds / 3.32%</td><td>WIN</td><td>No matching Week 7 entry values</td><td class='pub-num'>78.26</td></tr></tbody>
       </table>
       </div>
     </section>
@@ -248,14 +253,14 @@
       Because the 95% confidence interval spans zero, there is no statistically significant evidence of closing line alpha over the market consensus.</p>
       <p class="pub-note"><strong>Public actions in effect:</strong><br>
       &bull; <strong>Beat-Close Guarantee Suspended:</strong> Beating or tying a close on a small sample guarantees nothing about win rate or expected value. The marketing guarantee is publicly withdrawn.<br>
-      &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> Commercial paid upgrades remain suspended until N &ge; 300 graded board decisions achieve positive CLV bounded strictly above zero with 95% confidence.<br>
+      &bull; <strong>Paid Signups Frozen &amp; Quant Tier Waitlisted:</strong> The <a href="https://github.com/NickAiNYC/Propstein/blob/main/docs/EDGE_GATE.md">preregistered commercial gate</a> requires 600 independently evaluable qualifying signals per sport, mean price CLV of at least +1.0 percentage point, and a strictly positive game-clustered lower confidence bound at one-sided &alpha; = 0.0125. N = 300 is a descriptive checkpoint, not an unlock. Compliance approval is also required. The 37 full-board decisions above are a separate published audit cohort, not the gate sample.<br>
       &bull; <strong>Uncensored Research Access:</strong> Projections and live pricing calculations are made available without paywalls in observer research mode.</p>
     </section>
 
     <section>
       <h2>What we publish as the sample grows</h2>
       <p>Calibration by predicted-probability bucket; win rate with sample
-      size; ROI with a confidence interval; maximum drawdown; splits by sport,
+      size; return with a confidence interval; maximum drawdown; splits by sport,
       market and model version; and losing weeks next to winning weeks, every
       week. The commitment is the record, not the highlight reel.</p>
     </section>

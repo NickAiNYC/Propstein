@@ -22,8 +22,8 @@
             document.getElementById('receiptFairLine').textContent = `${Number(data.fair_line || data.line).toFixed(1)} pts`;
             document.getElementById('receiptEdgeVal').textContent = `+${Number(data.edge_pct || 5.0).toFixed(1)}%`;
             document.getElementById('receiptProbs').textContent = `${Math.round(Number(data.fair_prob || 0.62) * 100)}% / ${Math.round(Number(data.implied_prob || 0.54) * 100)}%`;
-            document.getElementById('receiptKelly').textContent = `${(Number(data.stake || 0.025) * 100).toFixed(1)}% Bankroll`;
-            document.getElementById('receiptStatus').textContent = `${data.status || 'GRADED'} · ${String(data.result || 'WON').toUpperCase()}`;
+            const statusEl = document.getElementById('receiptStatus');
+            if (statusEl) statusEl.textContent = `${data.status || 'GRADED'} · ${String(data.result || 'WON').toUpperCase()}`;
             if (data.receipt_hash) document.getElementById('receiptHash').textContent = `sha256:${data.receipt_hash}`;
             if (data.source_hash) document.getElementById('sourceHash').textContent = `sha256:${data.source_hash}`;
             if (data.model_version) document.getElementById('modelVersion').textContent = data.model_version;
@@ -34,17 +34,5 @@
         }
       }
 
-      // Fetch public ledger stats
-      try {
-        const ledRes = await fetch('/api/ledger?limit=10');
-        if (ledRes.ok) {
-          const lData = await ledRes.json();
-          if (lData.total_graded_alerts) document.getElementById('statGraded').textContent = lData.total_graded_alerts;
-          if (lData.clv_beat_rate_pct) document.getElementById('statBeatRate').textContent = `${lData.clv_beat_rate_pct.toFixed(1)}%`;
-          if (lData.average_clv_beat_pct) document.getElementById('statAvgClv').textContent = `+${lData.average_clv_beat_pct.toFixed(1)}%`;
-          if (lData.roi_pct) document.getElementById('statRoi').textContent = `+${lData.roi_pct.toFixed(1)}%`;
-        }
-      } catch (err) {
-        // Keep pre-rendered defaults
-      }
+      // Scoreboard headlines are not rendered. Graded results live on /performance/.
     })();
