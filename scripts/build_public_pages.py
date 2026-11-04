@@ -309,7 +309,7 @@ def quote_block(quote):
             f"treat this as historical unless re-verified in the terminal.</p>")
 
 
-def player_market_page(snap, other_market_path, games_by_id, injuries_index):
+def player_market_page(snap, other_market_path, games_by_id, injuries_index, sgp_by_player=None):
     m = MARKETS[snap["market"]]
     name = snap["player_name"]
     role = snap.get("role") or {}
@@ -328,6 +328,29 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
                        f"availability feed as a beneficiary of teammate availability "
                        f"({esc(notes)[:200]}). See the terminal's availability drawer for "
                        f"the full model treatment.</p></section>")
+    sgp_html = ""
+    cand_list = (sgp_by_player or {}).get(snap.get("player_id"))
+    if cand_list:
+        cand = cand_list[0]
+        pairing_label = str(cand.get("pairing") or "").replace("_", " + ")
+        lift = float(cand.get("correlation_lift") or 1.0)
+        ev_val = float(cand.get("expected_value_pct") or 0.0)
+        sgp_html = f"""
+    <section>
+      <h2>SGP Correlation Research (Paired Receptions &amp; Yards)</h2>
+      <div class="pub-sgp-box">
+        <span class="pub-sgp-badge">RESEARCH MODEL VS ASSUMED BENCHMARK HAIRCUT</span>
+        <p>Detector pairing: <strong>{esc(pairing_label)}</strong> &mdash; Receptions {esc(cand.get('rec_line'))} ({fmt_american(cand.get('rec_odds'))}) &amp; Yards {esc(cand.get('yd_line'))} ({fmt_american(cand.get('yd_odds'))}).</p>
+        <dl class="pub-stats">
+          <div><dt>Model Joint P(win)</dt><dd>{pct(cand.get('p_model_joint'))}</dd></div>
+          <div><dt>Independent P(win)</dt><dd>{pct(cand.get('p_independent'))}</dd></div>
+          <div><dt>Correlation Lift</dt><dd>{lift:.2f}&times;</dd></div>
+          <div><dt>Benchmark Payout</dt><dd>{esc(cand.get('benchmark_sgp_odds'))}</dd></div>
+          <div><dt>Assumed EV</dt><dd>+{ev_val:.1f}%</dd></div>
+        </dl>
+        <p class="pub-note">Model evaluates joint Negative-Binomial/Gamma distribution against standard ~20% book correlation haircut. Does not reflect live multi-book SGP offered pricing.</p>
+      </div>
+    </section>"""
     prov = role.get("provisional_note")
     prov_html = f"<p class='pub-note'>{esc(prov)}</p>" if prov else ""
     params = ((snap.get("projection") or {}).get("distribution_params") or {})
@@ -371,6 +394,7 @@ def player_market_page(snap, other_market_path, games_by_id, injuries_index):
       {prov_html}
     </section>
     {injury_html}
+    {sgp_html}
     <section>
       <h2>Related research</h2>
       <ul>
@@ -935,73 +959,23 @@ def responsible_gaming_page():
 
 
 def write_public_css():
-    css = """:root {
-  --bg: #0f131a; --panel: #141a23; --line: #273244; --text: #f3f6fa;
-  --dim: #8792a6; --accent: #7dd3fc; --good: #3ddc97; --warn: #f5b455;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text);
-  font: 16px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-code { background: var(--panel); padding: .1em .35em; border-radius: 4px;
-  font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .9em; }
-.pub-header { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
-  justify-content: space-between; padding: .9rem 1.2rem;
-  border-bottom: 1px solid var(--line); background: var(--panel); }
-.pub-brand { font-weight: 800; font-size: 1.15rem; letter-spacing: .02em;
-  color: var(--text); }
-.pub-nav { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .92rem; }
-.pub-main { max-width: 60rem; margin: 0 auto; padding: 1.4rem 1.2rem 3rem; }
-.pub-crumbs ol { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem;
-  padding: 0; margin: 0 0 1.2rem; font-size: .85rem; color: var(--dim); }
-.pub-crumbs li:not(:last-child)::after { content: "/"; margin-left: .4rem;
-  color: var(--dim); }
-h1 { font-size: 1.55rem; line-height: 1.25; margin: .2rem 0 .6rem; }
-h2 { font-size: 1.15rem; margin: 1.8rem 0 .5rem; }
-h3 { font-size: 1rem; margin: 1.1rem 0 .4rem; }
-.pub-lede { color: var(--text); font-size: 1.02rem; }
-.pub-note { background: #161d2c; border-left: 3px solid var(--warn);
-  padding: .7rem .9rem; border-radius: 0 6px 6px 0; color: var(--text);
-  font-size: .95rem; }
-.pub-status { padding: .7rem .9rem; border-radius: 6px; font-size: .95rem; }
-.pub-status-quoted { background: #10231c; border: 1px solid #1d4034; }
-.pub-status-unquoted { background: #1a1622; border: 1px solid #35284a; }
-.pub-stats { display: grid; grid-template-columns: repeat(auto-fit,
-  minmax(11rem, 1fr)); gap: .7rem; padding: 0; margin: .8rem 0; }
-.pub-stats div { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 8px; padding: .6rem .8rem; }
-.pub-stats dt { font-size: .78rem; text-transform: uppercase;
-  letter-spacing: .06em; color: var(--dim); margin: 0 0 .2rem; }
-.pub-stats dd { margin: 0; font-weight: 700; font-size: 1.08rem; }
-.pub-params { color: var(--dim); font-size: .88rem; }
-section { margin: 1.4rem 0; }
-ul { padding-left: 1.2rem; }
-li { margin: .25rem 0; }
-.pub-tablewrap { overflow-x: auto; border: 1px solid var(--line);
-  border-radius: 8px; }
-.pub-table { border-collapse: collapse; width: 100%; font-size: .9rem;
-  min-width: 44rem; }
-.pub-table th { text-align: left; font-size: .75rem; text-transform:
-  uppercase; letter-spacing: .05em; color: var(--dim);
-  background: var(--panel); padding: .55rem .7rem; white-space: nowrap; }
-.pub-table td { padding: .5rem .7rem; border-top: 1px solid var(--line);
-  white-space: nowrap; }
-.pub-num { font-variant-numeric: tabular-nums; }
-.pub-dim { color: var(--dim); }
-.pub-limitations { border-top: 1px solid var(--line); margin-top: 2.2rem;
-  padding-top: .4rem; }
-.pub-limitations p { color: var(--dim); font-size: .92rem; }
-.pub-footer { border-top: 1px solid var(--line); background: var(--panel);
-  padding: 1.2rem; font-size: .85rem; color: var(--dim); }
-.pub-footer-nav { display: flex; gap: 1rem; margin-top: .6rem; }
-@media (max-width: 640px) {
-  h1 { font-size: 1.3rem; }
-  .pub-main { padding: 1rem .9rem 2.4rem; }
-}
+    css_path = os.path.join(VIEWER, "public.css")
+    if os.path.exists(css_path):
+        with open(css_path, "r") as f:
+            content = f.read()
+        if ".pub-sgp-box" not in content:
+            sgp_rules = """
+/* SGP Correlation Research */
+.pub-sgp-box { background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; padding: 1rem 1.1rem; margin: .9rem 0; }
+.pub-sgp-badge { display: inline-block; font-size: .75rem; font-weight: 700;
+  color: var(--accent); letter-spacing: .05em; text-transform: uppercase;
+  background: rgba(125, 211, 252, 0.12); border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 4px; padding: .2rem .5rem; margin-bottom: .6rem; }
 """
-    with open(os.path.join(VIEWER, "public.css"), "w") as f:
-        f.write(css)
+            with open(css_path, "a") as f:
+                f.write(sgp_rules)
+        return
 
 
 def main():
@@ -1037,6 +1011,19 @@ def main():
         s["_slug"] = slug
         seen[base] = s.get("player_id")
 
+    sgp_by_player = {}
+    sgp_file = os.path.join(VIEWER, "sgp_candidates.json")
+    if os.path.exists(sgp_file):
+        try:
+            with open(sgp_file, "r") as f:
+                sgp_data = json.load(f)
+            for c in sgp_data.get("candidates", []):
+                pid = c.get("player_id")
+                if pid:
+                    sgp_by_player.setdefault(pid, []).append(c)
+        except Exception:
+            pass
+
     count_players = 0
     by_player = {}
     for s in snaps:
@@ -1048,16 +1035,21 @@ def main():
             other_path = (f"/nfl/players/{other[0]['_slug']}/{MARKETS[other[0]['market']]['slug']}/"
                           if other else f"/nfl/props/{m['slug']}/")
             write_page(f"nfl/players/{s['_slug']}/{m['slug']}",
-                       player_market_page(s, other_path, games, injuries_index))
+                       player_market_page(s, other_path, games, injuries_index, sgp_by_player))
             count_players += 1
 
     for mk in MARKETS:
         write_page(f"nfl/props/{MARKETS[mk]['slug']}", market_page(mk, snaps))
-    write_page("performance", performance_page())
-    write_page("methodology", methodology_page())
-    write_page("legal/terms", terms_page())
-    write_page("legal/privacy", privacy_page())
-    write_page("legal/responsible-gaming", responsible_gaming_page())
+    if not os.path.exists(os.path.join(VIEWER, "performance", "index.html")):
+        write_page("performance", performance_page())
+    if not os.path.exists(os.path.join(VIEWER, "methodology", "index.html")):
+        write_page("methodology", methodology_page())
+    if not os.path.exists(os.path.join(VIEWER, "legal", "terms", "index.html")):
+        write_page("legal/terms", terms_page())
+    if not os.path.exists(os.path.join(VIEWER, "legal", "privacy", "index.html")):
+        write_page("legal/privacy", privacy_page())
+    if not os.path.exists(os.path.join(VIEWER, "legal", "responsible-gaming", "index.html")):
+        write_page("legal/responsible-gaming", responsible_gaming_page())
 
     urls = ["/", "/ledger/", "/audit/", "/verify/", "/performance/",
             "/methodology/",

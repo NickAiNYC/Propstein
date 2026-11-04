@@ -190,6 +190,8 @@
     playerPhotos: { photos: {}, byName: {} },
     injuries: { injuries: [], impacted_beneficiaries: {} },
     odds: { quotes: [] },
+    sgpCandidates: [],
+    lineHistoryCache: {},
     filters: { search: '', market: adapter.defaultMarket, position: 'ALL', team: '', gameId: '', playMode: 'actionable', intent: 'all' },
     proView: 'all',
     view: 'table',
@@ -2269,7 +2271,7 @@
     if ($('#slateSelector')) $('#slateSelector').value = slateKey;
     renderSkeletons();
 
-    const [slateRes, gamesRes, picks, livePicksRes, injuries, oddsRes, clvReport, snapshots, newsRes, breakerCfg] = await Promise.all([
+    const [slateRes, gamesRes, picks, livePicksRes, injuries, oddsRes, clvReport, snapshots, newsRes, breakerCfg, sgpRes] = await Promise.all([
       fetchJsonStatus(config.slate, []),
       fetchJsonStatus(config.games, []),
       fetchJson(config.picks, {}),
@@ -2279,7 +2281,8 @@
       fetchClvAuditReport(),
       config.snapshots ? fetchJson(config.snapshots, []) : Promise.resolve([]),
       fetchJsonStatus('news_watcher_state.json', null),
-      fetchJson('circuit_breaker_config.json', null)
+      fetchJson('circuit_breaker_config.json', null),
+      fetchJson('sgp_candidates.json', null)
     ]);
     const slate = slateRes.data;
     const games = gamesRes.data;
@@ -2303,6 +2306,7 @@
     state.odds = normalizeFeed(odds);
     state.newsWatcherState = newsState && typeof newsState === 'object' ? newsState : { teams_locked: {}, players_pending: {} };
     state.breakerConfig = breakerCfg && typeof breakerCfg === 'object' && breakerCfg.sports ? breakerCfg : null;
+    state.sgpCandidates = Array.isArray(sgpRes?.candidates) ? sgpRes.candidates : [];
 
     // Feed health (Phase 2 failure-mode UI): transport status per critical
     // feed + data kind. Consumed by updateFeedHealthUI(); staleness is
@@ -8538,6 +8542,20 @@
     updateModalWatchlistBtn(row.player_id);
     $('#detailContent').innerHTML = detailMarkup(row, evaluation, injury, beneficiary, fair, projection);
 
+    // Line History: load continuous B1 observations asynchronously if unpopulated
+    const lineMarketSlug = String(state.filters.market || '').replace(/_/g, '-');
+    const lineCacheKey = `${row.player_id}_${lineMarketSlug}`;
+    if (!state.lineHistoryCache?.[lineCacheKey]) {
+      fetchJson(`api/lines/${row.player_id}/${lineMarketSlug}.json`, null).then((lineData) => {
+        if (!state.lineHistoryCache) state.lineHistoryCache = {};
+        state.lineHistoryCache[lineCacheKey] = lineData || { player_id: row.player_id, market: state.filters.market, series: {} };
+        const lineWidget = $('#lineHistoryWidget');
+        if (lineWidget && state.selectedPlayerId === row.player_id) {
+          lineWidget.innerHTML = lineHistorySectionHtml(state.lineHistoryCache[lineCacheKey]);
+        }
+      });
+    }
+
     // 1. What-If Scenario Slider
     const slider = $('#targetShareSlider');
     const resetBtn = $('#scenarioResetBtn');
@@ -8713,6 +8731,170 @@
     }
   }
 
+  function lineHistorySectionHtml(historyData) {
+    if (!historyData || !historyData.series || typeof historyData.series !== 'object') {
+      return `<div class="spec-meta-item">
+        <span class="spec-k">Line History:</span>
+        <span class="spec-v cell-sub">Line history accumulating (B1 capture active) · 0 intra-slate quote shifts recorded</span>
+      </div>`;
+    }
+    const allPoints = [];
+    for (const [book, pts] of Object.entries(historyData.series)) {
+      if (Array.isArray(pts)) {
+        for (const p of pts) {
+          if (p && Number.isFinite(p.line)) {
+            allPoints.push({ book, t: p.t, line: p.line, over: p.over, under: p.under });
+          }
+        }
+      }
+    }
+    allPoints.sort((a, b) => (a.t < b.t ? -1 : a.t > b.t ? 1 : 0));
+
+    let hasIntraSlateMoves = false;
+    if (allPoints.length >= 2) {
+      const tFirst = new Date(allPoints[0].t).getTime();
+      const tLast = new Date(allPoints[allPoints.length - 1].t).getTime();
+      if (Number.isFinite(tFirst) && Number.isFinite(tLast) && (tLast - tFirst) > 60000) {
+        hasIntraSlateMoves = true;
+      }
+    }
+
+    if (!hasIntraSlateMoves) {
+      return `<div class="spec-meta-item">
+        <span class="spec-k">Line History:</span>
+        <span class="spec-v cell-sub">Line history accumulating (B1 capture active) · 0 intra-slate quote shifts recorded</span>
+      </div>`;
+    }
+
+    const lines = allPoints.map((p) => p.line);
+    const minL = Math.min(...lines);
+    const maxL = Math.max(...lines);
+    const range = maxL - minL || 1;
+    const w = 180;
+    const h = 24;
+    const padding = 3;
+    const pts = allPoints.map((p, idx) => {
+      const x = padding + (idx / (allPoints.length - 1)) * (w - 2 * padding);
+      const y = h - padding - ((p.line - minL) / range) * (h - 2 * padding);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+
+    const firstP = allPoints[0];
+    const lastP = allPoints[allPoints.length - 1];
+    const delta = lastP.line - firstP.line;
+    const deltaStr = delta > 0 ? `+${delta.toFixed(1)}` : delta < 0 ? delta.toFixed(1) : 'flat';
+
+    return `<div class="spec-meta-item" style="flex-direction:column; gap:4px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="spec-k">Line History (B1 Continuous):</span>
+        <span class="spec-v" style="font-weight:700;">${firstP.line.toFixed(1)} &rarr; ${lastP.line.toFixed(1)} (${deltaStr})</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+        <svg viewBox="0 0 ${w} ${h}" style="width:100%; height:${h}px; overflow:visible;">
+          <polyline fill="none" stroke="var(--accent)" stroke-width="1.8" points="${pts}" />
+          ${allPoints.map((p, idx) => {
+            const x = padding + (idx / (allPoints.length - 1)) * (w - 2 * padding);
+            const y = h - padding - ((p.line - minL) / range) * (h - 2 * padding);
+            return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.5" fill="var(--accent)" />`;
+          }).join('')}
+        </svg>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted);">
+        <span>${allPoints.length} points across ${new Set(allPoints.map((p) => p.book)).size} book(s)</span>
+        <span>${firstP.t ? firstP.t.slice(11, 16) : ''} &ndash; ${lastP.t ? lastP.t.slice(11, 16) : ''} UTC</span>
+      </div>
+    </div>`;
+  }
+
+  function sgpCorrelationSectionHtml(row, evaluation) {
+    if (SPORT_ID !== 'nfl') {
+      return `
+        <div class="spec-col spec-col-quant">
+          <div class="spec-header">
+            <span class="spec-title">Quant Calibration</span>
+            <span class="spec-tag tag-model">UNCALIBRATED</span>
+          </div>
+          <div class="spec-body">
+            <div class="spec-meta-list">
+              <div class="spec-meta-item">
+                <span class="spec-k">SGP / Correlation:</span>
+                <span class="spec-v cell-sub">Model uncalibrated for ${esc(adapter.label)}</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    const candidates = (state.sgpCandidates || []).filter((c) => c.player_id === row.player_id);
+    const isStaleOrUnverified = evaluation.state === 'stale' || evaluation.state === 'none' || evaluation.closed || (state.feedHealth && state.feedHealth.odds === 'error');
+
+    const tag = isStaleOrUnverified
+      ? '<span class="spec-tag alert-amber">STALE QUOTE — SGP UNVERIFIED</span>'
+      : '<span class="spec-tag tag-model">MODEL VS BENCHMARK</span>';
+
+    let body = '';
+    if (isStaleOrUnverified) {
+      body = `<div class="spec-alert alert-amber">
+        <strong>Single-leg quote unverified or stale:</strong> SGP edge verification suspended fail-closed until live quote provenance refreshes.
+      </div>`;
+    } else if (!candidates.length) {
+      body = `<div class="spec-meta-list">
+        <div class="spec-meta-item">
+          <span class="spec-k">Correlation Scan:</span>
+          <span class="spec-v cell-sub">No qualified paired edge (&gt;5.0% hurdle vs ~20% haircut)</span>
+        </div>
+      </div>`;
+    } else {
+      const topC = candidates[0];
+      const pairingName = topC.pairing === 'OVER_OVER' ? 'Over Rec + Over Yds'
+        : topC.pairing === 'UNDER_UNDER' ? 'Under Rec + Under Yds'
+        : topC.pairing.replace('_', ' + ');
+      body = `
+        <div class="spec-meta-list">
+          <div class="spec-meta-item">
+            <span class="spec-k">Pairing:</span>
+            <span class="spec-v" style="font-weight:700;">${esc(pairingName)}</span>
+          </div>
+          <div class="spec-meta-item">
+            <span class="spec-k">Legs:</span>
+            <span class="spec-v">Rec ${topC.rec_line} (${oddsText(topC.rec_odds)}) · Yds ${topC.yd_line} (${oddsText(topC.yd_odds)})</span>
+          </div>
+          <div class="spec-meta-item">
+            <span class="spec-k">Joint Win Prob:</span>
+            <span class="spec-v">Joint ${pct(topC.p_model_joint)} vs Indep ${pct(topC.p_independent)} (${num(topC.correlation_lift).toFixed(2)}&times; lift · &phi;=${num(topC.phi_correlation).toFixed(2)})</span>
+          </div>
+          <div class="spec-meta-item">
+            <span class="spec-k">Benchmark Payout:</span>
+            <span class="spec-v">${esc(topC.benchmark_sgp_odds)}</span>
+          </div>
+          <div class="spec-meta-item">
+            <span class="spec-k">Assumed EV:</span>
+            <span class="spec-v text-accent" style="font-weight:700;">+${num(topC.expected_value_pct).toFixed(1)}%</span>
+          </div>
+        </div>
+        <div class="spec-note">
+          <strong>Disclosed assumption:</strong> Evaluates joint NegBin&ndash;Gamma distribution against standard ~20% book correlation haircut. Does not reflect live multi-book SGP offered pricing.
+        </div>`;
+    }
+
+    const marketSlug = String(state.filters.market || '').replace(/_/g, '-');
+    const cachedLineData = state.lineHistoryCache?.[`${row.player_id}_${marketSlug}`];
+
+    return `
+      <div class="spec-col spec-col-quant">
+        <div class="spec-header">
+          <span class="spec-title">SGP &amp; B1 Line History</span>
+          ${tag}
+        </div>
+        <div class="spec-body">
+          ${body}
+          <div id="lineHistoryWidget" style="margin-top:8px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+            ${lineHistorySectionHtml(cachedLineData)}
+          </div>
+        </div>
+      </div>`;
+  }
+
   function detailMarkup(row, evaluation, injury, beneficiary, fair, projection) {
     const isLogged = (state.portfolio || []).some((b) => b.sport === SPORT_ID && b.player_id === row.player_id && b.market === state.filters.market);
 
@@ -8863,7 +9045,7 @@
             ${evaluation.dataCheck ? '<div class="spec-alert alert-amber"><strong>Audit Flag:</strong> Edge &gt;12% warrants active receipt check.</div>' : ''}
           </div>
         </div>
-
+        ${sgpCorrelationSectionHtml(row, evaluation)}
       </div>
 
       <!-- Sticky Add To Ledger Bar pinned to bottom of bottom sheet -->
