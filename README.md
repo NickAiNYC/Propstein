@@ -1,100 +1,101 @@
-<img src="viewer/propstein-logo.svg" alt="PropStein logo" width="420" />
+# PropStein: Empirical NFL Prop Research Terminal
 
-PropStein is a distributional prop model and operational terminal for NFL receiving markets. It prices outcomes with a compound negative-binomial / gamma framework, runs weekly slate logic, and logs closing-line value with a disciplined risk gate.
+[![CI](https://github.com/NickAiNYC/Propstein/actions/workflows/python-tests.yml/badge.svg)](https://github.com/NickAiNYC/Propstein/actions)
+[![Production Deploy](https://github.com/NickAiNYC/Propstein/actions/workflows/production-deploy.yml/badge.svg)](https://propstein.com)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-**Historical context gate:** New model fits and weekly projections are blocked while the nflverse game spread, total, and weather inputs lack observation timestamps. The existing frozen artifacts remain available for research, but they are not evidence that these context values were known at pricing time. The weekly model command below will fail closed until timestamped context and per-row pricing cutoffs are supplied. See [Feature cutoff gate](docs/FEATURE_CUTOFF_GATE.md).
+PropStein is an empirical quantitative prop research terminal and cryptographic CLV ledger for NFL receiving markets. It models outcomes with a compound Negative Binomial / Gamma distributional framework, logs closing line value against sharp consensus, and publishes its full calibration record—including negative holdout results.
 
-Built for edge detection, not hype: the model is probabilistic, walk-forward validated, and intentionally conservative. No LLM sits in the decision path; the language model reasons after the numbers are fixed.
-
-## Why PropStein
-
-- Distribution-aware pricing for receptions and receiving yards
-- Real-time weekly slate generation and live line comparison
-- Risk-gated picks with EV and Kelly guidance
-- CLV logging and audit workflow for model accountability
-- Clean deployment on a high-performance edge stack
-
-## 3. Weekly Operational Cadence
-
-1. **Tuesday – Thursday (Ingest & Projection)**
-   - Schedule and depth charts finalize.
-   - Run the weekly pipeline via the UI **Run Slate** button or terminal:
-     ```bash
-     python src/week1.py --season 2026 --week 1
-     ```
-   - Model fits in ~2 seconds and refreshes `slate_projections.json`, `current_picks.json`, and `top_picks.json`.
-
-2. **Friday – Sunday Morning (Line Comparison & Execution)**
-   - Open the **Slate Browser** and enter your sportsbook line in the **Book Line Comparison** tool.
-   - The app runs the compound distribution and flags qualifying plays:
-     - 🟢 **Green**: Edge >= 10% in W1 / >= 3% normal; value play clearing the calibration gate with EV per unit and Kelly guidance.
-     - 🟡 **Yellow**: Positive edge below the strict risk gate (lean/watch).
-     - 🔴 **Red**: Negative edge / sharp book.
-   - Click **Save Bet to CLV Tracking Log** in the Calculator to add active plays to `picks_log.jsonl`.
-   - Click **Copy as Text for Slips** in the Top Picks Card for rapid slip entry.
-
-3. **Sunday Night / Monday (Closing Line Value Audit)**
-   - Once games lock or settle, open the **CLV Tracking Log** tab.
-   - Select logged picks and input the closing devigged probability or closing odds.
-   - The app computes `clv = model_prob - closing_prob` and updates the running 95% confidence interval.
+**Live Terminal**: [propstein.com](https://propstein.com)  
+**Track Record & Evidence**: [propstein.com/performance/](https://propstein.com/performance/)  
+**Audit Protocol**: [docs/VERIFY.md](docs/VERIFY.md)
 
 ---
 
-## 4. Production Deployment
+## 1. What PropStein Is (and Is Not)
 
-The viewer frontend and precomputed slate data are deployed globally via Vercel:
+- **Distributional Research, Not Tout Picks**: PropStein evaluates the full predictive distribution across every alternate line ($P(\text{over } X)$ for receptions and receiving yards). It never outputs "guaranteed picks", "locks", or recommended dollar bets.
+- **Fail-Closed Market Pricing**: Ingested sportsbook odds require deterministic SHA-256 verification receipts. Unquoted or unverified lines fail closed and are excluded from qualification.
+- **Market-Anchored Shrinkage**: When holdout empirical skill is unproven, the model anchors to the devigged market closing consensus as its prior and shrinks probability shifts toward $w \approx 0.25$ to prevent overconfident pricing.
+- **No LLM in the Decision Path**: Numerical pricing and distribution integrals are calculated purely with deterministic mathematical models. Language models reason only after the numbers are frozen.
 
-- **Live Production URL**: [propstein.com](https://propstein.com)
-- **Vercel Project**: [`propstein`](https://vercel.com/nicks-projects-ec56abd4/propstein)
-- **Deployment root**: repository root (`.`). The root [`vercel.json`](vercel.json) publishes `viewer/`.
-- **Operational model**: static assets are versioned, service workers are fail-closed, and edge caching is tuned for speed and reliability.
+---
 
-To publish the latest slate build:
+## 2. Published Track Record & Honest Posture
+
+We publish our full calibration record as-is, without cherry-picking:
+
+- **Full-Board Close Calibration (Week 7)**:
+  - Total graded decisions: **$N = 37$**
+  - **2 of 37 beat the close** (5.4%, 95% Wilson CI: [1.5%, 17.7%])
+  - **34 of 37 tied the close** (91.9%, line unchanged in yard increments)
+  - **1 of 37 closed worse** (2.7%, -1.0 yd drift)
+  - Full quoted board evaluation: **$N = 320$** observations ($\hat{w} = 0.7597$, 95% CI $[0.4001, 1.1193]$)
+- **Holdout Brier Skill Defect**:
+  - In our Week 1 holdout evaluation, the model's Brier score ($0.2813$) trailed the naive baseline ($0.2500$), resulting in a **$-12.51\%$ Brier skill score**.
+  - We treat this as an open defect under active recalibration, not marketing spin.
+- **Commercial Gate Active**:
+  - Because the decision 95% CI spans zero ($[-0.1013, +1.4497]$), paid subscriptions are frozen, quant tiers are waitlisted, and all marketing beat-close guarantees are withdrawn until $N \ge 300$ prospective decisions demonstrate statistically significant alpha.
+
+---
+
+## 3. Reproducible Audit (`make verify`)
+
+Any operator or researcher can reproduce the cryptographic hashes and calibration benchmarks locally in seconds:
 
 ```bash
-vercel --prod
+git clone https://github.com/NickAiNYC/Propstein.git
+cd Propstein
+make verify
 ```
 
-The edge deployment builds and propagates in roughly 4 seconds.
+The verification engine asserts four invariants:
+1. **Ledger Root Hash**: Confirms that canonical hashing reproduces the published ledger root (`Root #178e29974bf8748c`).
+2. **Prospective Timing**: Verifies that all 472 candidate snapshots in `full_board_2026_w8_early_1300.jsonl` were captured before kickoff.
+3. **Leakage Gate**: Confirms that decision cutoffs are strictly enforced and zero future snapshots were included in holdout evaluations.
+4. **Market-Model Blend**: Verifies the empirical blend regression parameters and checks that commercial gates fail closed.
+
+See [docs/VERIFY.md](docs/VERIFY.md) for full audit specification.
 
 ---
 
-## Architecture Snapshot
+## 4. Distribution Architecture
 
 ```text
-src/features.py   leak-free inputs and leakage checks
-src/slate.py      weekly slate build, roster/injury ingestion, Week 1 handling
-src/week1.py      CLI runner for live weekly pipelines
-src/model.py      compound distribution, de-vig, Kelly logic
-src/baseline.py   form-only line setter
-src/backtest.py   walk-forward calibration and simulation
-src/parlay.py     correlation-aware SGP and alt-line pricing
-src/odds.py       odds API client and no-vig consensus logic
-src/agent.py      picks engine, hard gate logic, CLV logging
-api/main.py       FastAPI service, billing, and entitlement layer
-```
+src/
+├── model.py            # Compound NegBin/Gamma distribution & market shrinkage blend
+├── value_boundaries.py # Continuous & discrete vig boundaries, push calculations
+├── prospective_board.py# Pre-kickoff candidate universe locking & timing audit
+├── grade_clv.py        # Probability-space and line-delta CLV validation
+├── line_history.py     # B1 continuous multi-book quote capture & schema
+├── sgp_detector.py     # Same-Game Parlay correlation detection vs benchmark haircuts
+├── features.py         # Leakage-free feature pipelines with strict cutoffs
+└── slate.py            # Weekly roster, injury, and schedule context ingestion
 
-## Quick Start
-
-```bash
-pip install -r requirements.txt        # intent spec (floor ranges)
-pip install -r requirements.lock       # reproducible set — what CI runs the suite against
-```
-
-`requirements.txt` declares intent; `requirements.lock` is the exact pinned
-set CI installs and the full test suite is validated against (refresh protocol
-in the lock header).
-
-Then run the weekly model (season/week are arguments — rolling to 2027 is a
-data exercise, see [docs/SEASON-ROLLOVER.md](docs/SEASON-ROLLOVER.md)):
-
-```bash
-python src/week1.py --season 2026 --week 1
+viewer/
+├── js/quant-math.js    # Standalone verified odds math & Lanczos regularized gamma
+├── js/sports/          # Modular sport adapters (NFL calibrated, NBA uncalibrated)
+├── performance/        # Published full-board track record & holdout calibration
+└── index.html          # Operational research terminal (pre-rendered zero-skeleton paint)
 ```
 
 ---
 
-## Disclaimer
+## 5. Running Tests Locally
 
-Statistical estimates for research and entertainment. Not financial advice.
-21+ where legal. If gambling is causing harm, call 1-800-GAMBLER.
+```bash
+# Python suite (456 tests)
+make test-py
+
+# Node.js suite (289 tests)
+make test-node
+
+# Complete verification & test run
+make test
+```
+
+---
+
+## 6. Responsible Research & Disclaimer
+
+PropStein is quantitative sports analytics research, not betting advice. No content on this site or in this repository constitutes an offer, solicitation, or recommendation to wager. 21+ where applicable. If you or someone you know has a gambling problem, call 1-800-GAMBLER.
