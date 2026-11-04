@@ -343,6 +343,46 @@ def update_games_csv_week(records: list[dict], season: int, week: int) -> int:
     return updated_count
 
 
+def reapply_captures_to_games_csv(csv_path: Path = GAMES_CSV_PATH, journal_path: Path = CAPTURES_LOG) -> int:
+    """Reapply all verified pregame records from the journal into games.csv.
+
+    Called by autopilot after refreshing feeds so nflverse downloads do not wipe out
+    verified capture timestamps.
+    """
+    if not journal_path.exists() or not csv_path.exists():
+        return 0
+
+    latest_by_game: dict[str, dict] = {}
+    with journal_path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+                gid = rec.get("game_id")
+                if gid:
+                    latest_by_game[gid] = rec
+            except Exception:
+                continue
+
+    if not latest_by_game:
+        return 0
+
+    records = list(latest_by_game.values())
+    # Group by (season, week)
+    by_sw: dict[tuple[int, int], list[dict]] = {}
+    for r in records:
+        key = (int(r["season"]), int(r["week"]))
+        by_sw.setdefault(key, []).append(r)
+
+    total_updated = 0
+    for (s, w), sw_records in by_sw.items():
+        total_updated += update_games_csv_week(sw_records, s, w)
+
+    return total_updated
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Ingest live ESPN game context with strict provenance")
     parser.add_argument("--season", type=int, default=2026, help="NFL season year (default 2026)")

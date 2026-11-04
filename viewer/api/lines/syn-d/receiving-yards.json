@@ -1,0 +1,16 @@
+{
+  "player_id": "SYN-D",
+  "market": "receiving_yards",
+  "generated_at": "2026-11-04T03:08:29.095228+00:00",
+  "series": {
+    "synthetic-book-a": [
+      {
+        "t": "2026-10-20T06:28:40.000685+00:00",
+        "line": 48.5,
+        "over": -112,
+        "under": -112,
+        "verified": false
+      }
+    ]
+  }
+}

@@ -69,6 +69,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 SRC = ROOT / "src"
 VIEWER = ROOT / "viewer"
 DATA = ROOT / "data"
@@ -763,6 +765,11 @@ def main() -> int:
         return 0
 
     refresh_feeds(season)
+    if (DATA / "game_context_captures.jsonl").exists():
+        from scripts.ingest_espn_game_context import reapply_captures_to_games_csv
+        reapply_count = reapply_captures_to_games_csv()
+        if reapply_count > 0:
+            print(f"[autopilot] reapplied {reapply_count} verified game context captures from journal")
     context_blocked = not game_context_has_capture_times()
     if context_blocked:
         print("[autopilot] model BLOCKED: game spread, total, and weather lack capture times; "
