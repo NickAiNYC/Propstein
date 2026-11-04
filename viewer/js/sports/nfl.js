@@ -288,8 +288,8 @@
     detail: {
       scenarioCapable: true,
       marketLabel: (market) => (market === 'receptions' ? 'Receptions' : 'Receiving yards'),
-      modelSpec: (market) => market === 'receptions' ? 'MODEL SPEC: INTEGER POISSON' : market === 'anytime_td' ? 'MODEL SPEC: ZERO-INFLATED POISSON' : 'MODEL SPEC: CONTINUOUS MEDIAN',
-      distributionDesc: (market) => market === 'receptions' ? 'Discrete Poisson (Half-step)' : market === 'anytime_td' ? 'Poisson Red Zone Model' : 'Calibrated Continuous Log-Normal',
+      modelSpec: (market) => market === 'receptions' ? 'MODEL SPEC: NEGATIVE BINOMIAL' : market === 'anytime_td' ? 'MODEL SPEC: ZERO-INFLATED POISSON' : 'MODEL SPEC: CONTINUOUS MEDIAN',
+      distributionDesc: (market) => market === 'receptions' ? 'Discrete NegBin2 (Half-step)' : market === 'anytime_td' ? 'Poisson Red Zone Model' : 'Calibrated Continuous Log-Normal',
       sampleNote: (row) => `${num(row.games_prior, 16)} games prior · ${row.season || '2026'}`,
       scopeNote: (row, market) => market === 'receptions'
         ? `Receptions use integer outcomes and half-step lines. Fair line calibrated at P(over) = ${pct(row.p_rec_at_fair_line)}.`
