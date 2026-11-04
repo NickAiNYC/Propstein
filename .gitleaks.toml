@@ -1,0 +1,17 @@
+title = "PropStein secret scan"
+
+[extend]
+useDefault = true
+
+# One [allowlist] table. Gitleaks 8.24 (the version pinned by gitleaks-action)
+# applies this form and ignores [[allowlists]] when extending the defaults.
+# Patterns are matched against the line so a real credential elsewhere still fails.
+[allowlist]
+description = "Reviewed false positives: synthetic token ids, sha256 dedup keys, and unit-test placeholders."
+regexTarget = "line"
+regexes = [
+  '''(?i)["']?token_id["']?\s*[:=]\s*["']0x''',
+  '''(?i)["']dedup_key["']\s*:\s*["'][0-9a-fA-F]{32,}["']''',
+  '''EXTENSION_SESSION_SECRET["']\s*,\s*["'](?:test-secret-|super-secret-key-|pytest-only-)''',
+  '''STRIPE_WEBHOOK_SECRET["']\s*,\s*["']whsec_test_''',
+]

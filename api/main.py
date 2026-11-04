@@ -21,6 +21,7 @@ import secrets
 import subprocess
 import sys
 import time
+from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import AsyncGenerator, Optional
@@ -57,7 +58,16 @@ def resolve_file(path_env: str, default_filename: str) -> str:
     return os.path.join(BASE_DIR, default_filename)
 
 
-app = FastAPI(title="NFL Receiving Props Agent", version="0.2.0")
+@asynccontextmanager
+async def _app_lifespan(_app: FastAPI):
+    """Refuse to serve until extension signing and session-store policy pass."""
+    from api.extension_router import enforce_runtime_security
+
+    enforce_runtime_security()
+    yield
+
+
+app = FastAPI(title="NFL Receiving Props Agent", version="0.2.0", lifespan=_app_lifespan)
 
 # ---------------------------------------------------------------------------
 # Foundation freeze (Phase 1): structured JSON logging + request IDs.

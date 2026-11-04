@@ -21,6 +21,7 @@
     "test:core": "node --test \"tests/unit/*.test.ts\" \"tests/integration/*.test.ts\"",
     "test:e2e": "node tests/e2e/run-e2e.mjs",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "audit:ci": "npm audit --audit-level=high",
     "demo": "node demo/serve.mjs"
   },
   "devDependencies": {
