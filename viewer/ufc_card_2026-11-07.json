@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-04T01:08:46Z",
+  "generated_at": "2026-11-04T18:29:17Z",
   "event_id": "600061268",
   "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
   "date": "2026-11-07",
@@ -85,67 +85,140 @@
       "edge": "NO EDGE"
     },
     {
-      "fight_id": "401928116",
+      "fight_id": "401928117",
       "start": "2026-11-07T22:00Z",
-      "weight_class": "W Bantamweight",
+      "weight_class": "Welterweight",
       "sched_rounds": 3,
       "result": null,
       "end_round": null,
       "went_distance": null,
       "fighters": [
         {
-          "id": "4277049",
-          "name": "Priscila Cachoeira",
-          "record": "13-9-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "id": "4701954",
+          "name": "Seokhyeon Ko",
+          "record": "13-3-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png",
           "winner": false,
-          "age": 38,
-          "reach_in": 65.0,
-          "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4277049.png"
+          "age": 33,
+          "reach_in": 71.0,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4701954.png"
         },
         {
-          "id": "5361791",
-          "name": "Nina Milošević",
-          "record": "9-1-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ser.png",
+          "id": "4426282",
+          "name": "Wellington Turman",
+          "record": "18-8-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 30,
-          "reach_in": 67.0,
+          "reach_in": 72.0,
           "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5361791.png"
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4426282.png"
         }
       ],
       "model": {
         "p": [
-          0.3355,
-          0.6645
+          0.6319,
+          0.3681
         ],
         "elo": [
-          1489.3,
-          1520.0
+          1541.2,
+          1452.3
         ],
         "fights": [
-          11,
-          1
+          4,
+          7
         ],
         "adjustments": [
           {
-            "reach": -8.0,
-            "age": -72.0
+            "reach": -4.0,
+            "age": -12.0
           },
           {
-            "reach": 8.0
+            "reach": 4.0,
+            "layoff": -25.0
           }
         ],
         "fair_american": [
-          198,
-          -198
+          -172,
+          172
         ],
-        "p_finish": 0.4518,
+        "p_finish": 0.4876,
         "p_over_by_line": {
-          "1.5": 0.697,
-          "2.5": 0.5832
+          "1.5": 0.673,
+          "2.5": 0.5501
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "scheduled",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401932011",
+      "start": "2026-11-07T22:00Z",
+      "weight_class": "Middleweight",
+      "sched_rounds": 3,
+      "result": null,
+      "end_round": null,
+      "went_distance": null,
+      "fighters": [
+        {
+          "id": "5264925",
+          "name": "Mantas Kondratavičius",
+          "record": "9-1-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ltu.png",
+          "winner": false,
+          "age": 27,
+          "reach_in": 75.5,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5264925.png"
+        },
+        {
+          "id": "4697476",
+          "name": "Andre Petroski",
+          "record": "13-7-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": false,
+          "age": 35,
+          "reach_in": 73.0,
+          "stance": "Switch",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4697476.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.6014,
+          0.3986
+        ],
+        "elo": [
+          1538.4,
+          1522.9
+        ],
+        "fights": [
+          2,
+          14
+        ],
+        "adjustments": [
+          {
+            "reach": 10.0
+          },
+          {
+            "reach": -10.0,
+            "age": -36.0
+          }
+        ],
+        "fair_american": [
+          -151,
+          151
+        ],
+        "p_finish": 0.599,
+        "p_over_by_line": {
+          "1.5": 0.5983,
+          "2.5": 0.4474
         }
       },
       "market": null,
@@ -228,78 +301,6 @@
       "edge": "NO EDGE"
     },
     {
-      "fight_id": "401911642",
-      "start": "2026-11-07T22:00Z",
-      "weight_class": "Featherweight",
-      "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
-      "fighters": [
-        {
-          "id": "5327937",
-          "name": "Keiichiro Nakamura",
-          "record": "8-1-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
-          "winner": false,
-          "age": 37,
-          "reach_in": 70.0,
-          "stance": "Southpaw",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5327937.png"
-        },
-        {
-          "id": "5346907",
-          "name": "Ollie Schmid",
-          "record": "4-3-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
-          "winner": false,
-          "age": 25,
-          "reach_in": 71.0,
-          "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5346907.png"
-        }
-      ],
-      "model": {
-        "p": [
-          0.4643,
-          0.5357
-        ],
-        "elo": [
-          1523.0,
-          1479.8
-        ],
-        "fights": [
-          1,
-          1
-        ],
-        "adjustments": [
-          {
-            "reach": -4.0,
-            "age": -60.0
-          },
-          {
-            "reach": 4.0
-          }
-        ],
-        "fair_american": [
-          115,
-          -115
-        ],
-        "p_finish": 0.534,
-        "p_over_by_line": {
-          "1.5": 0.6419,
-          "2.5": 0.5073
-        }
-      },
-      "market": null,
-      "totals": [],
-      "status": "scheduled",
-      "status_events": [],
-      "short_notice": false,
-      "void": false,
-      "edge": "NO EDGE"
-    },
-    {
       "fight_id": "401928120",
       "start": "2026-11-07T22:00Z",
       "weight_class": "Featherweight",
@@ -360,77 +361,6 @@
         "p_over_by_line": {
           "1.5": 0.6658,
           "2.5": 0.5402
-        }
-      },
-      "market": null,
-      "totals": [],
-      "status": "scheduled",
-      "status_events": [],
-      "short_notice": false,
-      "void": false,
-      "edge": "NO EDGE"
-    },
-    {
-      "fight_id": "401932012",
-      "start": "2026-11-07T22:00Z",
-      "weight_class": "Flyweight",
-      "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
-      "fighters": [
-        {
-          "id": "4815978",
-          "name": "Mitch Raposo",
-          "record": "11-3-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
-          "age": 28,
-          "reach_in": 64.5,
-          "stance": "Switch",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4815978.png"
-        },
-        {
-          "id": "5143890",
-          "name": "Marcos Degli",
-          "record": "15-3-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
-          "age": 26,
-          "reach_in": 67.0,
-          "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5143890.png"
-        }
-      ],
-      "model": {
-        "p": [
-          0.4238,
-          0.5762
-        ],
-        "elo": [
-          1489.6,
-          1523.0
-        ],
-        "fights": [
-          5,
-          1
-        ],
-        "adjustments": [
-          {
-            "reach": -10.0
-          },
-          {
-            "reach": 10.0
-          }
-        ],
-        "fair_american": [
-          136,
-          -136
-        ],
-        "p_finish": 0.4858,
-        "p_over_by_line": {
-          "1.5": 0.6743,
-          "2.5": 0.5518
         }
       },
       "market": null,
@@ -585,67 +515,210 @@
       "edge": "NO EDGE"
     },
     {
-      "fight_id": "401932011",
-      "start": "2026-11-08T01:00Z",
-      "weight_class": "Middleweight",
+      "fight_id": "401911642",
+      "start": "2026-11-07T22:00Z",
+      "weight_class": "Featherweight",
       "sched_rounds": 3,
       "result": null,
       "end_round": null,
       "went_distance": null,
       "fighters": [
         {
-          "id": "5264925",
-          "name": "Mantas Kondratavičius",
-          "record": "9-1-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ltu.png",
+          "id": "5327937",
+          "name": "Keiichiro Nakamura",
+          "record": "8-1-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
           "winner": false,
-          "age": 27,
-          "reach_in": 75.5,
-          "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5264925.png"
+          "age": 37,
+          "reach_in": 70.0,
+          "stance": "Southpaw",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5327937.png"
         },
         {
-          "id": "4697476",
-          "name": "Andre Petroski",
-          "record": "13-7-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "id": "5346907",
+          "name": "Ollie Schmid",
+          "record": "4-3-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
           "winner": false,
-          "age": 35,
-          "reach_in": 73.0,
-          "stance": "Switch",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4697476.png"
+          "age": 25,
+          "reach_in": 71.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5346907.png"
         }
       ],
       "model": {
         "p": [
-          0.6014,
-          0.3986
+          0.4643,
+          0.5357
         ],
         "elo": [
-          1538.4,
-          1522.9
+          1523.0,
+          1479.8
         ],
         "fights": [
-          2,
-          14
+          1,
+          1
         ],
         "adjustments": [
           {
-            "reach": 10.0
+            "reach": -4.0,
+            "age": -60.0
           },
           {
-            "reach": -10.0,
-            "age": -36.0
+            "reach": 4.0
           }
         ],
         "fair_american": [
-          -151,
-          151
+          115,
+          -115
         ],
-        "p_finish": 0.599,
+        "p_finish": 0.534,
         "p_over_by_line": {
-          "1.5": 0.5983,
-          "2.5": 0.4474
+          "1.5": 0.6419,
+          "2.5": 0.5073
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "scheduled",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401932012",
+      "start": "2026-11-08T01:00Z",
+      "weight_class": "Flyweight",
+      "sched_rounds": 3,
+      "result": null,
+      "end_round": null,
+      "went_distance": null,
+      "fighters": [
+        {
+          "id": "4815978",
+          "name": "Mitch Raposo",
+          "record": "11-3-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "winner": false,
+          "age": 28,
+          "reach_in": 64.5,
+          "stance": "Switch",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4815978.png"
+        },
+        {
+          "id": "5143890",
+          "name": "Marcos Degli",
+          "record": "15-3-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": false,
+          "age": 26,
+          "reach_in": 67.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5143890.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.4238,
+          0.5762
+        ],
+        "elo": [
+          1489.6,
+          1523.0
+        ],
+        "fights": [
+          5,
+          1
+        ],
+        "adjustments": [
+          {
+            "reach": -10.0
+          },
+          {
+            "reach": 10.0
+          }
+        ],
+        "fair_american": [
+          136,
+          -136
+        ],
+        "p_finish": 0.4858,
+        "p_over_by_line": {
+          "1.5": 0.6743,
+          "2.5": 0.5518
+        }
+      },
+      "market": null,
+      "totals": [],
+      "status": "scheduled",
+      "status_events": [],
+      "short_notice": false,
+      "void": false,
+      "edge": "NO EDGE"
+    },
+    {
+      "fight_id": "401928116",
+      "start": "2026-11-08T01:00Z",
+      "weight_class": "W Bantamweight",
+      "sched_rounds": 3,
+      "result": null,
+      "end_round": null,
+      "went_distance": null,
+      "fighters": [
+        {
+          "id": "4277049",
+          "name": "Priscila Cachoeira",
+          "record": "13-9-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+          "winner": false,
+          "age": 38,
+          "reach_in": 65.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4277049.png"
+        },
+        {
+          "id": "5361791",
+          "name": "Nina Milošević",
+          "record": "9-1-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ser.png",
+          "winner": false,
+          "age": 30,
+          "reach_in": 67.0,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5361791.png"
+        }
+      ],
+      "model": {
+        "p": [
+          0.3355,
+          0.6645
+        ],
+        "elo": [
+          1489.3,
+          1520.0
+        ],
+        "fights": [
+          11,
+          1
+        ],
+        "adjustments": [
+          {
+            "reach": -8.0,
+            "age": -72.0
+          },
+          {
+            "reach": 8.0
+          }
+        ],
+        "fair_american": [
+          198,
+          -198
+        ],
+        "p_finish": 0.4518,
+        "p_over_by_line": {
+          "1.5": 0.697,
+          "2.5": 0.5832
         }
       },
       "market": null,
@@ -717,79 +790,6 @@
         "p_over_by_line": {
           "1.5": 0.5502,
           "2.5": 0.3811
-        }
-      },
-      "market": null,
-      "totals": [],
-      "status": "scheduled",
-      "status_events": [],
-      "short_notice": false,
-      "void": false,
-      "edge": "NO EDGE"
-    },
-    {
-      "fight_id": "401928117",
-      "start": "2026-11-08T01:00Z",
-      "weight_class": "Welterweight",
-      "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
-      "fighters": [
-        {
-          "id": "4701954",
-          "name": "Seokhyeon Ko",
-          "record": "13-3-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png",
-          "winner": false,
-          "age": 33,
-          "reach_in": 71.0,
-          "stance": "Southpaw",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4701954.png"
-        },
-        {
-          "id": "4426282",
-          "name": "Wellington Turman",
-          "record": "18-8-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
-          "age": 30,
-          "reach_in": 72.0,
-          "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4426282.png"
-        }
-      ],
-      "model": {
-        "p": [
-          0.6319,
-          0.3681
-        ],
-        "elo": [
-          1541.2,
-          1452.3
-        ],
-        "fights": [
-          4,
-          7
-        ],
-        "adjustments": [
-          {
-            "reach": -4.0,
-            "age": -12.0
-          },
-          {
-            "reach": 4.0,
-            "layoff": -25.0
-          }
-        ],
-        "fair_american": [
-          -172,
-          172
-        ],
-        "p_finish": 0.4876,
-        "p_over_by_line": {
-          "1.5": 0.673,
-          "2.5": 0.5501
         }
       },
       "market": null,
