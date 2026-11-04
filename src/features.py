@@ -128,10 +128,7 @@ def load_games() -> pd.DataFrame:
     return g[keep + [c for c in CONTEXT_OBSERVATION_FIELDS if c in g.columns]]
 
 
-def attach_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
-    """Join market context. spread_line is HOME-relative in nflverse:
-    positive means the home team is favoured by that many points."""
-    assert_context_known_at_cutoff(df, games)
+def _join_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
     long = []
     for _, side in (("home", "home"), ("away", "away")):
         pass
@@ -158,6 +155,13 @@ def attach_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
     cols = ["game_id", "team", "is_home", "team_spread", "total_line",
             "implied_team_total", "implied_opp_total", "is_dome", "wind", "unposted_lines"]
     return df.merge(ctx[cols], on=["game_id", "team"], how="left")
+
+
+def attach_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
+    """Join market context. spread_line is HOME-relative in nflverse:
+    positive means the home team is favoured by that many points."""
+    assert_context_known_at_cutoff(df, games)
+    return _join_game_context(df, games)
 
 
 # ----------------------------------------------------------------------------
@@ -294,7 +298,7 @@ def build_panel(seasons: tuple[int, ...] | None = None,
                 min_form_targets: float = 1.5) -> pd.DataFrame:
     df = load_player_weeks(seasons)
     games = load_games()
-    df = attach_game_context(df, games)
+    df = _join_game_context(df, games)
     df = add_player_form(df)
     df = add_defense_adjustment(df)
 

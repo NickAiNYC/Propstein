@@ -36,7 +36,10 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from model import ReceivingModel, american_to_decimal, american_to_prob
+try:
+    from src.model import ReceivingModel, american_to_decimal, american_to_prob
+except ImportError:
+    from model import ReceivingModel, american_to_decimal, american_to_prob
 
 
 @dataclass
