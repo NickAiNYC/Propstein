@@ -6,7 +6,21 @@
   "permissions": [
     "sidePanel",
     "storage",
-    "scripting"
+    "scripting",
+    "alarms"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.draftkings.com/*",
+        "https://*.fanduel.com/*",
+        "https://*.polymarket.com/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ],
+      "js": ["content-bridge.js"],
+      "run_at": "document_idle"
+    }
   ],
   "host_permissions": [],
   "optional_host_permissions": [

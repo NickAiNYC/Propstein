@@ -10,3 +10,5 @@ export * from "./drive-reception-model.ts";
 export * from "./freshness.ts";
 export * from "./signal-engine.ts";
 export * from "./lifecycle.ts";
+export * from "./sniper-protocol.ts";
+export * from "./entity-extractor.ts";

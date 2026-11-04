@@ -38,6 +38,7 @@ import {
   createSyntheticDemoModelProvider,
   type DemoModelProvider,
 } from "@propstein/detection";
+import { WebSocketRelay } from "./ws-relay.ts";
 
 /* eslint-disable no-restricted-globals */
 declare const chrome: {
@@ -46,6 +47,13 @@ declare const chrome: {
     onInstalled: { addListener(cb: () => void): void };
     onMessage: { addListener(cb: (msg: unknown, sender: never, sendResponse: (r: unknown) => void) => boolean | void): void };
     sendMessage(msg: unknown): Promise<unknown>;
+  };
+  alarms?: {
+    create(name: string, alarmInfo: { periodInMinutes?: number; delayInMinutes?: number }): void;
+    onAlarm: { addListener(cb: (alarm: { name: string }) => void): void };
+  };
+  notifications?: {
+    create(id: string, opts: Record<string, unknown>): void;
   };
   sidePanel: { setPanelBehavior(opts: { openPanelOnActionClick: boolean }): Promise<void> };
   action: { onClicked: { addListener(cb: (tab: { windowId?: number; id?: number }) => void): void } };
@@ -83,6 +91,20 @@ declare const chrome: {
 
 const SIGNAL_REGISTRY = new SignalRegistry({ config: DEFAULT_SIGNAL_ENGINE_CONFIG });
 const MODEL: DemoModelProvider = createSyntheticDemoModelProvider();
+const WS_RELAY = new WebSocketRelay({ wsUrl: "wss://propstein.com/ws/sniper" });
+
+if (typeof chrome !== "undefined" && chrome.alarms) {
+  try {
+    chrome.alarms.create("propstein_ws_keepalive", { periodInMinutes: 0.4 });
+    chrome.alarms.onAlarm.addListener((alarm) => {
+      if (alarm.name === "propstein_ws_keepalive") {
+        WS_RELAY.connect();
+      }
+    });
+  } catch {
+    // Alarms fallback
+  }
+}
 
 interface MonitoringState {
   monitoring: boolean;
@@ -461,8 +483,38 @@ chrome.runtime.onMessage.addListener((msg: unknown, sender: never, sendResponse:
   if (!message || typeof message.type !== "string") return;
 
   // ---- Content-bridge traffic (from a granted site) ----
-  const bridgeTypes = new Set(["MARKET_EVENTS", "SNIPE_ACK", "BRIDGE_STATUS"]);
+  const bridgeTypes = new Set([
+    "MARKET_EVENTS",
+    "SNIPE_ACK",
+    "BRIDGE_STATUS",
+    "GET_ACTIVE_SIGNALS",
+    "PANIC_KILL_SWITCH",
+    "AUDIT_PLACED_RECORD",
+  ]);
   if (bridgeTypes.has(message.type)) {
+    if (message.type === "GET_ACTIVE_SIGNALS") {
+      sendResponse({ signals: WS_RELAY.getActiveSignals() });
+      return true;
+    }
+    if (message.type === "PANIC_KILL_SWITCH") {
+      const isPanic = Boolean(message.active);
+      WS_RELAY.setPanicKill(isPanic);
+      chrome.tabs.query({}).then((tabs) => {
+        for (const t of tabs) {
+          if (t.id) {
+            chrome.tabs.sendMessage(t.id, { type: "PANIC_KILL_SWITCH", active: isPanic }).catch(() => {});
+          }
+        }
+      });
+      sendResponse({ ok: true, active: isPanic });
+      return true;
+    }
+    if (message.type === "AUDIT_PLACED_RECORD" && message.record) {
+      appendAudit(message.record as any).catch(() => {});
+      sendResponse({ received: true });
+      return true;
+    }
+
     if (!isTrustedBridgeSender(sender as never, chrome.runtime, GRANTED_ORIGINS)) {
       sendResponse({ error: "untrusted sender" });
       return;

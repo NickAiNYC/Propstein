@@ -6,4 +6,5 @@
 export * from "./visibility-filter.ts";
 export * from "./dom-extractor.ts";
 export * from "./viewport-observer.ts";
+export * from "./sportsbook-dom.ts";
 export * from "./adapters/index.ts";

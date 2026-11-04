@@ -8,4 +8,5 @@ export * from "./components/PriceComparison.tsx";
 export * from "./components/EntitlementGate.tsx";
 export * from "./components/SettingsPanel.tsx";
 export * from "./components/StateViews.tsx";
+export * from "./overlay-manager.ts";
 export { LiveSniperPanel, type PanelBridge } from "./panel-app.tsx";
