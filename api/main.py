@@ -104,8 +104,10 @@ app.add_middleware(
 # S-1/S-3/S-6 mitigations). Two-line include keeps the change reversible.
 # ---------------------------------------------------------------------------
 from api.extension_router import router as extension_api_router  # noqa: E402
+from api.ledger_router import router as ledger_api_router  # noqa: E402
 
 app.include_router(extension_api_router)
+app.include_router(ledger_api_router)
 
 
 # ---------------------------------------------------------------------------
