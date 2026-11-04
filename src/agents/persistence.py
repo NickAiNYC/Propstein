@@ -819,6 +819,70 @@ class TruthStore:
             )
         return ledger_id
 
+    def record_clv_entry(self, entry: dict[str, Any]) -> str:
+        """Transactionally record an individual bet/pick entry into clv_ledger."""
+        ledger_id = entry.get("ledger_id") or f"clv-{uuid.uuid4().hex[:12]}"
+        receipt_hash = compute_source_hash(entry)
+        with self._connect_sqlite() as conn:
+            conn.execute(
+                """
+                INSERT OR REPLACE INTO clv_ledger (
+                    ledger_id, alert_id, sport, game_id, player_id, player_name,
+                    team, market, side, venue_type, book, entry_line, entry_odds,
+                    entry_implied_prob, fair_prob_at_entry, edge_pct_at_entry,
+                    kelly_stake, source_hash, receipt_hash, model_version, logged_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    ledger_id,
+                    entry.get("alert_id") or ledger_id,
+                    entry.get("sport", "nfl"),
+                    entry.get("game_id", "default_game"),
+                    entry.get("player_id", entry.get("player", "unknown")),
+                    entry.get("player", "unknown"),
+                    entry.get("team", ""),
+                    entry.get("market", "receiving_yards"),
+                    entry.get("side", "over"),
+                    entry.get("venue_type", "sportsbook"),
+                    entry.get("book", "Consensus"),
+                    float(entry.get("line", 0.0)),
+                    int(entry.get("odds", -110)),
+                    float(entry.get("market_prob", 0.5)),
+                    float(entry.get("model_prob", 0.5)),
+                    float(entry.get("edge", 0.0)),
+                    float(entry.get("kelly_stake", 0.005)),
+                    entry.get("source_hash") or receipt_hash,
+                    receipt_hash,
+                    entry.get("model_version") or MODEL_VERSION,
+                    entry.get("logged_at") or datetime.now(timezone.utc).isoformat(),
+                ),
+            )
+        return ledger_id
+
+    def backup_database(self, backup_path: Path | str) -> Path:
+        """Create an atomic transactional backup of the database."""
+        dest_path = Path(backup_path)
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        with self._connect_sqlite() as src_conn:
+            dst_conn = sqlite3.connect(dest_path)
+            try:
+                src_conn.backup(dst_conn)
+            finally:
+                dst_conn.close()
+        return dest_path
+
+    def restore_database(self, backup_path: Path | str) -> None:
+        """Restore the database atomically from a backup file."""
+        src_path = Path(backup_path)
+        if not src_path.exists():
+            raise FileNotFoundError(f"Backup file not found: {src_path}")
+        src_conn = sqlite3.connect(src_path)
+        try:
+            with self._connect_sqlite() as dst_conn:
+                src_conn.backup(dst_conn)
+        finally:
+            src_conn.close()
+
     def update_clv_close(
         self,
         ledger_id: str | None = None,

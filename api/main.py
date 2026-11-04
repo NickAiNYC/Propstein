@@ -104,6 +104,22 @@ app.include_router(extension_api_router)
 # ---------------------------------------------------------------------------
 
 def verify_entitlement(authorization: str | None) -> dict:
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ", 1)[1]
+        if token.count(".") == 2:
+            try:
+                from api.extension_router import verify_session_token
+                payload = verify_session_token(token)
+                return {
+                    "status": "active",
+                    "subject": payload.get("sub"),
+                    "plan": payload.get("plan"),
+                    "jti": payload.get("jti"),
+                    "token_type": "pste-ext-v1",
+                }
+            except HTTPException:
+                pass
+
     key = os.environ.get("WHOP_API_KEY")
     if not key:
         is_production = os.environ.get("APP_ENV", "production").lower() == "production"
@@ -322,6 +338,12 @@ async def append_clv_log(
     
     with open(user_log_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(entry) + "\n")
+
+    try:
+        from src.agents.persistence import TruthStore
+        TruthStore().record_clv_entry(entry)
+    except Exception:
+        pass
         
     return {"status": "ok", "user_id": safe_user_id, "entry": entry, "report": clv_report(user_log_path)}
 
@@ -1662,7 +1684,23 @@ def _billing_principal(
         raise HTTPException(401, "Authentication required to create a billing session")
     expected = os.environ.get("PROPSTEIN_API_KEY") or os.environ.get("PROPWIRE_API_KEY")
     if expected and token != expected:
+        if token.count(".") == 2:
+            try:
+                from api.extension_router import verify_session_token
+                payload = verify_session_token(token)
+                safe_sub = re.sub(r"[^a-zA-Z0-9_\-]", "_", str(payload.get("sub", "")))
+                return safe_sub or "user_default"
+            except HTTPException:
+                raise HTTPException(401, "Invalid session token")
         raise HTTPException(401, "Invalid session token")
+    if token.count(".") == 2:
+        try:
+            from api.extension_router import verify_session_token
+            payload = verify_session_token(token)
+            safe_sub = re.sub(r"[^a-zA-Z0-9_\-]", "_", str(payload.get("sub", "")))
+            return safe_sub or "user_default"
+        except HTTPException:
+            pass
     raw = token if len(token) < 48 else hashlib.sha256(token.encode()).hexdigest()[:16]
     safe = re.sub(r"[^a-zA-Z0-9_\-]", "_", raw)
     return safe or "user_default"

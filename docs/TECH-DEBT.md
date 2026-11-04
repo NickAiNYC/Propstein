@@ -11,8 +11,8 @@
 
 | Item | Location | Type | Risk | Effort | Priority | Status |
 |---|---|---|---|---|---|---|
-| Signed user session and subject-bound entitlement | `api/main.py` | security | Critical | Medium | P0 | Open |
-| Durable transactional ledger | API/ledger | data integrity | Critical | Large | P0 | Open |
+| Signed user session and subject-bound entitlement | `api/main.py` | security | Critical | Medium | P0 | **Closed 2026-11-04** (`pste-ext-v1` tokens with subject-bound entitlements, HMAC-SHA256, server-side derivation) |
+| Durable transactional ledger | API/ledger | data integrity | Critical | Large | P0 | **Closed 2026-11-04** (`TruthStore` WAL transactional datastore, online backup/restore drills in CI) |
 | Production error and feed-age monitoring | frontend/API | operability | High | Medium | P0 | Open |
 | Python dependency lock and CI test job | `requirements.txt`, CI | reproducibility | High | Medium | P1 | **Closed 2026-11-02** (`requirements.lock` + lock-consistency tests in the suite; CI installs the lock) |
 | Browser E2E/accessibility regression suite | viewer | quality | Medium | Medium | P1 | Open |
