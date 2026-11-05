@@ -14,6 +14,7 @@ import { ARCHIVE_COHORT, REAL_AUDIT_DECISIONS, VERSION_TIMELINE } from "@/lib/pr
 import { GOVERNANCE } from "@/lib/propstein/types";
 import { fmtPct, fmtSigned, fmtOdds } from "@/lib/propstein/format";
 import { Panel, SectionHeading } from "./primitives";
+import { LedgerStat, PerBookCoverageBanner } from "./LedgerStat";
 import { cn } from "@/lib/utils";
 import { ShieldAlert, AlertTriangle, CheckCircle2, GitCommitHorizontal } from "lucide-react";
 
@@ -72,6 +73,32 @@ export function PerformancePage() {
           </p>
         </div>
       </Panel>
+
+      {/* Sharp honesty disclosure & sample size posture */}
+      <div className="rounded-[2px] border border-border bg-workspace/50 p-4 text-xs leading-relaxed text-text-muted">
+        <p className="font-sans font-medium text-text">
+          &ldquo;This ledger records 36 settled forecasts across 7 events. It is not a track record. It is a foundation. When N=600, it will be a track record. Until then, we show you the number, the interval, and the gate. If you were looking for a proven edge, this is not that product yet — and any tool claiming to be is showing you the same small sample with less honesty.&rdquo;
+        </p>
+      </div>
+
+      {/* Primary Headline Metric: Sample size & CI Dominant Visualization */}
+      <LedgerStat
+        label="Paired Brier diff vs closing"
+        value={-0.02289}
+        ci={[-0.07175, 0.05019]}
+        n={36}
+        nEvents={7}
+        threshold={0}
+        status="NON-SIGNIFICANT"
+      />
+
+      {/* Per-Book Coverage Disclosure Banner */}
+      <PerBookCoverageBanner
+        verifiedSourcesCount={6}
+        totalSourcesCount={6}
+        lastAnchored="2026-11-03 00:00 UTC"
+        ledgerRoot="178e29974bf8748c"
+      />
 
       {/* cohort summary */}
       <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[4px] border border-hairline bg-hairline md:grid-cols-5">

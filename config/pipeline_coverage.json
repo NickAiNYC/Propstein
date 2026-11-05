@@ -1,0 +1,6 @@
+{
+  "min_quote_coverage_rate": 0.30,
+  "description": "Minimum proportion of candidate markets that must have active sportsbook quotes at pre-kickoff freeze to commit prospective journal. Submissions below this threshold fail closed and write an alert marker.",
+  "alert_directory": "data/pipeline_alerts"
+}
+

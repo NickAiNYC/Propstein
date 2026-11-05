@@ -78,7 +78,14 @@ def main() -> None:
         source.write_text("".join(json.dumps(row) + "\n" for row in snapshots), encoding="utf-8")
         kickoff_map = temp / "kickoffs.json"
         kickoff_map.write_text(json.dumps(kickoffs), encoding="utf-8")
-        report = capture_board(source, kickoff_map, journal)
+        policy_path = ROOT / "config" / "pipeline_coverage.json"
+        min_cov = 0.30
+        if policy_path.exists():
+            try:
+                min_cov = float(json.loads(policy_path.read_text(encoding="utf-8")).get("min_quote_coverage_rate", 0.30))
+            except Exception:
+                pass
+        report = capture_board(source, kickoff_map, journal, min_coverage_rate=min_cov)
     verified = verify_journal(journal)
     if {row["game_id"] for row in verified} != set(kickoffs):
         raise ValueError("prospective board omitted a Sunday early game")

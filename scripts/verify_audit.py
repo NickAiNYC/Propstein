@@ -92,12 +92,21 @@ def run_full_verification() -> int:
     try:
         # Check 1: Paired Closing-Market Relative Benchmark (Primary Headline Metric)
         res_paired = verify_paired_market(ROOT)
+        diff = res_paired["paired_diff"]
+        ci = res_paired.get("paired_diff_ci95", [0.0, 0.0])
+        n_pairs = res_paired["n_pairs"]
+        spans_zero = ci[0] <= 0 <= ci[1]
+        if diff < 0:
+            status_desc = f"Directionally favorable: {diff:+.4f}; {'CI spans zero; not significant' if spans_zero else 'statistically significant'} at N={n_pairs}"
+        else:
+            status_desc = f"Trails close by {diff:+.4f}; {'CI spans zero; not significant' if spans_zero else 'statistically significant'} at N={n_pairs}"
+
         print(f"[1/5] Paired Market Benchmark: PASSED (Closing Reference Benchmark)")
-        print(f"      Sample Pairs:           N = {res_paired['n_pairs']} across {res_paired['n_events']} game clusters")
-        print(f"      Paired Brier Diff:      {res_paired['paired_diff']:+.5f} (negative = model better)")
-        print(f"      Cluster 95% CI:         [{res_paired['paired_diff_ci95'][0]:+.5f}, {res_paired['paired_diff_ci95'][1]:+.5f}]")
+        print(f"      Sample Pairs:           N = {n_pairs} across {res_paired['n_events']} game clusters")
+        print(f"      Paired Brier Diff:      {diff:+.5f} (negative = model better)")
+        print(f"      Cluster 95% CI:         [{ci[0]:+.5f}, {ci[1]:+.5f}]")
         print(f"      Model-Market Corr:      {res_paired['corr_model_market']:.4f} (is_copycat: {res_paired['is_copycat']})")
-        print(f"      Benchmark Status:       INDEPENDENT MODEL (Trails close on holdout; Edge Gate FROZEN)")
+        print(f"      Benchmark Status:       INDEPENDENT MODEL ({status_desc}; Edge Gate FROZEN)")
 
         # Check 2: Ledger Root Hash Reconstruction
         report_path = ROOT / "viewer" / "clv_audit_report.json"

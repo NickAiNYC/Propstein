@@ -139,6 +139,30 @@ class ProspectiveBoardTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "journal record hash mismatch"):
             grade_board(self.journal, self.closes)
 
+    def test_low_coverage_aborts_and_writes_alert_marker(self):
+        alert_dir = self.root / "alerts"
+        # Rows has 2 candidates: SYN-A has quotes, SYN-B does not (coverage = 1/2 = 50%)
+        # With min_coverage_rate = 0.75, it must reject and write alert
+        with self.assertRaises(ValueError) as ctx:
+            capture_board(
+                self.snapshots,
+                self.kickoffs,
+                self.journal,
+                captured_at=self.now,
+                min_coverage_rate=0.75,
+                alert_dir=alert_dir,
+            )
+        self.assertIn("Journal rejected: quote coverage 50.0% < minimum required 75.0%", str(ctx.exception))
+        self.assertFalse(self.journal.exists())
+        alert_files = list(alert_dir.glob("*.json"))
+        self.assertEqual(len(alert_files), 1)
+        alert_data = json.loads(alert_files[0].read_text(encoding="utf-8"))
+        self.assertEqual(alert_data["status"], "REJECTED_LOW_COVERAGE")
+        self.assertEqual(alert_data["candidate_count"], 2)
+        self.assertEqual(alert_data["quoted_candidate_count"], 1)
+        self.assertEqual(alert_data["coverage_rate"], 0.5)
+        self.assertEqual(alert_data["required_rate"], 0.75)
+
 
 if __name__ == "__main__":
     unittest.main()

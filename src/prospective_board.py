@@ -60,12 +60,15 @@ def capture_board(
     *,
     captured_at: datetime | None = None,
     game_id: str | None = None,
+    min_coverage_rate: float | None = None,
+    alert_dir: Path | None = None,
 ) -> dict[str, Any]:
     """Lock every upcoming frozen player/market and all observed book quotes.
 
     ``kickoffs_path`` is an explicit game-id to offset-aware ISO kickoff map.
     The viewer's timezone-free ``gametime`` is deliberately not inferred.
     In-process ``captured_at`` injection exists for deterministic tests only.
+    ``min_coverage_rate`` enforces a fail-closed threshold before committing a journal.
     """
     now = (captured_at or datetime.now(timezone.utc)).astimezone(timezone.utc)
     if journal_path.exists():
@@ -157,6 +160,33 @@ def capture_board(
         rows.append(payload)
     if not rows:
         raise ValueError("every game has kicked off; prospective capture refused")
+
+    quoted_candidates = sum(1 for row in rows if row["decision"] != "PASS_NO_QUOTE")
+    coverage_rate = quoted_candidates / len(rows) if rows else 0.0
+    if min_coverage_rate is not None and coverage_rate < min_coverage_rate:
+        target_dir = alert_dir or (Path(__file__).resolve().parent.parent / "data" / "pipeline_alerts")
+        target_dir.mkdir(parents=True, exist_ok=True)
+        date_str = now.strftime("%Y%m%d_%H%M%S")
+        alert_file = target_dir / f"{date_str}_low_coverage.json"
+        alert_payload = {
+            "timestamp": now.isoformat(),
+            "candidate_count": len(rows),
+            "quoted_candidate_count": quoted_candidates,
+            "coverage_rate": round(coverage_rate, 4),
+            "required_rate": min_coverage_rate,
+            "status": "REJECTED_LOW_COVERAGE",
+            "journal": str(journal_path),
+            "reason": (
+                f"Active quote coverage {coverage_rate:.1%} is below minimum required threshold "
+                f"{min_coverage_rate:.1%} ({quoted_candidates}/{len(rows)} quoted)."
+            ),
+        }
+        alert_file.write_text(json.dumps(alert_payload, indent=2), encoding="utf-8")
+        raise ValueError(
+            f"Journal rejected: quote coverage {coverage_rate:.1%} < minimum required {min_coverage_rate:.1%}. "
+            f"Alert written to {alert_file}"
+        )
+
     _write_new_jsonl(journal_path, rows)
     return {
         "journal": str(journal_path),
