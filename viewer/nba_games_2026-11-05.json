@@ -1,0 +1,24 @@
+[
+ {
+  "game_id": "nba-20261105-ORL-PHX",
+  "gameday": "2026-11-05",
+  "gametime": "21:10",
+  "gametime_et": "21:10",
+  "tipoff_utc": "2026-11-06T02:10:00Z",
+  "away_team": "ORL",
+  "home_team": "PHX",
+  "odds_event_id": "2a76b31e02d1416de069a995589515fc",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261105-MIA-GSW",
+  "gameday": "2026-11-05",
+  "gametime": "22:10",
+  "gametime_et": "22:10",
+  "tipoff_utc": "2026-11-06T03:10:00Z",
+  "away_team": "MIA",
+  "home_team": "GSW",
+  "odds_event_id": "ac38449dd3dfbe1c9b48164b6a41aa83",
+  "_fixture": false
+ }
+]
