@@ -2825,5 +2825,30 @@
         "round": 1
       }
     ]
+  },
+  "5125484": {
+    "id": "5125484",
+    "name": "Carlos Calderon",
+    "record": "11-4-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 30,
+    "height": "5' 11\"",
+    "reach_in": 71.0,
+    "stance": "Southpaw",
+    "weight_class": "Featherweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5125484.png",
+    "elo": 1477.0,
+    "ufc_fights": 1,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2024-10-02",
+        "opponent": "Alberto Montes",
+        "event": "Dana White's Contender Series: Season 8, Week 8",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      }
+    ]
   }
 }

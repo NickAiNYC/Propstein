@@ -71,8 +71,8 @@
     "gametime": "13:00",
     "away_team": "LA",
     "home_team": "WAS",
-    "spread_line": -5.5,
-    "total_line": 47.5,
+    "spread_line": -4.5,
+    "total_line": 48.5,
     "roof": "outdoors",
     "wind": null
   },
@@ -116,7 +116,7 @@
     "away_team": "LV",
     "home_team": "SF",
     "spread_line": 10.0,
-    "total_line": 52.5,
+    "total_line": 51.5,
     "roof": "outdoors",
     "wind": null
   },

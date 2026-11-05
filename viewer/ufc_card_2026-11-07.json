@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-05T01:24:45Z",
+  "generated_at": "2026-11-05T18:32:35Z",
   "event_id": "600061268",
   "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
   "date": "2026-11-07",
@@ -230,7 +230,7 @@
       "edge": "NO EDGE"
     },
     {
-      "fight_id": "401928114",
+      "fight_id": "401933235",
       "start": "2026-11-07T22:00Z",
       "weight_class": "Featherweight",
       "sched_rounds": 3,
@@ -250,25 +250,25 @@
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5120304.png"
         },
         {
-          "id": "4795284",
-          "name": "Lucas Brennan",
-          "record": "11-3-0",
+          "id": "5125484",
+          "name": "Carlos Calderon",
+          "record": "11-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
-          "age": 26,
-          "reach_in": 72.0,
+          "age": 30,
+          "reach_in": 71.0,
           "stance": "Southpaw",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4795284.png"
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5125484.png"
         }
       ],
       "model": {
         "p": [
-          0.5188,
-          0.4812
+          0.5713,
+          0.4287
         ],
         "elo": [
           1509.9,
-          1480.8
+          1477.0
         ],
         "fights": [
           4,
@@ -276,27 +276,34 @@
         ],
         "adjustments": [
           {
-            "reach": -8.0
+            "reach": -4.0
           },
           {
-            "reach": 8.0
+            "reach": 4.0,
+            "layoff": -25.0
           }
         ],
         "fair_american": [
-          -108,
-          108
+          -133,
+          133
         ],
-        "p_finish": 0.4806,
+        "p_finish": 0.5163,
         "p_over_by_line": {
-          "1.5": 0.6778,
-          "2.5": 0.5566
+          "1.5": 0.6538,
+          "2.5": 0.5237
         }
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
-      "status_events": [],
-      "short_notice": false,
+      "status": "replacement",
+      "status_events": [
+        {
+          "at": "2026-11-05T18:32:35Z",
+          "type": "replacement",
+          "detail": "replaces Austin Bashi vs Lucas Brennan"
+        }
+      ],
+      "short_notice": true,
       "void": false,
       "edge": "NO EDGE"
     },

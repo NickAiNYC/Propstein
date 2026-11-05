@@ -1,7 +1,7 @@
 {
   "date": "2026-11-07",
   "event_id": "600061268",
-  "updated_at": "2026-11-05T01:24:45Z",
+  "updated_at": "2026-11-05T18:32:35Z",
   "fights": {
     "401928118": {
       "status": "scheduled",
@@ -12,8 +12,14 @@
       "events": []
     },
     "401928114": {
-      "status": "scheduled",
-      "events": []
+      "status": "scratched",
+      "events": [
+        {
+          "at": "2026-11-05T18:32:35Z",
+          "type": "scratched",
+          "detail": "Austin Bashi vs Lucas Brennan left the card"
+        }
+      ]
     },
     "401911642": {
       "status": "scheduled",
@@ -58,6 +64,17 @@
     "401932715": {
       "status": "scheduled",
       "events": []
+    },
+    "401933235": {
+      "status": "replacement",
+      "events": [
+        {
+          "at": "2026-11-05T18:32:35Z",
+          "type": "replacement",
+          "detail": "replaces Austin Bashi vs Lucas Brennan"
+        }
+      ],
+      "short_notice": true
     }
   }
 }
