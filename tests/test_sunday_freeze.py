@@ -122,6 +122,55 @@ class SundayFreezeTests(unittest.TestCase):
             self.assertEqual(frozen[0]["quote"]["status"], "verified")
             self.assertEqual(frozen[0]["quote"]["line"], 42.5)
 
+    def test_empty_quotes_feed_with_require_active_quotes_aborts(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            viewer = root / "viewer"
+            snapshots = root / "snapshots"
+            alert_dir = root / "alerts"
+            viewer.mkdir()
+            snapshots.mkdir()
+            alert_dir.mkdir()
+            write_slate_fixture(viewer, {"2026_08_BAL_BUF"})
+
+            # Case A: Kickoff is >3 hours away -> PRE_POST
+            with patch.object(freeze, "VIEWER_DIR", viewer), patch.object(freeze, "SNAPSHOTS_DIR", snapshots):
+                with self.assertRaises(ValueError) as ctx_pre:
+                    freeze.freeze_slate(
+                        2026, 8, game_id="2026_08_BAL_BUF",
+                        created_at="2026-11-01T12:00:00+00:00",
+                        kickoff_time="2026-11-01T18:00:00+00:00",
+                        quotes_feed={},
+                        require_active_quotes=True,
+                        alert_dir=alert_dir,
+                    )
+                self.assertIn("Freeze aborted [PRE_POST]", str(ctx_pre.exception))
+
+            # Case B: Kickoff is <3 hours away -> ADAPTER_FAILURE
+            with patch.object(freeze, "VIEWER_DIR", viewer), patch.object(freeze, "SNAPSHOTS_DIR", snapshots):
+                with self.assertRaises(ValueError) as ctx_fail:
+                    freeze.freeze_slate(
+                        2026, 8, game_id="2026_08_BAL_BUF",
+                        created_at="2026-11-01T17:15:00+00:00",
+                        kickoff_time="2026-11-01T18:00:00+00:00",
+                        quotes_feed={},
+                        require_active_quotes=True,
+                        alert_dir=alert_dir,
+                    )
+                self.assertIn("Freeze aborted [ADAPTER_FAILURE]", str(ctx_fail.exception))
+
+            # Assert alerts were written and snapshots file was NOT created
+            alert_files = sorted(alert_dir.glob("*.json"))
+            self.assertEqual(len(alert_files), 2)
+            alert_a = json.loads(alert_files[0].read_text(encoding="utf-8"))
+            alert_b = json.loads(alert_files[1].read_text(encoding="utf-8"))
+            self.assertEqual(alert_a["status"], "REJECTED_EMPTY_QUOTES")
+            self.assertIn(alert_a["reason_code"], ("PRE_POST", "ADAPTER_FAILURE"))
+            self.assertIn(alert_b["reason_code"], ("PRE_POST", "ADAPTER_FAILURE"))
+            self.assertEqual(alert_a["candidates_generated"], 0)
+            self.assertEqual(alert_b["candidates_generated"], 0)
+            self.assertFalse((snapshots / "snapshots_2026_w8.jsonl").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

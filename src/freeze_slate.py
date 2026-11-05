@@ -17,7 +17,7 @@ import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -217,8 +217,10 @@ def freeze_slate(
     snapshot_type: str = "pre_kickoff",
     created_at: Optional[str] = None,
     game_ids: Optional[set[str]] = None,
-    quotes_feed: Optional[List[Dict[str, Any]]] = None,
+    quotes_feed: Optional[Union[List[Dict[str, Any]], Dict[str, Any]]] = None,
     require_active_quotes: bool = False,
+    alert_dir: Optional[Path] = None,
+    kickoff_time: Optional[str] = None,
 ) -> Tuple[List[Dict[str, Any]], Path, Path]:
     """
     Creates immutable, versioned snapshot records for the specified slate or game.
@@ -266,7 +268,8 @@ def freeze_slate(
 
     quotes_index: Dict[Tuple[str, str], Dict[str, Any]] = {}
     if quotes_feed:
-        for q in quotes_feed:
+        feed_items = quotes_feed.values() if isinstance(quotes_feed, dict) else quotes_feed
+        for q in feed_items:
             qid = str(q.get("player_id", ""))
             qname = str(q.get("player_name", "")).lower()
             qmkt = str(q.get("market", ""))
@@ -417,6 +420,41 @@ def freeze_slate(
             }
             snap_rec["content_hash"] = compute_canonical_hash(snap_rec)
             snapshots.append(snap_rec)
+
+    # Fail-closed check: when require_active_quotes=True and zero active quotes were matched,
+    # abort immediately, write structured alert marker, and never append empty snapshots.
+    if require_active_quotes and not snapshots:
+        now_dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        min_mins_to_kickoff = 999.0
+        if kickoff_time:
+            k_dt = datetime.fromisoformat(kickoff_time.replace("Z", "+00:00"))
+            min_mins_to_kickoff = (k_dt - now_dt).total_seconds() / 60.0
+
+        if min_mins_to_kickoff > 180:
+            reason_code = "PRE_POST"
+            reason_detail = f"Markets legitimately not posted yet ({min_mins_to_kickoff:.0f} mins to kickoff). Retry scheduled closer to kickoff."
+        else:
+            reason_code = "ADAPTER_FAILURE"
+            reason_detail = f"Zero quotes captured within {min_mins_to_kickoff:.0f} mins of kickoff. Odds ingestion adapter failed or feed down."
+
+        target_dir = alert_dir or (BASE_DIR / "data" / "pipeline_alerts")
+        target_dir.mkdir(parents=True, exist_ok=True)
+        date_str = now_dt.strftime("%Y%m%d_%H%M%S")
+        alert_file = target_dir / f"{date_str}_empty_quotes_alert.json"
+        alert_payload = {
+            "timestamp": timestamp,
+            "status": "REJECTED_EMPTY_QUOTES",
+            "reason_code": reason_code,
+            "reason_detail": reason_detail,
+            "slate": slate_key,
+            "candidates_generated": 0,
+            "required_active_quotes": True,
+        }
+        alert_file.write_text(json.dumps(alert_payload, indent=2), encoding="utf-8")
+        raise ValueError(
+            f"Freeze aborted [{reason_code}]: {reason_detail} "
+            f"Zero active quotes found across candidate roster universe. Alert written to {alert_file}"
+        )
 
     # Validate and publish the viewer bundle before appending to the journal.
     # A rejected payload must never leave an untracked frozen decision behind.
