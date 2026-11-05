@@ -174,11 +174,12 @@ def run_edge_evaluation() -> Dict[str, Any]:
                     continue  # Exact push excluded
                 y = 1.0 if (actual > line if side == "OVER" else actual < line) else 0.0
             else:
+                # Player not found in on-field box scores
                 st = item.get("status")
                 if st in ("PUSH", "VOID", "DNP", "CANCELLED"):
-                    continue  # Non-evaluable settlement excluded
-                y = 1.0 if st == "BEAT_CLOSE" else 0.0
-                actual = line
+                    continue  # Non-evaluable settlement excluded per protocol
+                # Refuse to silently default actual = 0.0 or evaluate without verified stats
+                continue
 
             c_odds = item.get("closing_odds") or odds or -115
             p_mkt_devig = devig(c_odds, -115)
@@ -295,6 +296,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
         "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CIs include 0 on both cohorts. Projections are purely informational.",
         "trigger_eval": {
             "sample_size": len(df_trigger),
+            "w_status": "UNIDENTIFIABLE_SAMPLE_INSUFFICIENT",
             "w_hat": round(w_trigger, 4),
             "se": round(se_t, 4),
             "ci_95": ci_t,
@@ -307,6 +309,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
         },
         "board_eval": {
             "sample_size": len(df_board),
+            "w_status": "UNIDENTIFIABLE_SAMPLE_INSUFFICIENT",
             "w_hat": round(w_board, 4),
             "se": round(se_b, 4),
             "ci_95": ci_b,
@@ -340,13 +343,14 @@ if __name__ == "__main__":
     print("CHRONOLOGICAL MARKET-MODEL EDGE EVALUATION (PHASE 2)")
     print("============================================================")
     print(f"Trigger Decisions (N={rep['trigger_eval']['sample_size']}):")
-    print(f"  w_hat:   {rep['trigger_eval']['w_hat']:.4f}")
+    print(f"  Shrinkage w: UNIDENTIFIABLE (95% CI: [{rep['trigger_eval']['ci_95'][0]}, {rep['trigger_eval']['ci_95'][1]}] spans full parameter space)")
+    print(f"  Point w_hat (unstable/suppressed): {rep['trigger_eval']['w_hat']:.4f}")
     print(f"  SE:      {rep['trigger_eval']['se']:.4f}")
-    print(f"  95% CI:  [{rep['trigger_eval']['ci_95'][0]}, {rep['trigger_eval']['ci_95'][1]}]")
-    print(f"  Includes Zero: {rep['trigger_eval']['ci_includes_zero']}")
+    print(f"  Paired Brier Diff: {rep['trigger_eval']['paired_brier_diff']:+.5f} (CI: {rep['trigger_eval']['paired_brier_diff_ci95']})")
     print(f"Board Quoted Decisions (N={rep['board_eval']['sample_size']}):")
-    print(f"  w_hat:   {rep['board_eval']['w_hat']:.4f}")
-    print(f"  95% CI:  [{rep['board_eval']['ci_95'][0]}, {rep['board_eval']['ci_95'][1]}]")
+    print(f"  Shrinkage w: UNIDENTIFIABLE (95% CI: [{rep['board_eval']['ci_95'][0]}, {rep['board_eval']['ci_95'][1]}])")
+    print(f"  Point w_hat (unstable/suppressed): {rep['board_eval']['w_hat']:.4f}")
+    print(f"  Paired Brier Diff: {rep['board_eval']['paired_brier_diff']:+.5f} (CI: {rep['board_eval']['paired_brier_diff_ci95']})")
     print(f"Holdout W1 Brier Skill Score: {rep['holdout_w1_brier_skill_score_pct']}%")
     print("------------------------------------------------------------")
     print(f"Verdict: {rep['verdict_summary']}")

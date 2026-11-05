@@ -617,6 +617,7 @@ def test_match_telemetry_evaluation_metrics():
     assert empty_summary.matched_count == 0
     assert empty_summary.match_success_rate == 0.0
     assert empty_summary.drift_alarm is False
+    assert empty_summary.calibrated is False
 
     # 2. Synthetic telemetry stream with multiple books, ambiguous matches, and extraction discrepancy
     events = [
@@ -642,6 +643,7 @@ def test_match_telemetry_evaluation_metrics():
     assert 0.0 <= summary.cross_book_consistency_rate <= 1.0
     # Drift alarm triggered on draftkings (66.7% < 70% provisional)
     assert summary.drift_alarm is True
+    assert summary.calibrated is False
     assert any("draftkings" in reason for reason in summary.drift_reasons)
 
     # 3. Baseline-relative drift test:
@@ -652,6 +654,7 @@ def test_match_telemetry_evaluation_metrics():
         max_drift_drop_threshold=0.15,
     )
     assert summary_calibrated.drift_alarm is False
+    assert summary_calibrated.calibrated is True
 
     # But if DraftKings historical baseline was 0.95, a drop to 66.7% (>15% drop) sounds the alarm
     summary_drifted = evaluate_match_telemetry(

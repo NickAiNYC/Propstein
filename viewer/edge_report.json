@@ -3,6 +3,7 @@
   "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CIs include 0 on both cohorts. Projections are purely informational.",
   "trigger_eval": {
     "sample_size": 36,
+    "w_status": "UNIDENTIFIABLE_SAMPLE_INSUFFICIENT",
     "w_hat": 0.7777,
     "se": 0.3985,
     "ci_95": [
@@ -21,6 +22,7 @@
   },
   "board_eval": {
     "sample_size": 320,
+    "w_status": "UNIDENTIFIABLE_SAMPLE_INSUFFICIENT",
     "w_hat": 0.7597,
     "se": 0.1835,
     "ci_95": [

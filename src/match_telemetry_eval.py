@@ -26,6 +26,7 @@ class MatchTelemetrySummary:
     cross_book_consistency_rate: float
     drift_alarm: bool
     drift_reasons: list[str]
+    calibrated: bool
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -43,8 +44,9 @@ def evaluate_match_telemetry(
     Drift detection is computed relative to each book's established historical
     baseline (e.g. first week's median match rate) rather than a naive fixed
     threshold. If a book has no established baseline, it falls back to
-    min_book_match_rate_threshold as a provisional floor.
+    min_book_match_rate_threshold as a provisional floor, with calibrated=False.
     """
+    is_calibrated = bool(book_baselines and len(book_baselines) > 0)
     if not events:
         return MatchTelemetrySummary(
             total_attempts=0,
@@ -56,6 +58,7 @@ def evaluate_match_telemetry(
             cross_book_consistency_rate=1.0,
             drift_alarm=False,
             drift_reasons=["No telemetry events recorded"],
+            calibrated=is_calibrated,
         )
 
     outcomes = Counter(ev.get("outcome", "UNKNOWN") for ev in events)
@@ -124,5 +127,6 @@ def evaluate_match_telemetry(
         cross_book_consistency_rate=consistency_rate,
         drift_alarm=drift_alarm,
         drift_reasons=drift_reasons,
+        calibrated=is_calibrated,
     )
 

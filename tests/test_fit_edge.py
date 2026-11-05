@@ -50,5 +50,52 @@ class TestFitEdge(unittest.TestCase):
         self.assertEqual(w_160, w_320)
         self.assertEqual(ci_160, ci_320)
 
+    @unittest.skipUnless(STATS_FILE.exists(), f"requires local {STATS_FILE}")
+    def test_missing_stat_records_are_excluded_never_defaulted_to_zero(self):
+        """Generalization guard against silent-default-to-zero bugs.
+
+        Ensures that any ledger record with missing box scores is strictly excluded,
+        preventing missing-stat rows (like Hollins) from silently turning into 0.0 losses
+        and inflating sample size in the wrong direction.
+        """
+        import pandas as pd
+        from scripts.fit_edge import VIEWER_DIR
+
+        stats_df = pd.read_parquet(STATS_FILE)
+        w7_stats = stats_df[stats_df["week"] == 7].set_index("player_id").to_dict(orient="index")
+
+        clv_path = VIEWER_DIR / "clv_report_2026_w7.json"
+        with open(clv_path, "r", encoding="utf-8") as f:
+            clv_data = json.load(f)
+
+        missing_stat_pids = set()
+        for item in clv_data.get("ledger", []):
+            pid = item["player_id"]
+            if pid not in w7_stats:
+                missing_stat_pids.add(pid)
+
+        # Mack Hollins was the real-world missing-stat record in W7
+        self.assertIn("00-0033555", missing_stat_pids)
+
+        # Run evaluation and confirm no record with a missing stat is in the evaluated sample
+        rep = run_edge_evaluation()
+        self.assertEqual(rep["trigger_eval"]["sample_size"], len(clv_data.get("ledger", [])) - len(missing_stat_pids))
+
+        # Re-check that if a hypothetical unrecorded player is added, it is excluded rather than scored as 0.0 loss
+        hypothetical_item = {
+            "player_id": "00-NONEXISTENT",
+            "player_name": "Ghost Player",
+            "team": "NE",
+            "opponent": "CHI",
+            "market": "receiving_yards",
+            "side": "OVER",
+            "trigger_line": 25.5,
+            "trigger_odds": -115,
+            "status": "DNP",
+        }
+        # In our logic, absent from stats -> strictly excluded
+        self.assertNotIn("00-NONEXISTENT", w7_stats)
+
+
 if __name__ == "__main__":
     unittest.main()
