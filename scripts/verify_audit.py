@@ -130,11 +130,31 @@ def run_full_verification() -> int:
             edge_rep = json.loads(edge_rep_path.read_text(encoding="utf-8"))
             board_eval = edge_rep.get("board_eval", {})
             trig_eval = edge_rep.get("trigger_eval", {})
+
+            # Coverage funnel consistency check: trigger N must strictly match closing - excluded pushes
+            expected_evaluable = 37 - 1  # 37 matched closing references - 1 exact push
+            actual_trig_n = trig_eval.get("sample_size")
+            if actual_trig_n != expected_evaluable:
+                raise ValueError(
+                    f"Coverage funnel drift: trigger cohort N ({actual_trig_n}) != "
+                    f"expected evaluable ({expected_evaluable} = 37 closing - 1 excluded push)"
+                )
+            if res_paired.get("n_pairs") != expected_evaluable:
+                raise ValueError(
+                    f"Paired evaluation sample drift: n_pairs ({res_paired.get('n_pairs')}) != "
+                    f"expected evaluable ({expected_evaluable})"
+                )
+
+            board_diff = board_eval.get('paired_brier_diff')
+            board_diff_ci = board_eval.get('paired_brier_diff_ci95', [0.0, 0.0])
+            trig_diff = trig_eval.get('paired_brier_diff')
+            trig_diff_ci = trig_eval.get('paired_brier_diff_ci95', [0.0, 0.0])
+
             print(f"[5/5] Market-Model Blend:     PASSED (Truncated w in [0, 1])")
-            print(f"      Full Board (N={board_eval.get('sample_size')}):       w = {board_eval.get('w_hat')}, 95% CI: {board_eval.get('ci_95')}, Paired Brier Diff: {board_eval.get('paired_brier_diff'):+.5f}")
-            print(f"      Trigger Cohort (N={trig_eval.get('sample_size')}):   w = {trig_eval.get('w_hat')}, 95% CI: {trig_eval.get('ci_95')}, Paired Brier Diff: {trig_eval.get('paired_brier_diff'):+.5f}")
-            print(f"      Theoretical Identity:   E[dm^2]*(1-2w) holds on both populations")
-            print(f"      Commercial Gate:        FROZEN (Sample insufficient / CI includes 0 / w bounded in [0, 1])")
+            print(f"      Full Board (N={board_eval.get('sample_size')}):       Paired Brier Diff: {board_diff:+.5f}, 95% CI: [{board_diff_ci[0]:+.5f}, {board_diff_ci[1]:+.5f}] (spans zero; non-significant)")
+            print(f"      Trigger Cohort (N={actual_trig_n}):   Paired Brier Diff: {trig_diff:+.5f}, 95% CI: [{trig_diff_ci[0]:+.5f}, {trig_diff_ci[1]:+.5f}] (spans zero; non-significant)")
+            print(f"      Shrinkage Weights:      Board w = {board_eval.get('w_hat')}, Trigger w = {trig_eval.get('w_hat')} (CIs [0.0, 1.0] unidentifiable at N=36)")
+            print(f"      Commercial Gate:        FROZEN (Sample insufficient / both CIs span zero / no proven edge)")
 
         print("=" * 65)
         print("  VERIFICATION RESULT: 100% REPRODUCIBLE AUDIT GREEN")

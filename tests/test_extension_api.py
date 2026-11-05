@@ -554,6 +554,7 @@ def test_extension_placements_and_telemetry_routes(client, monkeypatch):
         "audit_id": "audit-valid-1234",
         "signal_id": "syn_a_ne_chi_player_a_yds_open",
         "market_key": "player_a:receiving_yards:34.5",
+        "sport": "nfl",
         "user_reported_price": -110,
         "user_reported_line": 34.5,
         "book": "Synthetic Book A",
@@ -567,6 +568,14 @@ def test_extension_placements_and_telemetry_routes(client, monkeypatch):
     assert data["ok"] is True
     assert data["audit_id"] == "audit-valid-1234"
     assert data["status"] == "RECORDED"
+
+    # 2b. Placement with mismatched sport fails closed (400)
+    mismatched_sport_payload = dict(valid_placement_payload)
+    mismatched_sport_payload["audit_id"] = "audit-mismatch-5678"
+    mismatched_sport_payload["sport"] = "nba"  # NFL signal claimed as NBA
+    resp_mismatch = client.post("/api/v1/extension/placements", json=mismatched_sport_payload)
+    assert resp_mismatch.status_code == 400
+    assert resp_mismatch.json()["detail"]["error"] == "SIGNAL_NOT_IN_LEDGER"
 
     # 3. Placement route with test bypass flag succeeds for synthetic testing
     monkeypatch.setenv("PROPSTEIN_TEST_ALLOW_MOCK_SIGNALS", "1")
@@ -631,9 +640,27 @@ def test_match_telemetry_evaluation_metrics():
     assert summary.extraction_error_rate == 0.25
     # Cross book consistency: 3 markets ("player:mahomes:pass_yds:275.5" has {MATCHED}, "player:kelce:rec_yds:65.5 [discrepancy noted]" has {MATCHED}, "player:smith:multi_name" has {AMBIGUOUS}, "player:kelce:rec_yds:65.5" has {MATCHED})
     assert 0.0 <= summary.cross_book_consistency_rate <= 1.0
-    # Drift alarm triggered on draftkings (66.7% < 70%)
+    # Drift alarm triggered on draftkings (66.7% < 70% provisional)
     assert summary.drift_alarm is True
     assert any("draftkings" in reason for reason in summary.drift_reasons)
+
+    # 3. Baseline-relative drift test:
+    # If DraftKings established historical baseline is 0.65, 66.7% is normal (no alarm)
+    summary_calibrated = evaluate_match_telemetry(
+        events,
+        book_baselines={"draftkings": 0.65, "fanduel": 0.98},
+        max_drift_drop_threshold=0.15,
+    )
+    assert summary_calibrated.drift_alarm is False
+
+    # But if DraftKings historical baseline was 0.95, a drop to 66.7% (>15% drop) sounds the alarm
+    summary_drifted = evaluate_match_telemetry(
+        events,
+        book_baselines={"draftkings": 0.95, "fanduel": 0.98},
+        max_drift_drop_threshold=0.15,
+    )
+    assert summary_drifted.drift_alarm is True
+    assert any("below established baseline" in reason for reason in summary_drifted.drift_reasons)
 
     # Check dict conversion
     d = summary.as_dict()

@@ -113,6 +113,39 @@ def fit_truncated_shrinkage_weight(
     return round(w_hat, 4), round(se, 4), [ci_lower, ci_upper]
 
 
+def paired_brier_diff_ci(
+    diff_series: np.ndarray,
+    clusters: Sequence[Any] | None = None,
+    n_boot: int = 2000,
+    seed: int = 42,
+) -> list[float]:
+    """Cluster bootstrap 95% CI for paired Brier difference."""
+    rng = np.random.RandomState(seed)
+    n = len(diff_series)
+    if n == 0:
+        return [0.0, 0.0]
+    boot_diffs: list[float] = []
+    if clusters is not None:
+        unique_clusters = np.unique(clusters)
+        n_clusters = len(unique_clusters)
+        cluster_indices: dict[Any, list[int]] = {}
+        for idx, c in enumerate(clusters):
+            cluster_indices.setdefault(c, []).append(idx)
+        for _ in range(n_boot):
+            sampled_c = rng.choice(unique_clusters, size=n_clusters, replace=True)
+            sampled_idx: list[int] = []
+            for c in sampled_c:
+                sampled_idx.extend(cluster_indices[c])
+            boot_diffs.append(float(np.mean(diff_series[sampled_idx])))
+    else:
+        for _ in range(n_boot):
+            sampled_idx = rng.choice(n, size=n, replace=True)
+            boot_diffs.append(float(np.mean(diff_series[sampled_idx])))
+    ci_lower = round(float(np.percentile(boot_diffs, 2.5)), 5)
+    ci_upper = round(float(np.percentile(boot_diffs, 97.5)), 5)
+    return [ci_lower, ci_upper]
+
+
 def run_edge_evaluation() -> Dict[str, Any]:
     stats_path = DATA_DIR / "stats_2026.parquet"
     if not stats_path.exists():
@@ -120,7 +153,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
     stats_df = pd.read_parquet(stats_path)
     w7_stats = stats_df[stats_df["week"] == 7].set_index("player_id").to_dict(orient="index")
 
-    # 1. Evaluate Trigger Picks (the 37 active CLV decisions)
+    # 1. Evaluate Trigger Picks (the 36 evaluable active CLV decisions, excluding 1 push)
     clv_path = VIEWER_DIR / "clv_report_2026_w7.json"
     trigger_rows: List[Dict[str, Any]] = []
     if clv_path.exists():
@@ -128,33 +161,42 @@ def run_edge_evaluation() -> Dict[str, Any]:
             clv_data = json.load(f)
         for item in clv_data.get("ledger", []):
             pid = item["player_id"]
-            act = w7_stats.get(pid, {})
             market = item["market"]
-            if market == "receptions":
-                actual = float(act.get("receptions", 0.0) or 0.0)
-            else:
-                actual = float(act.get("receiving_yards", 0.0) or 0.0)
             side = item["side"]
             line = float(item["trigger_line"])
             odds = item["trigger_odds"]
             edge = float(item.get("trigger_edge", 0.0))
 
-            p_mkt_devig = 0.50  # Consensus symmetric close
-            p_model = min(max(p_mkt_devig + edge, 0.01), 0.99)
-
-            if abs(actual - line) > 1e-4:
+            if pid in w7_stats:
+                act = w7_stats[pid]
+                actual = float(act.get("receptions" if market == "receptions" else "receiving_yards", 0.0) or 0.0)
+                if abs(actual - line) < 1e-4:
+                    continue  # Exact push excluded
                 y = 1.0 if (actual > line if side == "OVER" else actual < line) else 0.0
-                event_id = f"{item.get('team', '')}_{item.get('opponent', '')}" or "w7_event"
-                trigger_rows.append({
-                    "player": item["player_name"],
-                    "side": side,
-                    "line": line,
-                    "actual": actual,
-                    "p_model": p_model,
-                    "p_market": p_mkt_devig,
-                    "y": y,
-                    "event_id": event_id,
-                })
+            else:
+                st = item.get("status")
+                if st in ("PUSH", "VOID", "DNP", "CANCELLED"):
+                    continue  # Non-evaluable settlement excluded
+                y = 1.0 if st == "BEAT_CLOSE" else 0.0
+                actual = line
+
+            c_odds = item.get("closing_odds") or odds or -115
+            p_mkt_devig = devig(c_odds, -115)
+            p_model = min(max(p_mkt_devig + edge, 0.01), 0.99)
+            team = item.get("team", "")
+            opp = item.get("opponent", "")
+            event_id = f"{team}_{opp}" if (team and opp) else "w7_event"
+
+            trigger_rows.append({
+                "player": item["player_name"],
+                "side": side,
+                "line": line,
+                "actual": actual,
+                "p_model": p_model,
+                "p_market": p_mkt_devig,
+                "y": y,
+                "event_id": event_id,
+            })
 
     df_trigger = pd.DataFrame(trigger_rows)
     dm_t = df_trigger["p_model"].values - df_trigger["p_market"].values
@@ -163,6 +205,9 @@ def run_edge_evaluation() -> Dict[str, Any]:
     brier_mod_t = float(np.mean((df_trigger["p_model"].values - df_trigger["y"].values) ** 2))
     brier_mkt_t = float(np.mean((df_trigger["p_market"].values - df_trigger["y"].values) ** 2))
     paired_diff_t = float(brier_mod_t - brier_mkt_t)
+    diff_series_t = (df_trigger["p_model"].values - df_trigger["y"].values) ** 2 - (df_trigger["p_market"].values - df_trigger["y"].values) ** 2
+    clusters_t = df_trigger["event_id"].values if "event_id" in df_trigger else None
+    ci_diff_t = paired_brier_diff_ci(diff_series_t, clusters=clusters_t, seed=42)
 
     # 2. Evaluate Board-wide Quoted Rows (all 164 quoted snapshots)
     snaps_path = VIEWER_DIR / "snapshots_2026_w7.json"
@@ -196,7 +241,8 @@ def run_edge_evaluation() -> Dict[str, Any]:
             p_mod_under = float(proj.get("p_under", 0.5))
 
             if abs(actual - line) > 1e-4:
-                line_key = f"{s.get('game_id')}_{pid}_{market}_{line}"
+                gid = str(s.get("game_id", ""))
+                line_key = f"{gid}_{pid}_{market}_{line}"
                 board_rows.append({
                     "player": s.get("player_name"),
                     "side": "OVER",
@@ -226,6 +272,8 @@ def run_edge_evaluation() -> Dict[str, Any]:
     brier_mod_b = float(np.mean((df_board["p_model"].values - df_board["y"].values) ** 2))
     brier_mkt_b = float(np.mean((df_board["p_market"].values - df_board["y"].values) ** 2))
     paired_diff_b = float(brier_mod_b - brier_mkt_b)
+    diff_series_b = (df_board["p_model"].values - df_board["y"].values) ** 2 - (df_board["p_market"].values - df_board["y"].values) ** 2
+    ci_diff_b = paired_brier_diff_ci(diff_series_b, clusters=clusters_b, seed=42)
 
     # Holdout W1 Brier Skill Score
     h1_path = VIEWER_DIR / "holdout_eval_2026_w1.json"
@@ -244,7 +292,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
 
     report = {
         "status": "PROVISIONAL_UNVALIDATED",
-        "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CI includes 0. Projections are purely informational.",
+        "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CIs include 0 on both cohorts. Projections are purely informational.",
         "trigger_eval": {
             "sample_size": len(df_trigger),
             "w_hat": round(w_trigger, 4),
@@ -254,6 +302,8 @@ def run_edge_evaluation() -> Dict[str, Any]:
             "brier_model": round(brier_mod_t, 4),
             "brier_market": round(brier_mkt_t, 4),
             "paired_brier_diff": round(paired_diff_t, 5),
+            "paired_brier_diff_ci95": ci_diff_t,
+            "paired_brier_diff_spans_zero": bool(ci_diff_t[0] <= 0 <= ci_diff_t[1]),
         },
         "board_eval": {
             "sample_size": len(df_board),
@@ -263,6 +313,8 @@ def run_edge_evaluation() -> Dict[str, Any]:
             "brier_model": round(brier_mod_b, 4),
             "brier_market": round(brier_mkt_b, 4),
             "paired_brier_diff": round(paired_diff_b, 5),
+            "paired_brier_diff_ci95": ci_diff_b,
+            "paired_brier_diff_spans_zero": bool(ci_diff_b[0] <= 0 <= ci_diff_b[1]),
         },
         "holdout_w1_brier_skill_score_pct": w1_skill_pct,
         "sample_threshold_target": 600,

@@ -1,18 +1,23 @@
 {
   "status": "PROVISIONAL_UNVALIDATED",
-  "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CI includes 0. Projections are purely informational.",
+  "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CIs include 0 on both cohorts. Projections are purely informational.",
   "trigger_eval": {
-    "sample_size": 37,
-    "w_hat": 0.6742,
-    "se": 0.3957,
+    "sample_size": 36,
+    "w_hat": 0.7777,
+    "se": 0.3985,
     "ci_95": [
       0.0,
       1.0
     ],
     "ci_includes_zero": true,
-    "brier_model": 0.2357,
-    "brier_market": 0.25,
-    "paired_brier_diff": -0.0143
+    "brier_model": 0.2311,
+    "brier_market": 0.254,
+    "paired_brier_diff": -0.02289,
+    "paired_brier_diff_ci95": [
+      -0.0731,
+      0.04793
+    ],
+    "paired_brier_diff_spans_zero": true
   },
   "board_eval": {
     "sample_size": 320,
@@ -24,7 +29,12 @@
     ],
     "brier_model": 0.24,
     "brier_market": 0.2515,
-    "paired_brier_diff": -0.01154
+    "paired_brier_diff": -0.01154,
+    "paired_brier_diff_ci95": [
+      -0.0445,
+      0.0222
+    ],
+    "paired_brier_diff_spans_zero": true
   },
   "holdout_w1_brier_skill_score_pct": -12.51,
   "sample_threshold_target": 600,

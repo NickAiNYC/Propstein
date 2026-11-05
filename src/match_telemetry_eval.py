@@ -34,10 +34,17 @@ class MatchTelemetrySummary:
 def evaluate_match_telemetry(
     events: Sequence[dict[str, Any]],
     *,
+    book_baselines: dict[str, float] | None = None,
     min_book_match_rate_threshold: float = 0.70,
     max_drift_drop_threshold: float = 0.15,
 ) -> MatchTelemetrySummary:
-    """Analyze a batch or stream of MatchTelemetryEvent records."""
+    """Analyze a batch or stream of MatchTelemetryEvent records.
+
+    Drift detection is computed relative to each book's established historical
+    baseline (e.g. first week's median match rate) rather than a naive fixed
+    threshold. If a book has no established baseline, it falls back to
+    min_book_match_rate_threshold as a provisional floor.
+    """
     if not events:
         return MatchTelemetrySummary(
             total_attempts=0,
@@ -65,15 +72,26 @@ def evaluate_match_telemetry(
     per_book_rates: dict[str, float] = {}
     drift_reasons: list[str] = []
     drift_alarm = False
+    baselines = {k.lower(): v for k, v in (book_baselines or {}).items()}
 
     for b, b_events in by_book.items():
         b_matched = sum(1 for e in b_events if e.get("outcome") == "MATCHED")
         rate = round(b_matched / len(b_events), 4)
         per_book_rates[b] = rate
-        if rate < min_book_match_rate_threshold:
+
+        if b in baselines:
+            base = baselines[b]
+            rel_thresh = round(base * (1.0 - max_drift_drop_threshold), 4)
+            if rate < rel_thresh:
+                drift_alarm = True
+                drift_reasons.append(
+                    f"Book '{b}' match rate ({rate:.1%}) dropped >{max_drift_drop_threshold:.0%} "
+                    f"below established baseline ({base:.1%}, threshold {rel_thresh:.1%})"
+                )
+        elif rate < min_book_match_rate_threshold:
             drift_alarm = True
             drift_reasons.append(
-                f"Book '{b}' match rate ({rate:.1%}) below required threshold ({min_book_match_rate_threshold:.1%})"
+                f"Book '{b}' match rate ({rate:.1%}) below provisional threshold ({min_book_match_rate_threshold:.1%}) [no baseline calibrated]"
             )
 
     # Extraction errors (discrepancies noted in details)

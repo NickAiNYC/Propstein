@@ -18,9 +18,12 @@ class TestFitEdge(unittest.TestCase):
         self.assertTrue(rep["action_required"]["state_no_edge_on_performance"])
         self.assertTrue(rep["action_required"]["freeze_paid_features"])
         self.assertTrue(rep["action_required"]["suspend_beat_close_guarantee"])
-        # Both board and trigger cohorts record paired Brier diffs
+        # Both board and trigger cohorts record paired Brier diffs and CIs spanning zero
+        self.assertEqual(rep["trigger_eval"]["sample_size"], 36)
         self.assertIn("paired_brier_diff", rep["board_eval"])
         self.assertIn("paired_brier_diff", rep["trigger_eval"])
+        self.assertTrue(rep["board_eval"]["paired_brier_diff_spans_zero"])
+        self.assertTrue(rep["trigger_eval"]["paired_brier_diff_spans_zero"])
         self.assertNotIn("win_rate_pct", rep["trigger_eval"])
 
     def test_cluster_bootstrap_160_vs_320_identity(self):

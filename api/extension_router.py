@@ -528,6 +528,7 @@ class PlacedAuditPayload(BaseModel):
     audit_id: str = Field(..., min_length=4)
     signal_id: str = Field(..., min_length=4)
     market_key: str
+    sport: str | None = None
     user_reported_price: int
     user_reported_line: float
     book: str
@@ -548,11 +549,17 @@ class MatchTelemetryBatch(BaseModel):
     events: list[MatchTelemetryEvent]
 
 
-def _is_signal_in_ledger(signal_id: str) -> bool:
-    """Validate that signal_id matches a pre-committed forecast in the ledger."""
+def _is_signal_in_ledger(signal_id: str, sport: str | None = None) -> bool:
+    """Validate that signal_id matches a pre-committed forecast in the ledger.
+
+    If sport is specified, cross-sport matching is strictly prohibited to
+    prevent reopening cross-sport pooling at the ledger boundary.
+    """
     # Test bypass flag if explicitly set
     if os.environ.get("PROPSTEIN_TEST_ALLOW_MOCK_SIGNALS") == "1":
         return True
+
+    target_sport = sport.strip().lower() if (sport and sport.strip()) else None
 
     db_url = os.environ.get("DATABASE_URL")
     if db_url:
@@ -560,32 +567,57 @@ def _is_signal_in_ledger(signal_id: str) -> bool:
             import psycopg2
             with psycopg2.connect(db_url) as conn:
                 with conn.cursor() as cur:
-                    cur.execute(
-                        """
-                        SELECT 1 FROM prospective_signals WHERE id = %s
-                        UNION
-                        SELECT 1 FROM intended_quotes WHERE id = %s
-                        LIMIT 1
-                        """,
-                        (signal_id, signal_id),
-                    )
+                    if target_sport:
+                        cur.execute(
+                            """
+                            SELECT 1 FROM prospective_signals s
+                            JOIN protocol_amendments a ON a.amendment_id = s.amendment_id
+                            WHERE s.id = %s AND LOWER(a.sport) = %s
+                            UNION
+                            SELECT 1 FROM intended_quotes i
+                            JOIN prospective_signals s ON s.id = i.signal_id
+                            JOIN protocol_amendments a ON a.amendment_id = s.amendment_id
+                            WHERE i.id = %s AND LOWER(a.sport) = %s
+                            LIMIT 1
+                            """,
+                            (signal_id, target_sport, signal_id, target_sport),
+                        )
+                    else:
+                        cur.execute(
+                            """
+                            SELECT 1 FROM prospective_signals WHERE id = %s
+                            UNION
+                            SELECT 1 FROM intended_quotes WHERE id = %s
+                            LIMIT 1
+                            """,
+                            (signal_id, signal_id),
+                        )
                     if cur.fetchone():
                         return True
         except Exception:
             pass
 
-    # Check committed snapshots and report artifacts
+    # Check committed snapshots and report artifacts with sport attribution
     root = Path(__file__).resolve().parent.parent
-    for json_file in (
-        root / "viewer" / "clv_report_2026_w7.json",
-        root / "viewer" / "live_odds_feed.json",
-        root / "viewer" / "top_picks.json",
-    ):
+    file_sport_map: list[tuple[Path, str]] = [
+        (root / "viewer" / "clv_report_2026_w7.json", "nfl"),
+        (root / "viewer" / "live_odds_feed.json", "nfl"),
+        (root / "viewer" / "top_picks.json", "nfl"),
+        (root / "viewer" / "current_picks_2026_w8.json", "nfl"),
+        (root / "viewer" / "ufc_ledger.json", "ufc"),
+    ]
+
+    for json_file, file_sport in file_sport_map:
+        if target_sport and file_sport != target_sport:
+            continue
         if json_file.is_file():
             try:
                 data = json.loads(json_file.read_text(encoding="utf-8"))
                 items = data.get("ledger") or data.get("picks") or data.get("quotes") or []
                 for it in items:
+                    it_sport = str(it.get("sport", file_sport)).lower()
+                    if target_sport and it_sport != target_sport:
+                        continue
                     if (
                         it.get("signal_id") == signal_id
                         or it.get("quote_id") == signal_id
@@ -596,6 +628,10 @@ def _is_signal_in_ledger(signal_id: str) -> bool:
                 pass
 
     for jsonl_file in (root / "snapshots").glob("*.jsonl"):
+        file_name = jsonl_file.name.lower()
+        file_sport = "ufc" if "ufc" in file_name else ("nba" if "nba" in file_name else "nfl")
+        if target_sport and file_sport != target_sport:
+            continue
         try:
             with open(jsonl_file, "r", encoding="utf-8") as f:
                 for line in f:
@@ -610,12 +646,15 @@ def _is_signal_in_ledger(signal_id: str) -> bool:
 @router.post("/api/v1/extension/placements")
 def record_extension_placement(payload: PlacedAuditPayload):
     """Ingest user-reported [I placed it] audit record into Postgres research ledger."""
-    if not _is_signal_in_ledger(payload.signal_id):
+    if not _is_signal_in_ledger(payload.signal_id, sport=payload.sport):
         raise HTTPException(
             status_code=400,
             detail={
                 "error": "SIGNAL_NOT_IN_LEDGER",
-                "message": f"Signal '{payload.signal_id}' does not match any committed forecast in the ledger.",
+                "message": (
+                    f"Signal '{payload.signal_id}' does not match any committed forecast "
+                    f"for sport '{payload.sport or 'all'}' in the ledger."
+                ),
             },
         )
 
