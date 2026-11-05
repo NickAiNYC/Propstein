@@ -41,6 +41,7 @@ def settle_ledger(
     db_path: Path = DB_PATH,
     stats_path: Path = STATS_PATH,
     sport: str = "nfl",
+    record_type: str = "forecast",
     dry_run: bool = False,
 ) -> dict[str, Any]:
     if not db_path.exists():
@@ -49,13 +50,22 @@ def settle_ledger(
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
 
-    # Query closing-quoted records
+    # Query closing-quoted records filtered strictly by record_type
     query = """
     SELECT * FROM clv_ledger
     WHERE sport = ? AND closing_line IS NOT NULL AND settled_at IS NULL
+      AND record_type = ?
     """
-    rows = conn.execute(query, (sport.lower(),)).fetchall()
+    rows = conn.execute(query, (sport.lower(), record_type)).fetchall()
     total_backlog = len(rows)
+
+    telemetry_count = conn.execute(
+        """
+        SELECT count(*) FROM clv_ledger
+        WHERE sport = ? AND closing_line IS NOT NULL AND record_type != 'forecast'
+        """,
+        (sport.lower(),),
+    ).fetchone()[0]
 
     stats_dict: dict[tuple[int, str], dict[str, Any]] = {}
     if stats_path.exists():
@@ -151,7 +161,9 @@ def settle_ledger(
 
     return {
         "sport": sport,
+        "record_type": record_type,
         "total_backlog": total_backlog,
+        "telemetry_count": telemetry_count,
         "settled_count": settled_count,
         "pending_future_count": pending_future_count,
         "excluded_push_dnp": excluded_push_dnp,
@@ -162,16 +174,19 @@ def settle_ledger(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Settle closing-quoted signals in clv_ledger.")
     parser.add_argument("--sport", default="nfl", help="Sport filter (default: nfl)")
+    parser.add_argument("--record-type", default="forecast", choices=["forecast", "telemetry", "test", "placement"], help="Filter by record_type (default: forecast)")
     parser.add_argument("--dry-run", action="store_true", help="Calculate without committing DB updates")
     args = parser.parse_args()
 
-    res = settle_ledger(sport=args.sport, dry_run=args.dry_run)
+    res = settle_ledger(sport=args.sport, record_type=args.record_type, dry_run=args.dry_run)
 
     print("=" * 65)
     print("  PROPSTEIN CLV LEDGER SETTLEMENT WORKER")
     print("=" * 65)
     print(f"Sport Filter:             {res['sport'].upper()}")
-    print(f"Closing-Quoted Backlog:   {res['total_backlog']} records")
+    print(f"Record Type:              {res['record_type'].upper()} (audited forecasts only)")
+    print(f"Closing-Quoted Backlog:   {res['total_backlog']} forecast records")
+    print(f"Telemetry Trial Ticks:    {res['telemetry_count']} records (classified as under_only_trial; excluded from audit)")
     print(f"Graded / Settled:         {res['settled_count']} records")
     print(f"Awaiting Game Box Scores: {res['pending_future_count']} records (upcoming slates)")
     print(f"Excluded Pushes / DNPs:   {res['excluded_push_dnp']} records")
@@ -182,13 +197,22 @@ def main() -> int:
     potential_n = current_n + res["total_backlog"]
     pct_gate = round((potential_n / 600.0) * 100.0, 1)
     remaining = 600 - potential_n
+    if res["total_backlog"] == 0:
+        print(
+            f"No un-settled forecast records in backlog. Confirmatory sample size strictly remains N = {current_n}."
+        )
+        print(
+            f"Notice: {res['telemetry_count']} automated sniper trial ticks are classified as record_type='telemetry' "
+            f"(under_only_trial) and are excluded from audit calculations."
+        )
+    else:
+        print(
+            f"Settlement of the {res['total_backlog']}-quoted forecast backlog advances potential N from {current_n} "
+            f"to ~{potential_n} ({pct_gate}% of the gate)."
+        )
     print(
-        f"Settlement of the {res['total_backlog']}-quoted backlog advances potential N from {current_n} "
-        f"to ~{potential_n} ({pct_gate}% of the gate)."
-    )
-    print(
-        f"The path to N=600 requires {remaining} additional evaluable records across future weeks, "
-        f"contingent on the candidate-generation protocol producing quoted candidates."
+        f"The path to N=600 requires {remaining} additional evaluable records across future slates, "
+        f"contingent on quote-gated full-board prospective generation."
     )
     print(
         f"Commercial Gate:          FROZEN (Sample insufficient: N={current_n} -> potential N={potential_n} "

@@ -380,8 +380,27 @@ class TruthStore:
                     model_version TEXT NOT NULL,
                     logged_at TEXT NOT NULL,
                     closed_at TEXT,
-                    settled_at TEXT
+                    settled_at TEXT,
+                    record_type TEXT NOT NULL DEFAULT 'forecast',
+                    population_cohort TEXT NOT NULL DEFAULT 'full_board'
                 );
+
+                CREATE TABLE IF NOT EXISTS sniper_ticks (
+                    tick_id TEXT PRIMARY KEY,
+                    alert_id TEXT NOT NULL,
+                    prop_id TEXT NOT NULL,
+                    sport TEXT NOT NULL,
+                    game_id TEXT NOT NULL,
+                    player_id TEXT NOT NULL,
+                    player_name TEXT NOT NULL,
+                    book TEXT NOT NULL,
+                    line REAL NOT NULL,
+                    odds_american INTEGER NOT NULL,
+                    edge_pct REAL NOT NULL,
+                    source_hash TEXT NOT NULL,
+                    created_at TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS idx_sniper_ticks_prop ON sniper_ticks(prop_id, created_at DESC);
 
                 CREATE TABLE IF NOT EXISTS langgraph_checkpoints (
                     thread_id TEXT NOT NULL,
@@ -515,6 +534,15 @@ class TruthStore:
                 CREATE INDEX IF NOT EXISTS idx_user_subs_customer ON user_subscriptions(customer_id);
                 """
             )
+            # Additive column migrations for existing SQLite databases
+            for col, col_def in [
+                ("record_type", "TEXT NOT NULL DEFAULT 'forecast'"),
+                ("population_cohort", "TEXT NOT NULL DEFAULT 'full_board'"),
+            ]:
+                try:
+                    conn.execute(f"ALTER TABLE clv_ledger ADD COLUMN {col} {col_def}")
+                except Exception:
+                    pass
 
         if self.database_url:
             try:
@@ -771,27 +799,67 @@ class TruthStore:
             return out
 
     def record_clv_entry_from_alert(self, alert: SniperAlert) -> str:
-        ledger_id = f"clv-{alert.alert_id}"
-        receipt_hash = compute_source_hash(
-            {
-                "alert_id": alert.alert_id,
-                "prop_id": alert.prop_id,
-                "line": alert.line,
-                "odds": alert.odds_american,
-                "fair_prob": alert.fair_prob,
-                "implied_prob": alert.implied_prob,
-                "source_hash": alert.source_hash,
-            }
-        )
         with self._connect_sqlite() as conn:
+            # Check if an active open decision already exists for this prop on this book
+            existing = conn.execute(
+                """
+                SELECT ledger_id FROM clv_ledger
+                WHERE sport = ? AND game_id = ? AND player_id = ? AND market = ? AND side = ? AND book = ?
+                  AND record_type = 'forecast' AND (outcome IS NULL OR outcome = 'PENDING')
+                """,
+                (alert.sport, alert.game_id, alert.player_id, alert.market, alert.side, alert.book),
+            ).fetchone()
+
+            if existing:
+                # Existing decision already committed. Route this monitoring tick to sniper_ticks table.
+                conn.execute(
+                    """
+                    INSERT OR REPLACE INTO sniper_ticks (
+                        tick_id, alert_id, prop_id, sport, game_id, player_id, player_name,
+                        book, line, odds_american, edge_pct, source_hash, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        f"tick-{alert.alert_id}-{int(alert.created_at.timestamp() * 1000)}",
+                        alert.alert_id,
+                        alert.prop_id,
+                        alert.sport,
+                        alert.game_id,
+                        alert.player_id,
+                        alert.player_name,
+                        alert.book,
+                        alert.line,
+                        alert.odds_american,
+                        alert.edge_pct,
+                        alert.source_hash,
+                        alert.created_at.isoformat(),
+                    ),
+                )
+                return str(existing["ledger_id"])
+
+            # First commitment of this decision: write single canonical forecast row to clv_ledger
+            ledger_id = f"clv-{alert.alert_id}"
+            receipt_hash = compute_source_hash(
+                {
+                    "alert_id": alert.alert_id,
+                    "prop_id": alert.prop_id,
+                    "line": alert.line,
+                    "odds": alert.odds_american,
+                    "fair_prob": alert.fair_prob,
+                    "implied_prob": alert.implied_prob,
+                    "source_hash": alert.source_hash,
+                }
+            )
+            cohort = "under_only_trial" if alert.side.upper() == "UNDER" else "full_board"
             conn.execute(
                 """
                 INSERT OR IGNORE INTO clv_ledger (
                     ledger_id, alert_id, sport, game_id, player_id, player_name,
                     team, market, side, venue_type, book, entry_line, entry_odds,
                     entry_implied_prob, fair_prob_at_entry, edge_pct_at_entry,
-                    kelly_stake, source_hash, receipt_hash, model_version, logged_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    kelly_stake, source_hash, receipt_hash, model_version, logged_at,
+                    record_type, population_cohort
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     ledger_id,
@@ -815,14 +883,18 @@ class TruthStore:
                     receipt_hash,
                     alert.model_version,
                     alert.created_at.isoformat(),
+                    "forecast",
+                    cohort,
                 ),
             )
-        return ledger_id
+            return ledger_id
 
     def record_clv_entry(self, entry: dict[str, Any]) -> str:
         """Transactionally record an individual bet/pick entry into clv_ledger."""
         ledger_id = entry.get("ledger_id") or f"clv-{uuid.uuid4().hex[:12]}"
         receipt_hash = compute_source_hash(entry)
+        record_type = entry.get("record_type", "forecast")
+        cohort = entry.get("population_cohort", "full_board")
         with self._connect_sqlite() as conn:
             conn.execute(
                 """
@@ -830,8 +902,9 @@ class TruthStore:
                     ledger_id, alert_id, sport, game_id, player_id, player_name,
                     team, market, side, venue_type, book, entry_line, entry_odds,
                     entry_implied_prob, fair_prob_at_entry, edge_pct_at_entry,
-                    kelly_stake, source_hash, receipt_hash, model_version, logged_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    kelly_stake, source_hash, receipt_hash, model_version, logged_at,
+                    record_type, population_cohort
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     ledger_id,
@@ -855,6 +928,8 @@ class TruthStore:
                     receipt_hash,
                     entry.get("model_version") or MODEL_VERSION,
                     entry.get("logged_at") or datetime.now(timezone.utc).isoformat(),
+                    record_type,
+                    cohort,
                 ),
             )
         return ledger_id
@@ -930,7 +1005,13 @@ class TruthStore:
             updated = conn.execute("SELECT * FROM clv_ledger WHERE ledger_id = ?", (actual_lid,)).fetchone()
             return dict(updated) if updated else None
 
-    def list_clv_ledger(self, sport: str | None = None, venue_type: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
+    def list_clv_ledger(
+        self,
+        sport: str | None = None,
+        venue_type: str | None = None,
+        record_type: str | None = None,
+        limit: int = 100,
+    ) -> list[dict[str, Any]]:
         query = "SELECT * FROM clv_ledger WHERE 1=1"
         params: list[Any] = []
         if sport:
@@ -939,6 +1020,9 @@ class TruthStore:
         if venue_type:
             query += " AND venue_type = ?"
             params.append(venue_type)
+        if record_type:
+            query += " AND record_type = ?"
+            params.append(record_type)
         query += " ORDER BY logged_at DESC LIMIT ?"
         params.append(limit)
         with self._connect_sqlite() as conn:

@@ -218,3 +218,34 @@ def test_gate_5_low_clv_expectation_suppression(tmp_path: Path):
     assert log.decision == "SUPPRESSED"
     assert "GATE_5_LOW_CLV_EXPECTATION" in log.reason
 
+
+def test_repeated_sniper_ticks_do_not_replicate_clv_ledger(tmp_path: Path):
+    now = datetime.now(timezone.utc)
+    agent, truth, _ = _make_fixtures(tmp_path)
+    proj = _sample_projection(now, fair_prob_over=0.62)
+    mkt = _sample_market(now, implied_prob_over=0.52)
+
+    # First tick -> fires alert and writes 1 forecast decision row to clv_ledger
+    alert1, _ = agent.evaluate_candidate(proj, mkt, now=now)
+    assert alert1 is not None
+
+    # Second and third ticks (10s and 20s later)
+    now2 = now + timedelta(seconds=10)
+    alert2, _ = agent.evaluate_candidate(proj, mkt, now=now2)
+    assert alert2 is not None
+
+    now3 = now + timedelta(seconds=20)
+    alert3, _ = agent.evaluate_candidate(proj, mkt, now=now3)
+    assert alert3 is not None
+
+    # clv_ledger must have exactly 1 forecast row, not 3!
+    forecasts = truth.list_clv_ledger(record_type="forecast")
+    assert len(forecasts) == 1
+    assert forecasts[0]["record_type"] == "forecast"
+
+    # Repeated ticks must be routed to sniper_ticks table
+    with truth._connect_sqlite() as conn:
+        ticks = conn.execute("SELECT * FROM sniper_ticks").fetchall()
+        assert len(ticks) == 2
+
+

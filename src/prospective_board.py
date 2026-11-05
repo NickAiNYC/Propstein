@@ -53,6 +53,57 @@ def _write_new_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
         raise
 
 
+def classify_coverage_failure_reason(
+    rows: list[dict[str, Any]],
+    kickoffs: dict[str, datetime],
+    now: datetime,
+) -> tuple[str, str, dict[str, Any]]:
+    """Distinguishes prospective capture failure causes for targeted alerting/retry policy:
+    - ADAPTER_FAILURE: Zero quotes captured near kickoff (adapter down or broken feed)
+    - PRE_POST: Early capture window where sportsbooks have not posted lines yet (>3h to kickoff)
+    - PARTIAL_SLATE: Non-zero quotes from some books/games, but below required threshold
+    """
+    quoted = sum(1 for r in rows if r["decision"] != "PASS_NO_QUOTE")
+    books = set()
+    games_with_quotes = set()
+    for r in rows:
+        for obs in r.get("observations", []):
+            if obs.get("book"):
+                books.add(obs["book"])
+                games_with_quotes.add(r["game_id"])
+
+    min_mins_to_kickoff = min(
+        [(kickoffs[r["game_id"]] - now).total_seconds() / 60.0 for r in rows if r["game_id"] in kickoffs],
+        default=0.0,
+    )
+
+    meta = {
+        "games_with_quotes": sorted(games_with_quotes),
+        "active_books": sorted(books),
+        "min_minutes_to_kickoff": round(min_mins_to_kickoff, 1),
+    }
+
+    if quoted == 0:
+        if min_mins_to_kickoff > 180:
+            return (
+                "PRE_POST",
+                f"Markets legitimately not posted yet ({min_mins_to_kickoff:.0f} mins to kickoff). Retry scheduled closer to kickoff.",
+                meta,
+            )
+        else:
+            return (
+                "ADAPTER_FAILURE",
+                f"Zero quotes captured within {min_mins_to_kickoff:.0f} mins of kickoff. Odds ingestion adapter failed or feed down.",
+                meta,
+            )
+    else:
+        return (
+            "PARTIAL_SLATE",
+            f"Partial quotes received from {len(books)} books across {len(games_with_quotes)} games, but total coverage is below threshold.",
+            meta,
+        )
+
+
 def capture_board(
     snapshots_path: Path,
     kickoffs_path: Path,
@@ -164,6 +215,7 @@ def capture_board(
     quoted_candidates = sum(1 for row in rows if row["decision"] != "PASS_NO_QUOTE")
     coverage_rate = quoted_candidates / len(rows) if rows else 0.0
     if min_coverage_rate is not None and coverage_rate < min_coverage_rate:
+        reason_code, reason_detail, reason_meta = classify_coverage_failure_reason(rows, kickoffs, now)
         target_dir = alert_dir or (Path(__file__).resolve().parent.parent / "data" / "pipeline_alerts")
         target_dir.mkdir(parents=True, exist_ok=True)
         date_str = now.strftime("%Y%m%d_%H%M%S")
@@ -175,15 +227,19 @@ def capture_board(
             "coverage_rate": round(coverage_rate, 4),
             "required_rate": min_coverage_rate,
             "status": "REJECTED_LOW_COVERAGE",
+            "reason_code": reason_code,
+            "reason_detail": reason_detail,
+            "metadata": reason_meta,
             "journal": str(journal_path),
             "reason": (
                 f"Active quote coverage {coverage_rate:.1%} is below minimum required threshold "
-                f"{min_coverage_rate:.1%} ({quoted_candidates}/{len(rows)} quoted)."
+                f"{min_coverage_rate:.1%} ({quoted_candidates}/{len(rows)} quoted). Reason: {reason_code} - {reason_detail}"
             ),
         }
         alert_file.write_text(json.dumps(alert_payload, indent=2), encoding="utf-8")
         raise ValueError(
-            f"Journal rejected: quote coverage {coverage_rate:.1%} < minimum required {min_coverage_rate:.1%}. "
+            f"Journal rejected [{reason_code}]: {reason_detail} "
+            f"Quote coverage {coverage_rate:.1%} < minimum required {min_coverage_rate:.1%}. "
             f"Alert written to {alert_file}"
         )
 

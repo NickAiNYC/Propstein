@@ -152,12 +152,14 @@ class ProspectiveBoardTest(unittest.TestCase):
                 min_coverage_rate=0.75,
                 alert_dir=alert_dir,
             )
-        self.assertIn("Journal rejected: quote coverage 50.0% < minimum required 75.0%", str(ctx.exception))
+        self.assertIn("Journal rejected [PARTIAL_SLATE]", str(ctx.exception))
         self.assertFalse(self.journal.exists())
         alert_files = list(alert_dir.glob("*.json"))
         self.assertEqual(len(alert_files), 1)
         alert_data = json.loads(alert_files[0].read_text(encoding="utf-8"))
         self.assertEqual(alert_data["status"], "REJECTED_LOW_COVERAGE")
+        self.assertEqual(alert_data["reason_code"], "PARTIAL_SLATE")
+        self.assertIn("Partial quotes received", alert_data["reason_detail"])
         self.assertEqual(alert_data["candidate_count"], 2)
         self.assertEqual(alert_data["quoted_candidate_count"], 1)
         self.assertEqual(alert_data["coverage_rate"], 0.5)
