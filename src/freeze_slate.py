@@ -217,12 +217,16 @@ def freeze_slate(
     snapshot_type: str = "pre_kickoff",
     created_at: Optional[str] = None,
     game_ids: Optional[set[str]] = None,
+    quotes_feed: Optional[List[Dict[str, Any]]] = None,
+    require_active_quotes: bool = False,
 ) -> Tuple[List[Dict[str, Any]], Path, Path]:
     """
     Creates immutable, versioned snapshot records for the specified slate or game.
     Saves to:
     1. snapshots/snapshots_{season}_w{week}.jsonl (append-only log)
     2. viewer/snapshots_{season}_w{week}.json (viewer accessible snapshot bundle)
+    When require_active_quotes is True, couples candidate generation to active quotes
+    (roster INNER JOIN active_quotes), preventing unquoted candidates from polluting journals.
     """
     SNAPSHOTS_DIR.mkdir(parents=True, exist_ok=True)
     VIEWER_DIR.mkdir(parents=True, exist_ok=True)
@@ -260,6 +264,17 @@ def freeze_slate(
 
     snapshots: List[Dict[str, Any]] = []
 
+    quotes_index: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    if quotes_feed:
+        for q in quotes_feed:
+            qid = str(q.get("player_id", ""))
+            qname = str(q.get("player_name", "")).lower()
+            qmkt = str(q.get("market", ""))
+            if qid and qmkt:
+                quotes_index[(qid, qmkt)] = q
+            if qname and qmkt:
+                quotes_index[(qname, qmkt)] = q
+
     for row in slate_rows:
         p_id = row.get("player_id", "")
         p_name = row.get("player_display_name", "")
@@ -278,116 +293,130 @@ def freeze_slate(
         # -------------------------------------------------------------
         # Market 1: receiving_yards
         # -------------------------------------------------------------
-        py_over, py_under, py_push = compute_yards_probs(m, mu_rec, mu_ypr, fair_yards)
-        boundaries_yards = evaluate_price_boundaries(m, mu_rec, mu_ypr, "yards", fair_yards)
+        q_yards = quotes_index.get((p_id, "receiving_yards")) or quotes_index.get((p_name.lower(), "receiving_yards"))
+        if not (require_active_quotes and not q_yards):
+            py_over, py_under, py_push = compute_yards_probs(m, mu_rec, mu_ypr, fair_yards)
+            boundaries_yards = evaluate_price_boundaries(m, mu_rec, mu_ypr, "yards", fair_yards)
 
-        snap_yards = {
-            "snapshot_id": str(uuid.uuid4()),
-            "snapshot_type": snapshot_type,
-            "created_at": timestamp,
-            "slate": f"{season}-W{week:02d}",
-            "game_id": p_game,
-            "player_id": p_id,
-            "player_name": p_name,
-            "team": p_team,
-            "opponent": p_opp,
-            "position": row.get("position", "WR"),
-            "market": "receiving_yards",
-            "model": {
-                "version": MODEL_VERSION,
-                "alpha": MODEL_ALPHA,
-                "k": MODEL_K,
-                "calibration_bias": 0.0 if week > 1 else 0.088,
-                "input_cutoff": timestamp
-            },
-            "role": role_info,
-            "projection": {
-                "fair_line": fair_yards,
-                "proj_volume": round(proj_yards, 2),
-                "distribution_params": {
-                    "mu_rec": round(mu_rec, 4),
-                    "mu_ypr": round(mu_ypr, 4),
+            snap_yards = {
+                "snapshot_id": str(uuid.uuid4()),
+                "snapshot_type": snapshot_type,
+                "created_at": timestamp,
+                "slate": f"{season}-W{week:02d}",
+                "game_id": p_game,
+                "player_id": p_id,
+                "player_name": p_name,
+                "team": p_team,
+                "opponent": p_opp,
+                "position": row.get("position", "WR"),
+                "market": "receiving_yards",
+                "model": {
+                    "version": MODEL_VERSION,
                     "alpha": MODEL_ALPHA,
-                    "k": MODEL_K
+                    "k": MODEL_K,
+                    "calibration_bias": 0.0 if week > 1 else 0.088,
+                    "input_cutoff": timestamp
                 },
-                "p_over": round(py_over, 4),
-                "p_under": round(py_under, 4),
-                "p_push": round(py_push, 4)
-            },
-            "price_boundaries": boundaries_yards,
-            "qualification_policy": {
-                "version": QUALIFICATION_POLICY_VERSION,
-                "edge_hurdle": EDGE_HURDLE,
-                "require_positive_ev": True
-            },
-            "quote": {
-                "status": "unquoted",
-                "source": None,
-                "line": None,
-                "odds": None,
-                "observed_at": None
-            },
-            "scenario_assumptions": None
-        }
-        snap_yards["content_hash"] = compute_canonical_hash(snap_yards)
-        snapshots.append(snap_yards)
+                "role": role_info,
+                "projection": {
+                    "fair_line": fair_yards,
+                    "proj_volume": round(proj_yards, 2),
+                    "distribution_params": {
+                        "mu_rec": round(mu_rec, 4),
+                        "mu_ypr": round(mu_ypr, 4),
+                        "alpha": MODEL_ALPHA,
+                        "k": MODEL_K
+                    },
+                    "p_over": round(py_over, 4),
+                    "p_under": round(py_under, 4),
+                    "p_push": round(py_push, 4)
+                },
+                "price_boundaries": boundaries_yards,
+                "qualification_policy": {
+                    "version": QUALIFICATION_POLICY_VERSION,
+                    "edge_hurdle": EDGE_HURDLE,
+                    "require_positive_ev": True
+                },
+                "quote": {
+                    "status": "unquoted" if not q_yards else q_yards.get("status", "observed"),
+                    "source": None if not q_yards else (q_yards.get("book") or q_yards.get("source")),
+                    "book": None if not q_yards else q_yards.get("book"),
+                    "line": None if not q_yards else q_yards.get("line"),
+                    "odds": None if not q_yards else q_yards.get("odds", -110),
+                    "over_odds": None if not q_yards else q_yards.get("over_odds"),
+                    "under_odds": None if not q_yards else q_yards.get("under_odds"),
+                    "observed_at": None if not q_yards else q_yards.get("observed_at", timestamp),
+                    "quote_id": None if not q_yards else q_yards.get("quote_id"),
+                    "evaluation": None if not q_yards else q_yards.get("evaluation"),
+                },
+                "scenario_assumptions": None
+            }
+            snap_yards["content_hash"] = compute_canonical_hash(snap_yards)
+            snapshots.append(snap_yards)
 
         # -------------------------------------------------------------
         # Market 2: receptions
         # -------------------------------------------------------------
-        pr_over, pr_under, pr_push = compute_rec_probs(mu_rec, fair_rec)
-        boundaries_rec = evaluate_price_boundaries(m, mu_rec, mu_ypr, "receptions", fair_rec)
+        q_rec = quotes_index.get((p_id, "receptions")) or quotes_index.get((p_name.lower(), "receptions"))
+        if not (require_active_quotes and not q_rec):
+            pr_over, pr_under, pr_push = compute_rec_probs(mu_rec, fair_rec)
+            boundaries_rec = evaluate_price_boundaries(m, mu_rec, mu_ypr, "receptions", fair_rec)
 
-        snap_rec = {
-            "snapshot_id": str(uuid.uuid4()),
-            "snapshot_type": snapshot_type,
-            "created_at": timestamp,
-            "slate": f"{season}-W{week:02d}",
-            "game_id": p_game,
-            "player_id": p_id,
-            "player_name": p_name,
-            "team": p_team,
-            "opponent": p_opp,
-            "position": row.get("position", "WR"),
-            "market": "receptions",
-            "model": {
-                "version": MODEL_VERSION,
-                "alpha": MODEL_ALPHA,
-                "k": MODEL_K,
-                "calibration_bias": 0.0 if week > 1 else 0.057,
-                "input_cutoff": timestamp
-            },
-            "role": role_info,
-            "projection": {
-                "fair_line": fair_rec,
-                "proj_volume": round(proj_rec, 2),
-                "distribution_params": {
-                    "mu_rec": round(mu_rec, 4),
-                    "mu_ypr": round(mu_ypr, 4),
+            snap_rec = {
+                "snapshot_id": str(uuid.uuid4()),
+                "snapshot_type": snapshot_type,
+                "created_at": timestamp,
+                "slate": f"{season}-W{week:02d}",
+                "game_id": p_game,
+                "player_id": p_id,
+                "player_name": p_name,
+                "team": p_team,
+                "opponent": p_opp,
+                "position": row.get("position", "WR"),
+                "market": "receptions",
+                "model": {
+                    "version": MODEL_VERSION,
                     "alpha": MODEL_ALPHA,
-                    "k": MODEL_K
+                    "k": MODEL_K,
+                    "calibration_bias": 0.0 if week > 1 else 0.057,
+                    "input_cutoff": timestamp
                 },
-                "p_over": round(pr_over, 4),
-                "p_under": round(pr_under, 4),
-                "p_push": round(pr_push, 4)
-            },
-            "price_boundaries": boundaries_rec,
-            "qualification_policy": {
-                "version": QUALIFICATION_POLICY_VERSION,
-                "edge_hurdle": EDGE_HURDLE,
-                "require_positive_ev": True
-            },
-            "quote": {
-                "status": "unquoted",
-                "source": None,
-                "line": None,
-                "odds": None,
-                "observed_at": None
-            },
-            "scenario_assumptions": None
-        }
-        snap_rec["content_hash"] = compute_canonical_hash(snap_rec)
-        snapshots.append(snap_rec)
+                "role": role_info,
+                "projection": {
+                    "fair_line": fair_rec,
+                    "proj_volume": round(proj_rec, 2),
+                    "distribution_params": {
+                        "mu_rec": round(mu_rec, 4),
+                        "mu_ypr": round(mu_ypr, 4),
+                        "alpha": MODEL_ALPHA,
+                        "k": MODEL_K
+                    },
+                    "p_over": round(pr_over, 4),
+                    "p_under": round(pr_under, 4),
+                    "p_push": round(pr_push, 4)
+                },
+                "price_boundaries": boundaries_rec,
+                "qualification_policy": {
+                    "version": QUALIFICATION_POLICY_VERSION,
+                    "edge_hurdle": EDGE_HURDLE,
+                    "require_positive_ev": True
+                },
+                "quote": {
+                    "status": "unquoted" if not q_rec else q_rec.get("status", "observed"),
+                    "source": None if not q_rec else (q_rec.get("book") or q_rec.get("source")),
+                    "book": None if not q_rec else q_rec.get("book"),
+                    "line": None if not q_rec else q_rec.get("line"),
+                    "odds": None if not q_rec else q_rec.get("odds", -110),
+                    "over_odds": None if not q_rec else q_rec.get("over_odds"),
+                    "under_odds": None if not q_rec else q_rec.get("under_odds"),
+                    "observed_at": None if not q_rec else q_rec.get("observed_at", timestamp),
+                    "quote_id": None if not q_rec else q_rec.get("quote_id"),
+                    "evaluation": None if not q_rec else q_rec.get("evaluation"),
+                },
+                "scenario_assumptions": None
+            }
+            snap_rec["content_hash"] = compute_canonical_hash(snap_rec)
+            snapshots.append(snap_rec)
 
     # Validate and publish the viewer bundle before appending to the journal.
     # A rejected payload must never leave an untracked frozen decision behind.

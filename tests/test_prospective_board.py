@@ -165,6 +165,46 @@ class ProspectiveBoardTest(unittest.TestCase):
         self.assertEqual(alert_data["coverage_rate"], 0.5)
         self.assertEqual(alert_data["required_rate"], 0.75)
 
+    def test_quote_gated_capture_omits_unquoted_candidates(self):
+        # Rows has 2 pre_kickoff candidates: SYN-A (has quote) and SYN-B (unquoted)
+        # With require_active_quotes=True (roster INNER JOIN active_quotes),
+        # only SYN-A is committed into the journal, and pass_no_quote_count is 0.
+        summary = capture_board(
+            self.snapshots,
+            self.kickoffs,
+            self.journal,
+            captured_at=self.now,
+            require_active_quotes=True,
+        )
+        self.assertEqual(summary["candidate_count"], 1)
+        self.assertEqual(summary["pass_no_quote_count"], 0)
+        self.assertEqual(summary["observed_quote_count"], 1)
+        journal = [json.loads(line) for line in self.journal.read_text().splitlines()]
+        self.assertEqual(len(journal), 1)
+        self.assertEqual(journal[0]["player_id"], "SYN-A")
+        self.assertEqual(journal[0]["decision"], "OBSERVED_RESEARCH_ONLY")
+
+    def test_quote_gated_capture_fails_closed_when_zero_quotes(self):
+        # Create snapshots with zero observed quotes (only unquoted pre_kickoffs)
+        unquoted_rows = [
+            snapshot("SYN-A", "receptions", "pre_kickoff"),
+            snapshot("SYN-B", "receptions", "pre_kickoff"),
+        ]
+        unquoted_snaps = self.root / "unquoted_snaps.jsonl"
+        unquoted_snaps.write_text("".join(json.dumps(row) + "\n" for row in unquoted_rows))
+        unquoted_journal = self.root / "unquoted_journal.jsonl"
+
+        with self.assertRaises(ValueError) as ctx:
+            capture_board(
+                unquoted_snaps,
+                self.kickoffs,
+                unquoted_journal,
+                captured_at=self.now,
+                require_active_quotes=True,
+            )
+        self.assertIn("Quote-gated capture rejected", str(ctx.exception))
+        self.assertFalse(unquoted_journal.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

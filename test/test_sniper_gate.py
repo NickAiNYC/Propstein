@@ -249,3 +249,68 @@ def test_repeated_sniper_ticks_do_not_replicate_clv_ledger(tmp_path: Path):
         assert len(ticks) == 2
 
 
+def test_append_only_record_classifications_preserves_ledger_immutability(tmp_path: Path):
+    now = datetime.now(timezone.utc)
+    agent, truth, _ = _make_fixtures(tmp_path)
+    proj = _sample_projection(now, fair_prob_over=0.64)
+    mkt = _sample_market(now, implied_prob_over=0.52)
+
+    alert, _ = agent.evaluate_candidate(proj, mkt, now=now)
+    assert alert is not None
+    lid = f"clv-{alert.alert_id}"
+
+    # Verify base row initially has forecast
+    with truth._connect_sqlite() as conn:
+        base_row = conn.execute("SELECT record_type, population_cohort FROM clv_ledger WHERE ledger_id = ?", (lid,)).fetchone()
+        assert base_row["record_type"] == "forecast"
+
+    # Now reclassify via append-only record_classifications
+    cls_id1 = truth.classify_record(
+        record_id=lid,
+        record_type="telemetry",
+        population_cohort="under_only_trial",
+        classified_by="audit.test",
+        reason="Automated trial tick excluded from confirmatory audit",
+        classified_at=now.isoformat(),
+    )
+    assert cls_id1.startswith("cls-")
+
+    # Base row in clv_ledger is NEVER mutated (immutable ledger principle)
+    with truth._connect_sqlite() as conn:
+        base_row_after = conn.execute("SELECT record_type, population_cohort FROM clv_ledger WHERE ledger_id = ?", (lid,)).fetchone()
+        assert base_row_after["record_type"] == "forecast"
+
+    # Effective query via list_clv_ledger dynamically resolves effective_record_type
+    telemetry_records = truth.list_clv_ledger(record_type="telemetry")
+    assert len(telemetry_records) == 1
+    assert telemetry_records[0]["record_type"] == "telemetry"
+    assert telemetry_records[0]["population_cohort"] == "under_only_trial"
+    assert telemetry_records[0]["classified_by"] == "audit.test"
+
+    forecast_records = truth.list_clv_ledger(record_type="forecast")
+    assert len(forecast_records) == 0
+
+    # Append a second classification event 5 minutes later (audit correction)
+    now_later = now + timedelta(minutes=5)
+    cls_id2 = truth.classify_record(
+        record_id=lid,
+        record_type="placement",
+        population_cohort="user_placement",
+        classified_by="audit.supervisor",
+        reason="Manual user placement confirmed",
+        classified_at=now_later.isoformat(),
+    )
+
+    # Latest classification event takes effect
+    placements = truth.list_clv_ledger(record_type="placement")
+    assert len(placements) == 1
+    assert placements[0]["record_type"] == "placement"
+    assert placements[0]["population_cohort"] == "user_placement"
+
+    # Full audit history is preserved in record_classifications
+    history = truth.list_record_classifications(record_id=lid)
+    assert len(history) == 2
+    assert history[0]["classification_id"] == cls_id2
+    assert history[1]["classification_id"] == cls_id1
+
+

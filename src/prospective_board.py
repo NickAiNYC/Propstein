@@ -113,6 +113,7 @@ def capture_board(
     game_id: str | None = None,
     min_coverage_rate: float | None = None,
     alert_dir: Path | None = None,
+    require_active_quotes: bool = False,
 ) -> dict[str, Any]:
     """Lock every upcoming frozen player/market and all observed book quotes.
 
@@ -120,6 +121,7 @@ def capture_board(
     The viewer's timezone-free ``gametime`` is deliberately not inferred.
     In-process ``captured_at`` injection exists for deterministic tests only.
     ``min_coverage_rate`` enforces a fail-closed threshold before committing a journal.
+    ``require_active_quotes`` enforces roster INNER JOIN active_quotes, excluding unquoted pass candidates.
     """
     now = (captured_at or datetime.now(timezone.utc)).astimezone(timezone.utc)
     if journal_path.exists():
@@ -192,6 +194,8 @@ def capture_board(
                 "claimed_side": evaluation.get("best_side"),
                 "receipt_status": "NO_INDEPENDENT_SOURCE_RECEIPT",
             })
+        if require_active_quotes and not observations:
+            continue
         payload = {
             "schema": "propstein.prospective_board.v1",
             "slate": base["slate"],
@@ -210,6 +214,12 @@ def capture_board(
         payload["record_sha256"] = canonical_json_sha256(payload)
         rows.append(payload)
     if not rows:
+        if require_active_quotes:
+            reason_code, reason_detail, reason_meta = classify_coverage_failure_reason([], kickoffs, now)
+            raise ValueError(
+                f"Quote-gated capture rejected [{reason_code}]: {reason_detail} "
+                f"Zero active quotes found across candidate roster universe."
+            )
         raise ValueError("every game has kicked off; prospective capture refused")
 
     quoted_candidates = sum(1 for row in rows if row["decision"] != "PASS_NO_QUOTE")

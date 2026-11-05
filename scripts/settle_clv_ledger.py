@@ -50,19 +50,58 @@ def settle_ledger(
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
 
-    # Query closing-quoted records filtered strictly by record_type
+    # Ensure append-only classification table exists
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS record_classifications (
+            classification_id TEXT PRIMARY KEY,
+            record_id TEXT NOT NULL,
+            record_type TEXT NOT NULL,
+            population_cohort TEXT NOT NULL,
+            classified_at TEXT NOT NULL,
+            classified_by TEXT NOT NULL,
+            reason TEXT NOT NULL
+        )
+        """
+    )
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_record_class_rec ON record_classifications(record_id, classified_at DESC)")
+
+    # Query closing-quoted records resolved dynamically against record_classifications
     query = """
-    SELECT * FROM clv_ledger
-    WHERE sport = ? AND closing_line IS NOT NULL AND settled_at IS NULL
-      AND record_type = ?
+    SELECT l.*,
+           COALESCE(c.record_type, l.record_type) AS effective_record_type,
+           COALESCE(c.population_cohort, l.population_cohort) AS effective_population_cohort
+    FROM clv_ledger l
+    LEFT JOIN (
+        SELECT rc.record_id, rc.record_type, rc.population_cohort
+        FROM record_classifications rc
+        INNER JOIN (
+            SELECT record_id, MAX(classified_at) AS max_cat
+            FROM record_classifications
+            GROUP BY record_id
+        ) latest ON rc.record_id = latest.record_id AND rc.classified_at = latest.max_cat
+    ) c ON l.ledger_id = c.record_id
+    WHERE l.sport = ? AND l.closing_line IS NOT NULL AND l.settled_at IS NULL
+      AND COALESCE(c.record_type, l.record_type) = ?
     """
     rows = conn.execute(query, (sport.lower(), record_type)).fetchall()
     total_backlog = len(rows)
 
     telemetry_count = conn.execute(
         """
-        SELECT count(*) FROM clv_ledger
-        WHERE sport = ? AND closing_line IS NOT NULL AND record_type != 'forecast'
+        SELECT count(*)
+        FROM clv_ledger l
+        LEFT JOIN (
+            SELECT rc.record_id, rc.record_type, rc.population_cohort
+            FROM record_classifications rc
+            INNER JOIN (
+                SELECT record_id, MAX(classified_at) AS max_cat
+                FROM record_classifications
+                GROUP BY record_id
+            ) latest ON rc.record_id = latest.record_id AND rc.classified_at = latest.max_cat
+        ) c ON l.ledger_id = c.record_id
+        WHERE l.sport = ? AND l.closing_line IS NOT NULL
+          AND COALESCE(c.record_type, l.record_type) != 'forecast'
         """,
         (sport.lower(),),
     ).fetchone()[0]
@@ -199,11 +238,14 @@ def main() -> int:
     remaining = 600 - potential_n
     if res["total_backlog"] == 0:
         print(
-            f"No un-settled forecast records in backlog. Confirmatory sample size strictly remains N = {current_n}."
+            f"No un-settled forecast records in backlog. Confirmatory sample size strictly remains N = {current_n} (current ceiling, not a stepping stone)."
+        )
+        print(
+            f"Notice: The candidate generator currently produces 0 quote-gated forecasts per week until freeze_slate() is quote-coupled."
         )
         print(
             f"Notice: {res['telemetry_count']} automated sniper trial ticks are classified as record_type='telemetry' "
-            f"(under_only_trial) and are excluded from audit calculations."
+            f"(under_only_trial via append-only record_classifications) and are excluded from audit calculations."
         )
     else:
         print(
@@ -211,8 +253,8 @@ def main() -> int:
             f"to ~{potential_n} ({pct_gate}% of the gate)."
         )
     print(
-        f"The path to N=600 requires {remaining} additional evaluable records across future slates, "
-        f"contingent on quote-gated full-board prospective generation."
+        f"The path to N=600 requires {remaining} additional evaluable records across future slates. "
+        f"Cadence projections (e.g. 12-15 weeks) remain an unmeasured hypothesis pending the first production quote-gated slate run."
     )
     print(
         f"Commercial Gate:          FROZEN (Sample insufficient: N={current_n} -> potential N={potential_n} "

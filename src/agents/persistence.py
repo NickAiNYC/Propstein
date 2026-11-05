@@ -381,9 +381,20 @@ class TruthStore:
                     logged_at TEXT NOT NULL,
                     closed_at TEXT,
                     settled_at TEXT,
-                    record_type TEXT NOT NULL DEFAULT 'forecast',
-                    population_cohort TEXT NOT NULL DEFAULT 'full_board'
+                    record_type TEXT NOT NULL,
+                    population_cohort TEXT NOT NULL
                 );
+
+                CREATE TABLE IF NOT EXISTS record_classifications (
+                    classification_id TEXT PRIMARY KEY,
+                    record_id TEXT NOT NULL,
+                    record_type TEXT NOT NULL,
+                    population_cohort TEXT NOT NULL,
+                    classified_at TEXT NOT NULL,
+                    classified_by TEXT NOT NULL,
+                    reason TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS idx_record_class_rec ON record_classifications(record_id, classified_at DESC);
 
                 CREATE TABLE IF NOT EXISTS sniper_ticks (
                     tick_id TEXT PRIMARY KEY,
@@ -803,9 +814,18 @@ class TruthStore:
             # Check if an active open decision already exists for this prop on this book
             existing = conn.execute(
                 """
-                SELECT ledger_id FROM clv_ledger
-                WHERE sport = ? AND game_id = ? AND player_id = ? AND market = ? AND side = ? AND book = ?
-                  AND record_type = 'forecast' AND (outcome IS NULL OR outcome = 'PENDING')
+                SELECT l.ledger_id FROM clv_ledger l
+                LEFT JOIN (
+                    SELECT rc.record_id, rc.record_type
+                    FROM record_classifications rc
+                    INNER JOIN (
+                        SELECT record_id, MAX(classified_at) AS max_cat
+                        FROM record_classifications
+                        GROUP BY record_id
+                    ) latest ON rc.record_id = latest.record_id AND rc.classified_at = latest.max_cat
+                ) c ON l.ledger_id = c.record_id
+                WHERE l.sport = ? AND l.game_id = ? AND l.player_id = ? AND l.market = ? AND l.side = ? AND l.book = ?
+                  AND COALESCE(c.record_type, l.record_type) = 'forecast' AND (l.outcome IS NULL OR l.outcome = 'PENDING')
                 """,
                 (alert.sport, alert.game_id, alert.player_id, alert.market, alert.side, alert.book),
             ).fetchone()
@@ -893,8 +913,8 @@ class TruthStore:
         """Transactionally record an individual bet/pick entry into clv_ledger."""
         ledger_id = entry.get("ledger_id") or f"clv-{uuid.uuid4().hex[:12]}"
         receipt_hash = compute_source_hash(entry)
-        record_type = entry.get("record_type", "forecast")
-        cohort = entry.get("population_cohort", "full_board")
+        record_type = entry.get("record_type", "unclassified")
+        cohort = entry.get("population_cohort", "unclassified")
         with self._connect_sqlite() as conn:
             conn.execute(
                 """
@@ -1005,6 +1025,47 @@ class TruthStore:
             updated = conn.execute("SELECT * FROM clv_ledger WHERE ledger_id = ?", (actual_lid,)).fetchone()
             return dict(updated) if updated else None
 
+    def classify_record(
+        self,
+        record_id: str,
+        record_type: str,
+        population_cohort: str,
+        classified_by: str,
+        reason: str,
+        classification_id: str | None = None,
+        classified_at: str | None = None,
+    ) -> str:
+        """Append an immutable classification event for a ledger record."""
+        cid = classification_id or f"cls-{uuid.uuid4().hex[:12]}"
+        now_iso = classified_at or datetime.now(timezone.utc).isoformat()
+        with self._connect_sqlite() as conn:
+            conn.execute(
+                """
+                INSERT INTO record_classifications (
+                    classification_id, record_id, record_type, population_cohort,
+                    classified_at, classified_by, reason
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (cid, record_id, record_type, population_cohort, now_iso, classified_by, reason),
+            )
+        return cid
+
+    def list_record_classifications(
+        self,
+        record_id: str | None = None,
+        limit: int = 100,
+    ) -> list[dict[str, Any]]:
+        query = "SELECT * FROM record_classifications"
+        params: list[Any] = []
+        if record_id:
+            query += " WHERE record_id = ?"
+            params.append(record_id)
+        query += " ORDER BY classified_at DESC LIMIT ?"
+        params.append(limit)
+        with self._connect_sqlite() as conn:
+            rows = conn.execute(query, params).fetchall()
+            return [dict(r) for r in rows]
+
     def list_clv_ledger(
         self,
         sport: str | None = None,
@@ -1012,22 +1073,45 @@ class TruthStore:
         record_type: str | None = None,
         limit: int = 100,
     ) -> list[dict[str, Any]]:
-        query = "SELECT * FROM clv_ledger WHERE 1=1"
+        query = """
+        SELECT l.*,
+               COALESCE(c.record_type, l.record_type) AS effective_record_type,
+               COALESCE(c.population_cohort, l.population_cohort) AS effective_population_cohort,
+               c.classified_by,
+               c.reason AS classification_reason
+        FROM clv_ledger l
+        LEFT JOIN (
+            SELECT rc.record_id, rc.record_type, rc.population_cohort, rc.classified_by, rc.reason
+            FROM record_classifications rc
+            INNER JOIN (
+                SELECT record_id, MAX(classified_at) AS max_cat
+                FROM record_classifications
+                GROUP BY record_id
+            ) latest ON rc.record_id = latest.record_id AND rc.classified_at = latest.max_cat
+        ) c ON l.ledger_id = c.record_id
+        WHERE 1=1
+        """
         params: list[Any] = []
         if sport:
-            query += " AND sport = ?"
+            query += " AND l.sport = ?"
             params.append(sport)
         if venue_type:
-            query += " AND venue_type = ?"
+            query += " AND l.venue_type = ?"
             params.append(venue_type)
         if record_type:
-            query += " AND record_type = ?"
+            query += " AND COALESCE(c.record_type, l.record_type) = ?"
             params.append(record_type)
-        query += " ORDER BY logged_at DESC LIMIT ?"
+        query += " ORDER BY l.logged_at DESC LIMIT ?"
         params.append(limit)
         with self._connect_sqlite() as conn:
             rows = conn.execute(query, params).fetchall()
-            return [dict(r) for r in rows]
+            out = []
+            for r in rows:
+                d = dict(r)
+                d["record_type"] = d.get("effective_record_type", d.get("record_type"))
+                d["population_cohort"] = d.get("effective_population_cohort", d.get("population_cohort"))
+                out.append(d)
+            return out
 
     def list_agent_events(self, limit: int = 50, decision: str | None = None) -> list[dict[str, Any]]:
         query = "SELECT * FROM agent_events WHERE 1=1"

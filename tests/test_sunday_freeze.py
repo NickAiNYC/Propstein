@@ -89,6 +89,39 @@ class SundayFreezeTests(unittest.TestCase):
                     freeze.freeze_slate(2026, 8, game_id="2026_08_BAL_BUF")
             self.assertFalse((snapshots / "snapshots_2026_w8.jsonl").exists())
 
+    def test_quote_gated_freeze_only_freezes_quoted_players(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            viewer = root / "viewer"
+            snapshots = root / "snapshots"
+            viewer.mkdir()
+            snapshots.mkdir()
+            write_slate_fixture(viewer, {"2026_08_BAL_BUF"})
+            quotes_feed = [
+                {
+                    "player_id": "test-0",
+                    "player_name": "Test Player 0",
+                    "market": "receiving_yards",
+                    "book": "DraftKings",
+                    "line": 42.5,
+                    "over_odds": -115,
+                    "under_odds": -105,
+                    "status": "verified",
+                }
+            ]
+            with patch.object(freeze, "VIEWER_DIR", viewer), patch.object(freeze, "SNAPSHOTS_DIR", snapshots):
+                frozen, source, bundle = freeze.freeze_slate(
+                    2026, 8, game_id="2026_08_BAL_BUF",
+                    created_at="2026-11-01T17:20:00+00:00",
+                    quotes_feed=quotes_feed,
+                    require_active_quotes=True,
+                )
+            # Only test-0 receiving_yards should be frozen (1 snapshot instead of 2 unquoted)
+            self.assertEqual(len(frozen), 1)
+            self.assertEqual(frozen[0]["market"], "receiving_yards")
+            self.assertEqual(frozen[0]["quote"]["status"], "verified")
+            self.assertEqual(frozen[0]["quote"]["line"], 42.5)
+
 
 if __name__ == "__main__":
     unittest.main()
