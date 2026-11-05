@@ -534,27 +534,47 @@ def test_router_is_mounted_on_main_app(monkeypatch):
         assert r.json()["service"] == "propstein-extension-api"
 
 
-def test_extension_placements_and_telemetry_routes(client):
-    # 1. Placement route
-    placement_payload = {
-        "audit_id": "audit-test-1234",
-        "signal_id": "sig-test-5678",
-        "market_key": "maxey:pts:26.5",
+def test_extension_placements_and_telemetry_routes(client, monkeypatch):
+    # 1. Placement route with unknown forged signal fails closed (400)
+    forged_payload = {
+        "audit_id": "audit-forged-1",
+        "signal_id": "sig-uncommitted-forged-id-9999",
+        "market_key": "unknown:pts:20.5",
         "user_reported_price": -110,
-        "user_reported_line": 26.5,
+        "user_reported_line": 20.5,
         "book": "draftkings",
-        "model_fair_line": 36.5,
+        "achieved_at": "2026-11-04T18:00:00Z",
+    }
+    resp_bad = client.post("/api/v1/extension/placements", json=forged_payload)
+    assert resp_bad.status_code == 400
+    assert resp_bad.json()["detail"]["error"] == "SIGNAL_NOT_IN_LEDGER"
+
+    # 2. Placement route with committed forecast in feed succeeds (200)
+    valid_placement_payload = {
+        "audit_id": "audit-valid-1234",
+        "signal_id": "syn_a_ne_chi_player_a_yds_open",
+        "market_key": "player_a:receiving_yards:34.5",
+        "user_reported_price": -110,
+        "user_reported_line": 34.5,
+        "book": "Synthetic Book A",
+        "model_fair_line": 43.5,
         "achieved_at": "2026-11-04T18:00:00Z",
         "client_observed_latency_ms": 142,
     }
-    resp = client.post("/api/v1/extension/placements", json=placement_payload)
+    resp = client.post("/api/v1/extension/placements", json=valid_placement_payload)
     assert resp.status_code == 200
     data = resp.json()
     assert data["ok"] is True
-    assert data["audit_id"] == "audit-test-1234"
+    assert data["audit_id"] == "audit-valid-1234"
     assert data["status"] == "RECORDED"
 
-    # 2. Telemetry batch route
+    # 3. Placement route with test bypass flag succeeds for synthetic testing
+    monkeypatch.setenv("PROPSTEIN_TEST_ALLOW_MOCK_SIGNALS", "1")
+    resp_bypass = client.post("/api/v1/extension/placements", json=forged_payload)
+    assert resp_bypass.status_code == 200
+    assert resp_bypass.json()["ok"] is True
+
+    # 4. Telemetry batch route
     telemetry_payload = {
         "events": [
             {
@@ -577,3 +597,46 @@ def test_extension_placements_and_telemetry_routes(client):
     assert resp_telem.status_code == 200
     assert resp_telem.json()["ok"] is True
     assert resp_telem.json()["count"] == 2
+
+
+def test_match_telemetry_evaluation_metrics():
+    from src.match_telemetry_eval import evaluate_match_telemetry
+
+    # 1. Empty telemetry stream
+    empty_summary = evaluate_match_telemetry([])
+    assert empty_summary.total_attempts == 0
+    assert empty_summary.matched_count == 0
+    assert empty_summary.match_success_rate == 0.0
+    assert empty_summary.drift_alarm is False
+
+    # 2. Synthetic telemetry stream with multiple books, ambiguous matches, and extraction discrepancy
+    events = [
+        # Book A: 3 attempts, 2 MATCHED, 1 AMBIGUOUS -> 66.7% match rate (<70% default threshold, drift alarm)
+        {"book": "draftkings", "outcome": "MATCHED", "details": "player:mahomes:pass_yds:275.5"},
+        {"book": "draftkings", "outcome": "MATCHED", "details": "player:kelce:rec_yds:65.5 [discrepancy noted]"},
+        {"book": "draftkings", "outcome": "AMBIGUOUS", "details": "player:smith:multi_name"},
+        # Book B: 2 attempts, 2 MATCHED -> 100% match rate
+        {"book": "fanduel", "outcome": "MATCHED", "details": "player:mahomes:pass_yds:275.5"},
+        {"book": "fanduel", "outcome": "MATCHED", "details": "player:kelce:rec_yds:65.5"},
+    ]
+
+    summary = evaluate_match_telemetry(events, min_book_match_rate_threshold=0.70)
+    assert summary.total_attempts == 5
+    assert summary.matched_count == 4
+    assert summary.match_success_rate == round(4 / 5, 4)
+    assert summary.outcome_counts == {"MATCHED": 4, "AMBIGUOUS": 1}
+    assert summary.per_book_match_rate["draftkings"] == round(2 / 3, 4)
+    assert summary.per_book_match_rate["fanduel"] == 1.0
+    # 1 out of 4 MATCHED had "discrepancy" in details
+    assert summary.extraction_error_rate == 0.25
+    # Cross book consistency: 3 markets ("player:mahomes:pass_yds:275.5" has {MATCHED}, "player:kelce:rec_yds:65.5 [discrepancy noted]" has {MATCHED}, "player:smith:multi_name" has {AMBIGUOUS}, "player:kelce:rec_yds:65.5" has {MATCHED})
+    assert 0.0 <= summary.cross_book_consistency_rate <= 1.0
+    # Drift alarm triggered on draftkings (66.7% < 70%)
+    assert summary.drift_alarm is True
+    assert any("draftkings" in reason for reason in summary.drift_reasons)
+
+    # Check dict conversion
+    d = summary.as_dict()
+    assert d["total_attempts"] == 5
+    assert d["drift_alarm"] is True
+

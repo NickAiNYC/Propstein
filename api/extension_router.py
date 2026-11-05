@@ -548,9 +548,77 @@ class MatchTelemetryBatch(BaseModel):
     events: list[MatchTelemetryEvent]
 
 
+def _is_signal_in_ledger(signal_id: str) -> bool:
+    """Validate that signal_id matches a pre-committed forecast in the ledger."""
+    # Test bypass flag if explicitly set
+    if os.environ.get("PROPSTEIN_TEST_ALLOW_MOCK_SIGNALS") == "1":
+        return True
+
+    db_url = os.environ.get("DATABASE_URL")
+    if db_url:
+        try:
+            import psycopg2
+            with psycopg2.connect(db_url) as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT 1 FROM prospective_signals WHERE id = %s
+                        UNION
+                        SELECT 1 FROM intended_quotes WHERE id = %s
+                        LIMIT 1
+                        """,
+                        (signal_id, signal_id),
+                    )
+                    if cur.fetchone():
+                        return True
+        except Exception:
+            pass
+
+    # Check committed snapshots and report artifacts
+    root = Path(__file__).resolve().parent.parent
+    for json_file in (
+        root / "viewer" / "clv_report_2026_w7.json",
+        root / "viewer" / "live_odds_feed.json",
+        root / "viewer" / "top_picks.json",
+    ):
+        if json_file.is_file():
+            try:
+                data = json.loads(json_file.read_text(encoding="utf-8"))
+                items = data.get("ledger") or data.get("picks") or data.get("quotes") or []
+                for it in items:
+                    if (
+                        it.get("signal_id") == signal_id
+                        or it.get("quote_id") == signal_id
+                        or it.get("id") == signal_id
+                    ):
+                        return True
+            except Exception:
+                pass
+
+    for jsonl_file in (root / "snapshots").glob("*.jsonl"):
+        try:
+            with open(jsonl_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    if signal_id in line:
+                        return True
+        except Exception:
+            pass
+
+    return False
+
+
 @router.post("/api/v1/extension/placements")
 def record_extension_placement(payload: PlacedAuditPayload):
     """Ingest user-reported [I placed it] audit record into Postgres research ledger."""
+    if not _is_signal_in_ledger(payload.signal_id):
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "SIGNAL_NOT_IN_LEDGER",
+                "message": f"Signal '{payload.signal_id}' does not match any committed forecast in the ledger.",
+            },
+        )
+
     out_dir = Path(__file__).resolve().parent.parent / "viewer"
     out_dir.mkdir(parents=True, exist_ok=True)
     log_file = out_dir / "extension_placements.jsonl"

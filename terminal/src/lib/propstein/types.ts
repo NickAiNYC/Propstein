@@ -68,7 +68,7 @@ export interface PairedMarketComparison {
   corr_model_market: number;
   n_events: number;
   is_copycat: boolean;
-  paired_win_rate: number;
+  paired_win_rate?: number;
 }
 
 /* ---------- sports ---------- */

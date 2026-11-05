@@ -96,7 +96,6 @@ def main() -> int:
     print(f"Cluster 95% CI:          [{comparison.paired_diff_ci95[0]:+.5f}, {comparison.paired_diff_ci95[1]:+.5f}]")
     print(f"Median Absolute Gap:     {comparison.median_abs_gap_pts:.2f} percentage points")
     print(f"Model-Market Corr:       {comparison.corr_model_market:.4f} {'[COPYCAT ALERT]' if comparison.is_copycat else '[INDEPENDENT]'}")
-    print(f"Paired Win Rate:         {comparison.paired_win_rate * 100:.1f}%")
     print("=" * 65)
 
     return 0

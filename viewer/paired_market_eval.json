@@ -10,6 +10,5 @@
   "median_abs_gap_pts": 18.275,
   "corr_model_market": 0.465,
   "n_events": 7,
-  "is_copycat": false,
-  "paired_win_rate": 0.6944
+  "is_copycat": false
 }

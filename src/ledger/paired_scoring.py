@@ -24,7 +24,6 @@ class PairedMarketComparison:
     corr_model_market: float  # Pearson correlation (copycat diagnostic)
     n_events: int
     is_copycat: bool  # True if corr_model_market > 0.99
-    paired_win_rate: float  # fraction of pairs where model had smaller Brier loss than market
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -77,7 +76,6 @@ def compute_paired_market_comparison(
             corr_model_market=0.0,
             n_events=0,
             is_copycat=False,
-            paired_win_rate=0.0,
         )
 
     p_model = np.array([v[0] for v in valid], dtype=np.float64)
@@ -105,8 +103,6 @@ def compute_paired_market_comparison(
         corr_model_market = 1.0 if np.allclose(p_model, p_market, atol=1e-3) else 0.0
 
     is_copycat = bool(corr_model_market > 0.99)
-    paired_wins = np.sum(loss_model < loss_market)
-    paired_win_rate = float(paired_wins / n_pairs)
 
     # Event clustering for bootstrap confidence interval
     unique_events = np.unique(events)
@@ -142,5 +138,4 @@ def compute_paired_market_comparison(
         corr_model_market=round(corr_model_market, 4),
         n_events=n_events,
         is_copycat=is_copycat,
-        paired_win_rate=round(paired_win_rate, 4),
     )

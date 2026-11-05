@@ -53,12 +53,20 @@ def devig(odds_over: Any, odds_under: Any) -> float:
 
 
 def fit_truncated_shrinkage_weight(
-    dm: np.ndarray, dy: np.ndarray, n_boot: int = 2000, seed: int = 42
+    dm: np.ndarray,
+    dy: np.ndarray,
+    clusters: np.ndarray | Sequence[Any] | None = None,
+    n_boot: int = 2000,
+    seed: int = 42,
 ) -> tuple[float, float, list[float]]:
     """Compute truncated shrinkage weight w in [0.0, 1.0] and percentile bootstrap CI.
 
     Truncates tau^2 / raw regression weight at [0.0, 1.0] so the estimator and CI
     are statistically consistent with shrinkage weights in [0, 1].
+
+    When clusters is provided (e.g. line_id or event_id), resamples clusters
+    rather than individual rows. This ensures dependent Over/Under rows or
+    correlated in-game props do not artificially deflate the confidence interval.
     """
     denom = np.sum(dm ** 2)
     raw_w = float(np.sum(dm * dy) / denom) if denom > 0 else 0.0
@@ -72,13 +80,33 @@ def fit_truncated_shrinkage_weight(
     rng = np.random.default_rng(seed)
     n = len(dm)
     boot_w: list[float] = []
-    for _ in range(n_boot):
-        idx = rng.choice(n, size=n, replace=True)
-        b_dm = dm[idx]
-        b_dy = dy[idx]
-        b_denom = np.sum(b_dm ** 2)
-        b_w = float(np.sum(b_dm * b_dy) / b_denom) if b_denom > 0 else 0.0
-        boot_w.append(float(np.clip(b_w, 0.0, 1.0)))
+
+    if clusters is not None:
+        clusters_arr = np.asarray(clusters)
+        unique_clusters = np.unique(clusters_arr)
+        n_clusters = len(unique_clusters)
+        cluster_indices: dict[Any, list[int]] = {}
+        for idx, c in enumerate(clusters_arr):
+            cluster_indices.setdefault(c, []).append(idx)
+
+        for _ in range(n_boot):
+            sampled_c = rng.choice(unique_clusters, size=n_clusters, replace=True)
+            sampled_idx: list[int] = []
+            for c in sampled_c:
+                sampled_idx.extend(cluster_indices[c])
+            b_dm = dm[sampled_idx]
+            b_dy = dy[sampled_idx]
+            b_denom = np.sum(b_dm ** 2)
+            b_w = float(np.sum(b_dm * b_dy) / b_denom) if b_denom > 0 else 0.0
+            boot_w.append(float(np.clip(b_w, 0.0, 1.0)))
+    else:
+        for _ in range(n_boot):
+            idx = rng.choice(n, size=n, replace=True)
+            b_dm = dm[idx]
+            b_dy = dy[idx]
+            b_denom = np.sum(b_dm ** 2)
+            b_w = float(np.sum(b_dm * b_dy) / b_denom) if b_denom > 0 else 0.0
+            boot_w.append(float(np.clip(b_w, 0.0, 1.0)))
 
     ci_lower = round(float(np.percentile(boot_w, 2.5)), 4)
     ci_upper = round(float(np.percentile(boot_w, 97.5)), 4)
@@ -116,6 +144,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
 
             if abs(actual - line) > 1e-4:
                 y = 1.0 if (actual > line if side == "OVER" else actual < line) else 0.0
+                event_id = f"{item.get('team', '')}_{item.get('opponent', '')}" or "w7_event"
                 trigger_rows.append({
                     "player": item["player_name"],
                     "side": side,
@@ -123,13 +152,17 @@ def run_edge_evaluation() -> Dict[str, Any]:
                     "actual": actual,
                     "p_model": p_model,
                     "p_market": p_mkt_devig,
-                    "y": y
+                    "y": y,
+                    "event_id": event_id,
                 })
 
     df_trigger = pd.DataFrame(trigger_rows)
     dm_t = df_trigger["p_model"].values - df_trigger["p_market"].values
     dy_t = df_trigger["y"].values - df_trigger["p_market"].values
     w_trigger, se_t, ci_t = fit_truncated_shrinkage_weight(dm_t, dy_t, seed=42)
+    brier_mod_t = float(np.mean((df_trigger["p_model"].values - df_trigger["y"].values) ** 2))
+    brier_mkt_t = float(np.mean((df_trigger["p_market"].values - df_trigger["y"].values) ** 2))
+    paired_diff_t = float(brier_mod_t - brier_mkt_t)
 
     # 2. Evaluate Board-wide Quoted Rows (all 164 quoted snapshots)
     snaps_path = VIEWER_DIR / "snapshots_2026_w7.json"
@@ -163,6 +196,7 @@ def run_edge_evaluation() -> Dict[str, Any]:
             p_mod_under = float(proj.get("p_under", 0.5))
 
             if abs(actual - line) > 1e-4:
+                line_key = f"{s.get('game_id')}_{pid}_{market}_{line}"
                 board_rows.append({
                     "player": s.get("player_name"),
                     "side": "OVER",
@@ -170,7 +204,8 @@ def run_edge_evaluation() -> Dict[str, Any]:
                     "actual": actual,
                     "y": 1.0 if actual > line else 0.0,
                     "p_model": p_mod_over,
-                    "p_market": p_mkt_over
+                    "p_market": p_mkt_over,
+                    "line_key": line_key,
                 })
                 board_rows.append({
                     "player": s.get("player_name"),
@@ -179,13 +214,18 @@ def run_edge_evaluation() -> Dict[str, Any]:
                     "actual": actual,
                     "y": 1.0 if actual < line else 0.0,
                     "p_model": p_mod_under,
-                    "p_market": p_mkt_under
+                    "p_market": p_mkt_under,
+                    "line_key": line_key,
                 })
 
     df_board = pd.DataFrame(board_rows)
     dm_b = df_board["p_model"].values - df_board["p_market"].values
     dy_b = df_board["y"].values - df_board["p_market"].values
-    w_board, se_b, ci_b = fit_truncated_shrinkage_weight(dm_b, dy_b, seed=42)
+    clusters_b = df_board["line_key"].values if "line_key" in df_board else None
+    w_board, se_b, ci_b = fit_truncated_shrinkage_weight(dm_b, dy_b, clusters=clusters_b, seed=42)
+    brier_mod_b = float(np.mean((df_board["p_model"].values - df_board["y"].values) ** 2))
+    brier_mkt_b = float(np.mean((df_board["p_market"].values - df_board["y"].values) ** 2))
+    paired_diff_b = float(brier_mod_b - brier_mkt_b)
 
     # Holdout W1 Brier Skill Score
     h1_path = VIEWER_DIR / "holdout_eval_2026_w1.json"
@@ -204,20 +244,25 @@ def run_edge_evaluation() -> Dict[str, Any]:
 
     report = {
         "status": "PROVISIONAL_UNVALIDATED",
-        "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=37). 95% CI includes 0. Projections are purely informational.",
+        "verdict_summary": "No statistically verified edge over market closing lines at this sample size (N=36). 95% CI includes 0. Projections are purely informational.",
         "trigger_eval": {
             "sample_size": len(df_trigger),
             "w_hat": round(w_trigger, 4),
             "se": round(se_t, 4),
             "ci_95": ci_t,
             "ci_includes_zero": ci_includes_zero,
-            "win_rate_pct": round(float(df_trigger["y"].mean()) * 100.0, 2)
+            "brier_model": round(brier_mod_t, 4),
+            "brier_market": round(brier_mkt_t, 4),
+            "paired_brier_diff": round(paired_diff_t, 5),
         },
         "board_eval": {
             "sample_size": len(df_board),
             "w_hat": round(w_board, 4),
             "se": round(se_b, 4),
-            "ci_95": ci_b
+            "ci_95": ci_b,
+            "brier_model": round(brier_mod_b, 4),
+            "brier_market": round(brier_mkt_b, 4),
+            "paired_brier_diff": round(paired_diff_b, 5),
         },
         "holdout_w1_brier_skill_score_pct": w1_skill_pct,
         "sample_threshold_target": 600,

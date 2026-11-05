@@ -35,7 +35,6 @@ def test_superior_model_has_negative_paired_diff():
     assert comp.brier_model < comp.brier_market
     assert comp.paired_diff < 0  # negative = model outperforms
     assert comp.paired_diff_ci95[1] < 0  # 95% CI upper bound is below zero
-    assert comp.paired_win_rate == 1.0
 
 
 def test_cluster_bootstrap_structure():
