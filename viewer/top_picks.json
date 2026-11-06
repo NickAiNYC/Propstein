@@ -3,8 +3,8 @@
   "week": 9,
   "gate_edge": 0.1,
   "kelly_cap": 0.03,
-  "rostered_player_records": 471,
-  "projectable_player_records": 332,
+  "rostered_player_records": 442,
+  "projectable_player_records": 309,
   "note": "Top 25 Projections & Fair Lines (Active Games Only)",
   "picks": [
     {
@@ -105,11 +105,11 @@
       "position": "WR",
       "proj_rec": 6.1,
       "fair_line_rec": 5.5,
-      "p_rec_at_fair_line": 0.525,
-      "proj_yards": 78.2,
-      "fair_line_yards": 71.0,
-      "implied_total": 21.0,
-      "spread": -3.5,
+      "p_rec_at_fair_line": 0.521,
+      "proj_yards": 77.6,
+      "fair_line_yards": 70.0,
+      "implied_total": 20.8,
+      "spread": -3.0,
       "questionable": 0
     },
     {
@@ -264,21 +264,6 @@
     },
     {
       "rank": 18,
-      "player": "A.J. Brown",
-      "team": "NE",
-      "opponent": "GB",
-      "position": "WR",
-      "proj_rec": 4.4,
-      "fair_line_rec": 4.5,
-      "p_rec_at_fair_line": 0.427,
-      "proj_yards": 60.4,
-      "fair_line_yards": 53.0,
-      "implied_total": 24.2,
-      "spread": 3.0,
-      "questionable": 0
-    },
-    {
-      "rank": 19,
       "player": "George Kittle",
       "team": "SF",
       "opponent": "LV",
@@ -293,22 +278,22 @@
       "questionable": 0
     },
     {
-      "rank": 20,
-      "player": "Zay Flowers",
-      "team": "BAL",
-      "opponent": "JAX",
+      "rank": 19,
+      "player": "A.J. Brown",
+      "team": "NE",
+      "opponent": "GB",
       "position": "WR",
-      "proj_rec": 4.9,
+      "proj_rec": 4.3,
       "fair_line_rec": 4.5,
-      "p_rec_at_fair_line": 0.507,
-      "proj_yards": 60.3,
-      "fair_line_yards": 53.5,
-      "implied_total": 14.8,
-      "spread": -10.0,
+      "p_rec_at_fair_line": 0.423,
+      "proj_yards": 59.8,
+      "fair_line_yards": 52.5,
+      "implied_total": 23.8,
+      "spread": 3.0,
       "questionable": 0
     },
     {
-      "rank": 21,
+      "rank": 20,
       "player": "Keenan Allen",
       "team": "IND",
       "opponent": "DAL",
@@ -323,22 +308,22 @@
       "questionable": 0
     },
     {
-      "rank": 22,
+      "rank": 21,
       "player": "Matthew Golden",
       "team": "GB",
       "opponent": "NE",
       "position": "WR",
       "proj_rec": 4.5,
       "fair_line_rec": 4.5,
-      "p_rec_at_fair_line": 0.446,
-      "proj_yards": 59.0,
-      "fair_line_yards": 52.0,
-      "implied_total": 21.2,
+      "p_rec_at_fair_line": 0.442,
+      "proj_yards": 58.4,
+      "fair_line_yards": 51.5,
+      "implied_total": 20.8,
       "spread": -3.0,
       "questionable": 0
     },
     {
-      "rank": 23,
+      "rank": 22,
       "player": "Colston Loveland",
       "team": "CHI",
       "opponent": "TB",
@@ -353,7 +338,7 @@
       "questionable": 0
     },
     {
-      "rank": 24,
+      "rank": 23,
       "player": "Luther Burden III",
       "team": "CHI",
       "opponent": "TB",
@@ -368,7 +353,7 @@
       "questionable": 0
     },
     {
-      "rank": 25,
+      "rank": 24,
       "player": "Tyler Warren",
       "team": "IND",
       "opponent": "DAL",
@@ -380,6 +365,21 @@
       "fair_line_yards": 49.0,
       "implied_total": 23.0,
       "spread": -5.5,
+      "questionable": 0
+    },
+    {
+      "rank": 25,
+      "player": "Jameson Williams",
+      "team": "DET",
+      "opponent": "MIA",
+      "position": "WR",
+      "proj_rec": 3.4,
+      "fair_line_rec": 3.5,
+      "p_rec_at_fair_line": 0.423,
+      "proj_yards": 51.9,
+      "fair_line_yards": 44.5,
+      "implied_total": 28.8,
+      "spread": 7.0,
       "questionable": 0
     }
   ]
