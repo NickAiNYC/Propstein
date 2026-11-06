@@ -1,0 +1,101 @@
+[
+ {
+  "game_id": "nba-20261106-WAS-ATL",
+  "gameday": "2026-11-06",
+  "gametime": "19:10",
+  "gametime_et": "19:10",
+  "tipoff_utc": "2026-11-07T00:10:00Z",
+  "away_team": "WAS",
+  "home_team": "ATL",
+  "odds_event_id": "9246c91f746732472c13e94bd8e7be85",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-BOS-CHA",
+  "gameday": "2026-11-06",
+  "gametime": "19:10",
+  "gametime_et": "19:10",
+  "tipoff_utc": "2026-11-07T00:10:00Z",
+  "away_team": "BOS",
+  "home_team": "CHA",
+  "odds_event_id": "49daf3d42e20ce4bc70f8a68cf70ce4c",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-PHI-CLE",
+  "gameday": "2026-11-06",
+  "gametime": "19:40",
+  "gametime_et": "19:40",
+  "tipoff_utc": "2026-11-07T00:40:00Z",
+  "away_team": "PHI",
+  "home_team": "CLE",
+  "odds_event_id": "85869b2fdc16ef10d3e2582bf05ead95",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-UTA-DAL",
+  "gameday": "2026-11-06",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-07T01:10:00Z",
+  "away_team": "UTA",
+  "home_team": "DAL",
+  "odds_event_id": "62a92e31b546d31ba57caf792815bf65",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-OKC-MEM",
+  "gameday": "2026-11-06",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-07T01:10:00Z",
+  "away_team": "OKC",
+  "home_team": "MEM",
+  "odds_event_id": "86684f64a8ec8385537a36c3b3768935",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-TOR-MIL",
+  "gameday": "2026-11-06",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-07T01:10:00Z",
+  "away_team": "TOR",
+  "home_team": "MIL",
+  "odds_event_id": "1c60a090180de530cfe273a5d6a381e6",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-MIN-NOP",
+  "gameday": "2026-11-06",
+  "gametime": "20:10",
+  "gametime_et": "20:10",
+  "tipoff_utc": "2026-11-07T01:10:00Z",
+  "away_team": "MIN",
+  "home_team": "NOP",
+  "odds_event_id": "5e4708fadda49a3c06fd7ac50414020e",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-POR-LAL",
+  "gameday": "2026-11-06",
+  "gametime": "22:10",
+  "gametime_et": "22:10",
+  "tipoff_utc": "2026-11-07T03:10:00Z",
+  "away_team": "POR",
+  "home_team": "LAL",
+  "odds_event_id": "83d77fe350d56a036fd7a3404e78249a",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261106-SAS-SAC",
+  "gameday": "2026-11-06",
+  "gametime": "22:10",
+  "gametime_et": "22:10",
+  "tipoff_utc": "2026-11-07T03:10:00Z",
+  "away_team": "SAS",
+  "home_team": "SAC",
+  "odds_event_id": "d24eb5492983d6e28be3b96df396fa12",
+  "_fixture": false
+ }
+]
