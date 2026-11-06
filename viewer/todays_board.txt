@@ -1,5 +1,5 @@
 PROPSTEIN PRE-KICKOFF RESEARCH BOARD
-Slate: 2026_w9 | Generated: 2026-11-06 01:27 UTC
+Slate: 2026_w9 | Generated: 2026-11-06 03:32 UTC
 Zero Tout Fluff · Pure Distribution Math · Transparent Limitations
 ============================================================
 STATUS NOTE:
@@ -20,13 +20,13 @@ Christian Watson     Receptions 4.5    115.0  —      3.7    betmgm
 Rhamondre Stevenson  Receptions 3.5    -114.0 —      2.4    fanduel
 Mitchell Evans       Receptions 1.5    182.0  —      1.8    fanduel
 Malik Nabers         Receptions 5.5    -102.0 —      8.0    fanduel
+Nico Collins         Yards  68.5   -112.0 —      48.4   draftkings
 Ladd McConkey        Receptions 3.5    110.0  —      2.9    draftkings
 Jonah Coleman        Yards  24.5   -109.0 —      17.0   draftkings
 Tucker Kraft         Receptions 4.5    -111.0 —      3.3    betmgm
-Nico Collins         Yards  67.5   -111.0 —      48.4   draftkings
 Omarion Hampton      Receptions 1.5    132.0  —      2.2    draftkings
 Tucker Kraft         Yards  45.5   -114.0 —      32.4   fanduel
-Puka Nacua           Yards  92.5   -114.0 —      139.6  fanduel
+Puka Nacua           Yards  94.5   -111.0 —      139.6  draftkings
 Nico Collins         Receptions 5.5    -150.0 —      3.6    draftkings
 Austin Hooper        Yards  6.5    -109.0 —      19.5   draftkings
 Antonio Williams     Yards  44.5   -110.0 —      33.7   draftkings
