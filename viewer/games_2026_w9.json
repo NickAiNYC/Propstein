@@ -60,7 +60,7 @@
     "gametime": "13:00",
     "away_team": "DET",
     "home_team": "MIA",
-    "spread_line": -7.0,
+    "spread_line": -6.5,
     "total_line": 50.5,
     "roof": "outdoors",
     "wind": null
@@ -93,8 +93,8 @@
     "gametime": "13:00",
     "away_team": "NYJ",
     "home_team": "KC",
-    "spread_line": 10.0,
-    "total_line": 47.5,
+    "spread_line": 9.5,
+    "total_line": 48.5,
     "roof": "outdoors",
     "wind": null
   },
