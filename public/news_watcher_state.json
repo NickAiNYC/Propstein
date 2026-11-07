@@ -1,7 +1,7 @@
 {
   "version": "1.1.0",
-  "last_polled_at": "2026-11-07T11:40:09.411178+00:00",
-  "poll_count": 140,
+  "last_polled_at": "2026-11-07T12:10:09.322631+00:00",
+  "poll_count": 141,
   "is_alive": true,
   "source": "Sleeper NFL Status API / Beat Feed",
   "teams_locked": {},
