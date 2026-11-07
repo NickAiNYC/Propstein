@@ -1,5 +1,5 @@
 PROPSTEIN PRE-KICKOFF RESEARCH BOARD
-Slate: 2026_w9 | Generated: 2026-11-06 17:50 UTC
+Slate: 2026_w9 | Generated: 2026-11-07 00:47 UTC
 Zero Tout Fluff · Pure Distribution Math · Transparent Limitations
 ============================================================
 STATUS NOTE:
@@ -9,31 +9,31 @@ Historical Week 07 trigger decisions (N=37) 95% CI: [-0.10, +1.45], spans zero.
 ------------------------------------------------------------
 PLAYER               MKT    LINE   ODDS   FAIR   PROJ   BOOK
 ------------------------------------------------------------
-Tyler Allgeier       Receptions 2.5    135.0  —      1.9    draftkings
-Puka Nacua           Receptions 8.5    112.0  —      12.0   draftkings
+Tyler Allgeier       Receptions 2.5    116.0  —      1.9    fanduel
+Antonio Williams     Receptions 4.5    -122.0 —      2.7    fanduel
+Ladd McConkey        Receptions 3.5    124.0  —      2.9    betonlineag
 Jonah Coleman        Receptions 3.5    -114.0 —      2.2    betonlineag
 Jalen Coker          Receptions 4.5    -109.0 —      3.1    draftkings
-Christian Watson     Yards  72.5   -114.0 —      48.5   draftkings
 CeeDee Lamb          Receptions 6.5    105.0  —      9.2    bovada
+Rhamondre Stevenson  Receptions 3.5    -112.0 —      2.4    draftkings
+Christian Watson     Yards  71.5   -114.0 —      48.5   draftkings
 Christian Watson     Receptions 4.5    115.0  —      3.7    betmgm
-Rhamondre Stevenson  Receptions 3.5    -114.0 —      2.4    fanduel
+Malik Nabers         Receptions 5.5    100.0  —      8.0    betonlineag
+Antonio Williams     Yards  48.5   -110.0 —      33.2   draftkings
 Mitchell Evans       Receptions 1.5    182.0  —      1.8    fanduel
-Malik Nabers         Receptions 5.5    -102.0 —      8.0    fanduel
-Nico Collins         Yards  68.5   -112.0 —      48.4   draftkings
-Ladd McConkey        Receptions 3.5    110.0  —      2.9    draftkings
-Jonah Coleman        Yards  24.5   -109.0 —      17.0   draftkings
-Tucker Kraft         Receptions 4.5    -111.0 —      3.3    betmgm
-Tucker Kraft         Yards  45.5   -111.0 —      32.7   draftkings
+Drew Sample          Yards  4.5    -106.0 —      17.9   draftkings
+Nico Collins         Yards  68.5   -114.0 —      48.4   draftkings
+Tucker Kraft         Yards  45.5   -112.0 —      32.7   betonlineag
+Tucker Kraft         Receptions 4.5    -114.0 —      3.3    fanduel
+Dallas Goedert       Receptions 3.5    123.0  —      3.1    draftkings
+Ladd McConkey        Yards  50.5   -110.0 —      37.2   draftkings
 Trey McBride         Receptions 6.5    115.0  —      5.8    bovada
-Puka Nacua           Yards  92.5   -114.0 —      138.9  fanduel
-Dawson Knox          Receptions 1.5    170.0  —      1.8    draftkings
-Nico Collins         Receptions 5.5    -150.0 —      3.6    draftkings
+Rachaad White        Receptions 2.5    115.0  —      2.2    bovada
+George Kittle        Yards  68.5   110.0  —      59.2   bovada
+Puka Nacua           Receptions 7.5    -141.0 —      12.0   draftkings
 Chig Okonkwo         Receptions 3.5    -102.0 —      2.8    fanduel
-Austin Hooper        Yards  6.5    -109.0 —      19.5   draftkings
-Marvin Mims Jr.      Receptions 1.5    135.0  —      2.0    betonlineag
-Drew Sample          Yards  4.5    -122.0 —      17.9   draftkings
-Omarion Hampton      Receptions 1.5    120.0  —      2.2    betmgm
-Ashton Jeanty        Yards  37.5   -114.0 —      29.1   draftkings
+Nico Collins         Receptions 5.5    -150.0 —      3.6    bovada
+DeMario Douglas      Receptions 3.5    -102.0 —      2.8    draftkings
 ============================================================
 Research terminal: https://propstein.com
 To inspect model distributions: https://propstein.com/methodology/
