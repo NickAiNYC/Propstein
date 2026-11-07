@@ -28,7 +28,7 @@ from ..features.minutes import ExpectedMinutesModel
 from ..util import finite_or
 from .distribution import PointsDistribution
 
-PPM_SHRINK_GAMES = 8.0      # pseudo-games of position prior
+PPM_SHRINK_GAMES = 4.0      # pseudo-games of role prior (dampened from 8.0 to prevent under-bias on stars)
 FORM_TREND_DAMPING = 0.5    # damp the 5-vs-20 trend before clipping
 
 
@@ -47,23 +47,57 @@ class NBAPointsProjector:
         played = train[~train["dnp"]].copy()
         pos_ppm = played.groupby("position")["ppm"].agg(["mean", "std", "count"])
 
+        # Role-stratified priors: separate primary scorers/starters from bench
+        # so high-usage stars are not shrunk toward 10th-man replacement rates.
+        player_roles = {}
+        for pid, grp in played.groupby("player_id"):
+            avg_min = float(grp["minutes"].mean())
+            tot_min = float(grp["minutes"].sum())
+            tot_fga = (
+                float(grp["fga"].sum())
+                if "fga" in grp.columns and pd.notna(grp["fga"]).any()
+                else 0.0
+            )
+            fga_pm = (tot_fga / tot_min) if tot_min > 0 else 0.0
+            if avg_min >= 24.0 and fga_pm >= 0.48:
+                tier = "star"
+            elif avg_min >= 24.0:
+                tier = "starter"
+            elif avg_min >= 14.0:
+                tier = "rotation"
+            else:
+                tier = "bench"
+            player_roles[pid] = tier
+
+        played["_tier"] = played["player_id"].map(player_roles).fillna("rotation")
+        tier_ppm = played.groupby(["position", "_tier"])["ppm"].agg(["mean", "std", "count"])
+
         self.player_ppm = {}
         for pid, grp in played.groupby("player_id"):
             n = len(grp)
             mean = float(grp["ppm"].mean())
             sd = finite_or(grp["ppm"].std(ddof=1), 0.0)
             pos = grp["position"].iloc[0]
-            pos_mean = float(pos_ppm.loc[pos, "mean"]) if pos in pos_ppm.index else mean
-            pos_sd = (
-                float(pos_ppm.loc[pos, "std"]) if pos in pos_ppm.index and
-                pd.notna(pos_ppm.loc[pos, "std"]) else 0.12
-            )
+            tier = player_roles.get(pid, "rotation")
+
+            if (pos, tier) in tier_ppm.index and tier_ppm.loc[(pos, tier), "count"] >= 2:
+                t_row = tier_ppm.loc[(pos, tier)]
+                prior_mean = float(t_row["mean"])
+                prior_sd = finite_or(float(t_row["std"]), 0.12)
+            elif pos in pos_ppm.index:
+                prior_mean = float(pos_ppm.loc[pos, "mean"])
+                prior_sd = finite_or(float(pos_ppm.loc[pos, "std"]), 0.12)
+            else:
+                prior_mean = mean
+                prior_sd = 0.12
+
             k = PPM_SHRINK_GAMES
             self.player_ppm[pid] = {
-                "ppm_mean": (n * mean + k * pos_mean) / (n + k),
-                "ppm_sd": (n * sd + k * pos_sd) / (n + k),
+                "ppm_mean": (n * mean + k * prior_mean) / (n + k),
+                "ppm_sd": (n * sd + k * prior_sd) / (n + k),
                 "n": n,
                 "position": pos,
+                "tier": tier,
                 "season_pts_mean": float(grp["pts"].mean()),
                 "season_pts_sd": finite_or(grp["pts"].std(ddof=1), 0.0),
             }

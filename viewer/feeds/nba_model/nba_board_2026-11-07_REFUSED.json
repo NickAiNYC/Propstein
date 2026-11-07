@@ -1,9 +1,9 @@
 {
  "receipt": {
   "status": "REFUSED",
-  "locked_at": "2026-11-07T21:39:04Z",
-  "sha256": "e3a797376eb1188b7dd675ac58bdf72ba4edb6c7b5a6098869da1d4af57935c2",
-  "prev_sha256": "29c1916d15c19691615f97bd6a4a06a3d393dffffc301e1f6383e12dd310e441",
+  "locked_at": "2026-11-07T22:18:40Z",
+  "sha256": "44f4c749384d4e36b7cd7dfb358dd2c75bc1ca82567e1d904e229d6a9eb2df96",
+  "prev_sha256": "e3a797376eb1188b7dd675ac58bdf72ba4edb6c7b5a6098869da1d4af57935c2",
   "model_version": "nba-points-v1.0.0"
  },
  "status": "REFUSED",
@@ -12,7 +12,7 @@
   "min_predictions: n=0 scored predictions (need 300)",
   "reliability_slope: slope undefined — predictions degenerate or n too small",
   "brier_vs_naive: Brier scores unavailable",
-  "quote_recency: latest quote 2026-11-07T19:52:13Z (106.9 min old, limit 10 min)"
+  "quote_recency: latest quote 2026-11-07T19:52:13Z (146.5 min old, limit 10 min)"
  ],
  "gates": {
   "calibration": {
@@ -43,16 +43,16 @@
     {
      "name": "boxscore_recency",
      "passed": true,
-     "detail": "latest data 2026-11-06 ET-end, 16.7h old (limit 30h)"
+     "detail": "latest data 2026-11-06 ET-end, 17.3h old (limit 30h)"
     },
     {
      "name": "quote_recency",
      "passed": false,
-     "detail": "latest quote 2026-11-07T19:52:13Z (106.9 min old, limit 10 min)"
+     "detail": "latest quote 2026-11-07T19:52:13Z (146.5 min old, limit 10 min)"
     }
    ]
   }
  },
  "n_predictions": 0,
- "generated_at": "2026-11-07T21:39:04Z"
+ "generated_at": "2026-11-07T22:18:40Z"
 }
