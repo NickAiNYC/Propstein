@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-11-07T00:46:44Z",
+  "as_of": "2026-11-07T16:45:20Z",
   "slate_week": 9,
   "season": 2026,
-  "total_active_injuries": 7,
-  "total_practice_entries": 333,
+  "total_active_injuries": 141,
+  "total_practice_entries": 219,
   "source": "nflverse injuries_2026.parquet",
   "impacted_beneficiaries": {},
   "injuries": [
@@ -69,8 +69,8 @@
       "opponent": "SEA",
       "game_id": "2026_09_ARI_SEA",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Concussion",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -91,8 +91,8 @@
       "opponent": "SEA",
       "game_id": "2026_09_ARI_SEA",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -102,8 +102,8 @@
       "opponent": "SEA",
       "game_id": "2026_09_ARI_SEA",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -113,8 +113,8 @@
       "opponent": "SEA",
       "game_id": "2026_09_ARI_SEA",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -124,8 +124,8 @@
       "opponent": "SEA",
       "game_id": "2026_09_ARI_SEA",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -146,8 +146,8 @@
       "opponent": "SEA",
       "game_id": "2026_09_ARI_SEA",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -157,9 +157,9 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Forearm",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0037746",
@@ -168,8 +168,8 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -179,9 +179,9 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040156",
@@ -201,8 +201,8 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hip",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -212,9 +212,9 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Full Participation in Practice"
+      "injury_type": "Back",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0040687",
@@ -223,8 +223,8 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -234,8 +234,8 @@
       "opponent": "CIN",
       "game_id": "2026_09_CIN_ATL",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -489,7 +489,7 @@
       "position": "RB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0035667",
@@ -498,6 +498,17 @@
       "opponent": "MIN",
       "game_id": "2026_09_BUF_MIN",
       "position": "DT",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0036037",
+      "player_name": "Sam Franklin Jr.",
+      "team": "BUF",
+      "opponent": "MIN",
+      "game_id": "2026_09_BUF_MIN",
+      "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
       "practice_status": "Did Not Participate In Practice"
@@ -536,6 +547,17 @@
       "practice_status": "Full Participation in Practice"
     },
     {
+      "player_id": "00-0037261",
+      "player_name": "Khalil Shakir",
+      "team": "BUF",
+      "opponent": "MIN",
+      "game_id": "2026_09_BUF_MIN",
+      "position": "WR",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
       "player_id": "00-0037428",
       "player_name": "Alec Anderson",
       "team": "BUF",
@@ -566,7 +588,7 @@
       "position": "TE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039763",
@@ -600,6 +622,17 @@
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
       "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0040710",
+      "player_name": "Deone Walker",
+      "team": "BUF",
+      "opponent": "MIN",
+      "game_id": "2026_09_BUF_MIN",
+      "position": "DT",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040724",
@@ -641,8 +674,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Foot",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -654,7 +687,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036417",
@@ -663,8 +696,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -685,8 +718,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -696,8 +729,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -718,8 +751,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Quadricep",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -729,8 +762,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -740,8 +773,8 @@
       "opponent": "DEN",
       "game_id": "2026_09_DEN_CAR",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -753,7 +786,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0032391",
@@ -764,7 +797,7 @@
       "position": "G",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0035386",
@@ -786,7 +819,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0038440",
@@ -800,6 +833,17 @@
       "practice_status": "Did Not Participate In Practice"
     },
     {
+      "player_id": "00-0039071",
+      "player_name": "Tyrique Stevenson",
+      "team": "CHI",
+      "opponent": "TB",
+      "game_id": "2026_09_TB_CHI",
+      "position": "CB",
+      "injury_type": "Thumb",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
       "player_id": "00-0039459",
       "player_name": "Theo Benedet",
       "team": "CHI",
@@ -808,7 +852,7 @@
       "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040236",
@@ -817,9 +861,9 @@
       "opponent": "TB",
       "game_id": "2026_09_TB_CHI",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Thumb",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0041060",
@@ -828,8 +872,8 @@
       "opponent": "TB",
       "game_id": "2026_09_TB_CHI",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Toe",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -841,7 +885,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0034800",
@@ -852,7 +896,18 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0035683",
+      "player_name": "Dexter Lawrence",
+      "team": "CIN",
+      "opponent": "ATL",
+      "game_id": "2026_09_CIN_ATL",
+      "position": "DT",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0036231",
@@ -861,8 +916,8 @@
       "opponent": "ATL",
       "game_id": "2026_09_CIN_ATL",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Quadricep",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -885,7 +940,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039752",
@@ -894,9 +949,9 @@
       "opponent": "ATL",
       "game_id": "2026_09_CIN_ATL",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0033131",
@@ -905,8 +960,8 @@
       "opponent": "NO",
       "game_id": "2026_09_CLE_NO",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Elbow",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -916,9 +971,9 @@
       "opponent": "NO",
       "game_id": "2026_09_CLE_NO",
       "position": "QB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Concussion",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0035526",
@@ -973,7 +1028,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040663",
@@ -995,7 +1050,7 @@
       "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041049",
@@ -1006,7 +1061,7 @@
       "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041471",
@@ -1037,8 +1092,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Calf",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -1061,7 +1116,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0037243",
@@ -1072,7 +1127,7 @@
       "position": "G",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0037247",
@@ -1081,8 +1136,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1092,8 +1147,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ribs",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1103,9 +1158,9 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0038547",
@@ -1114,8 +1169,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Groin",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1125,8 +1180,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1158,8 +1213,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1169,8 +1224,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Forearm",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -1182,7 +1237,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040874",
@@ -1202,8 +1257,8 @@
       "opponent": "IND",
       "game_id": "2026_09_DAL_IND",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1235,8 +1290,8 @@
       "opponent": "CAR",
       "game_id": "2026_09_DEN_CAR",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1246,8 +1301,8 @@
       "opponent": "CAR",
       "game_id": "2026_09_DEN_CAR",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1262,14 +1317,25 @@
       "practice_status": "Full Participation in Practice"
     },
     {
+      "player_id": "00-0037799",
+      "player_name": "Dondrea Tillman",
+      "team": "DEN",
+      "opponent": "CAR",
+      "game_id": "2026_09_DEN_CAR",
+      "position": "LB",
+      "injury_type": "Hip",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
       "player_id": "00-0038106",
       "player_name": "Eyioma Uwazurike",
       "team": "DEN",
       "opponent": "CAR",
       "game_id": "2026_09_DEN_CAR",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Shoulder",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1279,8 +1345,8 @@
       "opponent": "CAR",
       "game_id": "2026_09_DEN_CAR",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1290,8 +1356,8 @@
       "opponent": "CAR",
       "game_id": "2026_09_DEN_CAR",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -1301,8 +1367,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hip",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1323,8 +1389,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Concussion",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1345,8 +1411,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Rib",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1356,8 +1422,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "C",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1367,8 +1433,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1378,8 +1444,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Neck",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1389,8 +1455,8 @@
       "opponent": "MIA",
       "game_id": "2026_09_DET_MIA",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Neck",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1405,14 +1471,25 @@
       "practice_status": "Full Participation in Practice"
     },
     {
+      "player_id": "00-0039364",
+      "player_name": "Sione Vaki",
+      "team": "DET",
+      "opponent": "MIA",
+      "game_id": "2026_09_DET_MIA",
+      "position": "RB",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
       "player_id": "00-0034431",
       "player_name": "Zaire Franklin",
       "team": "GB",
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Shin",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1422,9 +1499,9 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Groin",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0036551",
@@ -1444,8 +1521,8 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1455,8 +1532,8 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "C",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1477,8 +1554,8 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Concussion",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1488,8 +1565,8 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1499,8 +1576,8 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1510,6 +1587,17 @@
       "opponent": "NE",
       "game_id": "2026_09_GB_NE",
       "position": "G",
+      "injury_type": "Knee",
+      "report_status": "OUT",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0039867",
+      "player_name": "Javon Bullard",
+      "team": "GB",
+      "opponent": "NE",
+      "game_id": "2026_09_GB_NE",
+      "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
       "practice_status": "Did Not Participate In Practice"
@@ -1611,7 +1699,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0034573",
@@ -1642,8 +1730,8 @@
       "opponent": "DAL",
       "game_id": "2026_09_DAL_IND",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1655,7 +1743,18 @@
       "position": "TE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0038394",
+      "player_name": "Will Mallory",
+      "team": "IND",
+      "opponent": "DAL",
+      "game_id": "2026_09_DAL_IND",
+      "position": "TE",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0039816",
@@ -1675,8 +1774,8 @@
       "opponent": "DAL",
       "game_id": "2026_09_DAL_IND",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1686,9 +1785,20 @@
       "opponent": "DAL",
       "game_id": "2026_09_DAL_IND",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Thumb",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0041043",
+      "player_name": "A.J. Haulcy",
+      "team": "IND",
+      "opponent": "DAL",
+      "game_id": "2026_09_DAL_IND",
+      "position": "S",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0041518",
@@ -1862,8 +1972,8 @@
       "opponent": "NYJ",
       "game_id": "2026_09_NYJ_KC",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hip",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -1884,8 +1994,8 @@
       "opponent": "NYJ",
       "game_id": "2026_09_NYJ_KC",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1895,8 +2005,8 @@
       "opponent": "NYJ",
       "game_id": "2026_09_NYJ_KC",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Shoulder",
+      "report_status": "OUT",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1906,8 +2016,8 @@
       "opponent": "NYJ",
       "game_id": "2026_09_NYJ_KC",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Neck",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1922,12 +2032,34 @@
       "practice_status": "Full Participation in Practice"
     },
     {
+      "player_id": "00-0031388",
+      "player_name": "Aaron Donald",
+      "team": "LA",
+      "opponent": "WAS",
+      "game_id": "2026_09_LA_WAS",
+      "position": "DT",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
       "player_id": "00-0032228",
       "player_name": "Joe Cardona",
       "team": "LA",
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "LS",
+      "injury_type": "Ankle",
+      "report_status": "DOUBTFUL",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0033110",
+      "player_name": "Tyler Higbee",
+      "team": "LA",
+      "opponent": "WAS",
+      "game_id": "2026_09_LA_WAS",
+      "position": "TE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
       "practice_status": "Did Not Participate In Practice"
@@ -1941,7 +2073,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0036244",
@@ -1950,9 +2082,9 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Ribs",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0036349",
@@ -1961,6 +2093,17 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "S",
+      "injury_type": "Foot",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0036603",
+      "player_name": "Alaric Jackson",
+      "team": "LA",
+      "opponent": "WAS",
+      "game_id": "2026_09_LA_WAS",
+      "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
       "practice_status": "Did Not Participate In Practice"
@@ -1972,8 +2115,8 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -1983,8 +2126,8 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Back",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -1994,8 +2137,8 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Shoulder",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2018,7 +2161,29 @@
       "position": "G",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0039075",
+      "player_name": "Puka Nacua",
+      "team": "LA",
+      "opponent": "WAS",
+      "game_id": "2026_09_LA_WAS",
+      "position": "WR",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0039137",
+      "player_name": "Byron Young",
+      "team": "LA",
+      "opponent": "WAS",
+      "game_id": "2026_09_LA_WAS",
+      "position": "LB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0039751",
@@ -2027,8 +2192,8 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Back",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2038,8 +2203,8 @@
       "opponent": "WAS",
       "game_id": "2026_09_LA_WAS",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2051,7 +2216,7 @@
       "position": "DE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0032103",
@@ -2060,8 +2225,8 @@
       "opponent": "HOU",
       "game_id": "2026_09_HOU_LAC",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Pectoral",
+      "report_status": "DOUBTFUL",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2073,7 +2238,7 @@
       "position": "DE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0033885",
@@ -2082,8 +2247,8 @@
       "opponent": "HOU",
       "game_id": "2026_09_HOU_LAC",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Fibula",
+      "report_status": "DOUBTFUL",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2095,7 +2260,7 @@
       "position": "CB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036736",
@@ -2104,8 +2269,8 @@
       "opponent": "HOU",
       "game_id": "2026_09_HOU_LAC",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Fibula",
+      "report_status": "DOUBTFUL",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2115,9 +2280,9 @@
       "opponent": "HOU",
       "game_id": "2026_09_HOU_LAC",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Concussion",
+      "report_status": "OUT",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0038414",
@@ -2126,8 +2291,8 @@
       "opponent": "HOU",
       "game_id": "2026_09_HOU_LAC",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Calf",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2139,7 +2304,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041381",
@@ -2150,7 +2315,7 @@
       "position": "CB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041550",
@@ -2159,8 +2324,8 @@
       "opponent": "HOU",
       "game_id": "2026_09_HOU_LAC",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Quadricep",
+      "report_status": "DOUBTFUL",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2192,8 +2357,8 @@
       "opponent": "SF",
       "game_id": "2026_09_LV_SF",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2205,7 +2370,7 @@
       "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040641",
@@ -2214,9 +2379,9 @@
       "opponent": "SF",
       "game_id": "2026_09_LV_SF",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Groin",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0034285",
@@ -2227,7 +2392,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036682",
@@ -2236,8 +2401,8 @@
       "opponent": "DET",
       "game_id": "2026_09_DET_MIA",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Neck",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2280,8 +2445,8 @@
       "opponent": "DET",
       "game_id": "2026_09_DET_MIA",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Quadricep",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2293,7 +2458,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040182",
@@ -2304,7 +2469,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041096",
@@ -2313,9 +2478,9 @@
       "opponent": "DET",
       "game_id": "2026_09_DET_MIA",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Quadricep",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041521",
@@ -2337,7 +2502,7 @@
       "position": "TE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0041528",
@@ -2348,7 +2513,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0035228",
@@ -2381,7 +2546,7 @@
       "position": "CB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036259",
@@ -2392,7 +2557,7 @@
       "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0036616",
@@ -2403,7 +2568,7 @@
       "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0037301",
@@ -2436,7 +2601,7 @@
       "position": "RB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0041495",
@@ -2447,7 +2612,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0029685",
@@ -2456,8 +2621,8 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2467,8 +2632,8 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Foot",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2478,9 +2643,9 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "TE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Foot",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0033132",
@@ -2489,9 +2654,9 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Chest",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0033555",
@@ -2500,8 +2665,8 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Calf",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2511,9 +2676,9 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Neck",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0035676",
@@ -2522,8 +2687,8 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2535,7 +2700,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036981",
@@ -2555,8 +2720,8 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2568,7 +2733,7 @@
       "position": "CB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039851",
@@ -2588,8 +2753,8 @@
       "opponent": "GB",
       "game_id": "2026_09_GB_NE",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Illness",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2601,7 +2766,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0033860",
@@ -2612,7 +2777,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0033906",
@@ -2623,7 +2788,7 @@
       "position": "RB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0034361",
@@ -2665,9 +2830,9 @@
       "opponent": "CLE",
       "game_id": "2026_09_CLE_NO",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Shin",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0038601",
@@ -2676,8 +2841,8 @@
       "opponent": "CLE",
       "game_id": "2026_09_CLE_NO",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Thumb",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2687,8 +2852,8 @@
       "opponent": "CLE",
       "game_id": "2026_09_CLE_NO",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2698,8 +2863,8 @@
       "opponent": "CLE",
       "game_id": "2026_09_CLE_NO",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2709,8 +2874,8 @@
       "opponent": "CLE",
       "game_id": "2026_09_CLE_NO",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Shoulder",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2733,7 +2898,7 @@
       "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036280",
@@ -2755,7 +2920,7 @@
       "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0037259",
@@ -2775,8 +2940,8 @@
       "opponent": "PHI",
       "game_id": "2026_09_NYG_PHI",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hand",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -2788,7 +2953,7 @@
       "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039847",
@@ -2854,7 +3019,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040715",
@@ -2863,9 +3028,9 @@
       "opponent": "PHI",
       "game_id": "2026_09_NYG_PHI",
       "position": "RB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Hamstring",
+      "report_status": "DOUBTFUL",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0041462",
@@ -2896,9 +3061,9 @@
       "opponent": "KC",
       "game_id": "2026_09_NYJ_KC",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036902",
@@ -2907,9 +3072,20 @@
       "opponent": "KC",
       "game_id": "2026_09_NYJ_KC",
       "position": "DE",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0036986",
+      "player_name": "Nahshon Wright",
+      "team": "NYJ",
+      "opponent": "KC",
+      "game_id": "2026_09_NYJ_KC",
+      "position": "CB",
+      "injury_type": "Back",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0037740",
@@ -2918,8 +3094,8 @@
       "opponent": "KC",
       "game_id": "2026_09_NYJ_KC",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Concussion",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2940,8 +3116,8 @@
       "opponent": "KC",
       "game_id": "2026_09_NYJ_KC",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Groin",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -2973,8 +3149,8 @@
       "opponent": "KC",
       "game_id": "2026_09_NYJ_KC",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -2984,8 +3160,8 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3008,7 +3184,7 @@
       "position": "K",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0034351",
@@ -3052,7 +3228,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036418",
@@ -3072,8 +3248,8 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Abdomen",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3083,9 +3259,20 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "WR",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0036980",
+      "player_name": "Elijah Moore",
+      "team": "PHI",
+      "opponent": "NYG",
+      "game_id": "2026_09_NYG_PHI",
+      "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0037002",
@@ -3116,8 +3303,8 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3127,8 +3314,8 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3138,8 +3325,8 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "QB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Rib",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -3171,8 +3358,8 @@
       "opponent": "NYG",
       "game_id": "2026_09_NYG_PHI",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3193,8 +3380,8 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Stinger",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3204,9 +3391,9 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "G",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Knee",
+      "report_status": "OUT",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0034350",
@@ -3215,9 +3402,9 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Ankle",
+      "report_status": "OUT",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0034869",
@@ -3226,8 +3413,8 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "QB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Quadricep",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3242,14 +3429,25 @@
       "practice_status": "Limited Participation in Practice"
     },
     {
+      "player_id": "00-0036994",
+      "player_name": "Ernest Jones",
+      "team": "SEA",
+      "opponent": "ARI",
+      "game_id": "2026_09_ARI_SEA",
+      "position": "LB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
       "player_id": "00-0037545",
       "player_name": "Rashid Shaheed",
       "team": "SEA",
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3270,8 +3468,8 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "T",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3283,7 +3481,7 @@
       "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0038694",
@@ -3292,8 +3490,8 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Back",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3305,7 +3503,18 @@
       "position": "G",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0039047",
+      "player_name": "Derick Hall",
+      "team": "SEA",
+      "opponent": "ARI",
+      "game_id": "2026_09_ARI_SEA",
+      "position": "LB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039815",
@@ -3325,8 +3534,8 @@
       "opponent": "ARI",
       "game_id": "2026_09_ARI_SEA",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Foot",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3369,8 +3578,8 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ribs",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3380,8 +3589,8 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Ankle",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -3393,7 +3602,7 @@
       "position": "RB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0034391",
@@ -3402,9 +3611,9 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "S",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "injury_type": "Knee",
+      "report_status": "QUESTIONABLE",
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0034775",
@@ -3413,8 +3622,8 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3426,7 +3635,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0035717",
@@ -3437,7 +3646,7 @@
       "position": "DE",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0035719",
@@ -3446,8 +3655,8 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Hamstring",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3459,7 +3668,7 @@
       "position": "LB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036871",
@@ -3468,8 +3677,8 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Groin",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -3479,8 +3688,8 @@
       "opponent": "LV",
       "game_id": "2026_09_LV_SF",
       "position": "CB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Shoulder",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Limited Participation in Practice"
     },
     {
@@ -3492,7 +3701,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040660",
@@ -3514,7 +3723,7 @@
       "position": "DT",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0033921",
@@ -3525,7 +3734,7 @@
       "position": "WR",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0034855",
@@ -3547,7 +3756,7 @@
       "position": "T",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Limited Participation in Practice"
     },
     {
       "player_id": "00-0036919",
@@ -3578,8 +3787,8 @@
       "opponent": "CHI",
       "game_id": "2026_09_TB_CHI",
       "position": "LB",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Knee",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3602,7 +3811,7 @@
       "position": "RB",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Did Not Participate In Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0039846",
@@ -3613,7 +3822,7 @@
       "position": "S",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0040129",
@@ -3622,8 +3831,8 @@
       "opponent": "CHI",
       "game_id": "2026_09_TB_CHI",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Foot",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
@@ -3649,6 +3858,17 @@
       "practice_status": "Did Not Participate In Practice"
     },
     {
+      "player_id": "00-0033947",
+      "player_name": "Deatrich Wise",
+      "team": "WAS",
+      "opponent": "LA",
+      "game_id": "2026_09_LA_WAS",
+      "position": "DE",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
       "player_id": "00-0035409",
       "player_name": "Shy Tuttle",
       "team": "WAS",
@@ -3668,7 +3888,7 @@
       "position": "G",
       "injury_type": "Injury",
       "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "practice_status": "Full Participation in Practice"
     },
     {
       "player_id": "00-0036626",
@@ -3677,9 +3897,9 @@
       "opponent": "LA",
       "game_id": "2026_09_LA_WAS",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
-      "practice_status": "Limited Participation in Practice"
+      "injury_type": "Calf",
+      "report_status": "OUT",
+      "practice_status": "Did Not Participate In Practice"
     },
     {
       "player_id": "00-0036628",
@@ -3699,8 +3919,8 @@
       "opponent": "LA",
       "game_id": "2026_09_LA_WAS",
       "position": "WR",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Foot",
+      "report_status": "OUT",
       "practice_status": "Did Not Participate In Practice"
     },
     {
@@ -3721,8 +3941,8 @@
       "opponent": "LA",
       "game_id": "2026_09_LA_WAS",
       "position": "DT",
-      "injury_type": "Injury",
-      "report_status": "PRACTICE ONLY",
+      "injury_type": "Pectoral",
+      "report_status": "QUESTIONABLE",
       "practice_status": "Full Participation in Practice"
     },
     {
