@@ -162,14 +162,19 @@ class NbaComProvider:
     def _get(self, path: str, params: dict) -> dict:
         clean = {k: v for k, v in params.items() if v is not None}
         url = f"{self.base_url}{path}?{urllib.parse.urlencode(clean)}"
-        status, payload = self._transport(url)
-        if status == 429:
-            self._sleep(BACKOFF_SECONDS)
+        for attempt in range(3):
             status, payload = self._transport(url)
             if status == 429:
-                raise RateLimitError("stats.nba.com rate limit exhausted after backoff retry")
-        if status != 200:
-            raise ProviderNetworkError(f"stats.nba.com HTTP {status} on {path}")
+                self._sleep(BACKOFF_SECONDS)
+                status, payload = self._transport(url)
+                if status == 429:
+                    raise RateLimitError("stats.nba.com rate limit exhausted after backoff retry")
+            if status in (500, 502, 503, 504) and attempt < 2:
+                self._sleep(3.0 * (attempt + 1))
+                continue
+            if status != 200:
+                raise ProviderNetworkError(f"stats.nba.com HTTP {status} on {path}")
+            break
         self._sleep(self.spacing)
         return payload or {}
 
