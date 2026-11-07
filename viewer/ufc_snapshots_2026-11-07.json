@@ -36,6 +36,43 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.3379,
+        0.6621
+      ],
+      "best": [
+        {
+          "price": 188,
+          "book": "fanduel"
+        },
+        {
+          "price": -220,
+          "book": "betus"
+        }
+      ],
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4474,
+          "books": [
+            {
+              "book": "betus",
+              "over": 114,
+              "under": -135,
+              "p_over": 0.448558885283451
+            },
+            {
+              "book": "betonlineag",
+              "over": 116,
+              "under": -135,
+              "p_over": 0.4462590201291302
+            }
+          ]
+        }
+      ]
     }
   },
   "401928117": {
@@ -93,6 +130,61 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.8358,
+        0.1642
+      ],
+      "best": [
+        {
+          "price": -675,
+          "book": "draftkings"
+        },
+        {
+          "price": 520,
+          "book": "fanduel"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.6394,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -200,
+              "under": 169,
+              "p_over": 0.6420047732696897
+            },
+            {
+              "book": "betus",
+              "over": -200,
+              "under": 166,
+              "p_over": 0.6394230769230769
+            },
+            {
+              "book": "draftkings",
+              "over": -200,
+              "under": 154,
+              "p_over": 0.6287128712871286
+            }
+          ]
+        },
+        {
+          "line": 2.5,
+          "p_over_novig": 0.5101,
+          "books": [
+            {
+              "book": "bovada",
+              "over": -120,
+              "under": -110,
+              "p_over": 0.5101214574898786
+            }
+          ]
+        }
+      ]
     }
   },
   "401932011": {
@@ -106,6 +198,55 @@
         {
           "price": -288,
           "book": "betonlineag"
+        },
+        {
+          "price": 260,
+          "book": "draftkings"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.3614,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": 169,
+              "under": -200,
+              "p_over": 0.35799522673031026
+            },
+            {
+              "book": "draftkings",
+              "over": 160,
+              "under": -210,
+              "p_over": 0.3621495327102804
+            },
+            {
+              "book": "bovada",
+              "over": 160,
+              "under": -210,
+              "p_over": 0.3621495327102804
+            },
+            {
+              "book": "betus",
+              "over": 166,
+              "under": -200,
+              "p_over": 0.3605769230769231
+            }
+          ]
+        }
+      ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.7221,
+        0.2779
+      ],
+      "best": [
+        {
+          "price": -295,
+          "book": "fanduel"
         },
         {
           "price": 260,
@@ -201,6 +342,61 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.8284,
+        0.1716
+      ],
+      "best": [
+        {
+          "price": -550,
+          "book": "fanduel"
+        },
+        {
+          "price": 500,
+          "book": "bovada"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.5101,
+          "books": [
+            {
+              "book": "bovada",
+              "over": -120,
+              "under": -110,
+              "p_over": 0.5101214574898786
+            }
+          ]
+        },
+        {
+          "line": 2.5,
+          "p_over_novig": 0.3606,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": 169,
+              "under": -200,
+              "p_over": 0.35799522673031026
+            },
+            {
+              "book": "betus",
+              "over": 166,
+              "under": -200,
+              "p_over": 0.3605769230769231
+            },
+            {
+              "book": "draftkings",
+              "over": 160,
+              "under": -210,
+              "p_over": 0.3621495327102804
+            }
+          ]
+        }
+      ]
     }
   },
   "401928120": {
@@ -218,6 +414,55 @@
         {
           "price": 105,
           "book": "betus"
+        }
+      ],
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4797,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": 103,
+              "under": -120,
+              "p_over": 0.4745470232959448
+            },
+            {
+              "book": "betus",
+              "over": -105,
+              "under": -115,
+              "p_over": 0.4891657638136511
+            },
+            {
+              "book": "draftkings",
+              "over": -105,
+              "under": -125,
+              "p_over": 0.4796954314720812
+            },
+            {
+              "book": "bovada",
+              "over": -105,
+              "under": -125,
+              "p_over": 0.4796954314720812
+            }
+          ]
+        }
+      ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.5184,
+        0.4816
+      ],
+      "best": [
+        {
+          "price": -115,
+          "book": "betus"
+        },
+        {
+          "price": 100,
+          "book": "betonlineag"
         }
       ],
       "totals": [
@@ -303,6 +548,55 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.6644,
+        0.3356
+      ],
+      "best": [
+        {
+          "price": -220,
+          "book": "betrivers"
+        },
+        {
+          "price": 191,
+          "book": "betonlineag"
+        }
+      ],
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.5982,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -163,
+              "under": 139,
+              "p_over": 0.5969781019660727
+            },
+            {
+              "book": "betus",
+              "over": -165,
+              "under": 138,
+              "p_over": 0.5970807358978257
+            },
+            {
+              "book": "draftkings",
+              "over": -175,
+              "under": 135,
+              "p_over": 0.599271402550091
+            },
+            {
+              "book": "bovada",
+              "over": -185,
+              "under": 140,
+              "p_over": 0.6090534979423868
+            }
+          ]
+        }
+      ]
     }
   },
   "401911642": {
@@ -354,6 +648,55 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.7532,
+        0.2468
+      ],
+      "best": [
+        {
+          "price": -335,
+          "book": "betrivers"
+        },
+        {
+          "price": 295,
+          "book": "draftkings"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.5472,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -130,
+              "under": 111,
+              "p_over": 0.5439222684909776
+            },
+            {
+              "book": "betus",
+              "over": -130,
+              "under": 110,
+              "p_over": 0.5427435387673957
+            },
+            {
+              "book": "draftkings",
+              "over": -140,
+              "under": 110,
+              "p_over": 0.550561797752809
+            },
+            {
+              "book": "bovada",
+              "over": -145,
+              "under": 110,
+              "p_over": 0.554140127388535
+            }
+          ]
+        }
+      ]
     }
   },
   "401932012": {
@@ -362,6 +705,55 @@
       "h2h_novig": [
         0.3269,
         0.6731
+      ],
+      "best": [
+        {
+          "price": 200,
+          "book": "draftkings"
+        },
+        {
+          "price": -230,
+          "book": "betus"
+        }
+      ],
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.5337,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -125,
+              "under": 107,
+              "p_over": 0.5348837209302326
+            },
+            {
+              "book": "betus",
+              "over": -125,
+              "under": 105,
+              "p_over": 0.5324675324675325
+            },
+            {
+              "book": "draftkings",
+              "over": -135,
+              "under": 105,
+              "p_over": 0.5407914020517831
+            },
+            {
+              "book": "bovada",
+              "over": -130,
+              "under": 100,
+              "p_over": 0.5306122448979592
+            }
+          ]
+        }
+      ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.3271,
+        0.6729
       ],
       "best": [
         {
@@ -456,6 +848,55 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.1953,
+        0.8047
+      ],
+      "best": [
+        {
+          "price": 410,
+          "book": "fanduel"
+        },
+        {
+          "price": -480,
+          "book": "betrivers"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.5054,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -114,
+              "under": -102,
+              "p_over": 0.5133761369716425
+            },
+            {
+              "book": "betus",
+              "over": -115,
+              "under": -105,
+              "p_over": 0.5108342361863488
+            },
+            {
+              "book": "draftkings",
+              "over": -110,
+              "under": -120,
+              "p_over": 0.48987854251012153
+            },
+            {
+              "book": "bovada",
+              "over": -115,
+              "under": -115,
+              "p_over": 0.5
+            }
+          ]
+        }
+      ]
     }
   },
   "401928113": {
@@ -513,6 +954,61 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.2598,
+        0.7402
+      ],
+      "best": [
+        {
+          "price": 287,
+          "book": "betonlineag"
+        },
+        {
+          "price": -325,
+          "book": "fanduel"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.6394,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -190,
+              "under": 161,
+              "p_over": 0.6309963099630996
+            },
+            {
+              "book": "betus",
+              "over": -200,
+              "under": 166,
+              "p_over": 0.6394230769230769
+            },
+            {
+              "book": "draftkings",
+              "over": -215,
+              "under": 165,
+              "p_over": 0.6439672223792031
+            }
+          ]
+        },
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4797,
+          "books": [
+            {
+              "book": "bovada",
+              "over": -105,
+              "under": -125,
+              "p_over": 0.4796954314720812
+            }
+          ]
+        }
+      ]
     }
   },
   "401928119": {
@@ -526,6 +1022,55 @@
         {
           "price": 260,
           "book": "draftkings"
+        },
+        {
+          "price": -305,
+          "book": "betrivers"
+        }
+      ],
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4927,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -106,
+              "under": -110,
+              "p_over": 0.49554764024933207
+            },
+            {
+              "book": "draftkings",
+              "over": -110,
+              "under": -120,
+              "p_over": 0.48987854251012153
+            },
+            {
+              "book": "bovada",
+              "over": -105,
+              "under": -125,
+              "p_over": 0.4796954314720812
+            },
+            {
+              "book": "betus",
+              "over": -110,
+              "under": -110,
+              "p_over": 0.5
+            }
+          ]
+        }
+      ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.2689,
+        0.7311
+      ],
+      "best": [
+        {
+          "price": 265,
+          "book": "betonlineag"
         },
         {
           "price": -305,
@@ -615,6 +1160,55 @@
           ]
         }
       ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.6446,
+        0.3554
+      ],
+      "best": [
+        {
+          "price": -200,
+          "book": "betus"
+        },
+        {
+          "price": 173,
+          "book": "bovada"
+        }
+      ],
+      "totals": [
+        {
+          "line": 2.5,
+          "p_over_novig": 0.7514,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -365,
+              "under": 294,
+              "p_over": 0.7556618149335296
+            },
+            {
+              "book": "betus",
+              "over": -365,
+              "under": 288,
+              "p_over": 0.7528173506272592
+            },
+            {
+              "book": "draftkings",
+              "over": -375,
+              "under": 270,
+              "p_over": 0.7449664429530201
+            },
+            {
+              "book": "bovada",
+              "over": -400,
+              "under": 275,
+              "p_over": 0.75
+            }
+          ]
+        }
+      ]
     }
   },
   "401932715": {
@@ -628,6 +1222,61 @@
         {
           "price": -225,
           "book": "betmgm"
+        },
+        {
+          "price": 198,
+          "book": "fanduel"
+        }
+      ],
+      "totals": [
+        {
+          "line": 1.5,
+          "p_over_novig": 0.6499,
+          "books": [
+            {
+              "book": "betonlineag",
+              "over": -210,
+              "under": 177,
+              "p_over": 0.6523494448805651
+            },
+            {
+              "book": "draftkings",
+              "over": -220,
+              "under": 170,
+              "p_over": 0.6498905908096281
+            },
+            {
+              "book": "betus",
+              "over": -210,
+              "under": 174,
+              "p_over": 0.6498757623672915
+            }
+          ]
+        },
+        {
+          "line": 2.5,
+          "p_over_novig": 0.4592,
+          "books": [
+            {
+              "book": "bovada",
+              "over": 105,
+              "under": -135,
+              "p_over": 0.4592085979482169
+            }
+          ]
+        }
+      ]
+    },
+    "post": {
+      "at": "2026-11-07T01:27:02Z",
+      "h2h_novig": [
+        0.6686,
+        0.3314
+      ],
+      "best": [
+        {
+          "price": -225,
+          "book": "betus"
         },
         {
           "price": 198,

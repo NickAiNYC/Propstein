@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-07T00:46:44Z",
+  "generated_at": "2026-11-07T01:27:02Z",
   "event_id": "600061268",
   "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
   "date": "2026-11-07",
@@ -922,8 +922,8 @@
       },
       "market": {
         "h2h_novig": [
-          0.7528,
-          0.2472
+          0.7532,
+          0.2468
         ],
         "best": [
           {
@@ -1177,13 +1177,13 @@
       },
       "market": {
         "h2h_novig": [
-          0.1979,
-          0.8021
+          0.1953,
+          0.8047
         ],
         "best": [
           {
-            "price": 394,
-            "book": "betonlineag"
+            "price": 410,
+            "book": "fanduel"
           },
           {
             "price": -480,
@@ -1772,13 +1772,13 @@
   "odds_meter": {
     "cost_measured": 2,
     "cost_estimated": 2,
-    "remaining": "55",
-    "used": "445",
-    "events_returned": 23,
+    "remaining": "53",
+    "used": "447",
+    "events_returned": 30,
     "ufc_matched": 13,
-    "non_ufc_dropped": 10
+    "non_ufc_dropped": 17
   },
-  "market_as_of": "2026-11-07T00:46:44Z",
+  "market_as_of": "2026-11-07T01:27:02Z",
   "backtest": {
     "n": 3512,
     "brier": 0.243,
