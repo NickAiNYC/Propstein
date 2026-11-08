@@ -1,2093 +1,5 @@
 [
   {
-    "receipt_id": "pmr_0bdb6bf29911ccf7",
-    "market_id": "polymarket:6665704",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0bdb6bf29911ccf70b7742119f7d7e6c457d93c0591dd9e0e483c168f01ed0fa",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-rec-sam-laporta-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_5d881fa233b7f4de",
-    "market_id": "polymarket:6683737",
-    "book_id": "polymarket",
-    "raw_payload_hash": "5d881fa233b7f4de109edc076000c89f9b6708ce7f594ef7452be93ef754bf14",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-chris-olave-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_bae0613d1b1633d2",
-    "market_id": "polymarket:6723009",
-    "book_id": "polymarket",
-    "raw_payload_hash": "bae0613d1b1633d2c3a7f91f9828a58982599325d87b65ee65871e27eabdfa2b",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-jerry-jeudy-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c85fb065f6837713",
-    "market_id": "polymarket:6723012",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c85fb065f683771377a72896bd850ff5fc9feaf3439daf042803a84585ed07b4",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-juwan-johnson-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_5b264ef76be0c904",
-    "market_id": "polymarket:6723021",
-    "book_id": "polymarket",
-    "raw_payload_hash": "5b264ef76be0c904f6341ea7cb08b333ab1f16f528b6eb9ba7a4610235a22ceb",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-quinshon-judkins-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_448eaa7c99079b50",
-    "market_id": "polymarket:6723028",
-    "book_id": "polymarket",
-    "raw_payload_hash": "448eaa7c99079b50a634996671bda862aa0760b7b766a824408f53127f7acc97",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-rec-juwan-johnson-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e3edf02d98864fd1",
-    "market_id": "polymarket:6723029",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e3edf02d98864fd1943c216e3df2b0a74f4bdf22552c631c19d104e5ca16af54",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-rec-juwan-johnson-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ac9d52b57c4c3d09",
-    "market_id": "polymarket:6680352",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ac9d52b57c4c3d09f8a565d2d3b8e29095e8b04289c71571db946b65faadab6c",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-darnell-mooney-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_39cf03ab52e74ada",
-    "market_id": "polymarket:6680371",
-    "book_id": "polymarket",
-    "raw_payload_hash": "39cf03ab52e74ada0ce41057b938e5658f4f3b8d021bd4bf7f50a0ced3f42332",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-isaiah-likely-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_eaa7ae1039e654fe",
-    "market_id": "polymarket:6680547",
-    "book_id": "polymarket",
-    "raw_payload_hash": "eaa7ae1039e654fe78e3228b35182dba891a506aa309a4985060f5d3d4a72ccc",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_470ab9c14921153f",
-    "market_id": "polymarket:6722968",
-    "book_id": "polymarket",
-    "raw_payload_hash": "470ab9c14921153fb3368141f3b454249b169288ace1d2891ba301b51fb6bf56",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-dallas-goedert-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_3a5a291fdac51da8",
-    "market_id": "polymarket:6722975",
-    "book_id": "polymarket",
-    "raw_payload_hash": "3a5a291fdac51da8420cf9f7d820f6f515d0a7beaf589051cdc4ca01ddfe6d01",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-darius-cooper-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8171462c1411eb3e",
-    "market_id": "polymarket:6722980",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8171462c1411eb3eec5107cf9b6c0ee0db638d083d75b44fc5efd79053341154",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-makai-lemon-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_031dc1a98c1e5b60",
-    "market_id": "polymarket:6722988",
-    "book_id": "polymarket",
-    "raw_payload_hash": "031dc1a98c1e5b60a60f831da3bd446b10d0d18042b0cb4e86fd7ce2de79c20f",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-dallas-goedert-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c26054ce1d0d214b",
-    "market_id": "polymarket:6674610",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c26054ce1d0d214b94c51853734bbd39cf2319e556a4373b79c88cce838c03d5",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_638040f4ffcc077c",
-    "market_id": "polymarket:6674611",
-    "book_id": "polymarket",
-    "raw_payload_hash": "638040f4ffcc077cc77c6e0526aeeb7243d213c3716c33df5a193f5171bef8df",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a773ad5ef3562b6a",
-    "market_id": "polymarket:6674616",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a773ad5ef3562b6a5e81465f258181cda7b45320ff8925919fa22ca91927de33",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_087f631d466775a4",
-    "market_id": "polymarket:6674617",
-    "book_id": "polymarket",
-    "raw_payload_hash": "087f631d466775a451832fe6ddcb5f973fbb69b141a05106cc1830f8d5f7636f",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_b92caba3b7bad017",
-    "market_id": "polymarket:6674633",
-    "book_id": "polymarket",
-    "raw_payload_hash": "b92caba3b7bad017f0a55e0c75d3cbc74d9a01caa75992482819764d960197a1",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-rec-chig-okonkwo-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_cd550aaf1de9b9b0",
-    "market_id": "polymarket:6674636",
-    "book_id": "polymarket",
-    "raw_payload_hash": "cd550aaf1de9b9b04e84d310d98d52ec9d8dace2736b31b8eb6715946af1ce31",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-rec-stefon-diggs-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_9b1714531a2aed47",
-    "market_id": "polymarket:6674987",
-    "book_id": "polymarket",
-    "raw_payload_hash": "9b1714531a2aed47f6168af3acf56b43b6ed5d564046595011445e848432b03b",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-puka-nacua-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_772ffd23cbea2ead",
-    "market_id": "polymarket:6674992",
-    "book_id": "polymarket",
-    "raw_payload_hash": "772ffd23cbea2eade89f80d27bc64e33bb71ee7544cdc02fc90182ff4f987767",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-puka-nacua-99pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_67cf049c9ee63430",
-    "market_id": "polymarket:6675310",
-    "book_id": "polymarket",
-    "raw_payload_hash": "67cf049c9ee6343070318b08c6ba7e71e42459cb965b15c00b90f97f9688355a",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-kyren-williams-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7b961704abb2e577",
-    "market_id": "polymarket:6675313",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7b961704abb2e5771f893831c6f71f3aeed45cc885f5ded45732bcebff2f94ca",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-rachaad-white-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c7162c2dc743be45",
-    "market_id": "polymarket:6675316",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c7162c2dc743be4509d71a0c773376a5f3d2dd085a51d3b3b4d068875c7c90e1",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-rec-kyren-williams-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_137b7d28efba6232",
-    "market_id": "polymarket:6635547",
-    "book_id": "polymarket",
-    "raw_payload_hash": "137b7d28efba6232c17f621a5c96f95db9b5fdb49e2b46025e01931a666fe8f1",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-jamarr-chase-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ad4dec45229922bb",
-    "market_id": "polymarket:6635574",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ad4dec45229922bb41fcb1669eae4e79bc942bdc589bcec1dcc9892e07acee7a",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-tee-higgins-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0b1f5fb096f0cc7b",
-    "market_id": "polymarket:6639171",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0b1f5fb096f0cc7b9dd777385558d6c6d18d4b57cb50a62ee30798c4b7ffcd5c",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-dohnte-meyers-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_09709dd1b3cef698",
-    "market_id": "polymarket:6709213",
-    "book_id": "polymarket",
-    "raw_payload_hash": "09709dd1b3cef698e1fe65147595461221bf35b836fb0103687125a24d36d76b",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-drew-sample-0pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6966f188123c60a5",
-    "market_id": "polymarket:6709215",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6966f188123c60a58829816f194f0f4a8a27634fedb5e980ba2e216d87525048",
-    "captured_at": "2026-11-07T21:59:18.384822+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-drew-sample-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_329240ba416dda17",
-    "market_id": "polymarket:6703092",
-    "book_id": "polymarket",
-    "raw_payload_hash": "329240ba416dda171740289b6dfe101e1313d7948e096263a5b43f4400713a79",
-    "captured_at": "2026-11-08T01:18:28.537703+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-jordan-addison-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_aa5bfc51910ae669",
-    "market_id": "polymarket:6703097",
-    "book_id": "polymarket",
-    "raw_payload_hash": "aa5bfc51910ae6694cd5b5949d53ffa67c79317078a52d39d228af80eaf72ef8",
-    "captured_at": "2026-11-08T01:18:28.537764+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_664b2e4336dd7d7b",
-    "market_id": "polymarket:6703098",
-    "book_id": "polymarket",
-    "raw_payload_hash": "664b2e4336dd7d7bc0cb6bc2c9a5a7fc995927ef48581a5cea223f6f38eb61b2",
-    "captured_at": "2026-11-08T01:18:28.537787+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c9d932dbafaca4bb",
-    "market_id": "polymarket:6703099",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c9d932dbafaca4bb3799f6fa1141d296216a4852f55b79b0aed9c6be008253bf",
-    "captured_at": "2026-11-08T01:18:28.537806+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1ac018435c75a8aa",
-    "market_id": "polymarket:6703113",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1ac018435c75a8aae8e198e185e7e836bec1880fb5da02ead2273e712ccf2f0f",
-    "captured_at": "2026-11-08T01:18:28.537893+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_96ca445382292e67",
-    "market_id": "polymarket:6703114",
-    "book_id": "polymarket",
-    "raw_payload_hash": "96ca445382292e6768ed393eed3cde10248f507904db3b56b82cb279f6c4f156",
-    "captured_at": "2026-11-08T01:18:28.537911+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7dee3f646ae2c07d",
-    "market_id": "polymarket:6703115",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7dee3f646ae2c07d5954c038713829028726e2ca983d676c48532f30190de916",
-    "captured_at": "2026-11-08T01:18:28.537927+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_95e523270a4e03a6",
-    "market_id": "polymarket:6703121",
-    "book_id": "polymarket",
-    "raw_payload_hash": "95e523270a4e03a63ee300c15eef4e7d230b08774b3cab431dc895614b7c268b",
-    "captured_at": "2026-11-08T01:18:28.537964+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-tj-hockenson-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_91492de85606e7ea",
-    "market_id": "polymarket:6703122",
-    "book_id": "polymarket",
-    "raw_payload_hash": "91492de85606e7eafe273019f95d4357c9500f6875e22bf5866616eb4f629611",
-    "captured_at": "2026-11-08T01:18:28.537983+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-tj-hockenson-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1636a8cd79ccb367",
-    "market_id": "polymarket:6703141",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1636a8cd79ccb3675c59e4d6de38da2976812b0476b750701c9f1d687c938c3a",
-    "captured_at": "2026-11-08T01:18:28.538057+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-jordan-addison-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_92ae938b066ddc02",
-    "market_id": "polymarket:6703142",
-    "book_id": "polymarket",
-    "raw_payload_hash": "92ae938b066ddc028c0634abc35857463185f98c588a4477e4aaa172326dad46",
-    "captured_at": "2026-11-08T01:18:28.538075+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-jordan-addison-5pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1aec4f07bf07253e",
-    "market_id": "polymarket:6703157",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1aec4f07bf07253e287e8bd10fa8899523f71be431625cb8ae52ee0ede68bd93",
-    "captured_at": "2026-11-08T01:18:28.538135+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-khalil-shakir-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e320a8d1b8cc66e6",
-    "market_id": "polymarket:6703161",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e320a8d1b8cc66e652ae8a8c56bc2a51a9c9116ec41ae2ec041ee9696e75e87a",
-    "captured_at": "2026-11-08T01:18:28.538158+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-tj-hockenson-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7ea17c872edc55c5",
-    "market_id": "polymarket:6662356",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7ea17c872edc55c5093662ea8dd8375b0b54cb20ef95e4c8cbc4395be6054455",
-    "captured_at": "2026-11-08T01:18:28.538199+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-colston-loveland-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7e59f64356a470da",
-    "market_id": "polymarket:6662363",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7e59f64356a470da107be26b82a7ea5182011a3e918429f4f882b367951a9484",
-    "captured_at": "2026-11-08T01:18:28.538231+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_64e80b5c45bdb197",
-    "market_id": "polymarket:6662364",
-    "book_id": "polymarket",
-    "raw_payload_hash": "64e80b5c45bdb1979ecac50763384d4a2cf4977eff8122594291f2647ef84649",
-    "captured_at": "2026-11-08T01:18:28.538245+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ebc46fd6625cd804",
-    "market_id": "polymarket:6662370",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ebc46fd6625cd804780970ec1c0a676799cec4f4ccc6d830a73a20146333f86e",
-    "captured_at": "2026-11-08T01:18:28.538272+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-99pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ebb92f82302af226",
-    "market_id": "polymarket:6662373",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ebb92f82302af2268891b50c47ae559c2c4cf1dc04ede934fc72fd999a6e80a3",
-    "captured_at": "2026-11-08T01:18:28.538293+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-rome-odunze-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_77da4e453aa76329",
-    "market_id": "polymarket:6662376",
-    "book_id": "polymarket",
-    "raw_payload_hash": "77da4e453aa76329c3cedc2f1335cb37d8b375cd7a8ef0a80ea95cc34bde3bda",
-    "captured_at": "2026-11-08T01:18:28.538313+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-rome-odunze-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_57aa506d24329d6b",
-    "market_id": "polymarket:6662379",
-    "book_id": "polymarket",
-    "raw_payload_hash": "57aa506d24329d6bae68df8b2495391c3fcc2c5bc059a633568fd32492c916c9",
-    "captured_at": "2026-11-08T01:18:28.538332+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-rome-odunze-79pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_da75f2a79ef4eca9",
-    "market_id": "polymarket:6662388",
-    "book_id": "polymarket",
-    "raw_payload_hash": "da75f2a79ef4eca928a2d39ff837561ba85d7dc4ae4b79c611d159ce48df00da",
-    "captured_at": "2026-11-08T01:18:28.538369+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-luther-burden-iii-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_fe8322b5fdee9621",
-    "market_id": "polymarket:6662389",
-    "book_id": "polymarket",
-    "raw_payload_hash": "fe8322b5fdee9621ad55f31cdc4f2673c13396e8fcb92231c9a6c374bd5d3f7c",
-    "captured_at": "2026-11-08T01:18:28.538382+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-luther-burden-iii-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_928ca579197906a3",
-    "market_id": "polymarket:6662395",
-    "book_id": "polymarket",
-    "raw_payload_hash": "928ca579197906a324dda2601ff0a03812f000eadc41eecdff894bc0b9dbdf4f",
-    "captured_at": "2026-11-08T01:18:28.538410+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-rome-odunze-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_04068527a0111f96",
-    "market_id": "polymarket:6662399",
-    "book_id": "polymarket",
-    "raw_payload_hash": "04068527a0111f9648ecb04eb4b19b1b103994cda1a30ec94552ae3dd255dfb2",
-    "captured_at": "2026-11-08T01:18:28.538432+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-rome-odunze-5pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_bb1d86dfa5c2f299",
-    "market_id": "polymarket:6699910",
-    "book_id": "polymarket",
-    "raw_payload_hash": "bb1d86dfa5c2f2991708f88a570bda8657dbcb9d32ce1964164b75f0b613a52e",
-    "captured_at": "2026-11-08T01:18:28.538451+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-bucky-irving-14pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6f94ad42d486fc7a",
-    "market_id": "polymarket:6699915",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6f94ad42d486fc7a325f7d79d935b6fc33e47e7b5364f1ef171cbe5cc879a275",
-    "captured_at": "2026-11-08T01:18:28.538477+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-dandre-swift-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_626894e3e0752d40",
-    "market_id": "polymarket:6699922",
-    "book_id": "polymarket",
-    "raw_payload_hash": "626894e3e0752d40477d8c2f499e2a2aa3909d6dbad447cc150e7f5cac725df5",
-    "captured_at": "2026-11-08T01:18:28.538505+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-kalif-raymond-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_17fa8a861c63ddf4",
-    "market_id": "polymarket:6699923",
-    "book_id": "polymarket",
-    "raw_payload_hash": "17fa8a861c63ddf48f0072d8bc6eb825a4845f0c54b97bdcf878dd424e859240",
-    "captured_at": "2026-11-08T01:18:28.538519+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-kalif-raymond-14pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_895c12d5d40bcb44",
-    "market_id": "polymarket:6699931",
-    "book_id": "polymarket",
-    "raw_payload_hash": "895c12d5d40bcb443f9b5bac8f5d559c7574e321a1cc00449bf55cd25bc4043f",
-    "captured_at": "2026-11-08T01:18:28.538554+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-bucky-irving-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1073d8867fad7da4",
-    "market_id": "polymarket:6699934",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1073d8867fad7da48d39444d760aabf088c7010189ec1bdcdd98aeb28b5515a2",
-    "captured_at": "2026-11-08T01:18:28.538572+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-dandre-swift-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_69db43c2a76bee3d",
-    "market_id": "polymarket:6699940",
-    "book_id": "polymarket",
-    "raw_payload_hash": "69db43c2a76bee3dbb8d7e8f608615b69c8eb44649d1d8f2dd319f02da62a2e2",
-    "captured_at": "2026-11-08T01:18:28.538603+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-kalif-raymond-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_cf883d36753ee512",
-    "market_id": "polymarket:6699941",
-    "book_id": "polymarket",
-    "raw_payload_hash": "cf883d36753ee512ccdd4cd4fae7cffcf3c2af2b2b044af0501446649d77dd67",
-    "captured_at": "2026-11-08T01:18:28.538616+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-kalif-raymond-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4598103b5a2c5677",
-    "market_id": "polymarket:6737263",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4598103b5a2c567721fbbc0b88d8f601dfab3b8f53743364ee2dff311f7ebbc1",
-    "captured_at": "2026-11-08T01:18:28.538670+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-cade-otton-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c8d7b54b34bec7e3",
-    "market_id": "polymarket:6737264",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c8d7b54b34bec7e37d517963bfca94eca40b95a89ab49f04115d7c79f6003cca",
-    "captured_at": "2026-11-08T01:18:28.538684+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-cade-otton-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0251905a30ed498d",
-    "market_id": "polymarket:6737265",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0251905a30ed498dc04cb3ab1d10ecab010ee272a593aee420b434e47b2c3710",
-    "captured_at": "2026-11-08T01:18:28.538697+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-cade-otton-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c0b8a2031e709256",
-    "market_id": "polymarket:6737285",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c0b8a2031e709256d2d9db5ccddc6fdb97ae601645b70c715e8c3417d1f0db4e",
-    "captured_at": "2026-11-08T01:18:28.538774+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-tez-johnson-14pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4b529f6c35d7f44f",
-    "market_id": "polymarket:6737303",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4b529f6c35d7f44ffac328848729d59881e7ffa98c6c5b434b627fa5c91cc40f",
-    "captured_at": "2026-11-08T01:18:28.538854+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-ted-hurst-iii-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_04e1b1ad6e75a0a3",
-    "market_id": "polymarket:6659118",
-    "book_id": "polymarket",
-    "raw_payload_hash": "04e1b1ad6e75a0a366c1a65665e4806cd5b55dfd95013a696e5a53f65696e699",
-    "captured_at": "2026-11-08T01:18:28.538893+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-brock-bowers-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ca6761a0fd1dc612",
-    "market_id": "polymarket:6659120",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ca6761a0fd1dc612d97ddf8a66a5e838116c6e253a5abdd52fb149c338cfd440",
-    "captured_at": "2026-11-08T01:18:28.538911+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-brock-bowers-69pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ef1c640e2870ac92",
-    "market_id": "polymarket:6659328",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ef1c640e2870ac924d8d57c47d464e26bc55e67f1eab7cdb54cf559e0999004d",
-    "captured_at": "2026-11-08T01:18:28.538954+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-ashton-jeanty-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_f24dfcf39bea3be3",
-    "market_id": "polymarket:6659332",
-    "book_id": "polymarket",
-    "raw_payload_hash": "f24dfcf39bea3be3af0083fbed3e6a0c0dddc8da9a05d5d5f672f7345b21b4df",
-    "captured_at": "2026-11-08T01:18:28.538974+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-tre-tucker-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_33b7a8194802702f",
-    "market_id": "polymarket:6659337",
-    "book_id": "polymarket",
-    "raw_payload_hash": "33b7a8194802702fac90abac52861fa52184e96b112beb22725e1f92d2fbf3ab",
-    "captured_at": "2026-11-08T01:18:28.538996+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-ashton-jeanty-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ba61a5055bd50978",
-    "market_id": "polymarket:6659340",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ba61a5055bd5097849db70968b9310f76b60b85587e983f019ec7591dcae52bc",
-    "captured_at": "2026-11-08T01:18:28.539016+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-tre-tucker-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0c1f55f2fc04fe1d",
-    "market_id": "polymarket:6732216",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0c1f55f2fc04fe1dd6bdcd89566dacffa68d76a5c9cb49eafd4828caf53d5061",
-    "captured_at": "2026-11-08T01:18:28.539044+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-george-kittle-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a913125d10dd8b42",
-    "market_id": "polymarket:6732222",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a913125d10dd8b4279cfdae62b6da301c3b745a808c19f0e8d341c0d36c6d540",
-    "captured_at": "2026-11-08T01:18:28.539071+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-george-kittle-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0c8dba7085f3d011",
-    "market_id": "polymarket:6733302",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0c8dba7085f3d01138421a0b8fb5866e7c571c652bb7adaf599495744adbb7a0",
-    "captured_at": "2026-11-08T01:18:28.539095+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jordan-watkins-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_5d9b632b856274ab",
-    "market_id": "polymarket:6733303",
-    "book_id": "polymarket",
-    "raw_payload_hash": "5d9b632b856274ab104bcd54c88b2df3054621848c0dcebb41555791157b189d",
-    "captured_at": "2026-11-08T01:18:28.539108+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jordan-watkins-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_899cbcd31bc29205",
-    "market_id": "polymarket:6733310",
-    "book_id": "polymarket",
-    "raw_payload_hash": "899cbcd31bc2920522fb9f75ce00f53edc2526a484c417cdb658c9adf83bfa22",
-    "captured_at": "2026-11-08T01:18:28.539129+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-jordan-watkins-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_daecd16ca576bc22",
-    "market_id": "polymarket:6734124",
-    "book_id": "polymarket",
-    "raw_payload_hash": "daecd16ca576bc22da544a618ce0f06ccfa8c9eb4fa3b37a8c3591c1db794a90",
-    "captured_at": "2026-11-08T01:18:28.539148+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jack-bech-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_bd1b269108e9a814",
-    "market_id": "polymarket:6734130",
-    "book_id": "polymarket",
-    "raw_payload_hash": "bd1b269108e9a81441c0c5e593db92aed0e073a0e55c758916b3ea1473e586b2",
-    "captured_at": "2026-11-08T01:18:28.539174+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-michael-mayer-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6dbe1cbef0225cb9",
-    "market_id": "polymarket:6734135",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6dbe1cbef0225cb9bc15b87551c039d33a83d6766cae78ce5eb4c83142502596",
-    "captured_at": "2026-11-08T01:18:28.539197+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-jack-bech-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_d134d2fae5a93d75",
-    "market_id": "polymarket:6817840",
-    "book_id": "polymarket",
-    "raw_payload_hash": "d134d2fae5a93d75368609206184a6ad965baee9341d4c266e67c529eb8a3d38",
-    "captured_at": "2026-11-08T01:18:28.539277+00:00",
-    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-demarcus-robinson-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_10b628ad74ca9eac",
-    "market_id": "polymarket:6657140",
-    "book_id": "polymarket",
-    "raw_payload_hash": "10b628ad74ca9eacc9b5f14b710e25a4b52bf2016c7624fb449b1275e24208ed",
-    "captured_at": "2026-11-08T01:18:28.539309+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-matthew-golden-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8dc5080296452853",
-    "market_id": "polymarket:6657141",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8dc5080296452853cb4397626cfc3fcf511f550b12d178e6fa6f0aea6a768a93",
-    "captured_at": "2026-11-08T01:18:28.539324+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-matthew-golden-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_55cc3542558e89fd",
-    "market_id": "polymarket:6657143",
-    "book_id": "polymarket",
-    "raw_payload_hash": "55cc3542558e89fd8b888e6b8f8b7cccb406f42ee94c70c2b7a014174473b3ac",
-    "captured_at": "2026-11-08T01:18:28.539339+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-matthew-golden-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c21785937268e5ff",
-    "market_id": "polymarket:6657149",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c21785937268e5ff2fb327f9bc84a67ff5f392ffffd9ca10f4b38593624f6ff3",
-    "captured_at": "2026-11-08T01:18:28.539366+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-tucker-kraft-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ffc6114164f03689",
-    "market_id": "polymarket:6696033",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ffc6114164f03689d493b5164aca7a74e161b267a6261a19639aef201d73a355",
-    "captured_at": "2026-11-08T01:18:28.539412+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-savion-williams-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_55a5cb4ba48a6aec",
-    "market_id": "polymarket:6696036",
-    "book_id": "polymarket",
-    "raw_payload_hash": "55a5cb4ba48a6aecd02ff9dd46afe0264bcc29334654cdaca24282c6d49a5fcc",
-    "captured_at": "2026-11-08T01:18:28.539431+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-rec-savion-williams-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_66baeef3ac500552",
-    "market_id": "polymarket:6721975",
-    "book_id": "polymarket",
-    "raw_payload_hash": "66baeef3ac500552bd58dda4645ce4e8642ba861c96f8320dd7cee3ae402c60b",
-    "captured_at": "2026-11-08T01:18:28.539453+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-rhamondre-stevenson-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_2913a68b4a3a89c5",
-    "market_id": "polymarket:6734093",
-    "book_id": "polymarket",
-    "raw_payload_hash": "2913a68b4a3a89c5e8962645ee055adc719fa94f68ca55205769592955eb6eed",
-    "captured_at": "2026-11-08T01:18:28.539478+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-demario-douglas-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_d1cdc9237d32027b",
-    "market_id": "polymarket:6734098",
-    "book_id": "polymarket",
-    "raw_payload_hash": "d1cdc9237d32027b46ad805bb2d84ae70da5930144480aca38eea1b0815ca3e1",
-    "captured_at": "2026-11-08T01:18:28.539499+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-efton-chism-iii-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_23110db3fce21fa0",
-    "market_id": "polymarket:6734099",
-    "book_id": "polymarket",
-    "raw_payload_hash": "23110db3fce21fa08448013e520df9814a4b7bf5ff6a717e6dc7ec052c38693c",
-    "captured_at": "2026-11-08T01:18:28.539514+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-efton-chism-iii-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_be7fac32c545ebff",
-    "market_id": "polymarket:6759700",
-    "book_id": "polymarket",
-    "raw_payload_hash": "be7fac32c545ebfffa8a3d1a843651408c986a561eae0c1ba3f7ea318a3b73e8",
-    "captured_at": "2026-11-08T01:18:28.539582+00:00",
-    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-rec-kyle-williams-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_9d4d0a7085e66d94",
-    "market_id": "polymarket:6668751",
-    "book_id": "polymarket",
-    "raw_payload_hash": "9d4d0a7085e66d94fa742d610c37cd9a430babf48f8dc7f66f7deab01cc20433",
-    "captured_at": "2026-11-08T01:18:28.539655+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_84a0372f10422855",
-    "market_id": "polymarket:6668757",
-    "book_id": "polymarket",
-    "raw_payload_hash": "84a0372f10422855e25e6f06e49eb79ce837754e61171d18124fcf726e9006f8",
-    "captured_at": "2026-11-08T01:18:28.539684+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-jaxon-smith-njigba-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_80f579d8c3a6db7c",
-    "market_id": "polymarket:6668759",
-    "book_id": "polymarket",
-    "raw_payload_hash": "80f579d8c3a6db7c76e146d32d85d21b26a3949682d5eef56eafef44f7a61bf7",
-    "captured_at": "2026-11-08T01:18:28.539701+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-jaxon-smith-njigba-79pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8d3678826ec8a3e6",
-    "market_id": "polymarket:6668768",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8d3678826ec8a3e67f266767493786d6374795ed4e454778764f5eb3f22665ff",
-    "captured_at": "2026-11-08T01:18:28.539737+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-trey-mcbride-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0a9a70fbd795b32a",
-    "market_id": "polymarket:6668769",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0a9a70fbd795b32a9fd1286e5556ff7c1868a2253dc82efa811043c0518c975c",
-    "captured_at": "2026-11-08T01:18:28.539751+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-trey-mcbride-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4a0029a6d9e8d257",
-    "market_id": "polymarket:6668780",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4a0029a6d9e8d25783a1466212ee3378005f926fe6e3e95183e2d010d7221dce",
-    "captured_at": "2026-11-08T01:18:28.539792+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-rec-elijah-higgins-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_f047b9ac24c67256",
-    "market_id": "polymarket:6732943",
-    "book_id": "polymarket",
-    "raw_payload_hash": "f047b9ac24c672565e7ac50043478c63fccf05d084db13847427ba5d5c0a3925",
-    "captured_at": "2026-11-08T01:18:28.539839+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-rec-tyler-allgeier-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_3bb28e43fd32250f",
-    "market_id": "polymarket:6734085",
-    "book_id": "polymarket",
-    "raw_payload_hash": "3bb28e43fd32250f5eeca73db2aa691ded691ea68c166315947879807fd87ef0",
-    "captured_at": "2026-11-08T01:18:28.539863+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-cooper-kupp-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8792003058e18761",
-    "market_id": "polymarket:6734086",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8792003058e187616973723640a1cf5a6453451378c09ceff8a2f14daf3227a9",
-    "captured_at": "2026-11-08T01:18:28.539877+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-cooper-kupp-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a67e4c070b99f65b",
-    "market_id": "polymarket:6734091",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a67e4c070b99f65b88fe1d9f6e8a3f63868e5aef0c941aa84859e05eac330cc4",
-    "captured_at": "2026-11-08T01:18:28.539899+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-rec-cooper-kupp-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_47b161d7480122b9",
-    "market_id": "polymarket:6734092",
-    "book_id": "polymarket",
-    "raw_payload_hash": "47b161d7480122b977fb7cde82c7cc84332faaefcfa09b84383806dff8e90adb",
-    "captured_at": "2026-11-08T01:18:28.539913+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-rec-cooper-kupp-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_911ef92c50ec6e98",
-    "market_id": "polymarket:6762251",
-    "book_id": "polymarket",
-    "raw_payload_hash": "911ef92c50ec6e98cbae5f13dce3a1575b2ae87f6f14b2910ccf71af17654f13",
-    "captured_at": "2026-11-08T01:18:28.539928+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-tory-horton-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_51a4c98cba11ca91",
-    "market_id": "polymarket:6762252",
-    "book_id": "polymarket",
-    "raw_payload_hash": "51a4c98cba11ca91e882f52c763359847c4b542e20156b575543f0430ba50dd3",
-    "captured_at": "2026-11-08T01:18:28.539941+00:00",
-    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-tory-horton-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_18a61262ed807e5a",
-    "market_id": "polymarket:6656183",
-    "book_id": "polymarket",
-    "raw_payload_hash": "18a61262ed807e5a934e4aa39849d2bd32b1f582ff16b7a1f6c3af4cf0df5a8c",
-    "captured_at": "2026-11-08T01:18:28.539993+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-dalton-schultz-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_2d911eeaf259f679",
-    "market_id": "polymarket:6656188",
-    "book_id": "polymarket",
-    "raw_payload_hash": "2d911eeaf259f679e01381c0a3bf371947b14080d85834f7ace35e048b4b692c",
-    "captured_at": "2026-11-08T01:18:28.540017+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-ladd-mcconkey-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_16ff9283bb89e575",
-    "market_id": "polymarket:6656189",
-    "book_id": "polymarket",
-    "raw_payload_hash": "16ff9283bb89e57526a59abca61bc0fa585dbc3b39e0e94bb75de27f0a456d21",
-    "captured_at": "2026-11-08T01:18:28.540031+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-ladd-mcconkey-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e3a9c2b79076ba0e",
-    "market_id": "polymarket:6656192",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e3a9c2b79076ba0ef55085cde376d229bcde31beefc70e8d25be1e20861580e4",
-    "captured_at": "2026-11-08T01:18:28.540048+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_54849008a167918f",
-    "market_id": "polymarket:6656193",
-    "book_id": "polymarket",
-    "raw_payload_hash": "54849008a167918fb4623e3539651b369c69c79aacdeb017747b97e2fa84b9a9",
-    "captured_at": "2026-11-08T01:18:28.540062+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1d99246e0a12eda4",
-    "market_id": "polymarket:6656194",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1d99246e0a12eda4b66e2e4768a5401c8505bf1fb7905e0aa70882ca6d94526c",
-    "captured_at": "2026-11-08T01:18:28.540076+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_cd718cf1ecef4238",
-    "market_id": "polymarket:6656198",
-    "book_id": "polymarket",
-    "raw_payload_hash": "cd718cf1ecef4238a8623851ad2ed921f3b20dffa2ae11f6b6ca10c63df17f1d",
-    "captured_at": "2026-11-08T01:18:28.540100+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-nico-collins-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_94936497bed37e98",
-    "market_id": "polymarket:6656200",
-    "book_id": "polymarket",
-    "raw_payload_hash": "94936497bed37e98b52d9456fb020016eee96f594901733bd963006edeccf3eb",
-    "captured_at": "2026-11-08T01:18:28.540115+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-nico-collins-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_77d3c90129d6ed1a",
-    "market_id": "polymarket:6656206",
-    "book_id": "polymarket",
-    "raw_payload_hash": "77d3c90129d6ed1a0bf3726c5cbaa0b3559cab80c4f1f3860354e1f1805f5e78",
-    "captured_at": "2026-11-08T01:18:28.540143+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-quentin-johnston-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_08b9f913e71eb454",
-    "market_id": "polymarket:6656222",
-    "book_id": "polymarket",
-    "raw_payload_hash": "08b9f913e71eb454578b132cf24a4b56266e853728784af8b1c9070d1f0dbb02",
-    "captured_at": "2026-11-08T01:18:28.540173+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-ladd-mcconkey-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e33dc131d24c9ffa",
-    "market_id": "polymarket:6656223",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e33dc131d24c9ffa2cdf3d58979928eaf8096d77894c13d4f8b072d2d7e08da0",
-    "captured_at": "2026-11-08T01:18:28.540187+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-ladd-mcconkey-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_88ebbcec45918cb4",
-    "market_id": "polymarket:6656225",
-    "book_id": "polymarket",
-    "raw_payload_hash": "88ebbcec45918cb463857ba6160fcd3107f3f814469c976131bc705cc271b1cc",
-    "captured_at": "2026-11-08T01:18:28.540205+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-marvin-harrison-jr-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c6b14e1177178a88",
-    "market_id": "polymarket:6656226",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c6b14e1177178a88f6a50d8b141f0c37deb7b87ccdc4b859816ee3e77ef940e8",
-    "captured_at": "2026-11-08T01:18:28.540219+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-marvin-harrison-jr-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4b6870a73a414b6e",
-    "market_id": "polymarket:6656227",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4b6870a73a414b6e7189318cffa02f580d86c6d20bd9a1b81b8402764c46f100",
-    "captured_at": "2026-11-08T01:18:28.540233+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-marvin-harrison-jr-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c7feb8a47a5ab0b0",
-    "market_id": "polymarket:6656233",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c7feb8a47a5ab0b0331310e97c8fe1fde1b9381203709ced35f4cf27d559d78b",
-    "captured_at": "2026-11-08T01:18:28.540256+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-quentin-johnston-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_eef6205ce0e21ea0",
-    "market_id": "polymarket:6714866",
-    "book_id": "polymarket",
-    "raw_payload_hash": "eef6205ce0e21ea03ac5202013762e04aef851037dd996db0426a95d8f71789e",
-    "captured_at": "2026-11-08T01:18:28.540274+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-xavier-hutchinson-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_114aefbdebb40c76",
-    "market_id": "polymarket:6715271",
-    "book_id": "polymarket",
-    "raw_payload_hash": "114aefbdebb40c767147d5f0b291a9257de5536bf44acae7825065966f116fe9",
-    "captured_at": "2026-11-08T01:18:28.540305+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-ladd-mcconkey-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a73a8a9420fd721a",
-    "market_id": "polymarket:6715294",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a73a8a9420fd721aee46058567e3475827a6c27b77310a94a7d1a31dc882de26",
-    "captured_at": "2026-11-08T01:18:28.540329+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-tre-harris-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_977c589e91198983",
-    "market_id": "polymarket:6715299",
-    "book_id": "polymarket",
-    "raw_payload_hash": "977c589e9119898369b22fc73c8f4f08e5d4c33f47ab6e193788a7d048d0e849",
-    "captured_at": "2026-11-08T01:18:28.540343+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-tre-harris-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_19ee1aea175d03c6",
-    "market_id": "polymarket:6715339",
-    "book_id": "polymarket",
-    "raw_payload_hash": "19ee1aea175d03c6b847d3d53bd8e175c26b0aa33077665814fa5a780facb7f1",
-    "captured_at": "2026-11-08T01:18:28.540376+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-tank-dell-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_19583d7bdd314e4c",
-    "market_id": "polymarket:6715354",
-    "book_id": "polymarket",
-    "raw_payload_hash": "19583d7bdd314e4c9ddbbfe5bbaea123b1989bbb576aee6099d6f5df3b1f9f01",
-    "captured_at": "2026-11-08T01:18:28.540393+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-tre-harris-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_72d9ebcb1d9612c9",
-    "market_id": "polymarket:6721534",
-    "book_id": "polymarket",
-    "raw_payload_hash": "72d9ebcb1d9612c99fb0672a3a2fde97a67695937774b9829fe686cc69fdd393",
-    "captured_at": "2026-11-08T01:18:28.540409+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-charlie-kolar-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_fae98549ac89ecd3",
-    "market_id": "polymarket:6721535",
-    "book_id": "polymarket",
-    "raw_payload_hash": "fae98549ac89ecd318e3566815149afbf79e175412a1e78b0942f1d96b97418d",
-    "captured_at": "2026-11-08T01:18:28.540423+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-charlie-kolar-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e8bb6f22a0e10740",
-    "market_id": "polymarket:6723141",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e8bb6f22a0e10740879dcc6adb6cefb8a47c4c7cfc4182e90e233b156c50dabb",
-    "captured_at": "2026-11-08T01:18:28.540445+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-woody-marks-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a199612e794268e2",
-    "market_id": "polymarket:6723143",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a199612e794268e20aee8c7d60ad4aee4f2a4eea3ac492aada0af8675cdfa892",
-    "captured_at": "2026-11-08T01:18:28.540463+00:00",
-    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-woody-marks-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_590bdf0c5bed0ad9",
-    "market_id": "polymarket:6646551",
-    "book_id": "polymarket",
-    "raw_payload_hash": "590bdf0c5bed0ad99859fb90df26e348e22556f8ad5bb4cbf46f9aca8c5aeaf5",
-    "captured_at": "2026-11-08T01:18:28.540507+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-evan-engram-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_44535d3dad8f4be6",
-    "market_id": "polymarket:6646553",
-    "book_id": "polymarket",
-    "raw_payload_hash": "44535d3dad8f4be6675d7156363faf307ee2d6e89e8fcbfea555e855a97c7d90",
-    "captured_at": "2026-11-08T01:18:28.540526+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-evan-engram-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a9a2ce6a7b85a801",
-    "market_id": "polymarket:6646556",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a9a2ce6a7b85a801295b621662c06424e3060d8fccab664dfc542752d8e10ec8",
-    "captured_at": "2026-11-08T01:18:28.540549+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jalen-coker-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_dee31329085b5fa5",
-    "market_id": "polymarket:6646557",
-    "book_id": "polymarket",
-    "raw_payload_hash": "dee31329085b5fa536ee89660fd3750a32cf5b9e8111c5706a80e3ff2e51bacc",
-    "captured_at": "2026-11-08T01:18:28.540563+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jalen-coker-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8d2130fd4821c99b",
-    "market_id": "polymarket:6646569",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8d2130fd4821c99b7be6ba4234fa3ffa7dd8f847e2207b1a679a8798fdf2165f",
-    "captured_at": "2026-11-08T01:18:28.540612+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-marvin-mims-jr-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6486ecd0b19a8925",
-    "market_id": "polymarket:6646571",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6486ecd0b19a89250181ec61d150db6fa23e42c80b87d7dc4e7bbc1f930f4dec",
-    "captured_at": "2026-11-08T01:18:28.540632+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-tetairoa-mcmillan-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8e1a6822e83afdf4",
-    "market_id": "polymarket:6646573",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8e1a6822e83afdf4f38a00b623b6fe0d1058086943f01ba8b9af5123642e1f39",
-    "captured_at": "2026-11-08T01:18:28.540648+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-tetairoa-mcmillan-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_9416175a54c9e52d",
-    "market_id": "polymarket:6646589",
-    "book_id": "polymarket",
-    "raw_payload_hash": "9416175a54c9e52dcd065a4859fe835ce9a0e9d46806ae58fe10765a5828fa7e",
-    "captured_at": "2026-11-08T01:18:28.540699+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-darren-waller-0pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4e6d79a13a7ddb6a",
-    "market_id": "polymarket:6646601",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4e6d79a13a7ddb6a98cf3cac8af87cf2203efc767ecb9f9c2491bc1c4ef278a9",
-    "captured_at": "2026-11-08T01:18:28.540739+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-marvin-mims-jr-0pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_00ece405273eee18",
-    "market_id": "polymarket:6646613",
-    "book_id": "polymarket",
-    "raw_payload_hash": "00ece405273eee18c4e0ec1b0f2892b1751e8d8fbe9c4ff64376229555a6e5c2",
-    "captured_at": "2026-11-08T01:18:28.540782+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-troy-franklin-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_06b63a7509f3acf8",
-    "market_id": "polymarket:6646614",
-    "book_id": "polymarket",
-    "raw_payload_hash": "06b63a7509f3acf836e5718149cd20d86b478ca6049cb7822d0152813c0c515c",
-    "captured_at": "2026-11-08T01:18:28.540795+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-troy-franklin-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0ea4bf621983141c",
-    "market_id": "polymarket:6711686",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0ea4bf621983141cb5361a95e359813d0fff041b9f51ee82ee75fd439d6fc089",
-    "captured_at": "2026-11-08T01:18:28.540817+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-john-metchie-iii-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_818e65563da67046",
-    "market_id": "polymarket:6711689",
-    "book_id": "polymarket",
-    "raw_payload_hash": "818e65563da6704658bfb1f0d28321c93d7393f32d25e761c783fe7af9d53ed0",
-    "captured_at": "2026-11-08T01:18:28.540835+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-john-metchie-iii-0pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_3a85a7bc901209f1",
-    "market_id": "polymarket:6711848",
-    "book_id": "polymarket",
-    "raw_payload_hash": "3a85a7bc901209f1fe0dade0eec0016989d64efe6e0be0359c743443d97815e8",
-    "captured_at": "2026-11-08T01:18:28.540911+00:00",
-    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-jonah-coleman-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0b9339fe59367f98",
-    "market_id": "polymarket:6675036",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0b9339fe59367f98197bea4a3a13206ea2051569bc828889b128b3dcd75a7975",
-    "captured_at": "2026-11-08T01:18:28.540961+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ceedee-lamb-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e5b788a887d9f1cf",
-    "market_id": "polymarket:6675037",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e5b788a887d9f1cf4632215349242be628575969098e52a3cb617cc574738024",
-    "captured_at": "2026-11-08T01:18:28.540976+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ceedee-lamb-69pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_108f5a6400811e5f",
-    "market_id": "polymarket:6675053",
-    "book_id": "polymarket",
-    "raw_payload_hash": "108f5a6400811e5f04dd35d459b20f9fa1faf6d9e6f8777ed887bef62ab1aba7",
-    "captured_at": "2026-11-08T01:18:28.541038+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ryan-flournoy-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c5dd6342c7677179",
-    "market_id": "polymarket:6675059",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c5dd6342c767717908da8a1b30e59310220b7fdd3ce9489d17aa8f04a0511dc8",
-    "captured_at": "2026-11-08T01:18:28.541060+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-tyler-warren-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0985298045c82cd2",
-    "market_id": "polymarket:6675065",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0985298045c82cd25ecbb6a25eafa4a5d8caffe8dfeb146ed964b25213f71cad",
-    "captured_at": "2026-11-08T01:18:28.541085+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-rec-ceedee-lamb-7pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a8f7254f20f9193d",
-    "market_id": "polymarket:6675073",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a8f7254f20f9193d3899090bd8fc3ec7be87617b8100bfad69915abf81d93372",
-    "captured_at": "2026-11-08T01:18:28.541116+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-rec-tyler-warren-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_afc8e2482ae268d6",
-    "market_id": "polymarket:6710572",
-    "book_id": "polymarket",
-    "raw_payload_hash": "afc8e2482ae268d60f44087592ce811987e63b84a2d4e2759722c7ead70e0512",
-    "captured_at": "2026-11-08T01:18:28.541149+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-jonathan-taylor-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_705c7811d9206acd",
-    "market_id": "polymarket:6712258",
-    "book_id": "polymarket",
-    "raw_payload_hash": "705c7811d9206acdb84dd26cc69364210b55f96a3ef5a9c67a0ef9eda3792968",
-    "captured_at": "2026-11-08T01:18:28.541174+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-josh-downs-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e809617099eb35c4",
-    "market_id": "polymarket:6712530",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e809617099eb35c48240d794194fbeb2cc4f8c2b2b08d02920d316a3bba1f31c",
-    "captured_at": "2026-11-08T01:18:28.541231+00:00",
-    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-rec-keenan-allen-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_cf994dea40a7ddbf",
-    "market_id": "polymarket:6697334",
-    "book_id": "polymarket",
-    "raw_payload_hash": "cf994dea40a7ddbff9df542fd873bcd0c9677a2a43c2436b2fe4af4c994c5c1a",
-    "captured_at": "2026-11-08T01:18:28.541324+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-noah-gray-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6d7f30c8d570374d",
-    "market_id": "polymarket:6697345",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6d7f30c8d570374d45a72a7fcaadb0233f68d9c73bef99cd8f7d1ffdfe4dcb64",
-    "captured_at": "2026-11-08T01:18:28.541343+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-xavier-worthy-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_88dd54cfabf61a3f",
-    "market_id": "polymarket:6697360",
-    "book_id": "polymarket",
-    "raw_payload_hash": "88dd54cfabf61a3fd64e3fe17d747a24f4b7b300c12d9a24b859558d0586a563",
-    "captured_at": "2026-11-08T01:18:28.541381+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-cyrus-allen-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_dd9e51ac3c321f6a",
-    "market_id": "polymarket:6697364",
-    "book_id": "polymarket",
-    "raw_payload_hash": "dd9e51ac3c321f6ad6999e2df38fffa705520601888eda4cf624846523d2b983",
-    "captured_at": "2026-11-08T01:18:28.541396+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-noah-gray-0pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7d51042454a4da15",
-    "market_id": "polymarket:6697374",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7d51042454a4da1513177c6d2f1d97d7a6b79a6ac9cf2d38c2714ee21067d9bf",
-    "captured_at": "2026-11-08T01:18:28.541433+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-xavier-worthy-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_3f929dd010a48649",
-    "market_id": "polymarket:6723042",
-    "book_id": "polymarket",
-    "raw_payload_hash": "3f929dd010a486492ae7a7f90cb52210e883429d375f587c64173a490fe204c4",
-    "captured_at": "2026-11-08T01:18:28.541449+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-adonai-mitchell-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_b34228aecc4896b6",
-    "market_id": "polymarket:6723043",
-    "book_id": "polymarket",
-    "raw_payload_hash": "b34228aecc4896b6eab69c638f6564350551108c91a5ad654a5bc35cdadced97",
-    "captured_at": "2026-11-08T01:18:28.541463+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-adonai-mitchell-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_eba48af9405c2e7a",
-    "market_id": "polymarket:6723048",
-    "book_id": "polymarket",
-    "raw_payload_hash": "eba48af9405c2e7ab1fcb2399c91dbcfcbcd119ac1b1bb0fa09b2a0ec4ae78c7",
-    "captured_at": "2026-11-08T01:18:28.541486+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-braelon-allen-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_592818869a562df4",
-    "market_id": "polymarket:6723050",
-    "book_id": "polymarket",
-    "raw_payload_hash": "592818869a562df47f69abfe1cd18af496d8046f8231212912aca188dddf29da",
-    "captured_at": "2026-11-08T01:18:28.541503+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-kenyon-sadiq-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a82cf83f1b1d2826",
-    "market_id": "polymarket:6723058",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a82cf83f1b1d282627ac4ae9b77d277f412d53a262fa7489dff6bd1dcadfe327",
-    "captured_at": "2026-11-08T01:18:28.541521+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-adonai-mitchell-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_56317ecd7c8deaa2",
-    "market_id": "polymarket:6723062",
-    "book_id": "polymarket",
-    "raw_payload_hash": "56317ecd7c8deaa2e20668617fcf8d13cb201a7080a92bf95eb84a8c3da7e61d",
-    "captured_at": "2026-11-08T01:18:28.541542+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-braelon-allen-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_87bc7cc4e279798d",
-    "market_id": "polymarket:6734150",
-    "book_id": "polymarket",
-    "raw_payload_hash": "87bc7cc4e279798db1344ab5ebecc4c47699b7773e0eb9d36ebd3a11e849c433",
-    "captured_at": "2026-11-08T01:18:28.541616+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-tim-patrick-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8a39eb3b139675fa",
-    "market_id": "polymarket:6734151",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8a39eb3b139675fa8ea33f947c96a8eb75ac7617a3e7f3130d9ebab8efcbecd8",
-    "captured_at": "2026-11-08T01:18:28.541629+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-tim-patrick-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_af0c325866630d6e",
-    "market_id": "polymarket:6734152",
-    "book_id": "polymarket",
-    "raw_payload_hash": "af0c325866630d6eb45dbfe9495e7641ff7ea68546759391d4c0b071f63ddebe",
-    "captured_at": "2026-11-08T01:18:28.541643+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-tim-patrick-0pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_a563c651e032c086",
-    "market_id": "polymarket:6734159",
-    "book_id": "polymarket",
-    "raw_payload_hash": "a563c651e032c086a070dbc6c47e50de226d885d743c736761f21bd09d65512f",
-    "captured_at": "2026-11-08T01:18:28.541659+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-tim-patrick-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e64217c71b827cd0",
-    "market_id": "polymarket:6755334",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e64217c71b827cd06baac704481ad919203493c0a42fb89ee75ef7e21c84af59",
-    "captured_at": "2026-11-08T01:18:28.541677+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-isaiah-williams-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_da45d368f72d0a58",
-    "market_id": "polymarket:6665636",
-    "book_id": "polymarket",
-    "raw_payload_hash": "da45d368f72d0a58f18ac434132bd84e39dc3c6f499f9eb8cb80d6dc1e0fc236",
-    "captured_at": "2026-11-08T01:18:28.541738+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-caleb-douglas-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_2185f3dd81c3ec1c",
-    "market_id": "polymarket:6665644",
-    "book_id": "polymarket",
-    "raw_payload_hash": "2185f3dd81c3ec1cf84e89ab1c4ee0e8d98814559f3e2cc2bbf05c88a319be73",
-    "captured_at": "2026-11-08T01:18:28.541768+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-greg-dulcich-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_0c1696409a2e4fed",
-    "market_id": "polymarket:6665649",
-    "book_id": "polymarket",
-    "raw_payload_hash": "0c1696409a2e4fed33c2d0cfaea9ac64212a947156dd53d736ecd5e714a7a3cb",
-    "captured_at": "2026-11-08T01:18:28.541790+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-isaac-teslaa-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_362a9f2bd66a1797",
-    "market_id": "polymarket:6665662",
-    "book_id": "polymarket",
-    "raw_payload_hash": "362a9f2bd66a17977ded131129bcc530f386488b6c97d52679e8e0ec1487e6ef",
-    "captured_at": "2026-11-08T01:18:28.541833+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-jameson-williams-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_39a00ffe7aecf978",
-    "market_id": "polymarket:6665667",
-    "book_id": "polymarket",
-    "raw_payload_hash": "39a00ffe7aecf97816987868e00637a5f1812b0e2698f34cd4437c102578d673",
-    "captured_at": "2026-11-08T01:18:28.541879+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-malik-washington-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_d2d2ea731310ae8f",
-    "market_id": "polymarket:6665684",
-    "book_id": "polymarket",
-    "raw_payload_hash": "d2d2ea731310ae8f36bc0abf6b17cf5e1c5352f3ffc84247b5377d0ff1836757",
-    "captured_at": "2026-11-08T01:18:28.541929+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-rec-chris-bell-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_38923df8c2b88018",
-    "market_id": "polymarket:6665686",
-    "book_id": "polymarket",
-    "raw_payload_hash": "38923df8c2b88018e81656403ba8ecc942b14dfe50b20c5c81e24264fc389d75",
-    "captured_at": "2026-11-08T01:18:28.541945+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-rec-chris-bell-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_51049cd73af73327",
-    "market_id": "polymarket:6665687",
-    "book_id": "polymarket",
-    "raw_payload_hash": "51049cd73af733271ecac7ee9be15b49bb67bd542a6944a2823e6b5f8926aecc",
-    "captured_at": "2026-11-08T01:18:28.541959+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-rec-greg-dulcich-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6d2fafc6194dffa8",
-    "market_id": "polymarket:6665692",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6d2fafc6194dffa8a25228ab8a529107dbfdd45774f43e6172e84d8a972e35e6",
-    "captured_at": "2026-11-08T01:18:28.541984+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-rec-isaac-teslaa-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_14660af2ad1a9f10",
-    "market_id": "polymarket:6665702",
-    "book_id": "polymarket",
-    "raw_payload_hash": "14660af2ad1a9f109bf12b4aaf52d4b863ce9f4dc3b2fda66f6c2ef7b446ef96",
-    "captured_at": "2026-11-08T01:18:28.542016+00:00",
-    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-rec-sam-laporta-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_3129cf9d5b5cc948",
-    "market_id": "polymarket:6683737",
-    "book_id": "polymarket",
-    "raw_payload_hash": "3129cf9d5b5cc948693002ba1019a3dbb8c7f24dad8fec974d52bf7e9a225f1a",
-    "captured_at": "2026-11-08T01:18:28.542051+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-chris-olave-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_26c99cb340c022be",
-    "market_id": "polymarket:6683740",
-    "book_id": "polymarket",
-    "raw_payload_hash": "26c99cb340c022bee255e0db01828603d6b89aa0f121288caffb99837d8461ad",
-    "captured_at": "2026-11-08T01:18:28.542068+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-chris-olave-79pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_239c486d1a161f01",
-    "market_id": "polymarket:6723000",
-    "book_id": "polymarket",
-    "raw_payload_hash": "239c486d1a161f01a51ffc566b7c970e127db7c59582f478e6d66c6a2828ec0c",
-    "captured_at": "2026-11-08T01:18:28.542139+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-devaughn-vele-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_99cae73910b3c71f",
-    "market_id": "polymarket:6723013",
-    "book_id": "polymarket",
-    "raw_payload_hash": "99cae73910b3c71f223af2311e434b460a00856a2664ca3bde5710df7184bc9b",
-    "captured_at": "2026-11-08T01:18:28.542168+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-juwan-johnson-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ae11d2edc16d095b",
-    "market_id": "polymarket:6723017",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ae11d2edc16d095b85a5e090778b7c5474e11c37dedf539574cb2060b54145ea",
-    "captured_at": "2026-11-08T01:18:28.542193+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-noah-fant-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_473ad22a65d85e8b",
-    "market_id": "polymarket:6723020",
-    "book_id": "polymarket",
-    "raw_payload_hash": "473ad22a65d85e8b4f4aa9c731b751eeb57614cbe303e815ad6172e72b7a2997",
-    "captured_at": "2026-11-08T01:18:28.542217+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-quinshon-judkins-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_837386a00f3f4721",
-    "market_id": "polymarket:6723022",
-    "book_id": "polymarket",
-    "raw_payload_hash": "837386a00f3f4721fa2141b240f26c3037d7d7b2575b55e3382500cb0f0ad262",
-    "captured_at": "2026-11-08T01:18:28.542235+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-rec-devaughn-vele-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_bdb995e08f155226",
-    "market_id": "polymarket:6723028",
-    "book_id": "polymarket",
-    "raw_payload_hash": "bdb995e08f15522677a6c62079e8df8d77c3dffdd6ef4eb2b2ba90edb3968dc3",
-    "captured_at": "2026-11-08T01:18:28.542264+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-rec-juwan-johnson-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_be463bcbce533462",
-    "market_id": "polymarket:6723029",
-    "book_id": "polymarket",
-    "raw_payload_hash": "be463bcbce5334625ac9d048cd561713da0222424a3e4e7665cbdb169a546cbd",
-    "captured_at": "2026-11-08T01:18:28.542278+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-rec-juwan-johnson-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_25ec1fd80233c498",
-    "market_id": "polymarket:6680352",
-    "book_id": "polymarket",
-    "raw_payload_hash": "25ec1fd80233c49833c0f96720de2cd036978ef0e6fcf0328ac402d8046d81dd",
-    "captured_at": "2026-11-08T01:18:28.542347+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-darnell-mooney-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4235aebda5bfbae2",
-    "market_id": "polymarket:6680369",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4235aebda5bfbae204e5bc4f6c7c6a07a1bf84ab8b01c33698d0e626eb7009b2",
-    "captured_at": "2026-11-08T01:18:28.542409+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-darnell-mooney-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_781b021206d46375",
-    "market_id": "polymarket:6680370",
-    "book_id": "polymarket",
-    "raw_payload_hash": "781b021206d4637515f93cc9d605ff3a9c1a8d4e2ba49c3341b87f6c6d2d4c32",
-    "captured_at": "2026-11-08T01:18:28.542423+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-darnell-mooney-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_aa0191fa450f9afa",
-    "market_id": "polymarket:6680547",
-    "book_id": "polymarket",
-    "raw_payload_hash": "aa0191fa450f9afaaaa9bbe4733d4c591277018b0dd6db38cea7a1e6389037c9",
-    "captured_at": "2026-11-08T01:18:28.542467+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_af502d55ecd0a306",
-    "market_id": "polymarket:6680548",
-    "book_id": "polymarket",
-    "raw_payload_hash": "af502d55ecd0a306af93952d65888f63ccab8386b26f6c71b6dfb3cefb410c75",
-    "captured_at": "2026-11-08T01:18:28.542481+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_b0c9e48fb19ba665",
-    "market_id": "polymarket:6680551",
-    "book_id": "polymarket",
-    "raw_payload_hash": "b0c9e48fb19ba665baf20f7b75ecea957f132120f203452b930eb23f51d6a80f",
-    "captured_at": "2026-11-08T01:18:28.542502+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-69pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_d39fcd09b739ba6c",
-    "market_id": "polymarket:6722968",
-    "book_id": "polymarket",
-    "raw_payload_hash": "d39fcd09b739ba6cd1a6ae229d36a9a2f22627dd32c40f084dc8206aed33e1e5",
-    "captured_at": "2026-11-08T01:18:28.542517+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-dallas-goedert-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_48ea978bd477c5aa",
-    "market_id": "polymarket:6722969",
-    "book_id": "polymarket",
-    "raw_payload_hash": "48ea978bd477c5aa890ca6397879c3a657c5f2a4e3b7afa3c8e3ab10a3e62256",
-    "captured_at": "2026-11-08T01:18:28.542531+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-dallas-goedert-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_4912f5a303743000",
-    "market_id": "polymarket:6722974",
-    "book_id": "polymarket",
-    "raw_payload_hash": "4912f5a3037430004da74fa2d5202a4fdf512aeb5627977b5afb2f19714175d0",
-    "captured_at": "2026-11-08T01:18:28.542556+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-darius-cooper-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_bcc8359ab4a25c24",
-    "market_id": "polymarket:6722979",
-    "book_id": "polymarket",
-    "raw_payload_hash": "bcc8359ab4a25c240ec4225217cc44ed93dc46ddbb96652b252d25b6685b862f",
-    "captured_at": "2026-11-08T01:18:28.542574+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-makai-lemon-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_9881763dbd56fa80",
-    "market_id": "polymarket:6722980",
-    "book_id": "polymarket",
-    "raw_payload_hash": "9881763dbd56fa802a6a68fecc925bba5a19cb8039cb01296567b0ff0d9043ab",
-    "captured_at": "2026-11-08T01:18:28.542587+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-makai-lemon-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c28821107b619c19",
-    "market_id": "polymarket:6722994",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c28821107b619c1910afcd2f56272089d2355d7ff50e75307ae064ce6db27c04",
-    "captured_at": "2026-11-08T01:18:28.542632+00:00",
-    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-makai-lemon-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_f369ea89f4945f72",
-    "market_id": "polymarket:6674610",
-    "book_id": "polymarket",
-    "raw_payload_hash": "f369ea89f4945f727effe01485e706a2fe97f9f0ab8b0f1344352b00b91785a9",
-    "captured_at": "2026-11-08T01:18:28.542668+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_419ff2aef5ebfedb",
-    "market_id": "polymarket:6674621",
-    "book_id": "polymarket",
-    "raw_payload_hash": "419ff2aef5ebfedbdd3820fe529bece6c2380ea46272056472dcba05a414cc82",
-    "captured_at": "2026-11-08T01:18:28.542702+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-stefon-diggs-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_8a3e25adc158acdc",
-    "market_id": "polymarket:6674987",
-    "book_id": "polymarket",
-    "raw_payload_hash": "8a3e25adc158acdc4a3efb0002a99643cb49b80da70705193bb272566063d93d",
-    "captured_at": "2026-11-08T01:18:28.542750+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-puka-nacua-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_6debc7179a4c0b90",
-    "market_id": "polymarket:6675310",
-    "book_id": "polymarket",
-    "raw_payload_hash": "6debc7179a4c0b9020978afc515992d1da12667453bbd6ba4a3235fdc089b22f",
-    "captured_at": "2026-11-08T01:18:28.542796+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-kyren-williams-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_5ec595dff40ef81c",
-    "market_id": "polymarket:6675313",
-    "book_id": "polymarket",
-    "raw_payload_hash": "5ec595dff40ef81c6860e0a5ca1bb958b3cdfc7ee2ff774e17095e4bc6fea41b",
-    "captured_at": "2026-11-08T01:18:28.542814+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-rachaad-white-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_dad6d3f9e1bb57d1",
-    "market_id": "polymarket:6675316",
-    "book_id": "polymarket",
-    "raw_payload_hash": "dad6d3f9e1bb57d1b95cca36f126de82eb88c7e3b9178e29d8e2fbcda4c0b2f7",
-    "captured_at": "2026-11-08T01:18:28.542834+00:00",
-    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-rec-kyren-williams-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_020d4e9de1bade75",
-    "market_id": "polymarket:6635564",
-    "book_id": "polymarket",
-    "raw_payload_hash": "020d4e9de1bade75180ed5d8c1945167e6b4000094ddd4a2b3b425069de9f319",
-    "captured_at": "2026-11-08T01:18:28.543022+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-mike-gesicki-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_738aaa040620d462",
-    "market_id": "polymarket:6635576",
-    "book_id": "polymarket",
-    "raw_payload_hash": "738aaa040620d462604de576b99e3d0c560e57eb9c6b6782c8ba8614d6f60092",
-    "captured_at": "2026-11-08T01:18:28.543071+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-tee-higgins-79pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_178c73273698452d",
-    "market_id": "polymarket:6635616",
-    "book_id": "polymarket",
-    "raw_payload_hash": "178c73273698452dd82b71a31114271453ca01b715dd10bdceac8410475f4ade",
-    "captured_at": "2026-11-08T01:18:28.543155+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-tee-higgins-2pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_55dd4d832917f554",
-    "market_id": "polymarket:6635618",
-    "book_id": "polymarket",
-    "raw_payload_hash": "55dd4d832917f554ef4da43f5f34bcc7d22b5b0a65547de93575658aa3469eaf",
-    "captured_at": "2026-11-08T01:18:28.543170+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-tee-higgins-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e7be5acc67670db2",
-    "market_id": "polymarket:6639171",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e7be5acc67670db2226ed2285161c5d87ed53332e25825097c87fc487dd049fc",
-    "captured_at": "2026-11-08T01:18:28.543252+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-dohnte-meyers-9pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_bdca2c15802234e5",
-    "market_id": "polymarket:6639173",
-    "book_id": "polymarket",
-    "raw_payload_hash": "bdca2c15802234e54c7b3395fca2a13ee0d1017dd899b0421e707f3cf12068ec",
-    "captured_at": "2026-11-08T01:18:28.543268+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-dohnte-meyers-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_79e381474d83c5b1",
-    "market_id": "polymarket:6639175",
-    "book_id": "polymarket",
-    "raw_payload_hash": "79e381474d83c5b18f2e79d3d839f6b88f4340a1cd0d82936ec71d6c47ff1b90",
-    "captured_at": "2026-11-08T01:18:28.543283+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-dohnte-meyers-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_73fdc65b90e23ff4",
-    "market_id": "polymarket:6639178",
-    "book_id": "polymarket",
-    "raw_payload_hash": "73fdc65b90e23ff4a462940ab12d10de254390250defb2a61f5e14cf8fc1ef37",
-    "captured_at": "2026-11-08T01:18:28.543304+00:00",
-    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-dohnte-meyers-1pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_329240ba416dda17",
-    "market_id": "polymarket:6703092",
-    "book_id": "polymarket",
-    "raw_payload_hash": "329240ba416dda171740289b6dfe101e1313d7948e096263a5b43f4400713a79",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-jordan-addison-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_aa5bfc51910ae669",
-    "market_id": "polymarket:6703097",
-    "book_id": "polymarket",
-    "raw_payload_hash": "aa5bfc51910ae6694cd5b5949d53ffa67c79317078a52d39d228af80eaf72ef8",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_664b2e4336dd7d7b",
-    "market_id": "polymarket:6703098",
-    "book_id": "polymarket",
-    "raw_payload_hash": "664b2e4336dd7d7bc0cb6bc2c9a5a7fc995927ef48581a5cea223f6f38eb61b2",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-49pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_c9d932dbafaca4bb",
-    "market_id": "polymarket:6703099",
-    "book_id": "polymarket",
-    "raw_payload_hash": "c9d932dbafaca4bb3799f6fa1141d296216a4852f55b79b0aed9c6be008253bf",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-59pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1ac018435c75a8aa",
-    "market_id": "polymarket:6703113",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1ac018435c75a8aae8e198e185e7e836bec1880fb5da02ead2273e712ccf2f0f",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_96ca445382292e67",
-    "market_id": "polymarket:6703114",
-    "book_id": "polymarket",
-    "raw_payload_hash": "96ca445382292e6768ed393eed3cde10248f507904db3b56b82cb279f6c4f156",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7dee3f646ae2c07d",
-    "market_id": "polymarket:6703115",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7dee3f646ae2c07d5954c038713829028726e2ca983d676c48532f30190de916",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_95e523270a4e03a6",
-    "market_id": "polymarket:6703121",
-    "book_id": "polymarket",
-    "raw_payload_hash": "95e523270a4e03a63ee300c15eef4e7d230b08774b3cab431dc895614b7c268b",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-tj-hockenson-19pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_91492de85606e7ea",
-    "market_id": "polymarket:6703122",
-    "book_id": "polymarket",
-    "raw_payload_hash": "91492de85606e7eafe273019f95d4357c9500f6875e22bf5866616eb4f629611",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-tj-hockenson-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1636a8cd79ccb367",
-    "market_id": "polymarket:6703141",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1636a8cd79ccb3675c59e4d6de38da2976812b0476b750701c9f1d687c938c3a",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-jordan-addison-4pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_92ae938b066ddc02",
-    "market_id": "polymarket:6703142",
-    "book_id": "polymarket",
-    "raw_payload_hash": "92ae938b066ddc028c0634abc35857463185f98c588a4477e4aaa172326dad46",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-jordan-addison-5pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_1aec4f07bf07253e",
-    "market_id": "polymarket:6703157",
-    "book_id": "polymarket",
-    "raw_payload_hash": "1aec4f07bf07253e287e8bd10fa8899523f71be431625cb8ae52ee0ede68bd93",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-khalil-shakir-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_e320a8d1b8cc66e6",
-    "market_id": "polymarket:6703161",
-    "book_id": "polymarket",
-    "raw_payload_hash": "e320a8d1b8cc66e652ae8a8c56bc2a51a9c9116ec41ae2ec041ee9696e75e87a",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-tj-hockenson-3pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7ea17c872edc55c5",
-    "market_id": "polymarket:6662356",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7ea17c872edc55c5093662ea8dd8375b0b54cb20ef95e4c8cbc4395be6054455",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-colston-loveland-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_7e59f64356a470da",
-    "market_id": "polymarket:6662363",
-    "book_id": "polymarket",
-    "raw_payload_hash": "7e59f64356a470da107be26b82a7ea5182011a3e918429f4f882b367951a9484",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-29pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_64e80b5c45bdb197",
-    "market_id": "polymarket:6662364",
-    "book_id": "polymarket",
-    "raw_payload_hash": "64e80b5c45bdb1979ecac50763384d4a2cf4977eff8122594291f2647ef84649",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-39pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
-    "receipt_id": "pmr_ebc46fd6625cd804",
-    "market_id": "polymarket:6662370",
-    "book_id": "polymarket",
-    "raw_payload_hash": "ebc46fd6625cd804780970ec1c0a676799cec4f4ccc6d830a73a20146333f86e",
-    "captured_at": "2026-11-08T01:18:28.856789+00:00",
-    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-99pt5",
-    "payload_kind": "polymarket_clob_quote.v1"
-  },
-  {
     "receipt_id": "pmr_ebb92f82302af226",
     "market_id": "polymarket:6662373",
     "book_id": "polymarket",
@@ -3597,6 +1509,2094 @@
     "raw_payload_hash": "73fdc65b90e23ff4a462940ab12d10de254390250defb2a61f5e14cf8fc1ef37",
     "captured_at": "2026-11-08T01:18:28.856789+00:00",
     "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-dohnte-meyers-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_245d290bd7a5005c",
+    "market_id": "polymarket:6703090",
+    "book_id": "polymarket",
+    "raw_payload_hash": "245d290bd7a5005cdb6f32e5f5aec7270042a94f99365a68d0d99c4b5ce087ad",
+    "captured_at": "2026-11-08T07:30:00.378936+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-jordan-addison-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a1a6b4b7ddf79bf7",
+    "market_id": "polymarket:6703097",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a1a6b4b7ddf79bf7b7c9a288755d2ff4bf9b178ba2978b86ad92ad4da37d7145",
+    "captured_at": "2026-11-08T07:30:00.378997+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_79edffd87b113ab4",
+    "market_id": "polymarket:6703099",
+    "book_id": "polymarket",
+    "raw_payload_hash": "79edffd87b113ab4b0fc070aeffb97581d7ca5bd52b771ada5ed3edf2a6510dd",
+    "captured_at": "2026-11-08T07:30:00.379019+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_e3bc40c6cb76e750",
+    "market_id": "polymarket:6703114",
+    "book_id": "polymarket",
+    "raw_payload_hash": "e3bc40c6cb76e750dfc12e5e45ae02082db84860e980cfb9f5a9ae51818df03e",
+    "captured_at": "2026-11-08T07:30:00.379075+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_27f29b8a54cfa787",
+    "market_id": "polymarket:6703115",
+    "book_id": "polymarket",
+    "raw_payload_hash": "27f29b8a54cfa787a3aebaa731ce825fb937b568f1afada99f83222ac0c90878",
+    "captured_at": "2026-11-08T07:30:00.379090+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f1781ecf28211646",
+    "market_id": "polymarket:6703160",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f1781ecf282116460f3114e3fdd9f38c71932c181f134a43162963cd4d7985d0",
+    "captured_at": "2026-11-08T07:30:00.379207+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-tj-hockenson-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_667990244a83c0a5",
+    "market_id": "polymarket:6662357",
+    "book_id": "polymarket",
+    "raw_payload_hash": "667990244a83c0a5e97bcff9c0aff6fcc973abaf8b286a87a1a0234bfd28a08e",
+    "captured_at": "2026-11-08T07:30:00.379244+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-colston-loveland-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5e44d60bf0156300",
+    "market_id": "polymarket:6662363",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5e44d60bf01563004eee9a2a3158da9e5602c304b8d2cc0ca72a8aa5b8837e1e",
+    "captured_at": "2026-11-08T07:30:00.379274+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_cec18b2e3195a7fd",
+    "market_id": "polymarket:6662376",
+    "book_id": "polymarket",
+    "raw_payload_hash": "cec18b2e3195a7fd213e256e5a86642edd7b007a0c2cf2ec7432f07329d3dd97",
+    "captured_at": "2026-11-08T07:30:00.379319+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-rome-odunze-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_50574c87cb557172",
+    "market_id": "polymarket:6699912",
+    "book_id": "polymarket",
+    "raw_payload_hash": "50574c87cb557172cff8a4d5eab32ae60b50ca136f11be639a28feb636976cd4",
+    "captured_at": "2026-11-08T07:30:00.379389+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-bucky-irving-24pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_7a3b3dfea70fd3ea",
+    "market_id": "polymarket:6699916",
+    "book_id": "polymarket",
+    "raw_payload_hash": "7a3b3dfea70fd3eaaf010a5d482a5224a24809635b9067c87fcec3935d8a7d63",
+    "captured_at": "2026-11-08T07:30:00.379411+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-dandre-swift-14pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_256101c5464d39dc",
+    "market_id": "polymarket:6699923",
+    "book_id": "polymarket",
+    "raw_payload_hash": "256101c5464d39dc0718856c22ac2efd23835424bd3f70fdaaacaf47afb37da6",
+    "captured_at": "2026-11-08T07:30:00.379434+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-kalif-raymond-14pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_130246af1452f014",
+    "market_id": "polymarket:6737274",
+    "book_id": "polymarket",
+    "raw_payload_hash": "130246af1452f01404663964de648a8846af654177a87676b049c4f63db0c242",
+    "captured_at": "2026-11-08T07:30:00.379564+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-chris-godwin-jr-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f9e3d6c045642374",
+    "market_id": "polymarket:6737295",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f9e3d6c0456423748b6cc0aa42c01d60e07b42898125f079fc7e24cbf1aa0583",
+    "captured_at": "2026-11-08T07:30:00.379634+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-cade-otton-4pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_eb5171e94951641c",
+    "market_id": "polymarket:6737302",
+    "book_id": "polymarket",
+    "raw_payload_hash": "eb5171e94951641cee431a549ba663ad7516d682d81f8be4dfd00b211429cd75",
+    "captured_at": "2026-11-08T07:30:00.379666+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-ted-hurst-iii-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f8dabc35c677d351",
+    "market_id": "polymarket:6737303",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f8dabc35c677d351a172de81e7b74c026d04297f35dbefbcd862fb492901a9e2",
+    "captured_at": "2026-11-08T07:30:00.379679+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-ted-hurst-iii-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_df7fa406f64c1018",
+    "market_id": "polymarket:6659118",
+    "book_id": "polymarket",
+    "raw_payload_hash": "df7fa406f64c1018b7a00a6d8b9d9d9d3ce23de465151787c639d4f7efa024f5",
+    "captured_at": "2026-11-08T07:30:00.379717+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-brock-bowers-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_7de2e6ea7727bf20",
+    "market_id": "polymarket:6659328",
+    "book_id": "polymarket",
+    "raw_payload_hash": "7de2e6ea7727bf20eb8fa6663c7cb379f599107987d68e879f510b67992d1318",
+    "captured_at": "2026-11-08T07:30:00.379762+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-ashton-jeanty-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c3f1fe13bb65ec02",
+    "market_id": "polymarket:6659333",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c3f1fe13bb65ec0278de3dffcb595004e8b66c801564a6320615e10034093fa1",
+    "captured_at": "2026-11-08T07:30:00.379783+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-tre-tucker-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f0720cf44b15cfcd",
+    "market_id": "polymarket:6659335",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f0720cf44b15cfcd14908bcd9bb38856f9486457b79e6610a8eb37243f44e5cd",
+    "captured_at": "2026-11-08T07:30:00.379797+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-tre-tucker-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_93a83c19eaf18753",
+    "market_id": "polymarket:6732222",
+    "book_id": "polymarket",
+    "raw_payload_hash": "93a83c19eaf18753e793fb21b70f7466390edb2c304b3ad089222899a2cade73",
+    "captured_at": "2026-11-08T07:30:00.379845+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-george-kittle-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_7adf7b4fbdb7ead0",
+    "market_id": "polymarket:6733303",
+    "book_id": "polymarket",
+    "raw_payload_hash": "7adf7b4fbdb7ead0e9150df56bb6d8a692f9a68c4d96ed4a75005d97295bcd49",
+    "captured_at": "2026-11-08T07:30:00.379870+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jordan-watkins-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_8837a59680f5be32",
+    "market_id": "polymarket:6733310",
+    "book_id": "polymarket",
+    "raw_payload_hash": "8837a59680f5be3240b036bb339379300792e63c3e4959bdb61c7aed810e597b",
+    "captured_at": "2026-11-08T07:30:00.379890+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-jordan-watkins-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2d8241bbb1be45eb",
+    "market_id": "polymarket:6734123",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2d8241bbb1be45ebd57f69dd066d305f42c66692dfd13152c0adef5154c52b7a",
+    "captured_at": "2026-11-08T07:30:00.379903+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jack-bech-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_ff8b5b06acf905a5",
+    "market_id": "polymarket:6734124",
+    "book_id": "polymarket",
+    "raw_payload_hash": "ff8b5b06acf905a52b1e8922d1201657e40a4b75622833ae233d428f7dc4b6f0",
+    "captured_at": "2026-11-08T07:30:00.379914+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jack-bech-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_dca7133b6bdf0d4f",
+    "market_id": "polymarket:6734126",
+    "book_id": "polymarket",
+    "raw_payload_hash": "dca7133b6bdf0d4f07028ba0925d31dbb900c89d7fad0397ba9ba3bae8d9e178",
+    "captured_at": "2026-11-08T07:30:00.379930+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jalen-nailor-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_123fba3c135616ef",
+    "market_id": "polymarket:6734129",
+    "book_id": "polymarket",
+    "raw_payload_hash": "123fba3c135616ef7ba829b3dc1ddffb86a9f6ecc9b6037c040e50bb2fdb07cd",
+    "captured_at": "2026-11-08T07:30:00.379945+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-michael-mayer-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_14bac217c5bf576f",
+    "market_id": "polymarket:6734131",
+    "book_id": "polymarket",
+    "raw_payload_hash": "14bac217c5bf576f6c6e921654f34e268e37a6f9972a1c007fd7c95ebeffd886",
+    "captured_at": "2026-11-08T07:30:00.379957+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-michael-mayer-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_bd507748238eec43",
+    "market_id": "polymarket:6817839",
+    "book_id": "polymarket",
+    "raw_payload_hash": "bd507748238eec4380906287d1a38befbcb026ca163c889baefd8be3dc8ced2b",
+    "captured_at": "2026-11-08T07:30:00.380033+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-demarcus-robinson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0c0c1b9f53d4fb09",
+    "market_id": "polymarket:6657137",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0c0c1b9f53d4fb09f7868341ad265cedfda226b3e48014b1e9ea5d6ae2c0f21b",
+    "captured_at": "2026-11-08T07:30:00.380058+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-josh-jacobs-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_6a06ab934404df6a",
+    "market_id": "polymarket:6657141",
+    "book_id": "polymarket",
+    "raw_payload_hash": "6a06ab934404df6a68f0b7884f62bc1c18c0603f7d0a91c1c4e6f5c2a3160313",
+    "captured_at": "2026-11-08T07:30:00.380077+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-matthew-golden-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_74b2111ad8aea4de",
+    "market_id": "polymarket:6657170",
+    "book_id": "polymarket",
+    "raw_payload_hash": "74b2111ad8aea4de16e4d35f88adbdbd34576f15466be1283843649b8cfc3007",
+    "captured_at": "2026-11-08T07:30:00.380131+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-rec-tucker-kraft-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_01069f87b2839b76",
+    "market_id": "polymarket:6696032",
+    "book_id": "polymarket",
+    "raw_payload_hash": "01069f87b2839b76bfa1f88dcf0c2ecad4fb6f96471b91eb9f8277a2baa18133",
+    "captured_at": "2026-11-08T07:30:00.380147+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-savion-williams-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2d1401b051dfb7d3",
+    "market_id": "polymarket:6696033",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2d1401b051dfb7d3df02b0a6a58abcf6f26b964a2806e3a0e502e86ac47e6081",
+    "captured_at": "2026-11-08T07:30:00.380159+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-savion-williams-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2f5da6936f2b83b4",
+    "market_id": "polymarket:6696037",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2f5da6936f2b83b4e09d55e39b6d12e7e15bd1dfe3a2d1ee7881958d241bd3b9",
+    "captured_at": "2026-11-08T07:30:00.380177+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-rec-savion-williams-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_01d1de71e5d4d309",
+    "market_id": "polymarket:6721973",
+    "book_id": "polymarket",
+    "raw_payload_hash": "01d1de71e5d4d309316b5ede68444d43d0fcd89960ad654c3278d875a17088d8",
+    "captured_at": "2026-11-08T07:30:00.380191+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-rhamondre-stevenson-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2c2cb33d6b5f2ab7",
+    "market_id": "polymarket:6721974",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2c2cb33d6b5f2ab700f2668044a6bf19f1db5f3c78657f70f6b9c8b9c77ec1a2",
+    "captured_at": "2026-11-08T07:30:00.380203+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-rhamondre-stevenson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_79c2a5d20104f9f6",
+    "market_id": "polymarket:6734093",
+    "book_id": "polymarket",
+    "raw_payload_hash": "79c2a5d20104f9f664bc95638b66af40b14a45e39005fe12999c044b97a8ed76",
+    "captured_at": "2026-11-08T07:30:00.380224+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-demario-douglas-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d740f0899d5e2ddd",
+    "market_id": "polymarket:6734096",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d740f0899d5e2ddd587def031e0188a494f42d540294a20a96a6b61636cee242",
+    "captured_at": "2026-11-08T07:30:00.380239+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-demario-douglas-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_fd5967502db598ea",
+    "market_id": "polymarket:6734098",
+    "book_id": "polymarket",
+    "raw_payload_hash": "fd5967502db598ea800a33b45fe960751a098bbf311f8b9a12818ca36a0ca2fc",
+    "captured_at": "2026-11-08T07:30:00.380251+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-efton-chism-iii-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_903293ce474b488f",
+    "market_id": "polymarket:6734100",
+    "book_id": "polymarket",
+    "raw_payload_hash": "903293ce474b488f6c30af321791d10c1c5f3310b23726441ab6d104090505e4",
+    "captured_at": "2026-11-08T07:30:00.380265+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-efton-chism-iii-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_1c2f21a56736456c",
+    "market_id": "polymarket:6668751",
+    "book_id": "polymarket",
+    "raw_payload_hash": "1c2f21a56736456cf136abccb293b1d6133b01b8df0869612e73dcc03257da36",
+    "captured_at": "2026-11-08T07:30:00.380380+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c987e4c20f36501f",
+    "market_id": "polymarket:6668752",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c987e4c20f36501f64c4ef42ed05b9e935df8d950db9e0b78078a655da8a753a",
+    "captured_at": "2026-11-08T07:30:00.380391+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_87d3ff019ad545b6",
+    "market_id": "polymarket:6668753",
+    "book_id": "polymarket",
+    "raw_payload_hash": "87d3ff019ad545b62ef4dc6f5366378cc59eb81a639b5f858a1c37c7c4deb857",
+    "captured_at": "2026-11-08T07:30:00.380402+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_ea9d9ba3c61eef4f",
+    "market_id": "polymarket:6668754",
+    "book_id": "polymarket",
+    "raw_payload_hash": "ea9d9ba3c61eef4f1e68644b3fc29d78629522386dabd6f2c9a17c2f5578c835",
+    "captured_at": "2026-11-08T07:30:00.380416+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-elijah-higgins-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5335a432a81e540a",
+    "market_id": "polymarket:6668758",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5335a432a81e540af8fb3deefa9cec167495fad51f6026f5fa49884a14d6f98c",
+    "captured_at": "2026-11-08T07:30:00.380436+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-jaxon-smith-njigba-69pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a44100fe98d7606d",
+    "market_id": "polymarket:6668767",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a44100fe98d7606d63a0e1ffba110ef2175be5911cf753d2a5c279effc185b0d",
+    "captured_at": "2026-11-08T07:30:00.380478+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-trey-mcbride-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d0ef77518a4efe66",
+    "market_id": "polymarket:6668780",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d0ef77518a4efe66f1e2c4b9f15e026e96f887b0b1004e4da2aa17fe3a2454d1",
+    "captured_at": "2026-11-08T07:30:00.380513+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-rec-elijah-higgins-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_1ad5e1dc023d990b",
+    "market_id": "polymarket:6732938",
+    "book_id": "polymarket",
+    "raw_payload_hash": "1ad5e1dc023d990bf421ae4bebece73032cd555e13c289b9ab7da1c1af2bd5b8",
+    "captured_at": "2026-11-08T07:30:00.380550+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-tyler-allgeier-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_1fcba7216ec42255",
+    "market_id": "polymarket:6734085",
+    "book_id": "polymarket",
+    "raw_payload_hash": "1fcba7216ec42255243fffdcebe1abe238d00ac02cf717e0fe243f8fea782e90",
+    "captured_at": "2026-11-08T07:30:00.380570+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-cooper-kupp-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_fe7469f6ab9ea6a0",
+    "market_id": "polymarket:6734086",
+    "book_id": "polymarket",
+    "raw_payload_hash": "fe7469f6ab9ea6a03136dfcb3c96eff2b6cf16caa208f9cf4cf411c0b921151a",
+    "captured_at": "2026-11-08T07:30:00.380582+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-cooper-kupp-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_34071edbc5372cf2",
+    "market_id": "polymarket:6656182",
+    "book_id": "polymarket",
+    "raw_payload_hash": "34071edbc5372cf2917400daede0f2ae2b50ab02a6907cc873d59daca76cf5bf",
+    "captured_at": "2026-11-08T07:30:00.380640+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-dalton-schultz-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d33d6cfa59cd9c12",
+    "market_id": "polymarket:6656189",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d33d6cfa59cd9c1229ced1fa9191f10275e692f5123c0df09536277fdfa047de",
+    "captured_at": "2026-11-08T07:30:00.380667+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-ladd-mcconkey-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d077b39697c76949",
+    "market_id": "polymarket:6656193",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d077b39697c7694913103fcd08781b2a01e15a1b8feee3af01afdc563cc6fe44",
+    "captured_at": "2026-11-08T07:30:00.380686+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0565ebf15bfabd5b",
+    "market_id": "polymarket:6656194",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0565ebf15bfabd5b0ec473787d845556d072664004301b2264436637398d5972",
+    "captured_at": "2026-11-08T07:30:00.380696+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0abe4843b42c36fa",
+    "market_id": "polymarket:6656198",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0abe4843b42c36faf4cae97bdf583a65d7bf29c066659503de0e08379ae889a8",
+    "captured_at": "2026-11-08T07:30:00.380714+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-nico-collins-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_b21e36cc1168e4b1",
+    "market_id": "polymarket:6656216",
+    "book_id": "polymarket",
+    "raw_payload_hash": "b21e36cc1168e4b18cdfae4cd9fae6b6e3f238ce5b44768e0e3ed03cf19ae284",
+    "captured_at": "2026-11-08T07:30:00.380749+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-dalton-schultz-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_01755581be846dbc",
+    "market_id": "polymarket:6656225",
+    "book_id": "polymarket",
+    "raw_payload_hash": "01755581be846dbc09a50293cfc7954079f5a54e03070868023cbbb37e639632",
+    "captured_at": "2026-11-08T07:30:00.380771+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-marvin-harrison-jr-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_bba9ead7d4e150a5",
+    "market_id": "polymarket:6715284",
+    "book_id": "polymarket",
+    "raw_payload_hash": "bba9ead7d4e150a5e3ba7cd648b36d3d3d6460306135bed03b40f6edd5feb72c",
+    "captured_at": "2026-11-08T07:30:00.380829+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-tank-dell-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_64c1bd15832e6954",
+    "market_id": "polymarket:6715299",
+    "book_id": "polymarket",
+    "raw_payload_hash": "64c1bd15832e6954d6ec8225747b64af6b31cd82209ce5a247031c0eaecd9d7f",
+    "captured_at": "2026-11-08T07:30:00.380845+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-tre-harris-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d55c1bd9742c5aa4",
+    "market_id": "polymarket:6723141",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d55c1bd9742c5aa439a523eb5bd5c44b1261f866c8de17c73f6a7ad12a5a3bc4",
+    "captured_at": "2026-11-08T07:30:00.380890+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-woody-marks-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_3c2c3081846d7bbd",
+    "market_id": "polymarket:6723143",
+    "book_id": "polymarket",
+    "raw_payload_hash": "3c2c3081846d7bbd1cd0c306b2c4148ff929971eaaa6e2880e5c31da21da5a38",
+    "captured_at": "2026-11-08T07:30:00.380902+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-woody-marks-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_8f2ebdb41568fa59",
+    "market_id": "polymarket:6646544",
+    "book_id": "polymarket",
+    "raw_payload_hash": "8f2ebdb41568fa598a7aef96724e4b6aa779cfbc6a4469d99291e58affcfb6a9",
+    "captured_at": "2026-11-08T07:30:00.380928+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-courtland-sutton-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a0a796ef35000a50",
+    "market_id": "polymarket:6646548",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a0a796ef35000a5089bad552a512b1eb26a51df3f2303cefc030040de963c374",
+    "captured_at": "2026-11-08T07:30:00.380946+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-darren-waller-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d394e95b768df9f5",
+    "market_id": "polymarket:6646550",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d394e95b768df9f5e08de114a5d5c93f8712642499ab7a9c00ae87e5446bc744",
+    "captured_at": "2026-11-08T07:30:00.380959+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-darren-waller-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_4bf3929f5301a5bd",
+    "market_id": "polymarket:6646551",
+    "book_id": "polymarket",
+    "raw_payload_hash": "4bf3929f5301a5bdb135eed2d43da8a3b9f9e14f79e5d473870ea47ee50445e7",
+    "captured_at": "2026-11-08T07:30:00.380973+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-evan-engram-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a8baa6b5fc1e965a",
+    "market_id": "polymarket:6646556",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a8baa6b5fc1e965a8316a1487822de1284462db334eca2f94714b3c77915e252",
+    "captured_at": "2026-11-08T07:30:00.380997+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jalen-coker-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_30f8e1594a3cd3fd",
+    "market_id": "polymarket:6646558",
+    "book_id": "polymarket",
+    "raw_payload_hash": "30f8e1594a3cd3fd238d6e5c36cd6c7724da517aaa2b9757c1b51ea3118c41ca",
+    "captured_at": "2026-11-08T07:30:00.381013+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jalen-coker-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c8f9ac267012ba07",
+    "market_id": "polymarket:6646568",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c8f9ac267012ba077b2b67f545187e451a6f30ad04f80dbb0d55255b9a2561c7",
+    "captured_at": "2026-11-08T07:30:00.381045+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-marvin-mims-jr-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_906de87819bb4873",
+    "market_id": "polymarket:6646574",
+    "book_id": "polymarket",
+    "raw_payload_hash": "906de87819bb4873c7c277f1cc277dab21620c5c8d62c42411e4d9bb41bb4a2f",
+    "captured_at": "2026-11-08T07:30:00.381071+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-tetairoa-mcmillan-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_92e9863717e5c119",
+    "market_id": "polymarket:6711686",
+    "book_id": "polymarket",
+    "raw_payload_hash": "92e9863717e5c119addbdc9c00957506af9637115eed48e2d100656cbb7462e9",
+    "captured_at": "2026-11-08T07:30:00.381168+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-john-metchie-iii-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_83c7631ae0efcb7c",
+    "market_id": "polymarket:6711840",
+    "book_id": "polymarket",
+    "raw_payload_hash": "83c7631ae0efcb7cecd3faf7b1dd82fc1f241e4b4673b1a021204ce99ec51557",
+    "captured_at": "2026-11-08T07:30:00.381196+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jonah-coleman-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_58b350a34cfe45d1",
+    "market_id": "polymarket:6714700",
+    "book_id": "polymarket",
+    "raw_payload_hash": "58b350a34cfe45d1f5c4012a4c90dbddafdb7dcabd4bd8114c8a8273820bdab5",
+    "captured_at": "2026-11-08T07:30:00.381230+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-mitchell-evans-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0a6d838a070ea0d7",
+    "market_id": "polymarket:6675036",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0a6d838a070ea0d770aabd818f5aad0cda52a3faeae7abb8a43bc79ddcc025b8",
+    "captured_at": "2026-11-08T07:30:00.381267+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ceedee-lamb-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_77f9370dbb4405eb",
+    "market_id": "polymarket:6675053",
+    "book_id": "polymarket",
+    "raw_payload_hash": "77f9370dbb4405eb92d5c684c07ed90a7bc4daaf5db8e5f39ac07d8f4bcd71af",
+    "captured_at": "2026-11-08T07:30:00.381313+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ryan-flournoy-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_92dad32454aa4f13",
+    "market_id": "polymarket:6675073",
+    "book_id": "polymarket",
+    "raw_payload_hash": "92dad32454aa4f13048609d1ef06de3d9e02766cb418af80ca622a9611455028",
+    "captured_at": "2026-11-08T07:30:00.381360+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-rec-tyler-warren-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d45b40e2e5101787",
+    "market_id": "polymarket:6712260",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d45b40e2e51017873841ec0545352ec77fa0b84e78a64222e7357ae57bbd5e70",
+    "captured_at": "2026-11-08T07:30:00.381396+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-josh-downs-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_8eb1b3273e2f5997",
+    "market_id": "polymarket:6712266",
+    "book_id": "polymarket",
+    "raw_payload_hash": "8eb1b3273e2f5997ec541da97f8688711186cceb2741e57add28f0154b523e25",
+    "captured_at": "2026-11-08T07:30:00.381419+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-keenan-allen-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_b1432434be47322d",
+    "market_id": "polymarket:6696069",
+    "book_id": "polymarket",
+    "raw_payload_hash": "b1432434be47322d952b31391fea420ba4232c6429fa40bea9a2b6bfb0d0ae8b",
+    "captured_at": "2026-11-08T07:30:00.381484+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-cyrus-allen-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d9309e6da96ac4fb",
+    "market_id": "polymarket:6697355",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d9309e6da96ac4fb2dddbafed5ee001ae73eabb5209f4ce5e23969b37ac8b759",
+    "captured_at": "2026-11-08T07:30:00.381542+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-xavier-worthy-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f20c0540c1aeae97",
+    "market_id": "polymarket:6697372",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f20c0540c1aeae97c8920ca2be014088b09310515612b49c79dda27d13de579d",
+    "captured_at": "2026-11-08T07:30:00.381587+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-xavier-worthy-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c7e51dd68f1498aa",
+    "market_id": "polymarket:6723043",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c7e51dd68f1498aaaa3cb8631cbcb02e4a3c156c5547151bf8a6d625dec2f764",
+    "captured_at": "2026-11-08T07:30:00.381606+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-adonai-mitchell-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_058f0d915be78fcf",
+    "market_id": "polymarket:6723047",
+    "book_id": "polymarket",
+    "raw_payload_hash": "058f0d915be78fcfcd800483f4b4ace42ba720df49d15cb60753c90708239544",
+    "captured_at": "2026-11-08T07:30:00.381623+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-braelon-allen-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_b995c0134a0274bf",
+    "market_id": "polymarket:6723058",
+    "book_id": "polymarket",
+    "raw_payload_hash": "b995c0134a0274bf23a74a690b1964a75a6a249193c9b93cca66cc046ad76cf8",
+    "captured_at": "2026-11-08T07:30:00.381644+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-adonai-mitchell-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_4fd7e36affb46000",
+    "market_id": "polymarket:6734150",
+    "book_id": "polymarket",
+    "raw_payload_hash": "4fd7e36affb460007d350c499d67af702a042ef84c168429d410acd62926e681",
+    "captured_at": "2026-11-08T07:30:00.381706+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-tim-patrick-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_860f582c94d38fa1",
+    "market_id": "polymarket:6755333",
+    "book_id": "polymarket",
+    "raw_payload_hash": "860f582c94d38fa1c067db7efb426beae34cf4684d3ef2290f8b8161800bf5ac",
+    "captured_at": "2026-11-08T07:30:00.381727+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-isaiah-williams-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_eba78259e1485b44",
+    "market_id": "polymarket:6755334",
+    "book_id": "polymarket",
+    "raw_payload_hash": "eba78259e1485b448d351abee8f4660e331f324cffa6a6386188776168f1b71f",
+    "captured_at": "2026-11-08T07:30:00.381738+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-isaiah-williams-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_15567f3eab0377b3",
+    "market_id": "polymarket:6665645",
+    "book_id": "polymarket",
+    "raw_payload_hash": "15567f3eab0377b38e5de5c7cda212446a54373f550ef90785d57e07759e28ca",
+    "captured_at": "2026-11-08T07:30:00.381802+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-greg-dulcich-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5c88e35302109ae3",
+    "market_id": "polymarket:6665649",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5c88e35302109ae3e67e401bac2fdcceb6c51744410a015d64740e21b55f0919",
+    "captured_at": "2026-11-08T07:30:00.381821+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-isaac-teslaa-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_092940fca9c6264c",
+    "market_id": "polymarket:6665662",
+    "book_id": "polymarket",
+    "raw_payload_hash": "092940fca9c6264c6fffaf379a0b247b5243c1b38717c5353b986f388424b241",
+    "captured_at": "2026-11-08T07:30:00.381853+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-jameson-williams-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_181ce6b3ab005ac0",
+    "market_id": "polymarket:6665667",
+    "book_id": "polymarket",
+    "raw_payload_hash": "181ce6b3ab005ac0ae068f83857d3b348513e655936c407be220fd2f4c334e71",
+    "captured_at": "2026-11-08T07:30:00.381874+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-malik-washington-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_944a8eb5334051bf",
+    "market_id": "polymarket:6683738",
+    "book_id": "polymarket",
+    "raw_payload_hash": "944a8eb5334051bff9aee16c204b9dd8a88a530ffeba54dd5242843ddc3c0417",
+    "captured_at": "2026-11-08T07:30:00.381951+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-chris-olave-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2c51ab73ff7921f0",
+    "market_id": "polymarket:6722997",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2c51ab73ff7921f0b9ce407b36c6915b1779533539bd1a1b1a6a652d2ab2d8d4",
+    "captured_at": "2026-11-08T07:30:00.382011+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-devaughn-vele-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_bcf1c2125bcfd4a9",
+    "market_id": "polymarket:6723009",
+    "book_id": "polymarket",
+    "raw_payload_hash": "bcf1c2125bcfd4a97f8cadea6aa16ff42cca86177ddd22c9e5693cc19e908e59",
+    "captured_at": "2026-11-08T07:30:00.382027+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-jerry-jeudy-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2f6060fc0d9a3973",
+    "market_id": "polymarket:6723010",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2f6060fc0d9a39732e8b6205bc7482345a5cc6983e8978aa3d70e6979dc72a80",
+    "captured_at": "2026-11-08T07:30:00.382037+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-jerry-jeudy-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_19ea67e79acb0e2c",
+    "market_id": "polymarket:6723012",
+    "book_id": "polymarket",
+    "raw_payload_hash": "19ea67e79acb0e2c537709ff31515c3e872ece1b8569935e6b3e2a2822bee14e",
+    "captured_at": "2026-11-08T07:30:00.382052+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-juwan-johnson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0a1432f56f647159",
+    "market_id": "polymarket:6680354",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0a1432f56f647159f5145ea3a4317908f0c022899a7a6edee6b9410c20ded273",
+    "captured_at": "2026-11-08T07:30:00.382143+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-malachi-fields-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_35d4721f3fa7d001",
+    "market_id": "polymarket:6680371",
+    "book_id": "polymarket",
+    "raw_payload_hash": "35d4721f3fa7d00194056e79ca6b64e2b98bc1e875a654c0100e3f3f5ab67288",
+    "captured_at": "2026-11-08T07:30:00.382191+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-isaiah-likely-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a09df91e37a474b6",
+    "market_id": "polymarket:6680373",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a09df91e37a474b61f9d2b7ff0dbffae80e01b6c23cdf5314f57cf2dbd033f99",
+    "captured_at": "2026-11-08T07:30:00.382205+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-isaiah-likely-5pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2c3772b3150c4407",
+    "market_id": "polymarket:6680547",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2c3772b3150c4407237a06b11df27461cd21d0ad33cf7ae55370903c81d05856",
+    "captured_at": "2026-11-08T07:30:00.382233+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2a069b575db6af70",
+    "market_id": "polymarket:6680548",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2a069b575db6af70a7ecc666454801cc3180182f9c2039e8b99b03c776c530f9",
+    "captured_at": "2026-11-08T07:30:00.382244+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0642676112fdac64",
+    "market_id": "polymarket:6722970",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0642676112fdac6448722de1e58613be5e145eb757e4c20237c5a5dfeb8b1c6d",
+    "captured_at": "2026-11-08T07:30:00.382270+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-dallas-goedert-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c550f72bb134e60d",
+    "market_id": "polymarket:6722980",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c550f72bb134e60dd3f001af69da7bdfe0a1b77e7a56e709b074b3682d987e7b",
+    "captured_at": "2026-11-08T07:30:00.382298+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-makai-lemon-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a0ce2b498b6bf805",
+    "market_id": "polymarket:6722992",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a0ce2b498b6bf80581e8a66ffcca901041036774be2e83a795ba7e418a389540",
+    "captured_at": "2026-11-08T07:30:00.382331+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-darius-cooper-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_afbaafce3b5b428d",
+    "market_id": "polymarket:6674611",
+    "book_id": "polymarket",
+    "raw_payload_hash": "afbaafce3b5b428df840f6b9205b8132c8d18d132d74c1352acd9b3e6a1b5b77",
+    "captured_at": "2026-11-08T07:30:00.382363+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_385399627052431c",
+    "market_id": "polymarket:6674612",
+    "book_id": "polymarket",
+    "raw_payload_hash": "385399627052431cb7f2b185918be12643d8fb19d0fa40d7f7c1e9009c759789",
+    "captured_at": "2026-11-08T07:30:00.382375+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_9cb452241a5b5df1",
+    "market_id": "polymarket:6674615",
+    "book_id": "polymarket",
+    "raw_payload_hash": "9cb452241a5b5df1b6ec3eb4420a355412a49bcc87c3ed802bc9f7d97d50ac22",
+    "captured_at": "2026-11-08T07:30:00.382393+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_dcc7910e83dd91aa",
+    "market_id": "polymarket:6674616",
+    "book_id": "polymarket",
+    "raw_payload_hash": "dcc7910e83dd91aaa683e7ee465c1511819b6481c993427e5a73107b07b04b40",
+    "captured_at": "2026-11-08T07:30:00.382404+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_10abe7cc4a653509",
+    "market_id": "polymarket:6674617",
+    "book_id": "polymarket",
+    "raw_payload_hash": "10abe7cc4a653509e3517770a92801ccbd2df1021b4e05b7337c66de7d9352ae",
+    "captured_at": "2026-11-08T07:30:00.382415+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_aa1d5dc23333c21a",
+    "market_id": "polymarket:6722944",
+    "book_id": "polymarket",
+    "raw_payload_hash": "aa1d5dc23333c21a98fc19884afe24324253ed3130bed85bcf75a31e346de8b5",
+    "captured_at": "2026-11-08T07:30:00.382529+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-konata-mumpfield-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a54a21833fd204f4",
+    "market_id": "polymarket:6635566",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a54a21833fd204f417a6a146149585b593d07298f6629d224075bfffaa7bbb55",
+    "captured_at": "2026-11-08T07:30:00.382661+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-mike-gesicki-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_17bea024a4fc6108",
+    "market_id": "polymarket:6635573",
+    "book_id": "polymarket",
+    "raw_payload_hash": "17bea024a4fc610886288d6a069f4d5cf815b1f49e07d1efb1ce7e4242e6549d",
+    "captured_at": "2026-11-08T07:30:00.382686+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-tee-higgins-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_11d18a60e20c8a38",
+    "market_id": "polymarket:6635606",
+    "book_id": "polymarket",
+    "raw_payload_hash": "11d18a60e20c8a3883519d11f9c8882809fd4494fe99d19ac7ec9a43f7e4f46a",
+    "captured_at": "2026-11-08T07:30:00.382741+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-mike-gesicki-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_18474cc6375579cd",
+    "market_id": "polymarket:6638880",
+    "book_id": "polymarket",
+    "raw_payload_hash": "18474cc6375579cdde9b3e8a5f1091719f83e1a2e5202ab1969103ce69705ded",
+    "captured_at": "2026-11-08T07:30:00.382786+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-jahan-dotson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_4d8467abf89d711c",
+    "market_id": "polymarket:6639172",
+    "book_id": "polymarket",
+    "raw_payload_hash": "4d8467abf89d711cadfae63533902dfc098de2fc214c1585c32081ecad3662d2",
+    "captured_at": "2026-11-08T07:30:00.382828+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-dohnte-meyers-14pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_989f298991040a47",
+    "market_id": "polymarket:6639179",
+    "book_id": "polymarket",
+    "raw_payload_hash": "989f298991040a477519d9c50150905a6684764a1c79509691c8440da63864ee",
+    "captured_at": "2026-11-08T07:30:00.382848+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-dohnte-meyers-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_245d290bd7a5005c",
+    "market_id": "polymarket:6703090",
+    "book_id": "polymarket",
+    "raw_payload_hash": "245d290bd7a5005cdb6f32e5f5aec7270042a94f99365a68d0d99c4b5ce087ad",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-jordan-addison-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a1a6b4b7ddf79bf7",
+    "market_id": "polymarket:6703097",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a1a6b4b7ddf79bf7b7c9a288755d2ff4bf9b178ba2978b86ad92ad4da37d7145",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_79edffd87b113ab4",
+    "market_id": "polymarket:6703099",
+    "book_id": "polymarket",
+    "raw_payload_hash": "79edffd87b113ab4b0fc070aeffb97581d7ca5bd52b771ada5ed3edf2a6510dd",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-justin-jefferson-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_e3bc40c6cb76e750",
+    "market_id": "polymarket:6703114",
+    "book_id": "polymarket",
+    "raw_payload_hash": "e3bc40c6cb76e750dfc12e5e45ae02082db84860e980cfb9f5a9ae51818df03e",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_27f29b8a54cfa787",
+    "market_id": "polymarket:6703115",
+    "book_id": "polymarket",
+    "raw_payload_hash": "27f29b8a54cfa787a3aebaa731ce825fb937b568f1afada99f83222ac0c90878",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-recyd-khalil-shakir-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f1781ecf28211646",
+    "market_id": "polymarket:6703160",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f1781ecf282116460f3114e3fdd9f38c71932c181f134a43162963cd4d7985d0",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-buf-min-2026-11-10-rec-tj-hockenson-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_667990244a83c0a5",
+    "market_id": "polymarket:6662357",
+    "book_id": "polymarket",
+    "raw_payload_hash": "667990244a83c0a5e97bcff9c0aff6fcc973abaf8b286a87a1a0234bfd28a08e",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-colston-loveland-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5e44d60bf0156300",
+    "market_id": "polymarket:6662363",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5e44d60bf01563004eee9a2a3158da9e5602c304b8d2cc0ca72a8aa5b8837e1e",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-luther-burden-iii-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_cec18b2e3195a7fd",
+    "market_id": "polymarket:6662376",
+    "book_id": "polymarket",
+    "raw_payload_hash": "cec18b2e3195a7fd213e256e5a86642edd7b007a0c2cf2ec7432f07329d3dd97",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-rome-odunze-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_50574c87cb557172",
+    "market_id": "polymarket:6699912",
+    "book_id": "polymarket",
+    "raw_payload_hash": "50574c87cb557172cff8a4d5eab32ae60b50ca136f11be639a28feb636976cd4",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-bucky-irving-24pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_7a3b3dfea70fd3ea",
+    "market_id": "polymarket:6699916",
+    "book_id": "polymarket",
+    "raw_payload_hash": "7a3b3dfea70fd3eaaf010a5d482a5224a24809635b9067c87fcec3935d8a7d63",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-dandre-swift-14pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_256101c5464d39dc",
+    "market_id": "polymarket:6699923",
+    "book_id": "polymarket",
+    "raw_payload_hash": "256101c5464d39dc0718856c22ac2efd23835424bd3f70fdaaacaf47afb37da6",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-kalif-raymond-14pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_130246af1452f014",
+    "market_id": "polymarket:6737274",
+    "book_id": "polymarket",
+    "raw_payload_hash": "130246af1452f01404663964de648a8846af654177a87676b049c4f63db0c242",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-recyd-chris-godwin-jr-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f9e3d6c045642374",
+    "market_id": "polymarket:6737295",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f9e3d6c0456423748b6cc0aa42c01d60e07b42898125f079fc7e24cbf1aa0583",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-cade-otton-4pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_eb5171e94951641c",
+    "market_id": "polymarket:6737302",
+    "book_id": "polymarket",
+    "raw_payload_hash": "eb5171e94951641cee431a549ba663ad7516d682d81f8be4dfd00b211429cd75",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-ted-hurst-iii-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5a04b4358d8b153e",
+    "market_id": "polymarket:6737303",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5a04b4358d8b153e4ead7e0bad30dd76f52232802be3156f4a4e82e800de9a44",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-tb-chi-2026-11-09-rec-ted-hurst-iii-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_df7fa406f64c1018",
+    "market_id": "polymarket:6659118",
+    "book_id": "polymarket",
+    "raw_payload_hash": "df7fa406f64c1018b7a00a6d8b9d9d9d3ce23de465151787c639d4f7efa024f5",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-brock-bowers-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_7de2e6ea7727bf20",
+    "market_id": "polymarket:6659328",
+    "book_id": "polymarket",
+    "raw_payload_hash": "7de2e6ea7727bf20eb8fa6663c7cb379f599107987d68e879f510b67992d1318",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-ashton-jeanty-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c3f1fe13bb65ec02",
+    "market_id": "polymarket:6659333",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c3f1fe13bb65ec0278de3dffcb595004e8b66c801564a6320615e10034093fa1",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-tre-tucker-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f0720cf44b15cfcd",
+    "market_id": "polymarket:6659335",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f0720cf44b15cfcd14908bcd9bb38856f9486457b79e6610a8eb37243f44e5cd",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-tre-tucker-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_93a83c19eaf18753",
+    "market_id": "polymarket:6732222",
+    "book_id": "polymarket",
+    "raw_payload_hash": "93a83c19eaf18753e793fb21b70f7466390edb2c304b3ad089222899a2cade73",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-george-kittle-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_7adf7b4fbdb7ead0",
+    "market_id": "polymarket:6733303",
+    "book_id": "polymarket",
+    "raw_payload_hash": "7adf7b4fbdb7ead0e9150df56bb6d8a692f9a68c4d96ed4a75005d97295bcd49",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jordan-watkins-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_8837a59680f5be32",
+    "market_id": "polymarket:6733310",
+    "book_id": "polymarket",
+    "raw_payload_hash": "8837a59680f5be3240b036bb339379300792e63c3e4959bdb61c7aed810e597b",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-rec-jordan-watkins-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2d8241bbb1be45eb",
+    "market_id": "polymarket:6734123",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2d8241bbb1be45ebd57f69dd066d305f42c66692dfd13152c0adef5154c52b7a",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jack-bech-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_ff8b5b06acf905a5",
+    "market_id": "polymarket:6734124",
+    "book_id": "polymarket",
+    "raw_payload_hash": "ff8b5b06acf905a52b1e8922d1201657e40a4b75622833ae233d428f7dc4b6f0",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jack-bech-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_dca7133b6bdf0d4f",
+    "market_id": "polymarket:6734126",
+    "book_id": "polymarket",
+    "raw_payload_hash": "dca7133b6bdf0d4f07028ba0925d31dbb900c89d7fad0397ba9ba3bae8d9e178",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-jalen-nailor-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_123fba3c135616ef",
+    "market_id": "polymarket:6734129",
+    "book_id": "polymarket",
+    "raw_payload_hash": "123fba3c135616ef7ba829b3dc1ddffb86a9f6ecc9b6037c040e50bb2fdb07cd",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-michael-mayer-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_14bac217c5bf576f",
+    "market_id": "polymarket:6734131",
+    "book_id": "polymarket",
+    "raw_payload_hash": "14bac217c5bf576f6c6e921654f34e268e37a6f9972a1c007fd7c95ebeffd886",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-michael-mayer-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_bd507748238eec43",
+    "market_id": "polymarket:6817839",
+    "book_id": "polymarket",
+    "raw_payload_hash": "bd507748238eec4380906287d1a38befbcb026ca163c889baefd8be3dc8ced2b",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-lv-sf-2026-11-08-recyd-demarcus-robinson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0c0c1b9f53d4fb09",
+    "market_id": "polymarket:6657137",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0c0c1b9f53d4fb09f7868341ad265cedfda226b3e48014b1e9ea5d6ae2c0f21b",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-josh-jacobs-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_6a06ab934404df6a",
+    "market_id": "polymarket:6657141",
+    "book_id": "polymarket",
+    "raw_payload_hash": "6a06ab934404df6a68f0b7884f62bc1c18c0603f7d0a91c1c4e6f5c2a3160313",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-matthew-golden-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_74b2111ad8aea4de",
+    "market_id": "polymarket:6657170",
+    "book_id": "polymarket",
+    "raw_payload_hash": "74b2111ad8aea4de16e4d35f88adbdbd34576f15466be1283843649b8cfc3007",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-rec-tucker-kraft-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_01069f87b2839b76",
+    "market_id": "polymarket:6696032",
+    "book_id": "polymarket",
+    "raw_payload_hash": "01069f87b2839b76bfa1f88dcf0c2ecad4fb6f96471b91eb9f8277a2baa18133",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-savion-williams-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2d1401b051dfb7d3",
+    "market_id": "polymarket:6696033",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2d1401b051dfb7d3df02b0a6a58abcf6f26b964a2806e3a0e502e86ac47e6081",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-savion-williams-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2f5da6936f2b83b4",
+    "market_id": "polymarket:6696037",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2f5da6936f2b83b4e09d55e39b6d12e7e15bd1dfe3a2d1ee7881958d241bd3b9",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-rec-savion-williams-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_01d1de71e5d4d309",
+    "market_id": "polymarket:6721973",
+    "book_id": "polymarket",
+    "raw_payload_hash": "01d1de71e5d4d309316b5ede68444d43d0fcd89960ad654c3278d875a17088d8",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-rhamondre-stevenson-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2c2cb33d6b5f2ab7",
+    "market_id": "polymarket:6721974",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2c2cb33d6b5f2ab700f2668044a6bf19f1db5f3c78657f70f6b9c8b9c77ec1a2",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-rhamondre-stevenson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_79c2a5d20104f9f6",
+    "market_id": "polymarket:6734093",
+    "book_id": "polymarket",
+    "raw_payload_hash": "79c2a5d20104f9f664bc95638b66af40b14a45e39005fe12999c044b97a8ed76",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-demario-douglas-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d740f0899d5e2ddd",
+    "market_id": "polymarket:6734096",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d740f0899d5e2ddd587def031e0188a494f42d540294a20a96a6b61636cee242",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-demario-douglas-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_fd5967502db598ea",
+    "market_id": "polymarket:6734098",
+    "book_id": "polymarket",
+    "raw_payload_hash": "fd5967502db598ea800a33b45fe960751a098bbf311f8b9a12818ca36a0ca2fc",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-efton-chism-iii-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_903293ce474b488f",
+    "market_id": "polymarket:6734100",
+    "book_id": "polymarket",
+    "raw_payload_hash": "903293ce474b488f6c30af321791d10c1c5f3310b23726441ab6d104090505e4",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-gb-ne-2026-11-08-recyd-efton-chism-iii-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_1c2f21a56736456c",
+    "market_id": "polymarket:6668751",
+    "book_id": "polymarket",
+    "raw_payload_hash": "1c2f21a56736456cf136abccb293b1d6133b01b8df0869612e73dcc03257da36",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c987e4c20f36501f",
+    "market_id": "polymarket:6668752",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c987e4c20f36501f64c4ef42ed05b9e935df8d950db9e0b78078a655da8a753a",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_87d3ff019ad545b6",
+    "market_id": "polymarket:6668753",
+    "book_id": "polymarket",
+    "raw_payload_hash": "87d3ff019ad545b62ef4dc6f5366378cc59eb81a639b5f858a1c37c7c4deb857",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-aj-barner-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_ea9d9ba3c61eef4f",
+    "market_id": "polymarket:6668754",
+    "book_id": "polymarket",
+    "raw_payload_hash": "ea9d9ba3c61eef4f1e68644b3fc29d78629522386dabd6f2c9a17c2f5578c835",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-elijah-higgins-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5335a432a81e540a",
+    "market_id": "polymarket:6668758",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5335a432a81e540af8fb3deefa9cec167495fad51f6026f5fa49884a14d6f98c",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-jaxon-smith-njigba-69pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a44100fe98d7606d",
+    "market_id": "polymarket:6668767",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a44100fe98d7606d63a0e1ffba110ef2175be5911cf753d2a5c279effc185b0d",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-trey-mcbride-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d0ef77518a4efe66",
+    "market_id": "polymarket:6668780",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d0ef77518a4efe66f1e2c4b9f15e026e96f887b0b1004e4da2aa17fe3a2454d1",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-rec-elijah-higgins-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_1ad5e1dc023d990b",
+    "market_id": "polymarket:6732938",
+    "book_id": "polymarket",
+    "raw_payload_hash": "1ad5e1dc023d990bf421ae4bebece73032cd555e13c289b9ab7da1c1af2bd5b8",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-tyler-allgeier-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_1fcba7216ec42255",
+    "market_id": "polymarket:6734085",
+    "book_id": "polymarket",
+    "raw_payload_hash": "1fcba7216ec42255243fffdcebe1abe238d00ac02cf717e0fe243f8fea782e90",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-cooper-kupp-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_fe7469f6ab9ea6a0",
+    "market_id": "polymarket:6734086",
+    "book_id": "polymarket",
+    "raw_payload_hash": "fe7469f6ab9ea6a03136dfcb3c96eff2b6cf16caa208f9cf4cf411c0b921151a",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-ari-sea-2026-11-08-recyd-cooper-kupp-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_34071edbc5372cf2",
+    "market_id": "polymarket:6656182",
+    "book_id": "polymarket",
+    "raw_payload_hash": "34071edbc5372cf2917400daede0f2ae2b50ab02a6907cc873d59daca76cf5bf",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-dalton-schultz-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d33d6cfa59cd9c12",
+    "market_id": "polymarket:6656189",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d33d6cfa59cd9c1229ced1fa9191f10275e692f5123c0df09536277fdfa047de",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-ladd-mcconkey-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d077b39697c76949",
+    "market_id": "polymarket:6656193",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d077b39697c7694913103fcd08781b2a01e15a1b8feee3af01afdc563cc6fe44",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0565ebf15bfabd5b",
+    "market_id": "polymarket:6656194",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0565ebf15bfabd5b0ec473787d845556d072664004301b2264436637398d5972",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-marvin-harrison-jr-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0abe4843b42c36fa",
+    "market_id": "polymarket:6656198",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0abe4843b42c36faf4cae97bdf583a65d7bf29c066659503de0e08379ae889a8",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-nico-collins-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_b21e36cc1168e4b1",
+    "market_id": "polymarket:6656216",
+    "book_id": "polymarket",
+    "raw_payload_hash": "b21e36cc1168e4b18cdfae4cd9fae6b6e3f238ce5b44768e0e3ed03cf19ae284",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-dalton-schultz-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_01755581be846dbc",
+    "market_id": "polymarket:6656225",
+    "book_id": "polymarket",
+    "raw_payload_hash": "01755581be846dbc09a50293cfc7954079f5a54e03070868023cbbb37e639632",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-marvin-harrison-jr-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_bba9ead7d4e150a5",
+    "market_id": "polymarket:6715284",
+    "book_id": "polymarket",
+    "raw_payload_hash": "bba9ead7d4e150a5e3ba7cd648b36d3d3d6460306135bed03b40f6edd5feb72c",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-tank-dell-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_64c1bd15832e6954",
+    "market_id": "polymarket:6715299",
+    "book_id": "polymarket",
+    "raw_payload_hash": "64c1bd15832e6954d6ec8225747b64af6b31cd82209ce5a247031c0eaecd9d7f",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-tre-harris-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d55c1bd9742c5aa4",
+    "market_id": "polymarket:6723141",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d55c1bd9742c5aa439a523eb5bd5c44b1261f866c8de17c73f6a7ad12a5a3bc4",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-recyd-woody-marks-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_3c2c3081846d7bbd",
+    "market_id": "polymarket:6723143",
+    "book_id": "polymarket",
+    "raw_payload_hash": "3c2c3081846d7bbd1cd0c306b2c4148ff929971eaaa6e2880e5c31da21da5a38",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-hou-lac-2026-11-08-rec-woody-marks-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_8f2ebdb41568fa59",
+    "market_id": "polymarket:6646544",
+    "book_id": "polymarket",
+    "raw_payload_hash": "8f2ebdb41568fa598a7aef96724e4b6aa779cfbc6a4469d99291e58affcfb6a9",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-courtland-sutton-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a0a796ef35000a50",
+    "market_id": "polymarket:6646548",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a0a796ef35000a5089bad552a512b1eb26a51df3f2303cefc030040de963c374",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-darren-waller-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d394e95b768df9f5",
+    "market_id": "polymarket:6646550",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d394e95b768df9f5e08de114a5d5c93f8712642499ab7a9c00ae87e5446bc744",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-darren-waller-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_4bf3929f5301a5bd",
+    "market_id": "polymarket:6646551",
+    "book_id": "polymarket",
+    "raw_payload_hash": "4bf3929f5301a5bdb135eed2d43da8a3b9f9e14f79e5d473870ea47ee50445e7",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-evan-engram-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a8baa6b5fc1e965a",
+    "market_id": "polymarket:6646556",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a8baa6b5fc1e965a8316a1487822de1284462db334eca2f94714b3c77915e252",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jalen-coker-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_30f8e1594a3cd3fd",
+    "market_id": "polymarket:6646558",
+    "book_id": "polymarket",
+    "raw_payload_hash": "30f8e1594a3cd3fd238d6e5c36cd6c7724da517aaa2b9757c1b51ea3118c41ca",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jalen-coker-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c8f9ac267012ba07",
+    "market_id": "polymarket:6646568",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c8f9ac267012ba077b2b67f545187e451a6f30ad04f80dbb0d55255b9a2561c7",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-marvin-mims-jr-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_906de87819bb4873",
+    "market_id": "polymarket:6646574",
+    "book_id": "polymarket",
+    "raw_payload_hash": "906de87819bb4873c7c277f1cc277dab21620c5c8d62c42411e4d9bb41bb4a2f",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-tetairoa-mcmillan-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_92e9863717e5c119",
+    "market_id": "polymarket:6711686",
+    "book_id": "polymarket",
+    "raw_payload_hash": "92e9863717e5c119addbdc9c00957506af9637115eed48e2d100656cbb7462e9",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-john-metchie-iii-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_83c7631ae0efcb7c",
+    "market_id": "polymarket:6711840",
+    "book_id": "polymarket",
+    "raw_payload_hash": "83c7631ae0efcb7cecd3faf7b1dd82fc1f241e4b4673b1a021204ce99ec51557",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-recyd-jonah-coleman-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_58b350a34cfe45d1",
+    "market_id": "polymarket:6714700",
+    "book_id": "polymarket",
+    "raw_payload_hash": "58b350a34cfe45d1f5c4012a4c90dbddafdb7dcabd4bd8114c8a8273820bdab5",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-den-car-2026-11-08-rec-mitchell-evans-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0a6d838a070ea0d7",
+    "market_id": "polymarket:6675036",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0a6d838a070ea0d770aabd818f5aad0cda52a3faeae7abb8a43bc79ddcc025b8",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ceedee-lamb-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_77f9370dbb4405eb",
+    "market_id": "polymarket:6675053",
+    "book_id": "polymarket",
+    "raw_payload_hash": "77f9370dbb4405eb92d5c684c07ed90a7bc4daaf5db8e5f39ac07d8f4bcd71af",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-ryan-flournoy-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_92dad32454aa4f13",
+    "market_id": "polymarket:6675073",
+    "book_id": "polymarket",
+    "raw_payload_hash": "92dad32454aa4f13048609d1ef06de3d9e02766cb418af80ca622a9611455028",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-rec-tyler-warren-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d45b40e2e5101787",
+    "market_id": "polymarket:6712260",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d45b40e2e51017873841ec0545352ec77fa0b84e78a64222e7357ae57bbd5e70",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-josh-downs-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_8eb1b3273e2f5997",
+    "market_id": "polymarket:6712266",
+    "book_id": "polymarket",
+    "raw_payload_hash": "8eb1b3273e2f5997ec541da97f8688711186cceb2741e57add28f0154b523e25",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-dal-ind-2026-11-08-recyd-keenan-allen-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_b1432434be47322d",
+    "market_id": "polymarket:6696069",
+    "book_id": "polymarket",
+    "raw_payload_hash": "b1432434be47322d952b31391fea420ba4232c6429fa40bea9a2b6bfb0d0ae8b",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-cyrus-allen-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_d9309e6da96ac4fb",
+    "market_id": "polymarket:6697355",
+    "book_id": "polymarket",
+    "raw_payload_hash": "d9309e6da96ac4fb2dddbafed5ee001ae73eabb5209f4ce5e23969b37ac8b759",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-xavier-worthy-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_f20c0540c1aeae97",
+    "market_id": "polymarket:6697372",
+    "book_id": "polymarket",
+    "raw_payload_hash": "f20c0540c1aeae97c8920ca2be014088b09310515612b49c79dda27d13de579d",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-xavier-worthy-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c7e51dd68f1498aa",
+    "market_id": "polymarket:6723043",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c7e51dd68f1498aaaa3cb8631cbcb02e4a3c156c5547151bf8a6d625dec2f764",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-adonai-mitchell-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_058f0d915be78fcf",
+    "market_id": "polymarket:6723047",
+    "book_id": "polymarket",
+    "raw_payload_hash": "058f0d915be78fcfcd800483f4b4ace42ba720df49d15cb60753c90708239544",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-braelon-allen-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_b995c0134a0274bf",
+    "market_id": "polymarket:6723058",
+    "book_id": "polymarket",
+    "raw_payload_hash": "b995c0134a0274bf23a74a690b1964a75a6a249193c9b93cca66cc046ad76cf8",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-rec-adonai-mitchell-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_4fd7e36affb46000",
+    "market_id": "polymarket:6734150",
+    "book_id": "polymarket",
+    "raw_payload_hash": "4fd7e36affb460007d350c499d67af702a042ef84c168429d410acd62926e681",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-tim-patrick-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_860f582c94d38fa1",
+    "market_id": "polymarket:6755333",
+    "book_id": "polymarket",
+    "raw_payload_hash": "860f582c94d38fa1c067db7efb426beae34cf4684d3ef2290f8b8161800bf5ac",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-isaiah-williams-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_eba78259e1485b44",
+    "market_id": "polymarket:6755334",
+    "book_id": "polymarket",
+    "raw_payload_hash": "eba78259e1485b448d351abee8f4660e331f324cffa6a6386188776168f1b71f",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyj-kc-2026-11-08-recyd-isaiah-williams-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_15567f3eab0377b3",
+    "market_id": "polymarket:6665645",
+    "book_id": "polymarket",
+    "raw_payload_hash": "15567f3eab0377b38e5de5c7cda212446a54373f550ef90785d57e07759e28ca",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-greg-dulcich-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_5c88e35302109ae3",
+    "market_id": "polymarket:6665649",
+    "book_id": "polymarket",
+    "raw_payload_hash": "5c88e35302109ae3e67e401bac2fdcceb6c51744410a015d64740e21b55f0919",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-isaac-teslaa-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_092940fca9c6264c",
+    "market_id": "polymarket:6665662",
+    "book_id": "polymarket",
+    "raw_payload_hash": "092940fca9c6264c6fffaf379a0b247b5243c1b38717c5353b986f388424b241",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-jameson-williams-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_181ce6b3ab005ac0",
+    "market_id": "polymarket:6665667",
+    "book_id": "polymarket",
+    "raw_payload_hash": "181ce6b3ab005ac0ae068f83857d3b348513e655936c407be220fd2f4c334e71",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-det-mia-2026-11-08-recyd-malik-washington-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_944a8eb5334051bf",
+    "market_id": "polymarket:6683738",
+    "book_id": "polymarket",
+    "raw_payload_hash": "944a8eb5334051bff9aee16c204b9dd8a88a530ffeba54dd5242843ddc3c0417",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-chris-olave-59pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2c51ab73ff7921f0",
+    "market_id": "polymarket:6722997",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2c51ab73ff7921f0b9ce407b36c6915b1779533539bd1a1b1a6a652d2ab2d8d4",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-devaughn-vele-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_bcf1c2125bcfd4a9",
+    "market_id": "polymarket:6723009",
+    "book_id": "polymarket",
+    "raw_payload_hash": "bcf1c2125bcfd4a97f8cadea6aa16ff42cca86177ddd22c9e5693cc19e908e59",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-jerry-jeudy-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2f6060fc0d9a3973",
+    "market_id": "polymarket:6723010",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2f6060fc0d9a39732e8b6205bc7482345a5cc6983e8978aa3d70e6979dc72a80",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-jerry-jeudy-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_19ea67e79acb0e2c",
+    "market_id": "polymarket:6723012",
+    "book_id": "polymarket",
+    "raw_payload_hash": "19ea67e79acb0e2c537709ff31515c3e872ece1b8569935e6b3e2a2822bee14e",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cle-no-2026-11-08-recyd-juwan-johnson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0a1432f56f647159",
+    "market_id": "polymarket:6680354",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0a1432f56f647159f5145ea3a4317908f0c022899a7a6edee6b9410c20ded273",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-malachi-fields-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_35d4721f3fa7d001",
+    "market_id": "polymarket:6680371",
+    "book_id": "polymarket",
+    "raw_payload_hash": "35d4721f3fa7d00194056e79ca6b64e2b98bc1e875a654c0100e3f3f5ab67288",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-isaiah-likely-3pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a09df91e37a474b6",
+    "market_id": "polymarket:6680373",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a09df91e37a474b61f9d2b7ff0dbffae80e01b6c23cdf5314f57cf2dbd033f99",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-isaiah-likely-5pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2c3772b3150c4407",
+    "market_id": "polymarket:6680547",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2c3772b3150c4407237a06b11df27461cd21d0ad33cf7ae55370903c81d05856",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_2a069b575db6af70",
+    "market_id": "polymarket:6680548",
+    "book_id": "polymarket",
+    "raw_payload_hash": "2a069b575db6af70a7ecc666454801cc3180182f9c2039e8b99b03c776c530f9",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-isaiah-likely-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_0642676112fdac64",
+    "market_id": "polymarket:6722970",
+    "book_id": "polymarket",
+    "raw_payload_hash": "0642676112fdac6448722de1e58613be5e145eb757e4c20237c5a5dfeb8b1c6d",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-dallas-goedert-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_c550f72bb134e60d",
+    "market_id": "polymarket:6722980",
+    "book_id": "polymarket",
+    "raw_payload_hash": "c550f72bb134e60dd3f001af69da7bdfe0a1b77e7a56e709b074b3682d987e7b",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-recyd-makai-lemon-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a0ce2b498b6bf805",
+    "market_id": "polymarket:6722992",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a0ce2b498b6bf80581e8a66ffcca901041036774be2e83a795ba7e418a389540",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-nyg-phi-2026-11-08-rec-darius-cooper-2pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_afbaafce3b5b428d",
+    "market_id": "polymarket:6674611",
+    "book_id": "polymarket",
+    "raw_payload_hash": "afbaafce3b5b428df840f6b9205b8132c8d18d132d74c1352acd9b3e6a1b5b77",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_385399627052431c",
+    "market_id": "polymarket:6674612",
+    "book_id": "polymarket",
+    "raw_payload_hash": "385399627052431cb7f2b185918be12643d8fb19d0fa40d7f7c1e9009c759789",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-antonio-williams-39pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_9cb452241a5b5df1",
+    "market_id": "polymarket:6674615",
+    "book_id": "polymarket",
+    "raw_payload_hash": "9cb452241a5b5df1b6ec3eb4420a355412a49bcc87c3ed802bc9f7d97d50ac22",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_dcc7910e83dd91aa",
+    "market_id": "polymarket:6674616",
+    "book_id": "polymarket",
+    "raw_payload_hash": "dcc7910e83dd91aaa683e7ee465c1511819b6481c993427e5a73107b07b04b40",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_10abe7cc4a653509",
+    "market_id": "polymarket:6674617",
+    "book_id": "polymarket",
+    "raw_payload_hash": "10abe7cc4a653509e3517770a92801ccbd2df1021b4e05b7337c66de7d9352ae",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-chig-okonkwo-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_aa1d5dc23333c21a",
+    "market_id": "polymarket:6722944",
+    "book_id": "polymarket",
+    "raw_payload_hash": "aa1d5dc23333c21a98fc19884afe24324253ed3130bed85bcf75a31e346de8b5",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-la-was-2026-11-08-recyd-konata-mumpfield-9pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_a54a21833fd204f4",
+    "market_id": "polymarket:6635566",
+    "book_id": "polymarket",
+    "raw_payload_hash": "a54a21833fd204f417a6a146149585b593d07298f6629d224075bfffaa7bbb55",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-mike-gesicki-29pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_17bea024a4fc6108",
+    "market_id": "polymarket:6635573",
+    "book_id": "polymarket",
+    "raw_payload_hash": "17bea024a4fc610886288d6a069f4d5cf815b1f49e07d1efb1ce7e4242e6549d",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-tee-higgins-49pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_11d18a60e20c8a38",
+    "market_id": "polymarket:6635606",
+    "book_id": "polymarket",
+    "raw_payload_hash": "11d18a60e20c8a3883519d11f9c8882809fd4494fe99d19ac7ec9a43f7e4f46a",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-mike-gesicki-1pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_18474cc6375579cd",
+    "market_id": "polymarket:6638880",
+    "book_id": "polymarket",
+    "raw_payload_hash": "18474cc6375579cdde9b3e8a5f1091719f83e1a2e5202ab1969103ce69705ded",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-jahan-dotson-19pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_4d8467abf89d711c",
+    "market_id": "polymarket:6639172",
+    "book_id": "polymarket",
+    "raw_payload_hash": "4d8467abf89d711cadfae63533902dfc098de2fc214c1585c32081ecad3662d2",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-recyd-dohnte-meyers-14pt5",
+    "payload_kind": "polymarket_clob_quote.v1"
+  },
+  {
+    "receipt_id": "pmr_989f298991040a47",
+    "market_id": "polymarket:6639179",
+    "book_id": "polymarket",
+    "raw_payload_hash": "989f298991040a477519d9c50150905a6684764a1c79509691c8440da63864ee",
+    "captured_at": "2026-11-08T07:30:00.688712+00:00",
+    "source_url": "https://polymarket.com/market/nfl-cin-atl-2026-11-08-rec-dohnte-meyers-2pt5",
     "payload_kind": "polymarket_clob_quote.v1"
   }
 ]
