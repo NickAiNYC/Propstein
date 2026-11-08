@@ -40,7 +40,7 @@
     "home_team": "IND",
     "spread_line": -4.5,
     "total_line": 51.5,
-    "roof": null,
+    "roof": "open",
     "wind": null
   },
   {
