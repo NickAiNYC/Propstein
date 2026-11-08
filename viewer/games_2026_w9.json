@@ -5,10 +5,10 @@
     "gametime": "20:15",
     "away_team": "JAX",
     "home_team": "BAL",
-    "spread_line": -10.0,
-    "total_line": 39.5,
+    "spread_line": -8.5,
+    "total_line": 40.5,
     "roof": "outdoors",
-    "wind": 10.0
+    "wind": null
   },
   {
     "game_id": "2026_09_CIN_ATL",
@@ -19,7 +19,7 @@
     "spread_line": -3.0,
     "total_line": 52.5,
     "roof": "closed",
-    "wind": 0.0
+    "wind": null
   },
   {
     "game_id": "2026_09_CLE_NO",
@@ -28,9 +28,9 @@
     "away_team": "CLE",
     "home_team": "NO",
     "spread_line": 4.5,
-    "total_line": 42.5,
+    "total_line": 43.5,
     "roof": "dome",
-    "wind": 0.0
+    "wind": null
   },
   {
     "game_id": "2026_09_DAL_IND",
@@ -40,8 +40,8 @@
     "home_team": "IND",
     "spread_line": -4.5,
     "total_line": 51.5,
-    "roof": "closed",
-    "wind": 0.0
+    "roof": null,
+    "wind": null
   },
   {
     "game_id": "2026_09_DEN_CAR",
@@ -52,7 +52,7 @@
     "spread_line": -3.0,
     "total_line": 44.5,
     "roof": "outdoors",
-    "wind": 13.0
+    "wind": null
   },
   {
     "game_id": "2026_09_DET_MIA",
@@ -63,7 +63,7 @@
     "spread_line": -6.5,
     "total_line": 49.5,
     "roof": "outdoors",
-    "wind": 9.0
+    "wind": null
   },
   {
     "game_id": "2026_09_LA_WAS",
@@ -74,7 +74,7 @@
     "spread_line": -4.5,
     "total_line": 48.5,
     "roof": "outdoors",
-    "wind": 31.0
+    "wind": null
   },
   {
     "game_id": "2026_09_NYG_PHI",
@@ -85,7 +85,7 @@
     "spread_line": -3.0,
     "total_line": 38.5,
     "roof": "outdoors",
-    "wind": 30.0
+    "wind": null
   },
   {
     "game_id": "2026_09_NYJ_KC",
@@ -96,7 +96,7 @@
     "spread_line": 9.5,
     "total_line": 47.5,
     "roof": "outdoors",
-    "wind": 8.0
+    "wind": null
   },
   {
     "game_id": "2026_09_HOU_LAC",
@@ -107,7 +107,7 @@
     "spread_line": -5.5,
     "total_line": 40.5,
     "roof": "dome",
-    "wind": 0.0
+    "wind": null
   },
   {
     "game_id": "2026_09_LV_SF",
@@ -115,10 +115,10 @@
     "gametime": "16:05",
     "away_team": "LV",
     "home_team": "SF",
-    "spread_line": 9.5,
+    "spread_line": 8.5,
     "total_line": 51.5,
     "roof": "outdoors",
-    "wind": 8.0
+    "wind": null
   },
   {
     "game_id": "2026_09_ARI_SEA",
@@ -129,7 +129,7 @@
     "spread_line": 8.5,
     "total_line": 39.5,
     "roof": "outdoors",
-    "wind": 20.0
+    "wind": null
   },
   {
     "game_id": "2026_09_GB_NE",
@@ -140,7 +140,7 @@
     "spread_line": 3.0,
     "total_line": 44.5,
     "roof": "outdoors",
-    "wind": 27.0
+    "wind": null
   },
   {
     "game_id": "2026_09_TB_CHI",
@@ -151,7 +151,7 @@
     "spread_line": 6.0,
     "total_line": 47.5,
     "roof": "outdoors",
-    "wind": 17.0
+    "wind": null
   },
   {
     "game_id": "2026_09_BUF_MIN",
@@ -162,6 +162,6 @@
     "spread_line": -3.0,
     "total_line": 43.5,
     "roof": "dome",
-    "wind": 0.0
+    "wind": null
   }
 ]
