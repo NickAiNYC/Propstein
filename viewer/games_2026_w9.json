@@ -27,7 +27,7 @@
     "gametime": "13:00",
     "away_team": "CLE",
     "home_team": "NO",
-    "spread_line": 3.0,
+    "spread_line": 3.5,
     "total_line": 42.5,
     "roof": "dome",
     "wind": null
@@ -38,7 +38,7 @@
     "gametime": "13:00",
     "away_team": "DAL",
     "home_team": "IND",
-    "spread_line": -5.5,
+    "spread_line": -4.5,
     "total_line": 51.5,
     "roof": null,
     "wind": null
@@ -49,7 +49,7 @@
     "gametime": "13:00",
     "away_team": "DEN",
     "home_team": "CAR",
-    "spread_line": -2.5,
+    "spread_line": -3.0,
     "total_line": 44.5,
     "roof": "outdoors",
     "wind": null
@@ -94,7 +94,7 @@
     "away_team": "NYJ",
     "home_team": "KC",
     "spread_line": 9.5,
-    "total_line": 48.5,
+    "total_line": 47.5,
     "roof": "outdoors",
     "wind": null
   },
@@ -104,7 +104,7 @@
     "gametime": "16:05",
     "away_team": "HOU",
     "home_team": "LAC",
-    "spread_line": -6.0,
+    "spread_line": -5.5,
     "total_line": 40.5,
     "roof": "dome",
     "wind": null
@@ -137,7 +137,7 @@
     "gametime": "16:25",
     "away_team": "GB",
     "home_team": "NE",
-    "spread_line": 3.5,
+    "spread_line": 3.0,
     "total_line": 44.5,
     "roof": "outdoors",
     "wind": null

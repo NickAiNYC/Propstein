@@ -1,5 +1,5 @@
 PROPSTEIN PRE-KICKOFF RESEARCH BOARD
-Slate: 2026_w9 | Generated: 2026-11-08 00:19 UTC
+Slate: 2026_w9 | Generated: 2026-11-08 16:55 UTC
 Zero Tout Fluff · Pure Distribution Math · Transparent Limitations
 ============================================================
 STATUS NOTE:
@@ -9,31 +9,6 @@ Historical Week 07 trigger decisions (N=37) 95% CI: [-0.10, +1.45], spans zero.
 ------------------------------------------------------------
 PLAYER               MKT    LINE   ODDS   FAIR   PROJ   BOOK
 ------------------------------------------------------------
-Jalen Coker          Receptions 4.5    102.0  —      3.1    draftkings
-Antonio Williams     Receptions 4.5    -122.0 —      2.7    fanduel
-Jonah Coleman        Receptions 3.5    -113.0 —      2.2    draftkings
-Jonah Coleman        Yards  25.5   -108.0 —      17.0   draftkings
-Braelon Allen        Receptions 1.5    134.0  —      2.2    fanduel
-Drew Sample          Yards  3.5    -113.0 —      17.9   draftkings
-Antonio Williams     Yards  48.5   -111.0 —      33.2   betonlineag
-Mitchell Evans       Receptions 1.5    182.0  —      1.8    fanduel
-Jerry Jeudy          Receptions 1.5    113.0  —      2.4    draftkings
-Ryan Flournoy        Receptions 3.5    106.0  —      2.9    draftkings
-Puka Nacua           Receptions 7.5    -135.0 —      12.0   draftkings
-Marvin Mims Jr.      Receptions 1.5    143.0  —      2.0    draftkings
-Chig Okonkwo         Receptions 3.5    -102.0 —      2.8    fanduel
-Puka Nacua           Yards  92.5   -113.0 —      137.5  fanduel
-Austin Hooper        Yards  6.5    -109.0 —      19.5   draftkings
-Jalen Coker          Yards  53.5   -113.0 —      40.4   draftkings
-CeeDee Lamb          Receptions 6.5    -114.0 —      9.2    fanduel
-Adonai Mitchell      Receptions 3.5    100.0  —      3.0    betmgm
-Samaje Perine        Receptions 1.5    182.0  —      1.6    fanduel
-Rachaad White        Receptions 2.5    106.0  —      2.2    fanduel
-Kyren Williams       Receptions 2.5    118.0  —      2.3    fanduel
-CeeDee Lamb          Yards  83.5   -113.0 —      122.3  fanduel
-Chig Okonkwo         Yards  35.5   -110.0 —      28.6   draftkings
-Drew Sample          Receptions 0.5    -177.0 —      1.9    draftkings
-Bijan Robinson       Yards  25.5   -111.0 —      20.5   betmgm
 ============================================================
 Research terminal: https://propstein.com
 To inspect model distributions: https://propstein.com/methodology/
