@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-08T00:19:09Z",
+  "generated_at": "2026-11-08T03:00:29Z",
   "event_id": "600061268",
   "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
   "date": "2026-11-07",
@@ -72,7 +72,7 @@
         ],
         "p_finish": 0.532,
         "p_over_by_line": {
-          "1.5": 0.6433,
+          "1.5": 0.6434,
           "2.5": 0.5092
         }
       },
@@ -118,12 +118,12 @@
       ],
       "model": {
         "p": [
-          0.6319,
-          0.3681
+          0.6306,
+          0.3694
         ],
         "elo": [
           1541.2,
-          1452.3
+          1453.3
         ],
         "fights": [
           4,
@@ -140,13 +140,13 @@
           }
         ],
         "fair_american": [
-          -172,
-          172
+          -171,
+          171
         ],
         "p_finish": 0.4876,
         "p_over_by_line": {
-          "1.5": 0.673,
-          "2.5": 0.5501
+          "1.5": 0.6731,
+          "2.5": 0.5502
         }
       },
       "market": null,
@@ -191,16 +191,16 @@
       ],
       "model": {
         "p": [
-          0.6014,
-          0.3986
+          0.5796,
+          0.4204
         ],
         "elo": [
           1538.4,
-          1522.9
+          1538.6
         ],
         "fights": [
           2,
-          14
+          13
         ],
         "adjustments": [
           {
@@ -212,13 +212,13 @@
           }
         ],
         "fair_american": [
-          -151,
-          151
+          -138,
+          138
         ],
-        "p_finish": 0.599,
+        "p_finish": 0.5935,
         "p_over_by_line": {
-          "1.5": 0.5983,
-          "2.5": 0.4474
+          "1.5": 0.6021,
+          "2.5": 0.4524
         }
       },
       "market": null,
@@ -289,7 +289,7 @@
         ],
         "p_finish": 0.5163,
         "p_over_by_line": {
-          "1.5": 0.6538,
+          "1.5": 0.6539,
           "2.5": 0.5237
         }
       },
@@ -366,7 +366,7 @@
         ],
         "p_finish": 0.4984,
         "p_over_by_line": {
-          "1.5": 0.6658,
+          "1.5": 0.6659,
           "2.5": 0.5402
         }
       },
@@ -477,14 +477,14 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Heavyweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": false,
       "fighters": [
         {
           "id": "5215710",
           "name": "Gabriel Lorenço",
-          "record": "8-1-0",
+          "record": "8-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 27,
@@ -495,9 +495,9 @@
         {
           "id": "4869702",
           "name": "Thomas Petersen",
-          "record": "11-5-0",
+          "record": "12-5-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 31,
           "reach_in": 74.0,
           "stance": "Southpaw",
@@ -531,13 +531,13 @@
         ],
         "p_finish": 0.6109,
         "p_over_by_line": {
-          "1.5": 0.5904,
+          "1.5": 0.5905,
           "2.5": 0.4364
         }
       },
       "market": null,
       "totals": [],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -548,14 +548,14 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Featherweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "5327937",
           "name": "Keiichiro Nakamura",
-          "record": "8-1-0",
+          "record": "8-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
           "winner": false,
           "age": 37,
@@ -566,9 +566,9 @@
         {
           "id": "5346907",
           "name": "Ollie Schmid",
-          "record": "4-3-0",
+          "record": "5-3-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
-          "winner": false,
+          "winner": true,
           "age": 25,
           "reach_in": 71.0,
           "stance": "Orthodox",
@@ -603,7 +603,7 @@
         ],
         "p_finish": 0.534,
         "p_over_by_line": {
-          "1.5": 0.6419,
+          "1.5": 0.642,
           "2.5": 0.5073
         }
       },
@@ -637,7 +637,7 @@
         {
           "line": 1.5,
           "p_over_novig": 0.521,
-          "model_p_over": 0.6419,
+          "model_p_over": 0.642,
           "books": [
             {
               "book": "betonlineag",
@@ -666,7 +666,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -677,16 +677,16 @@
       "start": "2026-11-08T01:00Z",
       "weight_class": "Flyweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "4815978",
           "name": "Mitch Raposo",
-          "record": "11-3-0",
+          "record": "12-3-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 28,
           "reach_in": 64.5,
           "stance": "Switch",
@@ -695,7 +695,7 @@
         {
           "id": "5143890",
           "name": "Marcos Degli",
-          "record": "15-3-0",
+          "record": "15-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 26,
@@ -731,8 +731,8 @@
         ],
         "p_finish": 0.4858,
         "p_over_by_line": {
-          "1.5": 0.6743,
-          "2.5": 0.5518
+          "1.5": 0.6744,
+          "2.5": 0.5519
         }
       },
       "market": {
@@ -765,7 +765,7 @@
         {
           "line": 2.5,
           "p_over_novig": 0.5593,
-          "model_p_over": 0.5518,
+          "model_p_over": 0.5519,
           "books": [
             {
               "book": "betonlineag",
@@ -794,7 +794,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -805,14 +805,14 @@
       "start": "2026-11-08T01:00Z",
       "weight_class": "W Bantamweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 2,
+      "went_distance": false,
       "fighters": [
         {
           "id": "4277049",
           "name": "Priscila Cachoeira",
-          "record": "13-9-0",
+          "record": "13-10-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 38,
@@ -823,9 +823,9 @@
         {
           "id": "5361791",
           "name": "Nina Milošević",
-          "record": "9-1-0",
+          "record": "10-1-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ser.png",
-          "winner": false,
+          "winner": true,
           "age": 30,
           "reach_in": 67.0,
           "stance": "Orthodox",
@@ -860,7 +860,7 @@
         ],
         "p_finish": 0.4518,
         "p_over_by_line": {
-          "1.5": 0.697,
+          "1.5": 0.6971,
           "2.5": 0.5832
         }
       },
@@ -893,7 +893,7 @@
         {
           "line": 1.5,
           "p_over_novig": 0.4865,
-          "model_p_over": 0.697,
+          "model_p_over": 0.6971,
           "books": [
             {
               "book": "betonlineag",
@@ -922,7 +922,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -933,29 +933,29 @@
       "start": "2026-11-08T01:00Z",
       "weight_class": "Light Heavyweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "5078114",
           "name": "Billy Elekana",
-          "record": "10-2-0",
+          "record": "10-3-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
           "age": 31,
-          "reach_in": 77.5,
+          "reach_in": 77.0,
           "stance": "Southpaw",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5078114.png"
         },
         {
           "id": "5119021",
           "name": "Lucas Fernando",
-          "record": "14-3-0",
+          "record": "15-3-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
+          "winner": true,
           "age": 29,
-          "reach_in": 80.5,
+          "reach_in": 80.0,
           "stance": "Orthodox",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5119021.png"
         }
@@ -987,7 +987,7 @@
         ],
         "p_finish": 0.6708,
         "p_over_by_line": {
-          "1.5": 0.5502,
+          "1.5": 0.5503,
           "2.5": 0.3811
         }
       },
@@ -1021,7 +1021,7 @@
         {
           "line": 1.5,
           "p_over_novig": 0.6379,
-          "model_p_over": 0.5502,
+          "model_p_over": 0.5503,
           "books": [
             {
               "book": "betonlineag",
@@ -1057,7 +1057,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -1068,9 +1068,9 @@
       "start": "2026-11-08T01:00Z",
       "weight_class": "Bantamweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 1,
+      "went_distance": false,
       "fighters": [
         {
           "id": "3070984",
@@ -1088,7 +1088,7 @@
           "name": "Elijah Smith",
           "record": "10-1-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 24,
           "reach_in": 71.0,
           "stance": "Orthodox",
@@ -1123,8 +1123,8 @@
         ],
         "p_finish": 0.4732,
         "p_over_by_line": {
-          "1.5": 0.6827,
-          "2.5": 0.5634
+          "1.5": 0.6828,
+          "2.5": 0.5635
         }
       },
       "market": {
@@ -1157,7 +1157,7 @@
         {
           "line": 2.5,
           "p_over_novig": 0.4978,
-          "model_p_over": 0.5634,
+          "model_p_over": 0.5635,
           "books": [
             {
               "book": "betonlineag",
@@ -1186,7 +1186,7 @@
           ]
         }
       ],
-      "status": "scheduled",
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -1463,14 +1463,14 @@
     }
   ],
   "odds_meter": {
-    "error": "HTTP Error 401: Unauthorized",
+    "skipped": "outside 48h window or --no-odds",
     "market_from": "2026-11-08T00:11:29Z"
   },
   "market_as_of": "2026-11-08T00:11:29Z",
   "backtest": {
-    "n": 3518,
+    "n": 3523,
     "brier": 0.243,
-    "log_loss": 0.6789,
+    "log_loss": 0.6791,
     "coinflip_brier": 0.25,
     "coinflip_log_loss": 0.6931,
     "type": "walk-forward results-only (not closing-line CLV)"

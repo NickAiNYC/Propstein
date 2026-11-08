@@ -1451,7 +1451,7 @@
   "4277049": {
     "id": "4277049",
     "name": "Priscila Cachoeira",
-    "record": "13-9-0",
+    "record": "13-10-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 38,
     "height": "5' 7\"",
@@ -1532,7 +1532,7 @@
   "5361791": {
     "id": "5361791",
     "name": "Nina Milošević",
-    "record": "9-1-0",
+    "record": "10-1-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ser.png",
     "age": 30,
     "height": "5' 5\"",
@@ -1631,7 +1631,7 @@
   "5327937": {
     "id": "5327937",
     "name": "Keiichiro Nakamura",
-    "record": "8-1-0",
+    "record": "8-2-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/jpn.png",
     "age": 37,
     "height": "5' 10\"",
@@ -1656,7 +1656,7 @@
   "5346907": {
     "id": "5346907",
     "name": "Ollie Schmid",
-    "record": "4-3-0",
+    "record": "5-3-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
     "age": 25,
     "height": "6' 0\"",
@@ -1747,7 +1747,7 @@
   "4815978": {
     "id": "4815978",
     "name": "Mitch Raposo",
-    "record": "11-3-0",
+    "record": "12-3-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
     "age": 28,
     "height": "5' 5\"",
@@ -1804,7 +1804,7 @@
   "5143890": {
     "id": "5143890",
     "name": "Marcos Degli",
-    "record": "15-3-0",
+    "record": "15-4-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 26,
     "height": "5' 6\"",
@@ -1975,7 +1975,7 @@
   "5215710": {
     "id": "5215710",
     "name": "Gabriel Lorenço",
-    "record": "8-1-0",
+    "record": "8-2-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 27,
     "height": "6' 2\"",
@@ -2000,7 +2000,7 @@
   "4869702": {
     "id": "4869702",
     "name": "Thomas Petersen",
-    "record": "11-5-0",
+    "record": "12-5-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
     "age": 31,
     "height": "6' 1\"",
@@ -2122,9 +2122,9 @@
     "stance": "Switch",
     "weight_class": "Middleweight",
     "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4697476.png",
-    "elo": 1522.9,
-    "ufc_fights": 14,
-    "finish_rate": 0.571,
+    "elo": 1538.6,
+    "ufc_fights": 13,
+    "finish_rate": 0.538,
     "recent": [
       {
         "date": "2026-05-16",
@@ -2195,11 +2195,11 @@
   "5078114": {
     "id": "5078114",
     "name": "Billy Elekana",
-    "record": "10-2-0",
+    "record": "10-3-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
     "age": 31,
     "height": "6' 3\"",
-    "reach_in": 77.5,
+    "reach_in": 77.0,
     "stance": "Southpaw",
     "weight_class": "Light Heavyweight",
     "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5078114.png",
@@ -2244,11 +2244,11 @@
   "5119021": {
     "id": "5119021",
     "name": "Lucas Fernando",
-    "record": "14-3-0",
+    "record": "15-3-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 29,
     "height": "6' 3\"",
-    "reach_in": 80.5,
+    "reach_in": 80.0,
     "stance": "Orthodox",
     "weight_class": "Light Heavyweight",
     "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5119021.png",
@@ -2334,7 +2334,7 @@
     "stance": "Orthodox",
     "weight_class": "Welterweight",
     "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4426282.png",
-    "elo": 1452.3,
+    "elo": 1453.3,
     "ufc_fights": 7,
     "finish_rate": 0.571,
     "recent": [
