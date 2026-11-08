@@ -1,15 +1,18 @@
 {
-  "generated_at": "2026-11-01T18:45:54Z",
+  "generated_at": "2026-11-08T18:40:26Z",
   "rules": "draw/NC/cancel/scratch = void (push); CLV vs lock snapshot only",
   "summary": {
-    "n_decisions": 0,
-    "n_settled": 0,
+    "n_decisions": 13,
+    "n_settled": 13,
     "n_void": 0,
-    "wins": 0,
-    "n_clv": 0,
-    "beat_close": 0,
-    "beat_close_ci95": null,
-    "mean_clv": null,
+    "wins": 5,
+    "n_clv": 6,
+    "beat_close": 3,
+    "beat_close_ci95": [
+      0.1876,
+      0.8124
+    ],
+    "mean_clv": -0.0013,
     "edge_claim": "NO EDGE"
   },
   "cards": [
@@ -17,6 +20,161 @@
       "event_id": "600061420",
       "event_name": "UFC Fight Night: Moicano vs. Nolan",
       "decisions": []
+    },
+    {
+      "event_id": "600061268",
+      "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
+      "decisions": [
+        {
+          "fight_id": "401928118",
+          "side": 0,
+          "fighter": "Jonny Parsons",
+          "decision_snapshot": "pre",
+          "model_p": 0.3632,
+          "market_p": 0.3099,
+          "edge": 0.0533,
+          "clv": null,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401928117",
+          "side": 1,
+          "fighter": "Wellington Turman",
+          "decision_snapshot": "pre",
+          "model_p": 0.3694,
+          "market_p": 0.1629,
+          "edge": 0.2065,
+          "clv": null,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401932011",
+          "side": 1,
+          "fighter": "Andre Petroski",
+          "decision_snapshot": "pre",
+          "model_p": 0.4204,
+          "market_p": 0.2817,
+          "edge": 0.1387,
+          "clv": null,
+          "result": "win"
+        },
+        {
+          "fight_id": "401933235",
+          "side": 1,
+          "fighter": "Carlos Calderon",
+          "decision_snapshot": "pre",
+          "model_p": 0.4287,
+          "market_p": 0.1768,
+          "edge": 0.2519,
+          "clv": null,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401928120",
+          "side": 1,
+          "fighter": "Murtazali Magomedov",
+          "decision_snapshot": "pre",
+          "model_p": 0.5131,
+          "market_p": 0.4807,
+          "edge": 0.0324,
+          "clv": null,
+          "result": "win"
+        },
+        {
+          "fight_id": "401928115",
+          "side": 1,
+          "fighter": "Gabriella Fernandes",
+          "decision_snapshot": "pre",
+          "model_p": 0.3938,
+          "market_p": 0.3348,
+          "edge": 0.059,
+          "clv": null,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401911642",
+          "side": 1,
+          "fighter": "Ollie Schmid",
+          "decision_snapshot": "pre",
+          "model_p": 0.5357,
+          "market_p": 0.2468,
+          "edge": 0.2889,
+          "clv": null,
+          "result": "win"
+        },
+        {
+          "fight_id": "401932012",
+          "side": 0,
+          "fighter": "Mitch Raposo",
+          "decision_snapshot": "pre",
+          "model_p": 0.4238,
+          "market_p": 0.3269,
+          "edge": 0.0969,
+          "lock_p": 0.3194,
+          "clv": -0.0075,
+          "result": "win"
+        },
+        {
+          "fight_id": "401928116",
+          "side": 0,
+          "fighter": "Priscila Cachoeira",
+          "decision_snapshot": "pre",
+          "model_p": 0.3355,
+          "market_p": 0.1979,
+          "edge": 0.1376,
+          "lock_p": 0.2,
+          "clv": 0.0021,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401928113",
+          "side": 0,
+          "fighter": "Billy Elekana",
+          "decision_snapshot": "pre",
+          "model_p": 0.5243,
+          "market_p": 0.2604,
+          "edge": 0.2639,
+          "lock_p": 0.2566,
+          "clv": -0.0038,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401928119",
+          "side": 0,
+          "fighter": "Davey Grant",
+          "decision_snapshot": "pre",
+          "model_p": 0.3074,
+          "market_p": 0.272,
+          "edge": 0.0354,
+          "lock_p": 0.261,
+          "clv": -0.011,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401928111",
+          "side": 1,
+          "fighter": "Virna Jandiroba",
+          "decision_snapshot": "pre",
+          "model_p": 0.4431,
+          "market_p": 0.3553,
+          "edge": 0.0878,
+          "lock_p": 0.3631,
+          "clv": 0.0078,
+          "result": "loss"
+        },
+        {
+          "fight_id": "401932715",
+          "side": 1,
+          "fighter": "Johnny Walker",
+          "decision_snapshot": "pre",
+          "model_p": 0.4463,
+          "market_p": 0.3319,
+          "edge": 0.1144,
+          "lock_p": 0.3364,
+          "clv": 0.0045,
+          "result": "win"
+        }
+      ]
     }
   ]
 }
