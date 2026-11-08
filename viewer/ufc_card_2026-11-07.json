@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-07T20:59:27Z",
+  "generated_at": "2026-11-08T00:11:29Z",
   "event_id": "600061268",
   "event_name": "UFC Fight Night: Cortes Acosta vs. Walker",
   "date": "2026-11-07",
@@ -16,14 +16,14 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Welterweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 1,
+      "went_distance": false,
       "fighters": [
         {
           "id": "4880114",
           "name": "Jonny Parsons",
-          "record": "9-3-0",
+          "record": "9-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
           "age": 35,
@@ -34,9 +34,9 @@
         {
           "id": "5080485",
           "name": "José Souza",
-          "record": "9-1-0",
+          "record": "10-1-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
+          "winner": true,
           "age": 24,
           "reach_in": 79.0,
           "stance": "Orthodox",
@@ -76,50 +76,9 @@
           "2.5": 0.5092
         }
       },
-      "market": {
-        "h2h_novig": [
-          0.3427,
-          0.6573
-        ],
-        "best": [
-          {
-            "price": 188,
-            "book": "fanduel"
-          },
-          {
-            "price": -215,
-            "book": "betus"
-          }
-        ],
-        "books": [
-          "betonlineag",
-          "betus",
-          "fanduel"
-        ],
-        "odds_event_id": "4bbda4419405066f33ae91bc3c80ae2a"
-      },
-      "totals": [
-        {
-          "line": 2.5,
-          "p_over_novig": 0.4409,
-          "model_p_over": 0.5092,
-          "books": [
-            {
-              "book": "betus",
-              "over": 118,
-              "under": -140,
-              "p_over": 0.4402054292002935
-            },
-            {
-              "book": "betonlineag",
-              "over": 118,
-              "under": -138,
-              "p_over": 0.4416895553411031
-            }
-          ]
-        }
-      ],
-      "status": "scheduled",
+      "market": null,
+      "totals": [],
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -130,16 +89,16 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Welterweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "4701954",
           "name": "Seokhyeon Ko",
-          "record": "13-3-0",
+          "record": "14-3-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png",
-          "winner": false,
+          "winner": true,
           "age": 33,
           "reach_in": 71.0,
           "stance": "Southpaw",
@@ -148,7 +107,7 @@
         {
           "id": "4426282",
           "name": "Wellington Turman",
-          "record": "18-8-0",
+          "record": "18-9-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 30,
@@ -190,72 +149,9 @@
           "2.5": 0.5501
         }
       },
-      "market": {
-        "h2h_novig": [
-          0.8385,
-          0.1615
-        ],
-        "best": [
-          {
-            "price": -675,
-            "book": "draftkings"
-          },
-          {
-            "price": 520,
-            "book": "fanduel"
-          }
-        ],
-        "books": [
-          "betonlineag",
-          "betrivers",
-          "betus",
-          "bovada",
-          "draftkings",
-          "fanduel"
-        ],
-        "odds_event_id": "fb05169fb496b2dfdf3ff9110ae170de"
-      },
-      "totals": [
-        {
-          "line": 1.5,
-          "p_over_novig": 0.6394,
-          "model_p_over": 0.673,
-          "books": [
-            {
-              "book": "betonlineag",
-              "over": -200,
-              "under": 169,
-              "p_over": 0.6420047732696897
-            },
-            {
-              "book": "betus",
-              "over": -200,
-              "under": 166,
-              "p_over": 0.6394230769230769
-            },
-            {
-              "book": "draftkings",
-              "over": -200,
-              "under": 154,
-              "p_over": 0.6287128712871286
-            }
-          ]
-        },
-        {
-          "line": 2.5,
-          "p_over_novig": 0.5101,
-          "model_p_over": 0.5501,
-          "books": [
-            {
-              "book": "bovada",
-              "over": -120,
-              "under": -110,
-              "p_over": 0.5101214574898786
-            }
-          ]
-        }
-      ],
-      "status": "scheduled",
+      "market": null,
+      "totals": [],
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -266,14 +162,14 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Middleweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 2,
+      "went_distance": false,
       "fighters": [
         {
           "id": "5264925",
           "name": "Mantas Kondratavičius",
-          "record": "9-1-0",
+          "record": "9-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ltu.png",
           "winner": false,
           "age": 27,
@@ -284,9 +180,9 @@
         {
           "id": "4697476",
           "name": "Andre Petroski",
-          "record": "13-7-0",
+          "record": "14-6-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 35,
           "reach_in": 73.0,
           "stance": "Switch",
@@ -325,65 +221,9 @@
           "2.5": 0.4474
         }
       },
-      "market": {
-        "h2h_novig": [
-          0.7221,
-          0.2779
-        ],
-        "best": [
-          {
-            "price": -295,
-            "book": "fanduel"
-          },
-          {
-            "price": 250,
-            "book": "draftkings"
-          }
-        ],
-        "books": [
-          "betonlineag",
-          "betrivers",
-          "betus",
-          "bovada",
-          "draftkings",
-          "fanduel"
-        ],
-        "odds_event_id": "af2de273431fca1f4bb8a1c40b42cf67"
-      },
-      "totals": [
-        {
-          "line": 1.5,
-          "p_over_novig": 0.389,
-          "model_p_over": 0.5983,
-          "books": [
-            {
-              "book": "betonlineag",
-              "over": 145,
-              "under": -170,
-              "p_over": 0.39329934450109244
-            },
-            {
-              "book": "draftkings",
-              "over": 145,
-              "under": -188,
-              "p_over": 0.3847181405289875
-            },
-            {
-              "book": "bovada",
-              "over": 150,
-              "under": -200,
-              "p_over": 0.375
-            },
-            {
-              "book": "betus",
-              "over": 142,
-              "under": -170,
-              "p_over": 0.3962430290578221
-            }
-          ]
-        }
-      ],
-      "status": "scheduled",
+      "market": null,
+      "totals": [],
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -394,16 +234,16 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Featherweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 1,
+      "went_distance": false,
       "fighters": [
         {
           "id": "5120304",
           "name": "Austin Bashi",
-          "record": "14-2-0",
+          "record": "15-2-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
-          "winner": false,
+          "winner": true,
           "age": 25,
           "reach_in": 70.0,
           "stance": "Orthodox",
@@ -412,8 +252,8 @@
         {
           "id": "5125484",
           "name": "Carlos Calderon",
-          "record": "11-4-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+          "record": "11-5-0",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/esa.png",
           "winner": false,
           "age": 30,
           "reach_in": 71.0,
@@ -453,72 +293,9 @@
           "2.5": 0.5237
         }
       },
-      "market": {
-        "h2h_novig": [
-          0.8284,
-          0.1716
-        ],
-        "best": [
-          {
-            "price": -590,
-            "book": "fanduel"
-          },
-          {
-            "price": 475,
-            "book": "bovada"
-          }
-        ],
-        "books": [
-          "betonlineag",
-          "betrivers",
-          "betus",
-          "bovada",
-          "draftkings",
-          "fanduel"
-        ],
-        "odds_event_id": "63c53bcf843e1c4639e8f13ed0cd282f"
-      },
-      "totals": [
-        {
-          "line": 1.5,
-          "p_over_novig": 0.5101,
-          "model_p_over": 0.6538,
-          "books": [
-            {
-              "book": "bovada",
-              "over": -120,
-              "under": -110,
-              "p_over": 0.5101214574898786
-            }
-          ]
-        },
-        {
-          "line": 2.5,
-          "p_over_novig": 0.3606,
-          "model_p_over": 0.5237,
-          "books": [
-            {
-              "book": "betonlineag",
-              "over": 169,
-              "under": -200,
-              "p_over": 0.35799522673031026
-            },
-            {
-              "book": "betus",
-              "over": 166,
-              "under": -200,
-              "p_over": 0.3605769230769231
-            },
-            {
-              "book": "draftkings",
-              "over": 160,
-              "under": -210,
-              "p_over": 0.3621495327102804
-            }
-          ]
-        }
-      ],
-      "status": "replacement",
+      "market": null,
+      "totals": [],
+      "status": "final",
       "status_events": [
         {
           "at": "2026-11-05T18:32:35Z",
@@ -535,27 +312,27 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "Featherweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "4969974",
           "name": "Jose Delano",
-          "record": "17-3-0",
+          "record": "17-4-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 30,
-          "reach_in": 70.0,
+          "reach_in": 70.5,
           "stance": "Orthodox",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4969974.png"
         },
         {
           "id": "5308768",
           "name": "Murtazali Magomedov",
-          "record": "11-0-0",
+          "record": "12-0-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/kgz.png",
-          "winner": false,
+          "winner": true,
           "age": 27,
           "reach_in": 70.5,
           "stance": "Orthodox",
@@ -564,8 +341,8 @@
       ],
       "model": {
         "p": [
-          0.4811,
-          0.5189
+          0.4869,
+          0.5131
         ],
         "elo": [
           1537.9,
@@ -577,15 +354,15 @@
         ],
         "adjustments": [
           {
-            "reach": -2.0
+            "reach": 0.0
           },
           {
-            "reach": 2.0
+            "reach": 0.0
           }
         ],
         "fair_american": [
-          108,
-          -108
+          105,
+          -105
         ],
         "p_finish": 0.4984,
         "p_over_by_line": {
@@ -593,65 +370,9 @@
           "2.5": 0.5402
         }
       },
-      "market": {
-        "h2h_novig": [
-          0.5194,
-          0.4806
-        ],
-        "best": [
-          {
-            "price": -117,
-            "book": "bovada"
-          },
-          {
-            "price": 105,
-            "book": "betonlineag"
-          }
-        ],
-        "books": [
-          "betonlineag",
-          "betrivers",
-          "betus",
-          "bovada",
-          "draftkings",
-          "fanduel"
-        ],
-        "odds_event_id": "15c304fba821f17d20df0dd43293dfed"
-      },
-      "totals": [
-        {
-          "line": 2.5,
-          "p_over_novig": 0.482,
-          "model_p_over": 0.5402,
-          "books": [
-            {
-              "book": "betonlineag",
-              "over": -101,
-              "under": -115,
-              "p_over": 0.4843854561677448
-            },
-            {
-              "book": "betus",
-              "over": -105,
-              "under": -115,
-              "p_over": 0.4891657638136511
-            },
-            {
-              "book": "draftkings",
-              "over": -105,
-              "under": -125,
-              "p_over": 0.4796954314720812
-            },
-            {
-              "book": "bovada",
-              "over": -105,
-              "under": -125,
-              "p_over": 0.4796954314720812
-            }
-          ]
-        }
-      ],
-      "status": "scheduled",
+      "market": null,
+      "totals": [],
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -662,16 +383,16 @@
       "start": "2026-11-07T22:00Z",
       "weight_class": "W Flyweight",
       "sched_rounds": 3,
-      "result": null,
-      "end_round": null,
-      "went_distance": null,
+      "result": "win",
+      "end_round": 3,
+      "went_distance": true,
       "fighters": [
         {
           "id": "3309918",
           "name": "Karine Silva",
-          "record": "19-7-0",
+          "record": "20-7-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
-          "winner": false,
+          "winner": true,
           "age": 32,
           "reach_in": 67.0,
           "stance": "Orthodox",
@@ -680,7 +401,7 @@
         {
           "id": "4871203",
           "name": "Gabriella Fernandes",
-          "record": "11-4-0",
+          "record": "11-5-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
           "winner": false,
           "age": 33,
@@ -723,63 +444,29 @@
       },
       "market": {
         "h2h_novig": [
-          0.6617,
-          0.3383
+          0.5724,
+          0.4276
         ],
         "best": [
           {
-            "price": -220,
-            "book": "betonlineag"
+            "price": -145,
+            "book": "bovada"
           },
           {
-            "price": 185,
-            "book": "betonlineag"
+            "price": 300,
+            "book": "draftkings"
           }
         ],
         "books": [
-          "betonlineag",
+          "betmgm",
           "betrivers",
-          "betus",
           "bovada",
-          "draftkings",
-          "fanduel"
+          "draftkings"
         ],
         "odds_event_id": "795e2f9ac481c65099c567c960fe450a"
       },
-      "totals": [
-        {
-          "line": 2.5,
-          "p_over_novig": 0.6096,
-          "model_p_over": 0.639,
-          "books": [
-            {
-              "book": "betonlineag",
-              "over": -173,
-              "under": 147,
-              "p_over": 0.6101726378318173
-            },
-            {
-              "book": "betus",
-              "over": -175,
-              "under": 146,
-              "p_over": 0.6102055279943301
-            },
-            {
-              "book": "draftkings",
-              "over": -180,
-              "under": 140,
-              "p_over": 0.6067415730337079
-            },
-            {
-              "book": "bovada",
-              "over": -185,
-              "under": 140,
-              "p_over": 0.6090534979423868
-            }
-          ]
-        }
-      ],
-      "status": "scheduled",
+      "totals": [],
+      "status": "final",
       "status_events": [],
       "short_notice": false,
       "void": false,
@@ -880,7 +567,7 @@
           "id": "5346907",
           "name": "Ollie Schmid",
           "record": "4-3-0",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
           "winner": false,
           "age": 25,
           "reach_in": 71.0,
@@ -922,20 +609,21 @@
       },
       "market": {
         "h2h_novig": [
-          0.7493,
-          0.2507
+          0.7532,
+          0.2468
         ],
         "best": [
           {
-            "price": -335,
-            "book": "betrivers"
+            "price": -350,
+            "book": "bovada"
           },
           {
-            "price": 291,
-            "book": "betonlineag"
+            "price": 300,
+            "book": "betmgm"
           }
         ],
         "books": [
+          "betmgm",
           "betonlineag",
           "betrivers",
           "betus",
@@ -948,7 +636,7 @@
       "totals": [
         {
           "line": 1.5,
-          "p_over_novig": 0.528,
+          "p_over_novig": 0.521,
           "model_p_over": 0.6419,
           "books": [
             {
@@ -965,15 +653,15 @@
             },
             {
               "book": "draftkings",
-              "over": -130,
-              "under": 100,
-              "p_over": 0.5306122448979592
+              "over": -125,
+              "under": -105,
+              "p_over": 0.5203045685279188
             },
             {
               "book": "bovada",
-              "over": -130,
-              "under": 100,
-              "p_over": 0.5306122448979592
+              "over": -125,
+              "under": -105,
+              "p_over": 0.5203045685279188
             }
           ]
         }
@@ -1049,12 +737,12 @@
       },
       "market": {
         "h2h_novig": [
-          0.3262,
-          0.6738
+          0.3194,
+          0.6806
         ],
         "best": [
           {
-            "price": 197,
+            "price": 205,
             "book": "betonlineag"
           },
           {
@@ -1063,6 +751,7 @@
           }
         ],
         "books": [
+          "betmgm",
           "betonlineag",
           "betrivers",
           "betus",
@@ -1075,7 +764,7 @@
       "totals": [
         {
           "line": 2.5,
-          "p_over_novig": 0.5627,
+          "p_over_novig": 0.5593,
           "model_p_over": 0.5518,
           "books": [
             {
@@ -1092,15 +781,15 @@
             },
             {
               "book": "draftkings",
-              "over": -154,
-              "under": 120,
-              "p_over": 0.5715249662618084
+              "over": -145,
+              "under": 114,
+              "p_over": 0.558797046641455
             },
             {
               "book": "bovada",
-              "over": -150,
-              "under": 115,
-              "p_over": 0.5633187772925764
+              "over": -145,
+              "under": 110,
+              "p_over": 0.554140127388535
             }
           ]
         }
@@ -1177,13 +866,13 @@
       },
       "market": {
         "h2h_novig": [
-          0.1968,
-          0.8032
+          0.2,
+          0.8
         ],
         "best": [
           {
-            "price": 430,
-            "book": "fanduel"
+            "price": 390,
+            "book": "draftkings"
           },
           {
             "price": -480,
@@ -1203,32 +892,32 @@
       "totals": [
         {
           "line": 1.5,
-          "p_over_novig": 0.5054,
+          "p_over_novig": 0.4865,
           "model_p_over": 0.697,
           "books": [
             {
               "book": "betonlineag",
-              "over": -114,
-              "under": -102,
-              "p_over": 0.5133761369716425
+              "over": -105,
+              "under": -111,
+              "p_over": 0.49331997327989313
             },
             {
               "book": "betus",
-              "over": -115,
-              "under": -105,
-              "p_over": 0.5108342361863488
+              "over": -110,
+              "under": -110,
+              "p_over": 0.5
             },
             {
               "book": "draftkings",
-              "over": -115,
-              "under": -115,
-              "p_over": 0.5
+              "over": 100,
+              "under": -130,
+              "p_over": 0.4693877551020409
             },
             {
               "book": "bovada",
-              "over": -115,
-              "under": -115,
-              "p_over": 0.5
+              "over": -105,
+              "under": -125,
+              "p_over": 0.4796954314720812
             }
           ]
         }
@@ -1304,20 +993,21 @@
       },
       "market": {
         "h2h_novig": [
-          0.2584,
-          0.7416
+          0.2566,
+          0.7434
         ],
         "best": [
           {
-            "price": 287,
+            "price": 284,
             "book": "betonlineag"
           },
           {
-            "price": -330,
-            "book": "bovada"
+            "price": -335,
+            "book": "betrivers"
           }
         ],
         "books": [
+          "betmgm",
           "betonlineag",
           "betrivers",
           "betus",
@@ -1439,20 +1129,21 @@
       },
       "market": {
         "h2h_novig": [
-          0.2669,
-          0.7331
+          0.261,
+          0.739
         ],
         "best": [
           {
-            "price": 270,
-            "book": "draftkings"
+            "price": 285,
+            "book": "fanduel"
           },
           {
-            "price": -305,
-            "book": "betrivers"
+            "price": -325,
+            "book": "betmgm"
           }
         ],
         "books": [
+          "betmgm",
           "betonlineag",
           "betrivers",
           "betus",
@@ -1465,7 +1156,7 @@
       "totals": [
         {
           "line": 2.5,
-          "p_over_novig": 0.4927,
+          "p_over_novig": 0.4978,
           "model_p_over": 0.5634,
           "books": [
             {
@@ -1488,9 +1179,9 @@
             },
             {
               "book": "betus",
-              "over": 100,
-              "under": -120,
-              "p_over": 0.4782608695652174
+              "over": -110,
+              "under": -110,
+              "p_over": 0.5
             }
           ]
         }
@@ -1568,20 +1259,21 @@
       },
       "market": {
         "h2h_novig": [
-          0.6366,
-          0.3634
+          0.6369,
+          0.3631
         ],
         "best": [
           {
-            "price": -192,
-            "book": "draftkings"
+            "price": -190,
+            "book": "bovada"
           },
           {
-            "price": 168,
-            "book": "fanduel"
+            "price": 180,
+            "book": "betmgm"
           }
         ],
         "books": [
+          "betmgm",
           "betonlineag",
           "betrivers",
           "betus",
@@ -1699,20 +1391,21 @@
       },
       "market": {
         "h2h_novig": [
-          0.664,
-          0.336
+          0.6636,
+          0.3364
         ],
         "best": [
           {
-            "price": -225,
-            "book": "draftkings"
+            "price": -210,
+            "book": "bovada"
           },
           {
             "price": 190,
-            "book": "betonlineag"
+            "book": "fanduel"
           }
         ],
         "books": [
+          "betmgm",
           "betonlineag",
           "betrivers",
           "betus",
@@ -1725,14 +1418,14 @@
       "totals": [
         {
           "line": 1.5,
-          "p_over_novig": 0.6499,
+          "p_over_novig": 0.6473,
           "model_p_over": 0.718,
           "books": [
             {
               "book": "betonlineag",
-              "over": -210,
-              "under": 177,
-              "p_over": 0.6523494448805651
+              "over": -205,
+              "under": 173,
+              "p_over": 0.6472561151911178
             },
             {
               "book": "draftkings",
@@ -1742,9 +1435,9 @@
             },
             {
               "book": "betus",
-              "over": -210,
-              "under": 174,
-              "p_over": 0.6498757623672915
+              "over": -205,
+              "under": 170,
+              "p_over": 0.644729178800233
             }
           ]
         },
@@ -1770,14 +1463,19 @@
     }
   ],
   "odds_meter": {
-    "skipped": "outside 48h window or --no-odds",
-    "market_from": "2026-11-07T16:45:20Z"
+    "cost_measured": 2,
+    "cost_estimated": 2,
+    "remaining": "14",
+    "used": "486",
+    "events_returned": 9,
+    "ufc_matched": 8,
+    "non_ufc_dropped": 1
   },
-  "market_as_of": "2026-11-07T16:45:20Z",
+  "market_as_of": "2026-11-08T00:11:29Z",
   "backtest": {
-    "n": 3512,
+    "n": 3518,
     "brier": 0.243,
-    "log_loss": 0.679,
+    "log_loss": 0.6789,
     "coinflip_brier": 0.25,
     "coinflip_log_loss": 0.6931,
     "type": "walk-forward results-only (not closing-line CLV)"

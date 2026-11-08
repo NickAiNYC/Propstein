@@ -1385,7 +1385,7 @@
   "4880114": {
     "id": "4880114",
     "name": "Jonny Parsons",
-    "record": "9-3-0",
+    "record": "9-4-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
     "age": 35,
     "height": "5' 9\"",
@@ -1418,7 +1418,7 @@
   "5080485": {
     "id": "5080485",
     "name": "José Souza",
-    "record": "9-1-0",
+    "record": "10-1-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 24,
     "height": "6' 3\"",
@@ -1557,7 +1557,7 @@
   "5120304": {
     "id": "5120304",
     "name": "Austin Bashi",
-    "record": "14-2-0",
+    "record": "15-2-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
     "age": 25,
     "height": "5' 6\"",
@@ -1657,7 +1657,7 @@
     "id": "5346907",
     "name": "Ollie Schmid",
     "record": "4-3-0",
-    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/nzl.png",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/hun.png",
     "age": 25,
     "height": "6' 0\"",
     "reach_in": 71.0,
@@ -1681,11 +1681,11 @@
   "4969974": {
     "id": "4969974",
     "name": "Jose Delano",
-    "record": "17-3-0",
+    "record": "17-4-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 30,
     "height": "5' 8\"",
-    "reach_in": 70.0,
+    "reach_in": 70.5,
     "stance": "Orthodox",
     "weight_class": "Featherweight",
     "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4969974.png",
@@ -1714,7 +1714,7 @@
   "5308768": {
     "id": "5308768",
     "name": "Murtazali Magomedov",
-    "record": "11-0-0",
+    "record": "12-0-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/kgz.png",
     "age": 27,
     "height": "5' 9\"",
@@ -1829,7 +1829,7 @@
   "3309918": {
     "id": "3309918",
     "name": "Karine Silva",
-    "record": "19-7-0",
+    "record": "20-7-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 32,
     "height": "5' 5\"",
@@ -1910,7 +1910,7 @@
   "4871203": {
     "id": "4871203",
     "name": "Gabriella Fernandes",
-    "record": "11-4-0",
+    "record": "11-5-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 33,
     "height": "5' 6\"",
@@ -2081,7 +2081,7 @@
   "5264925": {
     "id": "5264925",
     "name": "Mantas Kondratavičius",
-    "record": "9-1-0",
+    "record": "9-2-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ltu.png",
     "age": 27,
     "height": "6' 2\"",
@@ -2114,7 +2114,7 @@
   "4697476": {
     "id": "4697476",
     "name": "Andre Petroski",
-    "record": "13-7-0",
+    "record": "14-6-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
     "age": 35,
     "height": "6' 0\"",
@@ -2277,7 +2277,7 @@
   "4701954": {
     "id": "4701954",
     "name": "Seokhyeon Ko",
-    "record": "13-3-0",
+    "record": "14-3-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sko.png",
     "age": 33,
     "height": "5' 10\"",
@@ -2326,7 +2326,7 @@
   "4426282": {
     "id": "4426282",
     "name": "Wellington Turman",
-    "record": "18-8-0",
+    "record": "18-9-0",
     "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
     "age": 30,
     "height": "6' 0\"",
@@ -2829,10 +2829,10 @@
   "5125484": {
     "id": "5125484",
     "name": "Carlos Calderon",
-    "record": "11-4-0",
-    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "record": "11-5-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/esa.png",
     "age": 30,
-    "height": "5' 11\"",
+    "height": "5' 9\"",
     "reach_in": 71.0,
     "stance": "Southpaw",
     "weight_class": "Featherweight",
