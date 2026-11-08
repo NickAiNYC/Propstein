@@ -2850,5 +2850,1711 @@
         "round": 2
       }
     ]
+  },
+  "5037883": {
+    "id": "5037883",
+    "name": "Evan Elder",
+    "record": "10-2-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 29,
+    "height": "5' 10\"",
+    "reach_in": 72.0,
+    "stance": "Switch",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5037883.png",
+    "elo": 1521.4,
+    "ufc_fights": 5,
+    "finish_rate": 0.4,
+    "recent": [
+      {
+        "date": "2025-04-26",
+        "opponent": "Gauge Young",
+        "event": "UFC Fight Night: Machado Garry vs. Prates",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-07-13",
+        "opponent": "Darrius Flowers",
+        "event": "UFC Fight Night: Namajunas vs. Cortez",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2023-07-15",
+        "opponent": "Genaro Valdez",
+        "event": "UFC Fight Night: Holm vs. Bueno Silva",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-02-18",
+        "opponent": "Nazim Sadykhov",
+        "event": "UFC Fight Night: Andrade vs. Blanchfield",
+        "result": "L",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2022-04-23",
+        "opponent": "Preston Parsons",
+        "event": "UFC Fight Night: Lemos vs. Andrade",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "5293557": {
+    "id": "5293557",
+    "name": "Samuel Sanches",
+    "record": "11-1-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+    "age": 23,
+    "height": "5' 10\"",
+    "reach_in": 74.5,
+    "stance": "Orthodox",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5293557.png",
+    "elo": 1521.5,
+    "ufc_fights": 1,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2025-09-10",
+        "opponent": "Chasen Blair",
+        "event": "Dana White's Contender Series: Season 9, Week 5",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      }
+    ]
+  },
+  "3998248": {
+    "id": "3998248",
+    "name": "Adrian Yañez",
+    "record": "18-6-1",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 32,
+    "height": "5' 7\"",
+    "reach_in": 70.0,
+    "stance": "Orthodox",
+    "weight_class": "Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3998248.png",
+    "elo": 1586.8,
+    "ufc_fights": 12,
+    "finish_rate": 0.75,
+    "recent": [
+      {
+        "date": "2026-07-11",
+        "opponent": "Cody Garbrandt",
+        "event": "UFC 329: McGregor vs. Holloway 2",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-03-28",
+        "opponent": "Ricky Simon",
+        "event": "UFC Fight Night: Adesanya vs. Pyfer",
+        "result": "D/NC",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-12-15",
+        "opponent": "Daniel Marcos",
+        "event": "UFC Fight Night: Covington vs. Buckley",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-05-18",
+        "opponent": "Vinicius Salvador",
+        "event": "UFC Fight Night: Barboza vs. Murphy",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-10-14",
+        "opponent": "Jonathan Martinez",
+        "event": "UFC Fight Night: Yusuff vs. Barboza",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2023-04-09",
+        "opponent": "Rob Font",
+        "event": "UFC 287: Pereira vs. Adesanya 2",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2022-06-18",
+        "opponent": "Tony Kelley",
+        "event": "UFC Fight Night: Kattar vs. Emmett",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2021-11-20",
+        "opponent": "Davey Grant",
+        "event": "UFC Fight Night: Vieira vs. Tate",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "5310574": {
+    "id": "5310574",
+    "name": "Juan Diaz",
+    "record": "16-1-1",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/per.png",
+    "age": 28,
+    "height": "5' 8\"",
+    "reach_in": 69.5,
+    "stance": "Orthodox",
+    "weight_class": "Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5310574.png",
+    "elo": 1547.2,
+    "ufc_fights": 2,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2026-05-17",
+        "opponent": "Malcolm Wellmaker",
+        "event": "UFC Fight Night: Allen vs. Costa",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2025-10-15",
+        "opponent": "Kwon Won Il",
+        "event": "Dana White's Contender Series: Season 9, Week 10",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "4334306": {
+    "id": "4334306",
+    "name": "Macy Chiasson",
+    "record": "11-6-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 35,
+    "height": "5' 11\"",
+    "reach_in": 72.0,
+    "stance": "Orthodox",
+    "weight_class": "Women's Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4334306.png",
+    "elo": 1502.2,
+    "ufc_fights": 10,
+    "finish_rate": 0.4,
+    "recent": [
+      {
+        "date": "2026-02-28",
+        "opponent": "Ailin Perez",
+        "event": "UFC Fight Night: Moreno vs. Kavanagh",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-10-04",
+        "opponent": "Yana Santos",
+        "event": "UFC 320: Ankalaev vs. Pereira 2",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-06-01",
+        "opponent": "Ketlen Vieira",
+        "event": "UFC Fight Night: Blanchfield vs. Barber",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-06-30",
+        "opponent": "Mayra Bueno Silva",
+        "event": "UFC 303: Pereira vs. Procházka 2",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2024-03-16",
+        "opponent": "Pannie Kianzad",
+        "event": "UFC Fight Night: Tuivasa vs. Tybura",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2022-09-11",
+        "opponent": "Irene Aldana",
+        "event": "UFC 279: Diaz vs. Ferguson",
+        "result": "L",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2022-05-08",
+        "opponent": "Norma Dumont",
+        "event": "UFC 274: Oliveira vs. Gaethje",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2021-12-18",
+        "opponent": "Raquel Pennington",
+        "event": "UFC Fight Night: Lewis vs. Daukaus",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "5310274": {
+    "id": "5310274",
+    "name": "Bia Mesquita",
+    "record": "8-0-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+    "age": 35,
+    "height": "5' 4\"",
+    "reach_in": 67.5,
+    "stance": "Orthodox",
+    "weight_class": "Women's Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5310274.png",
+    "elo": 1564.8,
+    "ufc_fights": 3,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2026-06-20",
+        "opponent": "Melissa Mullins",
+        "event": "UFC Fight Night: Kape vs. Horiguchi 2",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-03-14",
+        "opponent": "Montse Rendon",
+        "event": "UFC Fight Night: Emmett vs. Vallejos",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-10-11",
+        "opponent": "Irina Alekseeva",
+        "event": "UFC Fight Night: Oliveira vs. Gamrot",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "3894823": {
+    "id": "3894823",
+    "name": "Jared Gordon",
+    "record": "21-9-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 38,
+    "height": "5' 9\"",
+    "reach_in": 68.0,
+    "stance": "Orthodox",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3894823.png",
+    "elo": 1522.5,
+    "ufc_fights": 12,
+    "finish_rate": 0.5,
+    "recent": [
+      {
+        "date": "2026-05-09",
+        "opponent": "Jim Miller",
+        "event": "UFC 328: Chimaev vs. Strickland",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-09-13",
+        "opponent": "Rafa Garcia",
+        "event": "Noche UFC: Lopes vs. Silva",
+        "result": "L",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2025-05-17",
+        "opponent": "Thiago Moisés",
+        "event": "UFC Fight Night: Burns vs. Morales",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-06-22",
+        "opponent": "Nasrat Haqparast",
+        "event": "UFC Fight Night: Whittaker vs. Aliskerov",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-11-11",
+        "opponent": "Mark O. Madsen",
+        "event": "UFC 295: Procházka vs. Pereira",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-04-22",
+        "opponent": "King Green",
+        "event": "UFC Fight Night: Pavlovich vs. Blaydes",
+        "result": "D/NC",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2022-12-11",
+        "opponent": "Paddy Pimblett",
+        "event": "UFC 282: Blachowicz vs. Ankalaev",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2022-08-21",
+        "opponent": "Leonardo Santos",
+        "event": "UFC 278: Usman vs. Edwards 2",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "4425763": {
+    "id": "4425763",
+    "name": "Melquizael Costa",
+    "record": "26-8-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+    "age": 30,
+    "height": "5' 10\"",
+    "reach_in": 71.0,
+    "stance": "Southpaw",
+    "weight_class": "Featherweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4425763.png",
+    "elo": 1570.2,
+    "ufc_fights": 10,
+    "finish_rate": 0.6,
+    "recent": [
+      {
+        "date": "2026-05-17",
+        "opponent": "Arnold Allen",
+        "event": "UFC Fight Night: Allen vs. Costa",
+        "result": "L",
+        "finish": false,
+        "round": 5
+      },
+      {
+        "date": "2026-02-22",
+        "opponent": "Dan Ige",
+        "event": "UFC Fight Night: Strickland vs. Hernandez",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-12-14",
+        "opponent": "Morgan Charrière",
+        "event": "UFC Fight Night: Royval vs. Kape",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-05-17",
+        "opponent": "Julian Erosa",
+        "event": "UFC Fight Night: Burns vs. Morales",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-03-29",
+        "opponent": "Christian Rodriguez",
+        "event": "UFC Fight Night: Moreno vs. Erceg",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-02-22",
+        "opponent": "Andre Fili",
+        "event": "UFC Fight Night: Cejudo vs. Song",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-06-15",
+        "opponent": "Shayilan Nuerdanbieke",
+        "event": "UFC Fight Night: Perez vs. Taira",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2023-12-10",
+        "opponent": "Steve Garcia",
+        "event": "UFC Fight Night: Song vs. Gutierrez",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "5302831": {
+    "id": "5302831",
+    "name": "Donte Johnson",
+    "record": "9-0-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 27,
+    "height": "5' 8\"",
+    "reach_in": 74.0,
+    "stance": "Southpaw",
+    "weight_class": "Middleweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5302831.png",
+    "elo": 1579.7,
+    "ufc_fights": 4,
+    "finish_rate": 0.75,
+    "recent": [
+      {
+        "date": "2026-08-15",
+        "opponent": "Eric McConico",
+        "event": "UFC 330: Makhachev vs. Machado Garry",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-03-08",
+        "opponent": "Cody Brundage",
+        "event": "UFC 326: Holloway vs. Oliveira 2",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-11-01",
+        "opponent": "Sedriques Dumas",
+        "event": "UFC Fight Night: Garcia vs. Onama",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2025-08-27",
+        "opponent": "Darion Abbey",
+        "event": "Dana White's Contender Series: Season 9, Week 3",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      }
+    ]
+  },
+  "5144068": {
+    "id": "5144068",
+    "name": "Cesar Almeida",
+    "record": "7-3-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+    "age": 38,
+    "height": "6' 1\"",
+    "reach_in": 74.0,
+    "stance": "Orthodox",
+    "weight_class": "Middleweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5144068.png",
+    "elo": 1527.4,
+    "ufc_fights": 7,
+    "finish_rate": 0.429,
+    "recent": [
+      {
+        "date": "2026-07-11",
+        "opponent": "Damian Pinas",
+        "event": "UFC 329: McGregor vs. Holloway 2",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-12-14",
+        "opponent": "Cezary Oleksiejczuk",
+        "event": "UFC Fight Night: Royval vs. Kape",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-01-12",
+        "opponent": "Abdul Razak Alhassan",
+        "event": "UFC Fight Night: Dern vs Ribas 2",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-10-06",
+        "opponent": "Ihor Potieria",
+        "event": "UFC 307: Pereira vs. Rountree Jr.",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-06-02",
+        "opponent": "Roman Kopylov",
+        "event": "UFC 302: Makhachev vs. Poirier",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-04-06",
+        "opponent": "Dylan Budka",
+        "event": "UFC Fight Night: Allen vs. Curtis 2",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2023-08-08",
+        "opponent": "Lucas Fernando",
+        "event": "Dana White's Contender Series: Season 7, Week 1",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "2335718": {
+    "id": "2335718",
+    "name": "Jim Miller",
+    "record": "39-19-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 43,
+    "height": "5' 8\"",
+    "reach_in": 71.0,
+    "stance": "Southpaw",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/2335718.png",
+    "elo": 1542.4,
+    "ufc_fights": 14,
+    "finish_rate": 0.571,
+    "recent": [
+      {
+        "date": "2026-05-09",
+        "opponent": "Jared Gordon",
+        "event": "UFC 328: Chimaev vs. Strickland",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-04-13",
+        "opponent": "Chase Hooper",
+        "event": "UFC 314: Volkanovski vs. Lopes",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-11-17",
+        "opponent": "Damon Jackson",
+        "event": "UFC 309: Jones vs. Miocic",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-04-13",
+        "opponent": "King Green",
+        "event": "UFC 300: Pereira vs. Hill",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-01-14",
+        "opponent": "Gabriel Benitez",
+        "event": "UFC Fight Night: Ankalaev vs. Walker 2",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2023-06-04",
+        "opponent": "Jesse Butler",
+        "event": "UFC Fight Night: Kara-France vs. Albazi",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-02-19",
+        "opponent": "Alexander Hernandez",
+        "event": "UFC Fight Night: Andrade vs. Blanchfield",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2022-07-03",
+        "opponent": "Donald Cerrone",
+        "event": "UFC 276: Adesanya vs. Cannonier",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "4425604": {
+    "id": "4425604",
+    "name": "Terrance McKinney",
+    "record": "18-9-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 32,
+    "height": "5' 10\"",
+    "reach_in": 73.5,
+    "stance": "Switch",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4425604.png",
+    "elo": 1527.9,
+    "ufc_fights": 14,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2026-07-12",
+        "opponent": "King Green",
+        "event": "UFC 329: McGregor vs. Holloway 2",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-03-29",
+        "opponent": "Kyle Nelson",
+        "event": "UFC Fight Night: Adesanya vs. Pyfer",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-12-07",
+        "opponent": "Chris Duncan",
+        "event": "UFC 323: Dvalishvili vs. Yan 2",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-06-29",
+        "opponent": "Viacheslav Borshchev",
+        "event": "UFC 317: Topuria vs. Oliveira",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-02-01",
+        "opponent": "Damir Hadzovic",
+        "event": "UFC Fight Night: Adesanya vs. Imavov",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-05-11",
+        "opponent": "Esteban Ribovics",
+        "event": "UFC Fight Night: Lewis vs. Nascimento",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-10-14",
+        "opponent": "Brendon Marotte",
+        "event": "UFC Fight Night: Yusuff vs. Barboza",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-08-12",
+        "opponent": "Mike Breeden",
+        "event": "UFC Fight Night: Luque vs. Dos Anjos",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      }
+    ]
+  },
+  "2951202": {
+    "id": "2951202",
+    "name": "Drew Dober",
+    "record": "29-15-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 38,
+    "height": "5' 8\"",
+    "reach_in": 70.0,
+    "stance": "Southpaw",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/2951202.png",
+    "elo": 1539.7,
+    "ufc_fights": 14,
+    "finish_rate": 0.857,
+    "recent": [
+      {
+        "date": "2026-03-08",
+        "opponent": "Michael Johnson",
+        "event": "UFC 326: Holloway vs. Oliveira 2",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2025-10-18",
+        "opponent": "Kyle Prepolec",
+        "event": "UFC Fight Night: de Ridder vs. Allen",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2025-03-29",
+        "opponent": "Manuel Torres",
+        "event": "UFC Fight Night: Moreno vs. Erceg",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-07-14",
+        "opponent": "Jean Silva",
+        "event": "UFC Fight Night: Namajunas vs. Cortez",
+        "result": "L",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2024-02-04",
+        "opponent": "Renato Moicano",
+        "event": "UFC Fight Night: Dolidze vs. Imavov",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-10-07",
+        "opponent": "Ricky Glenn",
+        "event": "UFC Fight Night: Dawson vs. Green",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-05-07",
+        "opponent": "Matt Frevola",
+        "event": "UFC 288: Sterling vs. Cejudo",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2022-12-18",
+        "opponent": "King Green",
+        "event": "UFC Fight Night: Cannonier vs. Strickland",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "4867356": {
+    "id": "4867356",
+    "name": "Chris Duncan",
+    "record": "15-3-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/sct.png",
+    "age": 33,
+    "height": "5' 10\"",
+    "reach_in": 71.0,
+    "stance": "Orthodox",
+    "weight_class": "Lightweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4867356.png",
+    "elo": 1562.2,
+    "ufc_fights": 10,
+    "finish_rate": 0.7,
+    "recent": [
+      {
+        "date": "2026-04-05",
+        "opponent": "Renato Moicano",
+        "event": "UFC Fight Night: Moicano vs. Duncan",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2025-12-07",
+        "opponent": "Terrance McKinney",
+        "event": "UFC 323: Dvalishvili vs. Yan 2",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-08-03",
+        "opponent": "Mateusz Rębecki",
+        "event": "UFC Fight Night: Taira vs. Park",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-03-22",
+        "opponent": "Jordan Vucenic",
+        "event": "UFC Fight Night: Edwards vs. Brady",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2024-09-28",
+        "opponent": "Bolaji Oki",
+        "event": "UFC Fight Night: Moicano vs. Saint Denis",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-02-25",
+        "opponent": "Manuel Torres",
+        "event": "UFC Fight Night: Moreno vs. Royval 2",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-07-22",
+        "opponent": "Yanal Ashmouz",
+        "event": "UFC Fight Night: Aspinall vs. Tybura",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-03-18",
+        "opponent": "Omar Morales",
+        "event": "UFC 286: Edwards vs. Usman 3",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "2615077": {
+    "id": "2615077",
+    "name": "Stephen Thompson",
+    "record": "17-9-1",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 43,
+    "height": "6' 0\"",
+    "reach_in": 75.0,
+    "stance": "Orthodox",
+    "weight_class": "Welterweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/2615077.png",
+    "elo": 1473.0,
+    "ufc_fights": 7,
+    "finish_rate": 0.429,
+    "recent": [
+      {
+        "date": "2025-07-13",
+        "opponent": "Gabriel Bonfim",
+        "event": "UFC Fight Night: Lewis vs. Teixeira",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-10-06",
+        "opponent": "Joaquin Buckley",
+        "event": "UFC 307: Pereira vs. Rountree Jr.",
+        "result": "L",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2023-12-17",
+        "opponent": "Shavkat Rakhmonov",
+        "event": "UFC 296: Edwards vs. Covington",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2022-12-04",
+        "opponent": "Kevin Holland",
+        "event": "UFC Fight Night: Thompson vs. Holland",
+        "result": "W",
+        "finish": true,
+        "round": 4
+      },
+      {
+        "date": "2021-12-19",
+        "opponent": "Belal Muhammad",
+        "event": "UFC Fight Night: Lewis vs. Daukaus",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2021-07-11",
+        "opponent": "Gilbert Burns",
+        "event": "UFC 264: Poirier vs. McGregor 3",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2020-12-20",
+        "opponent": "Geoff Neal",
+        "event": "UFC Fight Night: Thompson vs. Neal",
+        "result": "W",
+        "finish": false,
+        "round": 5
+      }
+    ]
+  },
+  "4416297": {
+    "id": "4416297",
+    "name": "Charles Radtke",
+    "record": "12-5-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 36,
+    "height": "5' 9\"",
+    "reach_in": 72.0,
+    "stance": "Orthodox",
+    "weight_class": "Welterweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4416297.png",
+    "elo": 1543.5,
+    "ufc_fights": 7,
+    "finish_rate": 0.714,
+    "recent": [
+      {
+        "date": "2026-04-11",
+        "opponent": "Francisco Prado",
+        "event": "UFC 327: Procházka vs. Ulberg",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-11-01",
+        "opponent": "Daniel Frunza",
+        "event": "UFC Fight Night: Garcia vs. Onama",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2025-05-11",
+        "opponent": "Mike Malott",
+        "event": "UFC 315: Muhammad vs. Della Maddalena",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2024-11-09",
+        "opponent": "Matthew Semelsberger",
+        "event": "UFC Fight Night: Magny vs. Prates",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-06-08",
+        "opponent": "Carlos Prates",
+        "event": "UFC Fight Night: Cannonier vs. Imavov",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-02-04",
+        "opponent": "Gilbert Urbina",
+        "event": "UFC Fight Night: Dolidze vs. Imavov",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-09-09",
+        "opponent": "Blood Diamond",
+        "event": "UFC 293: Adesanya vs. Strickland",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "5264405": {
+    "id": "5264405",
+    "name": "Bilal Hasan",
+    "record": "10-0-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ina.png",
+    "age": 25,
+    "height": "5' 7\"",
+    "reach_in": 70.0,
+    "stance": "Switch",
+    "weight_class": "Flyweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5264405.png",
+    "elo": 1544.5,
+    "ufc_fights": 2,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2026-08-29",
+        "opponent": "Nilson Rojas",
+        "event": "UFC Fight Night: Nurmagomedov vs. Song",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2026-08-11",
+        "opponent": "Mridul Saikia",
+        "event": "Dana White's Contender Series: Season 10, Week 1",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      }
+    ]
+  },
+  "5218137": {
+    "id": "5218137",
+    "name": "Luis Gurule",
+    "record": "11-4-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 32,
+    "height": "5' 5\"",
+    "reach_in": 64.0,
+    "stance": "Orthodox",
+    "weight_class": "Flyweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5218137.png",
+    "elo": 1465.6,
+    "ufc_fights": 6,
+    "finish_rate": 0.333,
+    "recent": [
+      {
+        "date": "2026-05-30",
+        "opponent": "Rei Tsuruya",
+        "event": "UFC Fight Night: Song vs. Figueiredo",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-05-16",
+        "opponent": "Daniel Barez",
+        "event": "UFC Fight Night: Allen vs. Costa",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2026-02-21",
+        "opponent": "Alden Coria",
+        "event": "UFC Fight Night: Strickland vs. Hernandez",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-09-13",
+        "opponent": "Jesus Aguilar",
+        "event": "Noche UFC: Lopes vs. Silva",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-04-06",
+        "opponent": "Ode' Osbourne",
+        "event": "UFC Fight Night: Emmett vs. Murphy",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2024-10-16",
+        "opponent": "Nick Piccininni",
+        "event": "Dana White's Contender Series: Season 8, Week 10",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "4685870": {
+    "id": "4685870",
+    "name": "Uroš Medić",
+    "record": "14-3-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ser.png",
+    "age": 33,
+    "height": "6' 1\"",
+    "reach_in": 71.0,
+    "stance": "Southpaw",
+    "weight_class": "Welterweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4685870.png",
+    "elo": 1597.4,
+    "ufc_fights": 12,
+    "finish_rate": 1.0,
+    "recent": [
+      {
+        "date": "2026-08-01",
+        "opponent": "Daniel Rodriguez",
+        "event": "UFC Fight Night: Medić vs. Rodriguez",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-02-22",
+        "opponent": "Geoff Neal",
+        "event": "UFC Fight Night: Strickland vs. Hernandez",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-11-09",
+        "opponent": "Muslim Salikhov",
+        "event": "UFC Fight Night: Bonfim vs. Brown",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-08-09",
+        "opponent": "Gilbert Urbina",
+        "event": "UFC Fight Night: Dolidze vs. Hernandez",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-01-12",
+        "opponent": "Punahele Soriano",
+        "event": "UFC Fight Night: Dern vs Ribas 2",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-04-27",
+        "opponent": "Tim Means",
+        "event": "UFC Fight Night: Nicolau vs. Perez",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2023-11-18",
+        "opponent": "Myktybek Orolbai",
+        "event": "UFC Fight Night: Allen vs. Craig",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2023-07-29",
+        "opponent": "Matthew Semelsberger",
+        "event": "UFC 291: Poirier vs. Gaethje 2",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      }
+    ]
+  },
+  "3943695": {
+    "id": "3943695",
+    "name": "Kevin Holland",
+    "record": "29-15-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 34,
+    "height": "6' 3\"",
+    "reach_in": 81.0,
+    "stance": "Orthodox",
+    "weight_class": "Welterweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3943695.png",
+    "elo": 1554.7,
+    "ufc_fights": 24,
+    "finish_rate": 0.625,
+    "recent": [
+      {
+        "date": "2026-04-11",
+        "opponent": "Randy Brown",
+        "event": "UFC 327: Procházka vs. Ulberg",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-10-18",
+        "opponent": "Mike Malott",
+        "event": "UFC Fight Night: de Ridder vs. Allen",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-07-20",
+        "opponent": "Daniel Rodriguez",
+        "event": "UFC 318: Holloway vs. Poirier 3",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-06-08",
+        "opponent": "Vicente Luque",
+        "event": "UFC 316: Dvalishvili vs. O'Malley 2",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2025-03-22",
+        "opponent": "Gunnar Nelson",
+        "event": "UFC Fight Night: Edwards vs. Brady",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-01-19",
+        "opponent": "Reinier de Ridder",
+        "event": "UFC 311: Makhachev vs. Moicano",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-10-06",
+        "opponent": "Roman Dolidze",
+        "event": "UFC 307: Pereira vs. Rountree Jr.",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-06-02",
+        "opponent": "Michal Oleksiejczuk",
+        "event": "UFC 302: Makhachev vs. Poirier",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      }
+    ]
+  },
+  "4835137": {
+    "id": "4835137",
+    "name": "Caio Borralho",
+    "record": "18-2-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+    "age": 33,
+    "height": "6' 1\"",
+    "reach_in": 75.0,
+    "stance": "Southpaw",
+    "weight_class": "Middleweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4835137.png",
+    "elo": 1640.0,
+    "ufc_fights": 11,
+    "finish_rate": 0.364,
+    "recent": [
+      {
+        "date": "2026-03-08",
+        "opponent": "Reinier de Ridder",
+        "event": "UFC 326: Holloway vs. Oliveira 2",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-09-06",
+        "opponent": "Nassourdine Imavov",
+        "event": "UFC Fight Night: Imavov vs. Borralho",
+        "result": "L",
+        "finish": false,
+        "round": 5
+      },
+      {
+        "date": "2024-08-25",
+        "opponent": "Jared Cannonier",
+        "event": "UFC Fight Night: Cannonier vs. Borralho",
+        "result": "W",
+        "finish": false,
+        "round": 5
+      },
+      {
+        "date": "2024-05-05",
+        "opponent": "Paul Craig",
+        "event": "UFC 301: Pantoja vs. Erceg",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2023-11-05",
+        "opponent": "Abus Magomedov",
+        "event": "UFC Fight Night: Almeida vs. Lewis",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-04-29",
+        "opponent": "Michal Oleksiejczuk",
+        "event": "UFC Fight Night: Song vs. Simon",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2022-10-22",
+        "opponent": "Makhmud Muradov",
+        "event": "UFC 280: Oliveira vs. Makhachev",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2022-07-10",
+        "opponent": "Armen Petrosyan",
+        "event": "UFC Fight Night: Dos Anjos vs. Fiziev",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "5149815": {
+    "id": "5149815",
+    "name": "Yousri Belgaroui",
+    "record": "11-3-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/ned.png",
+    "age": 34,
+    "height": "6' 6\"",
+    "reach_in": 79.0,
+    "stance": "Orthodox",
+    "weight_class": "Middleweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5149815.png",
+    "elo": 1575.7,
+    "ufc_fights": 5,
+    "finish_rate": 0.8,
+    "recent": [
+      {
+        "date": "2026-09-12",
+        "opponent": "Djorden Santos",
+        "event": "Noche UFC: Silva vs. Delgado",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2026-03-29",
+        "opponent": "Mansur Abdul-Malik",
+        "event": "UFC Fight Night: Adesanya vs. Pyfer",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2025-10-18",
+        "opponent": "Azamat Bekoev",
+        "event": "UFC Fight Night: de Ridder vs. Allen",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2024-09-11",
+        "opponent": "Taiga Iwasaki",
+        "event": "Dana White's Contender Series: Season 8, Week 5",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2023-08-30",
+        "opponent": "Marco Tulio",
+        "event": "Dana White's Contender Series: Season 7, Week 4",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      }
+    ]
+  },
+  "4332765": {
+    "id": "4332765",
+    "name": "Kayla Harrison",
+    "record": "19-1-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 36,
+    "height": "5' 8\"",
+    "reach_in": 66.0,
+    "stance": "Southpaw",
+    "weight_class": "Women's Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4332765.png",
+    "elo": 1568.4,
+    "ufc_fights": 3,
+    "finish_rate": 0.667,
+    "recent": [
+      {
+        "date": "2025-06-08",
+        "opponent": "Julianna Peña",
+        "event": "UFC 316: Dvalishvili vs. O'Malley 2",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2024-10-06",
+        "opponent": "Ketlen Vieira",
+        "event": "UFC 307: Pereira vs. Rountree Jr.",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-04-14",
+        "opponent": "Holly Holm",
+        "event": "UFC 300: Pereira vs. Hill",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      }
+    ]
+  },
+  "2516131": {
+    "id": "2516131",
+    "name": "Amanda Nunes",
+    "record": "23-5-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/bra.png",
+    "age": 38,
+    "height": "5' 8\"",
+    "reach_in": 69.0,
+    "stance": "Orthodox",
+    "weight_class": "Women's Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/2516131.png",
+    "elo": 1558.9,
+    "ufc_fights": 5,
+    "finish_rate": 0.4,
+    "recent": [
+      {
+        "date": "2023-06-11",
+        "opponent": "Irene Aldana",
+        "event": "UFC 289: Nunes vs. Aldana",
+        "result": "W",
+        "finish": false,
+        "round": 5
+      },
+      {
+        "date": "2022-07-31",
+        "opponent": "Julianna Peña",
+        "event": "UFC 277: Peña vs. Nunes 2",
+        "result": "W",
+        "finish": false,
+        "round": 5
+      },
+      {
+        "date": "2021-12-12",
+        "opponent": "Julianna Peña",
+        "event": "UFC 269: Oliveira vs. Poirier",
+        "result": "L",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2021-03-07",
+        "opponent": "Megan Anderson",
+        "event": "UFC 259: Blachowicz vs. Adesanya",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2020-06-07",
+        "opponent": "Felicia Spencer",
+        "event": "UFC 250: Nunes vs. Spencer",
+        "result": "W",
+        "finish": false,
+        "round": 5
+      }
+    ]
+  },
+  "4426000": {
+    "id": "4426000",
+    "name": "Ciryl Gane",
+    "record": "14-2-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/fra.png",
+    "age": 36,
+    "height": "6' 4\"",
+    "reach_in": 81.0,
+    "stance": "Orthodox",
+    "weight_class": "Heavyweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4426000.png",
+    "elo": 1608.5,
+    "ufc_fights": 11,
+    "finish_rate": 0.636,
+    "recent": [
+      {
+        "date": "2026-06-15",
+        "opponent": "Alex Pereira",
+        "event": "UFC Freedom 250: Topuria vs. Gaethje",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2025-10-25",
+        "opponent": "Tom Aspinall",
+        "event": "UFC 321: Aspinall vs. Gane",
+        "result": "D/NC",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2024-12-08",
+        "opponent": "Alexander Volkov",
+        "event": "UFC 310: Pantoja vs. Asakura",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-09-02",
+        "opponent": "Serghei Spivac",
+        "event": "UFC Fight Night: Gane vs. Spivac",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2023-03-05",
+        "opponent": "Jon Jones",
+        "event": "UFC 285: Jones vs. Gane",
+        "result": "L",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2022-09-03",
+        "opponent": "Tai Tuivasa",
+        "event": "UFC Fight Night: Gane vs. Tuivasa",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      },
+      {
+        "date": "2022-01-23",
+        "opponent": "Francis Ngannou",
+        "event": "UFC 270: Ngannou vs. Gane",
+        "result": "L",
+        "finish": false,
+        "round": 5
+      },
+      {
+        "date": "2021-08-08",
+        "opponent": "Derrick Lewis",
+        "event": "UFC 265: Lewis vs. Gane",
+        "result": "W",
+        "finish": true,
+        "round": 3
+      }
+    ]
+  },
+  "4049391": {
+    "id": "4049391",
+    "name": "Josh Hokit",
+    "record": "10-0-0",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
+    "age": 28,
+    "height": "6' 1\"",
+    "reach_in": 73.5,
+    "stance": "Orthodox",
+    "weight_class": "Heavyweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4049391.png",
+    "elo": 1607.2,
+    "ufc_fights": 5,
+    "finish_rate": 0.8,
+    "recent": [
+      {
+        "date": "2026-06-15",
+        "opponent": "Derrick Lewis",
+        "event": "UFC Freedom 250: Topuria vs. Gaethje",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      },
+      {
+        "date": "2026-04-12",
+        "opponent": "Curtis Blaydes",
+        "event": "UFC 327: Procházka vs. Ulberg",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2026-01-24",
+        "opponent": "Denzel Freeman",
+        "event": "UFC 324: Gaethje vs. Pimblett",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-11-08",
+        "opponent": "Max Gimenis",
+        "event": "UFC Fight Night: Bonfim vs. Brown",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2025-08-20",
+        "opponent": "Guilherme Uriel",
+        "event": "Dana White's Contender Series: Season 9, Week 2",
+        "result": "W",
+        "finish": true,
+        "round": 2
+      }
+    ]
   }
 }
