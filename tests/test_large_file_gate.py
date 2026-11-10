@@ -52,3 +52,16 @@ def test_existing_branch_adds_no_oversized_files() -> None:
         text=True,
     )
     assert completed.returncode == 0, completed.stderr
+
+
+def test_size_gate_fallback_when_base_commit_is_unavailable() -> None:
+    completed = subprocess.run(
+        ["python3", "scripts/check_large_files.py"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        env={"SIZE_GATE_BASE": "nonexistent_sha_0123456789", "PATH": subprocess.os.environ["PATH"]},
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert "WARNING: Size-gate base commit 'nonexistent_sha_0123456789' is not available" in completed.stderr
+    assert "Falling back to" in completed.stderr

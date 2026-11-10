@@ -35,19 +35,107 @@ def _git(*args: str) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True, stderr=subprocess.PIPE)
 
 
-def resolve_base() -> str | None:
-    base = os.environ.get("SIZE_GATE_BASE", "").strip()
-    if base and set(base) != {"0"}:
-        return base
+def verify_commit(ref: str) -> bool:
     try:
-        _git("rev-parse", "--verify", "origin/main")
+        _git("rev-parse", "--verify", f"{ref}^{{commit}}")
+        return True
     except subprocess.CalledProcessError:
-        return None
-    head = _git("rev-parse", "HEAD").strip()
-    main = _git("rev-parse", "origin/main").strip()
-    if head == main:
-        return None
-    return "origin/main"
+        return False
+
+
+def try_fetch(ref: str) -> bool:
+    try:
+        subprocess.check_output(
+            ["git", "fetch", "origin", ref, "--depth=2"],
+            cwd=ROOT,
+            stderr=subprocess.PIPE,
+        )
+        return verify_commit(ref)
+    except subprocess.CalledProcessError:
+        return False
+
+
+def get_merge_base(target: str = "origin/main", head: str = "HEAD") -> str | None:
+    try:
+        out = _git("merge-base", target, head).strip()
+        if out:
+            return out
+    except subprocess.CalledProcessError:
+        pass
+
+    try:
+        subprocess.check_output(
+            ["git", "fetch", "origin", "+refs/heads/main:refs/remotes/origin/main", "--depth=2"],
+            cwd=ROOT,
+            stderr=subprocess.PIPE,
+        )
+        out = _git("merge-base", target, head).strip()
+        if out:
+            return out
+    except subprocess.CalledProcessError:
+        pass
+    return None
+
+
+def resolve_base() -> str | None:
+    raw_base = os.environ.get("SIZE_GATE_BASE", "").strip()
+    if raw_base and set(raw_base) != {"0"}:
+        if verify_commit(raw_base):
+            return raw_base
+        if try_fetch(raw_base):
+            return raw_base
+
+        fallback = get_merge_base("origin/main", "HEAD")
+        if not fallback:
+            if verify_commit("HEAD~1"):
+                fallback = "HEAD~1"
+            else:
+                try:
+                    subprocess.check_output(
+                        ["git", "fetch", "--deepen=1"],
+                        cwd=ROOT,
+                        stderr=subprocess.PIPE,
+                    )
+                    if verify_commit("HEAD~1"):
+                        fallback = "HEAD~1"
+                except subprocess.CalledProcessError:
+                    pass
+
+        if fallback:
+            print(
+                f"WARNING: Size-gate base commit '{raw_base}' is not available in local tree or remote. "
+                f"Falling back to {fallback}.",
+                file=sys.stderr,
+            )
+            return fallback
+
+        print(
+            f"WARNING: Size-gate base commit '{raw_base}' is not available and no fallback commit could be resolved.",
+            file=sys.stderr,
+        )
+        return raw_base
+
+    fallback = get_merge_base("origin/main", "HEAD")
+    if fallback:
+        try:
+            head = _git("rev-parse", "HEAD").strip()
+            if fallback == head:
+                return None
+            return fallback
+        except subprocess.CalledProcessError:
+            return fallback
+
+    if verify_commit("origin/main"):
+        try:
+            head = _git("rev-parse", "HEAD").strip()
+            main = _git("rev-parse", "origin/main").strip()
+            if head == main:
+                return None
+            return "origin/main"
+        except subprocess.CalledProcessError:
+            pass
+
+    return None
 
 
 def added_paths(base: str) -> list[str]:
@@ -67,6 +155,28 @@ def blob_size(path: str) -> int:
     return int(_git("cat-file", "-s", f"HEAD:{path}").strip())
 
 
+def blob_sizes(paths: list[str]) -> list[tuple[str, int]]:
+    if not paths:
+        return []
+    proc = subprocess.Popen(
+        ["git", "cat-file", "--batch-check=%(objectsize)"],
+        cwd=ROOT,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    input_data = "\n".join(f"HEAD:{p}" for p in paths) + "\n"
+    stdout, _ = proc.communicate(input_data)
+    results = []
+    for path, line in zip(paths, stdout.splitlines()):
+        try:
+            results.append((path, int(line.strip())))
+        except ValueError:
+            results.append((path, blob_size(path)))
+    return results
+
+
 def main() -> int:
     base = resolve_base()
     if base is None:
@@ -78,7 +188,8 @@ def main() -> int:
         print(f"Size-gate base commit is not available: {base}", file=sys.stderr)
         return 1
     allow = load_allowlist()
-    added = [(path, blob_size(path)) for path in added_paths(base)]
+    paths = added_paths(base)
+    added = blob_sizes(paths)
     failed = violations(added, allow)
     if not failed:
         print(f"No new files over {THRESHOLD_BYTES} bytes (base {base}).")

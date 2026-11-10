@@ -85,6 +85,10 @@ FIXED_DOMES = {
     "Ford Field",
     "Allegiant Stadium",
     "SoFi Stadium",
+    "FC Bayern Munich Stadium",
+    "Allianz Arena",
+    "Melbourne Cricket Ground",
+    "Stade de France",
 }
 
 # nflverse uses closed/open for these, never dome.
@@ -1043,25 +1047,53 @@ def ingest_week(
     return {"records": records, "report": report, "fetch_time": fetch_time, "raw_source_payload": raw_rel}
 
 
+def resolve_active_season_week(
+    csv_path: Path | None = None, now: datetime | None = None
+) -> tuple[int, int] | None:
+    path = csv_path or GAMES_CSV_PATH
+    if not path.exists():
+        return None
+    rows = load_schedule_rows(path)
+    moment = now or datetime.now(ET)
+    pricing = active_pricing_rows(rows, moment)
+    if pricing:
+        return int(pricing[0]["season"]), int(pricing[0]["week"])
+    return None
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Ingest live ESPN game context with strict provenance")
     parser.add_argument("--season", type=int, default=2026, help="NFL season year (default 2026)")
-    parser.add_argument("--week", type=int, required=True, help="NFL week to capture (e.g. 9)")
+    parser.add_argument("--week", type=int, default=None, help="NFL week to capture (e.g. 10; default: auto-resolve)")
     parser.add_argument("--no-weather", action="store_true", help="Skip summary weather fetches")
     parser.add_argument("--dry-run", action="store_true", help="Fetch and parse without writing the journal")
     args = parser.parse_args(argv)
 
-    print(f"[espn-context] Fetching live NFL Week {args.week} ({args.season})...")
+    season = args.season
+    week = args.week
+    if week is None:
+        resolved = resolve_active_season_week()
+        if resolved is None:
+            if not GAMES_CSV_PATH.exists():
+                GAMES_CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
+                urllib.request.urlretrieve(NFLVERSE_GAMES_URL, GAMES_CSV_PATH)
+                resolved = resolve_active_season_week()
+        if resolved is None:
+            print("[espn-context] FAIL CLOSED: cannot resolve active week from schedule; specify --week", file=sys.stderr)
+            return 1
+        season, week = resolved
+
+    print(f"[espn-context] Fetching live NFL Week {week} ({season})...")
     try:
         result = ingest_week(
-            args.season,
-            args.week,
+            season,
+            week,
             fetch_weather=not args.no_weather,
             dry_run=args.dry_run,
         )
     except Exception as exc:
         print(f"[espn-context] FAIL CLOSED: {exc}", file=sys.stderr)
-        print(format_provenance_report(_failure_report(args.season, args.week, str(exc))))
+        print(format_provenance_report(_failure_report(season, week, str(exc))))
         return 1
 
     records = result["records"]
