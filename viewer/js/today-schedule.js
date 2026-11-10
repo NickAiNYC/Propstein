@@ -219,6 +219,53 @@
       console.warn('[PropStein] Game projections unavailable:', error);
     }
   }
+  // 2026 refresh: when there are no games today, show what's next with a
+  // live countdown instead of a dead-end empty state.
+  let nextUpTimer = null;
+  function addDaysKey(dateKey, days) {
+    const d = new Date(Date.UTC(+dateKey.slice(0, 4), +dateKey.slice(4, 6) - 1, +dateKey.slice(6, 8) + days));
+    return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}${String(d.getUTCDate()).padStart(2, '0')}`;
+  }
+  function countdownText(ms) {
+    if (ms <= 0) return 'Starting now';
+    const d = Math.floor(ms / 864e5); const h = Math.floor(ms / 36e5) % 24; const m = Math.floor(ms / 6e4) % 60;
+    return d > 0 ? `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m` : `${h}h ${String(m).padStart(2, '0')}m`;
+  }
+  async function renderNextUp(sport, dateKey, requestId) {
+    if (nextUpTimer) { clearInterval(nextUpTimer); nextUpTimer = null; }
+    try {
+      const url = `https://site.api.espn.com/apis/site/v2/sports/${leaguePaths[sport]}/scoreboard?dates=${addDaysKey(dateKey, 1)}-${addDaysKey(dateKey, 8)}&limit=1000`;
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (requestId !== requestNumber || !Array.isArray(data.events)) return;
+      const upcoming = data.events
+        .filter((event) => { const t = new Date(event.date).getTime(); return Number.isFinite(t) && t > Date.now(); })
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+      if (!upcoming.length) return;
+      const first = new Date(upcoming[0].date);
+      const fmt = (date) => new Intl.DateTimeFormat('en-US', { timeZone: selectedTimeZone(), weekday: 'short', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(date);
+      const tiles = upcoming.slice(0, 3).map((event) => {
+        const { away, home } = eventTeams(event);
+        return `<li class="rf-next-tile"><span class="rf-next-when">${escapeHtml(fmt(new Date(event.date)))}</span><span class="rf-next-match">${escapeHtml(away || 'TBD')} @ ${escapeHtml(home || 'TBD')}</span></li>`;
+      }).join('');
+      gamesEl.innerHTML = `<div class="rf-next-up" role="status">
+          <div class="rf-next-head">
+            <span class="rf-next-dot" aria-hidden="true"></span>
+            <div><strong>No ${leagueNames[sport]} games today</strong><span>Model fair lines for the next slate are ready. Sportsbook prices post closer to kickoff.</span></div>
+            <div class="rf-countdown"><small>Next kickoff</small><b id="rfCountdown">${countdownText(first - Date.now())}</b></div>
+          </div>
+          <ul class="rf-next-list">${tiles}</ul>
+        </div>`;
+      document.getElementById('todayScheduleSource').textContent = `Schedule: ESPN · Times shown in ${timeZoneSelect?.value === 'et' ? 'Eastern' : 'your local'} time · next ${Math.min(3, upcoming.length)} of ${upcoming.length} upcoming`;
+      nextUpTimer = setInterval(() => {
+        const el = document.getElementById('rfCountdown');
+        if (!el) { clearInterval(nextUpTimer); nextUpTimer = null; return; }
+        el.textContent = countdownText(first - Date.now());
+      }, 30000);
+    } catch (_) { /* keep the plain empty state */ }
+  }
+
   async function loadTodayGames() {
     modelCache.clear();
     supportingDataPromise = null;
@@ -244,7 +291,8 @@
         return !Number.isNaN(date.getTime()) && easternDate(date) === dateKey;
       }).sort((a, b) => new Date(a.date) - new Date(b.date));
       currentEvents = games;
-      gamesEl.innerHTML = games.length ? games.map(gameCard).join('') : `<p class="today-schedule-message">No ${leagueNames[sport]} games are scheduled for today.</p>`;
+      gamesEl.innerHTML = games.length ? games.map(gameCard).join('') : `<p class="today-schedule-message">No ${leagueNames[sport]} games today.</p>`;
+      if (!games.length) renderNextUp(sport, dateKey, currentRequest);
       document.getElementById('todayScheduleSource').textContent = `Schedule and scores: ESPN · Times shown in ${timeZoneSelect?.value === 'et' ? 'Eastern' : 'your local'} time · ${games.length} game${games.length === 1 ? '' : 's'}`;
       Promise.all([modelSources(sport, dateKey), supportingData(sport, dateKey)]).then(([sources, extras]) => {
         if (currentRequest !== requestNumber) return;
