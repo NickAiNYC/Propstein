@@ -135,5 +135,5 @@ export async function GET(req: Request) {
 }
 
 export function OPTIONS() {
-  return NextResponse.json({}, { allow: 'GET, OPTIONS' });
+  return NextResponse.json({}, { headers: { Allow: 'GET, OPTIONS' } });
 }

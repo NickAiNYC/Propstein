@@ -62,3 +62,8 @@ server.log
 /tool-results/
 /dev.log
 /server.log
+
+# sandbox tooling & build artifacts (never commit)
+/.zscripts/
+/scripts/
+/download/

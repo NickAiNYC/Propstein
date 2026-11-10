@@ -45,7 +45,12 @@ export async function GET(req: Request) {
     if (problem) {
       return fail(503, 'PIPELINE_OUTPUT_INVALID', `The stored board artifact failed sanity checks (${problem}).`);
     }
-    return ok({ predictions: doc }, {
+    // Augment each stored prediction with the artifact's run date so drill-down
+    // views can chart "today" as the final series point without recomputation.
+    const preds = Array.isArray(doc.predictions)
+      ? (doc.predictions as Record<string, unknown>[]).map((p) => ({ ...p, run_date: doc.run_date }))
+      : doc.predictions;
+    return ok({ predictions: { ...doc, predictions: preds } }, {
       headers: {
         'Cache-Control': 'no-store',
         'X-Pipeline-Artifact-Size': String(stats.size),
@@ -61,5 +66,5 @@ export async function GET(req: Request) {
 }
 
 export function OPTIONS() {
-  return NextResponse.json({}, { allow: 'GET, OPTIONS' });
+  return NextResponse.json({}, { headers: { Allow: 'GET, OPTIONS' } });
 }

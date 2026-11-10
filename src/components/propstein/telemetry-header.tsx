@@ -42,7 +42,7 @@ export interface TelemetryData {
   recentRuns: { runDate: string; predictions: number; records: number; durationMs: number; source: string }[];
 }
 
-type TelemetryState =
+export type TelemetryState =
   | { status: 'loading' }
   | { status: 'ok'; data: TelemetryData }
   | { status: 'unavailable'; reason: string };

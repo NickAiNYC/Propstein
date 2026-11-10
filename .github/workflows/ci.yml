@@ -49,3 +49,5 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Validate Prisma schema
         run: bunx prisma validate
+        env:
+          DATABASE_URL: file:./db/custom.db

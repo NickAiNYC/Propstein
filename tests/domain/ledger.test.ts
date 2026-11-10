@@ -7,6 +7,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import type { LedgerEntryCore } from '../../src/lib/domain/ledger';
 import { buildRevision, computeEntryHash, createLedgerEntry, isDuplicateOf, correlationGroupFor, verifyEntryChain } from '../../src/lib/domain/ledger';
 import { mutateLedgerEntryCore } from '../../src/lib/server/ledger-service';
 
@@ -167,7 +168,7 @@ describe('ledger immutability contracts', () => {
   });
 
   it('computeEntryHash is stable across key order (canonical JSON)', () => {
-    const core1 = {
+    const core1: LedgerEntryCore = {
       ledgerId: 'x', userId: 'u', sourceType: 'manual_entry', sport: 'NFL', league: 'NFL', eventId: 'e',
       gameClusterId: 'g', playerId: 'p', playerName: 'P', market: 'm', selection: 'over' as const, line: 1.5,
       enteredAmericanOdds: -110, enteredCounterpartOdds: -110, enteredImpliedProbability: 0.5238,

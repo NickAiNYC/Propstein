@@ -70,6 +70,7 @@ export interface BoardPrediction {
   };
   model_minus_market_pp: number | null;
   delta_pp_vs_prev: number | null;
+  run_date: string;
   is_new_today: boolean;
   series: { run_date: string; p: number | null }[];
   provenance: { key: string; label: string; source_id: string; observed_at_utc: string | null; value: string | null }[];

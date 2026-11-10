@@ -28,6 +28,7 @@ interface GateStatus {
     minClusters: number;
   };
   nSignalsStored: number;
+  currentAttempt: number;
   nEvaluable: number;
   distinctClusters: number;
   attempts: {
