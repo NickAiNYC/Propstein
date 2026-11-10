@@ -487,7 +487,7 @@
       : '';
     const tickVals = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(xMax * f));
     const ticks = tickVals.map((v, i) => `<text x="${X(v)}" y="${base + 14}" text-anchor="${i === 0 ? 'start' : i === tickVals.length - 1 ? 'end' : 'middle'}">${v}</text>`).join('');
-    const label = `Model distribution: projection ${mean.toFixed(1)}, fair line ${fair.toFixed(1)}, 80% range ${low} to ${high}${unit ? ` ${unit}` : ''}`;
+    const label = `Approximate shape: projection ${mean.toFixed(1)}, fair line ${fair.toFixed(1)}, 80% range ${low} to ${high}${unit ? ` ${unit}` : ''}`;
     return `<figure class="rf-dist" role="img" aria-label="${esc(label)}">
       <svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">
         ${bandPath ? `<path class="rf-dist-band" d="${bandPath}"/>` : ''}
@@ -497,7 +497,7 @@
         <line class="rf-dist-proj" x1="${X(mean)}" x2="${X(mean)}" y1="${top}" y2="${base}"/>
         <g class="rf-dist-ticks">${ticks}</g>
       </svg>
-      <figcaption class="rf-dist-legend"><span class="k-fair">Fair ${fair.toFixed(1)}</span><span class="k-proj">Proj ${mean.toFixed(1)}</span><span class="k-band">80% range</span></figcaption>
+      <figcaption class="rf-dist-legend"><span class="k-shape">Approximate shape</span><span class="k-fair">Fair ${fair.toFixed(1)}</span><span class="k-proj">Proj ${mean.toFixed(1)}</span><span class="k-band">80% range</span></figcaption>
     </figure>`;
   }
 
@@ -2479,12 +2479,15 @@
       const captured = Number.isFinite(feedTime)
         ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(feedTime))
         : null;
+      const hasUpcomingSlate = Array.isArray(state.slate) && state.slate.length > 0 && !SLATES[state.slateKey]?.historical;
       if (health.dataKind === 'fixture') {
         snapshotPill.textContent = 'Demo fixture · Synthetic sample data';
       } else if (health.odds === 'error') {
         snapshotPill.textContent = 'Snapshot unavailable · Odds feed offline';
       } else if (!captured) {
-        snapshotPill.textContent = 'Between slates · Sportsbook prices post closer to kickoff';
+        snapshotPill.textContent = !hasUpcomingSlate
+          ? 'Between slates · Sportsbook prices post closer to kickoff'
+          : 'Snapshot time unavailable · Prices unverified';
       } else if (ageSeconds > 1800) {
         snapshotPill.textContent = `Snapshot Mode · Captured ${captured}`;
       } else {

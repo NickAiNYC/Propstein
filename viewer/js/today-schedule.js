@@ -249,10 +249,18 @@
         const { away, home } = eventTeams(event);
         return `<li class="rf-next-tile"><span class="rf-next-when">${escapeHtml(fmt(new Date(event.date)))}</span><span class="rf-next-match">${escapeHtml(away || 'TBD')} @ ${escapeHtml(home || 'TBD')}</span></li>`;
       }).join('');
+      let hasSlate = false;
+      try {
+        const sources = await modelSources(sport, dateKey);
+        hasSlate = Array.isArray(sources) && sources.some((s) => Array.isArray(s.slate) && s.slate.length > 0);
+      } catch (_) {}
+      const slateStatus = hasSlate
+        ? '<span>Model fair lines for the next slate are ready. Sportsbook prices post closer to kickoff.</span>'
+        : '<span>Sportsbook prices post closer to kickoff.</span>';
       gamesEl.innerHTML = `<div class="rf-next-up" role="status">
           <div class="rf-next-head">
             <span class="rf-next-dot" aria-hidden="true"></span>
-            <div><strong>No ${leagueNames[sport]} games today</strong><span>Model fair lines for the next slate are ready. Sportsbook prices post closer to kickoff.</span></div>
+            <div><strong>No ${leagueNames[sport]} games today</strong>${slateStatus}</div>
             <div class="rf-countdown"><small>Next kickoff</small><b id="rfCountdown">${countdownText(first - Date.now())}</b></div>
           </div>
           <ul class="rf-next-list">${tiles}</ul>
