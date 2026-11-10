@@ -2235,7 +2235,7 @@ function renderDrawerBodyContent() {
       ` : `<div style="color:var(--status-green); margin-bottom:6px;">✓ Clean health status. No official injury designation.</div>`}
       &bull; <strong>Defensive Matchup:</strong> Opponent allows <strong>${((Number(p.def_yards_idx || 1.0) - 1.0) * 100).toFixed(1)}%</strong> ${p.def_yards_idx >= 1.0 ? 'more' : 'fewer'} yards to ${p.position}s than NFL average.<br>
       &bull; <strong>Game Script &amp; Spread:</strong> ${p.team} is ${p.team_spread > 0 ? '+' : ''}${Number(p.team_spread || 0).toFixed(1)}. Positive scripts reduce pass volume; trailing scripts inflate targets.<br>
-      &bull; <strong>Venue:</strong> ${p.is_dome ? 'Indoor Dome (ideal passing environment)' : `Outdoor stadium &bull; Wind: ${p.wind || 0} mph`}.
+      &bull; <strong>Venue:</strong> ${p.is_open_field ? 'Covered stands, open field, weather unobserved' : p.is_dome ? 'Indoor Dome (ideal passing environment)' : `Outdoor stadium &bull; Wind: ${p.wind || 0} mph`}.
     </div>
 
     <!-- STEP 5: DISTRIBUTION & PREDICTIVE RANGES -->

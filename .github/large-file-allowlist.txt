@@ -27,3 +27,4 @@ test/snapshots/nfl/renders_table_anytime_td.json
 viewer/snapshots_2026_w1.json
 viewer/snapshots_2026_w7.json
 viewer/snapshots_2026_w8.json
+viewer/slate_2026_w10.json

@@ -33,7 +33,7 @@ sys.path.insert(0, str(SRC_DIR))
 from model import ReceivingModel, american_to_prob, american_to_decimal
 
 
-MODEL_VERSION = "negbin-gamma-v3.2"
+MODEL_VERSION = "negbin-gamma-v3.3"
 MODEL_ALPHA = 0.1097
 MODEL_K = 1.555
 QUALIFICATION_POLICY_VERSION = "edge_10pct_v1"

@@ -53,6 +53,8 @@ def project(season: int, week: int, include_all: bool = False) -> tuple[pd.DataF
     slate["questionable"] = slate.player_id.isin(quest).astype(int)
 
     p = model.predict_params(slate)
+    if "is_open_field" in slate.columns:
+        slate.loc[slate.is_open_field == 1, "wind"] = round(model.panel_mean_wind, 2)
     slate["mu_rec"] = p.mu_rec.values
     slate["mu_ypr"] = p.mu_ypr.values
     slate["proj_rec"] = slate.mu_rec

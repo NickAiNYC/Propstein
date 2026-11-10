@@ -295,10 +295,11 @@
         ? `Receptions use integer outcomes and half-step lines. Fair line calibrated at P(over) = ${pct(row.p_rec_at_fair_line)}.`
         : 'Receiving-yards fair line is the calibrated continuous median, where P(over) is exactly 50.0%.',
       environment: (row, game) => {
-        const isDome = row.is_dome || game?.roof === 'dome';
+        const isOpenField = Boolean(row.is_open_field || game?.is_open_field);
+        const isDome = !isOpenField && Boolean(row.is_dome || game?.roof === 'dome');
         const wind = game?.wind ?? row.wind_speed ?? row.wind;
-        const tag = isDome ? 'ENV: DOME' : (Number.isFinite(wind) && wind > 0) ? `ENV: ${wind} MPH WIND` : 'ENV: MILD / OUTDOOR';
-        const desc = isDome ? 'Indoor Dome (Controlled Conditions)' : (Number.isFinite(wind) && wind > 0) ? `${wind} mph wind (${game?.home_team ? `${game.home_team} stadium` : 'Open'})` : 'Controlled / mild conditions';
+        const tag = isOpenField ? 'ENV: OPEN FIELD' : isDome ? 'ENV: DOME' : (Number.isFinite(wind) && wind > 0) ? `ENV: ${wind} MPH WIND` : 'ENV: MILD / OUTDOOR';
+        const desc = isOpenField ? 'Covered stands, open field, weather unobserved' : isDome ? 'Indoor Dome (Controlled Conditions)' : (Number.isFinite(wind) && wind > 0) ? `${wind} mph wind (${game?.home_team ? `${game.home_team} stadium` : 'Open'})` : 'Controlled / mild conditions';
         return { tag, desc, dome: isDome };
       }
     },

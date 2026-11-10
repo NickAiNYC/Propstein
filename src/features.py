@@ -33,6 +33,38 @@ CONTEXT_OBSERVATION_FIELDS = (
     "weather_observed_at",
 )
 
+OPEN_FIELD_DOMES = {
+    "FC Bayern Munich Stadium",
+    "Allianz Arena",
+    "Melbourne Cricket Ground",
+    "Stade de France",
+}
+
+OPEN_FIELD_GAME_IDS = {
+    "2026_10_NE_DET",
+    "2026_01_SF_LA",
+    "2026_07_PIT_NO",
+}
+
+# Neutral wind imputation for open-field venues or unobserved wind:
+# Computed dynamically from empirical games data (enclosed domes at 0.0 mph,
+# observed outdoor winds as recorded) to yield z = 0.0 in standardized space.
+def compute_panel_mean_wind(games: pd.DataFrame | None = None) -> float:
+    """Compute empirical mean wind across games with known conditions."""
+    if games is None:
+        games = load_games()
+    stadiums = games.get("stadium", pd.Series("", index=games.index)).fillna("").astype(str)
+    is_open = (
+        stadiums.isin(OPEN_FIELD_DOMES)
+        | stadiums.str.contains("munich|allianz|melbourne|stade de france", case=False, na=False)
+        | games["game_id"].isin(OPEN_FIELD_GAME_IDS)
+    )
+    is_dome = games["roof"].isin(["dome", "closed"]) & (~is_open)
+    winds = pd.to_numeric(games["wind"], errors="coerce").copy()
+    winds.loc[is_dome] = 0.0
+    valid = winds.dropna()
+    return float(valid.mean()) if len(valid) > 0 else 5.56
+
 
 class UnverifiedGameContextError(ValueError):
     """Pregame context has no proof that it existed at the pricing cutoff."""
@@ -158,10 +190,19 @@ def load_games() -> pd.DataFrame:
     g = g[g.game_type == "REG"].copy()
     keep = ["game_id", "season", "week", "gameday", "gametime", "away_team", "home_team",
             "away_score", "spread_line", "total_line", "roof", "temp", "wind"]
-    return g[keep + [c for c in CONTEXT_OBSERVATION_FIELDS if c in g.columns]]
+    if "stadium" in g.columns:
+        keep.append("stadium")
+    if "stadium_id" in g.columns:
+        keep.append("stadium_id")
+    extra = [c for c in CONTEXT_OBSERVATION_FIELDS if c in g.columns and c not in keep]
+    return g[keep + extra]
 
 
-def _join_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
+def _join_game_context(
+    df: pd.DataFrame,
+    games: pd.DataFrame,
+    default_wind: float | None = None,
+) -> pd.DataFrame:
     long = []
     for _, side in (("home", "home"), ("away", "away")):
         pass
@@ -181,20 +222,48 @@ def _join_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
     # Implied team total = half the game total, shifted by half the spread.
     ctx["implied_team_total"] = ctx["total_line"] / 2.0 + ctx["team_spread"] / 2.0
     ctx["implied_opp_total"] = ctx["total_line"] / 2.0 - ctx["team_spread"] / 2.0
-    ctx["is_dome"] = ctx["roof"].isin(["dome", "closed"]).astype(int)
-    ctx["wind"] = ctx["wind"].fillna(0.0)
+
+    # Identify open-field dome venues (stands covered, pitch open to elements).
+    # The nflverse dome tag is preserved for the record, but open-field venues
+    # must get is_dome = 0 in features to prevent artificial indoor boosts.
+    if "stadium" in ctx.columns:
+        stadium_series = ctx["stadium"].fillna("").astype(str)
+        is_open_field = (
+            stadium_series.isin(OPEN_FIELD_DOMES)
+            | stadium_series.str.contains("munich|allianz|melbourne|stade de france", case=False, na=False)
+            | ctx["game_id"].isin(OPEN_FIELD_GAME_IDS)
+        )
+    else:
+        is_open_field = ctx["game_id"].isin(OPEN_FIELD_GAME_IDS)
+
+    ctx["is_open_field"] = is_open_field.astype(int)
+    ctx["is_dome"] = (ctx["roof"].isin(["dome", "closed"]) & (ctx["is_open_field"] == 0)).astype(int)
+
+    # Wind handling:
+    # 1. Enclosed domes (is_dome == 1) get wind = 0.0 (controlled indoor conditions).
+    # 2. Open-field venues with unobserved weather get the computed panel mean (z = 0, assuming neutral conditions).
+    # 3. Missing outdoor wind also falls back to computed mean rather than calm 0.0.
+    ctx["wind"] = pd.to_numeric(ctx["wind"], errors="coerce")
+    neutral_wind = default_wind if default_wind is not None else compute_panel_mean_wind(games)
+    ctx.loc[ctx["is_open_field"] == 1, "wind"] = ctx.loc[ctx["is_open_field"] == 1, "wind"].fillna(neutral_wind)
+    ctx["wind"] = ctx["wind"].fillna(neutral_wind)
+    # Fix line 186: only true enclosed domes overwrite wind to 0.0. Open-field domes have is_dome == 0.
     ctx.loc[ctx.is_dome == 1, "wind"] = 0.0
 
     cols = ["game_id", "team", "is_home", "team_spread", "total_line",
-            "implied_team_total", "implied_opp_total", "is_dome", "wind", "unposted_lines"]
+            "implied_team_total", "implied_opp_total", "is_dome", "wind", "unposted_lines", "is_open_field"]
     return df.merge(ctx[cols], on=["game_id", "team"], how="left")
 
 
-def attach_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
+def attach_game_context(
+    df: pd.DataFrame,
+    games: pd.DataFrame,
+    default_wind: float | None = None,
+) -> pd.DataFrame:
     """Join market context. spread_line is HOME-relative in nflverse:
     positive means the home team is favoured by that many points."""
     assert_context_known_at_cutoff(df, games)
-    return _join_game_context(df, games)
+    return _join_game_context(df, games, default_wind=default_wind)
 
 
 # ----------------------------------------------------------------------------

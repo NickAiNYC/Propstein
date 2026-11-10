@@ -210,6 +210,14 @@ def refresh_feeds(season: int) -> None:
 # ---------------------------------------------------------------------------
 
 def games_viewer_rows(games: list[dict]) -> list[dict]:
+    open_field_domes = {
+        "FC Bayern Munich Stadium",
+        "Allianz Arena",
+        "Melbourne Cricket Ground",
+        "Stade de France",
+    }
+    open_field_gids = {"2026_10_NE_DET", "2026_01_SF_LA", "2026_07_PIT_NO"}
+
     return [
         {
             "game_id": g["game_id"],
@@ -221,6 +229,12 @@ def games_viewer_rows(games: list[dict]) -> list[dict]:
             "total_line": _num_or_none(g.get("total_line")),
             "roof": g.get("roof") or None,
             "wind": _num_or_none(g.get("wind")),
+            "is_open_field": 1 if (
+                g.get("is_open_field")
+                or g.get("stadium") in open_field_domes
+                or any(k in str(g.get("stadium") or "").lower() for k in ("munich", "allianz", "melbourne", "stade de france"))
+                or g.get("game_id") in open_field_gids
+            ) else 0,
         }
         for g in games
     ]
