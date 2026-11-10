@@ -1,15 +1,15 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v227-refresh-2026';
+const CACHE_NAME = 'propstein-v228-refresh-2026';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v227',
-  '/app.js?v=2026_v227',
-  '/refresh-2026.css?v=2026_r1',
+  '/style.css?v=2026_v228',
+  '/app.js?v=2026_v228',
+  '/refresh-2026.css?v=2026_r2',
   '/js/refresh-2026.js?v=2026_r1',
   '/js/quant-math.js?v=2026_v215',
-  '/js/today-schedule.js?v=2026_v208',
+  '/js/today-schedule.js?v=2026_v209',
   '/js/sports/ufc.js?v=2026_v200',
   '/ufc.css?v=2026_v200',
   '/js/ufc-fighter.js?v=2026_v199',
