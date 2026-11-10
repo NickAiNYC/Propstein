@@ -27,13 +27,19 @@ class FeedUnavailableError(RuntimeError):
 class TokenBucket:
     """Minimal token-bucket rate limiter (1 token = 1 request)."""
 
-    def __init__(self, rate_per_second: float, clock: Callable[[], float] = time.monotonic) -> None:
+    def __init__(
+        self,
+        rate_per_second: float,
+        clock: Callable[[], float] = time.monotonic,
+        sleep_fn: Callable[[float], None] | None = None,
+    ) -> None:
         if rate_per_second <= 0:
             raise ValueError("rate must be positive")
         self._rate = rate_per_second
         self._tokens = 1.0
         self._last = clock()
         self._clock = clock
+        self._sleep = sleep_fn or time.sleep
 
     def acquire(self) -> None:
         while True:
@@ -44,7 +50,7 @@ class TokenBucket:
                 self._tokens -= 1.0
                 return
             wait = (1.0 - self._tokens) / self._rate
-            time.sleep(max(0.0, wait))
+            self._sleep(max(0.0, wait))
 
 
 class Fetcher:

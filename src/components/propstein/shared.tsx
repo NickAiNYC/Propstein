@@ -61,15 +61,15 @@ export function fmtAge(seconds: number | null): string {
 // ---------------------------------------------------------------------------
 
 const CHIP_STYLES: Record<string, string> = {
-  'PRICE ABOVE MARKET HURDLE': 'border-teal-800/40 bg-teal-800/5 text-teal-900',
-  'PRICE AT MARKET HURDLE': 'border-zinc-500/40 bg-zinc-500/5 text-zinc-700',
-  'PRICE BELOW MARKET HURDLE': 'border-amber-900/40 bg-amber-900/5 text-amber-900',
-  'INSUFFICIENT MARKET DATA': 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-  'STALE QUOTE': 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-  'UNVERIFIED CONTEXT': 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-  'NO MODEL COVERAGE': 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-  'MODEL UNAVAILABLE': 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-  SETTLED: 'border-zinc-700/50 bg-zinc-800 text-zinc-50',
+  'PRICE ABOVE MARKET HURDLE': 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
+  'PRICE AT MARKET HURDLE': 'border-white/10 bg-white/[0.04] text-zinc-300',
+  'PRICE BELOW MARKET HURDLE': 'border-rose-500/30 bg-rose-500/10 text-rose-300',
+  'INSUFFICIENT MARKET DATA': 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  'STALE QUOTE': 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  'UNVERIFIED CONTEXT': 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  'NO MODEL COVERAGE': 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  'MODEL UNAVAILABLE': 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  SETTLED: 'border-white/15 bg-white/[0.06] text-zinc-200',
 };
 
 export function AssessmentChip({
@@ -81,7 +81,7 @@ export function AssessmentChip({
   className?: string;
   size?: 'sm' | 'md' | 'lg';
 }) {
-  const style = CHIP_STYLES[assessment] ?? 'border-zinc-500/40 bg-zinc-500/5 text-zinc-700';
+  const style = CHIP_STYLES[assessment] ?? 'border-white/10 bg-white/[0.04] text-zinc-300';
   return (
     <span
       role="status"
@@ -98,23 +98,24 @@ export function AssessmentChip({
   );
 }
 
+const QUALITY_STYLES: Record<string, string> = {
+  fresh: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
+  stale: 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  missing: 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  conflicting: 'border-amber-500/30 bg-amber-500/10 text-amber-300 border-dashed',
+  pending: 'border-white/10 bg-white/[0.04] text-zinc-400',
+  settled: 'border-white/15 bg-white/[0.06] text-zinc-200',
+  push: 'border-white/10 bg-white/[0.04] text-zinc-400',
+  void: 'border-white/10 bg-white/[0.04] text-zinc-400',
+  canceled: 'border-white/10 bg-white/[0.04] text-zinc-400',
+  dnp: 'border-white/10 bg-white/[0.04] text-zinc-400',
+  win: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
+  loss: 'border-rose-500/30 bg-rose-500/10 text-rose-300',
+};
+
 export function QualityChip({ quality }: { quality: string }) {
-  const map: Record<string, string> = {
-    fresh: 'border-teal-800/40 bg-teal-800/5 text-teal-900',
-    stale: 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-    missing: 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-    conflicting: 'border-amber-700/50 bg-amber-700/5 text-amber-800 border-dashed',
-    pending: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-600',
-    settled: 'border-zinc-700/50 bg-zinc-800 text-zinc-50',
-    push: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-600',
-    void: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-600',
-    canceled: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-600',
-    dnp: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-600',
-    win: 'border-zinc-600/50 bg-zinc-100 text-zinc-800',
-    loss: 'border-zinc-600/50 bg-zinc-100 text-zinc-800',
-  };
   return (
-    <span className={cn('inline-flex items-center rounded-sm border px-2 py-0.5 text-[11px] font-medium tracking-wide', map[quality] ?? map.pending)}>
+    <span className={cn('inline-flex items-center rounded-sm border px-2 py-0.5 text-[11px] font-medium tracking-wide', QUALITY_STYLES[quality] ?? QUALITY_STYLES.pending)}>
       {quality.toUpperCase()}
     </span>
   );
@@ -134,9 +135,9 @@ export function MetaRow({
   mono?: boolean;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 py-1.5 border-b border-zinc-100 last:border-b-0">
+    <div className="flex items-baseline justify-between gap-3 py-1.5 border-b border-white/[0.06] last:border-b-0">
       <span className="pst-label shrink-0">{label}</span>
-      <span className={cn('text-right text-[13px] text-zinc-800', mono && 'pst-num')}>{children}</span>
+      <span className={cn('text-right text-[13px] text-zinc-200', mono && 'pst-num')}>{children}</span>
     </div>
   );
 }
@@ -146,7 +147,7 @@ export function Note({ children, tone = 'neutral' }: { children: React.ReactNode
     <p
       className={cn(
         'text-[12px] leading-relaxed',
-        tone === 'warn' ? 'text-amber-800' : tone === 'teal' ? 'text-teal-900' : 'text-zinc-500',
+        tone === 'warn' ? 'text-amber-300/90' : tone === 'teal' ? 'text-emerald-300/90' : 'text-zinc-500',
       )}
     >
       {children}

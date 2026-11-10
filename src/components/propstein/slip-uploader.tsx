@@ -263,7 +263,7 @@ export function SlipUploader({ onSaved }: { onSaved: () => void }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-zinc-900">Record a proposed price</h2>
+        <h2 className="text-lg font-semibold text-zinc-100">Record a proposed price</h2>
         <p className="mt-1 text-[13px] text-zinc-500 leading-relaxed max-w-2xl">
           Upload a screenshot, paste slip text, or enter fields manually. Extraction always requires your explicit
           confirmation before any assessment runs. This is not a betting recommendation.
@@ -289,7 +289,7 @@ export function SlipUploader({ onSaved }: { onSaved: () => void }) {
                 ref={fileRef}
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
-                className="block text-[13px] text-zinc-600 file:mr-3 file:rounded-sm file:border file:border-zinc-300 file:bg-white file:px-3 file:py-1.5 file:text-[13px] hover:file:bg-zinc-50"
+                className="block text-[13px] text-zinc-400 file:mr-3 file:rounded-sm file:border file:border-white/[0.12] file:bg-white/[0.08] file:px-3 file:py-1.5 file:text-[13px] file:text-zinc-200 hover:file:bg-white/[0.14]"
                 onChange={(e) => {
                   const f = e.target.files?.[0];
                   if (f) uploadFile(f);
@@ -299,7 +299,7 @@ export function SlipUploader({ onSaved }: { onSaved: () => void }) {
             </div>
             <div className="mt-3 flex items-center gap-2">
               <Checkbox id="retain" checked={retain} onCheckedChange={(v) => setRetain(v === true)} />
-              <Label htmlFor="retain" className="text-[12.5px] font-normal text-zinc-600">
+              <Label htmlFor="retain" className="text-[12.5px] font-normal text-zinc-400">
                 Retain the screenshot with the ledger record (optional; deletable at any time)
               </Label>
             </div>
@@ -350,9 +350,9 @@ export function SlipUploader({ onSaved }: { onSaved: () => void }) {
       {extraction && (
         <section aria-label="Confirm the extracted selections" className="pst-card rounded-md p-4">
           <div className="flex items-baseline justify-between flex-wrap gap-2">
-            <h3 className="text-sm font-semibold text-zinc-900">Confirm the extracted selections</h3>
+            <h3 className="text-sm font-semibold text-zinc-100">Confirm the extracted selections</h3>
             {extraction.provider !== 'manual-entry' && (
-              <span className={cn('pst-num text-[12px]', extraction.confidence >= CONF_THRESHOLD ? 'text-teal-800' : 'text-amber-700')}>
+              <span className={cn('pst-num text-[12px]', extraction.confidence >= CONF_THRESHOLD ? 'text-emerald-300' : 'text-amber-300/80')}>
                 extractor {extraction.provider} · confidence {(extraction.confidence * 100).toFixed(0)}% (threshold{' '}
                 {(CONF_THRESHOLD * 100).toFixed(0)}%)
                 {extraction.needsManualConfirmation ? ' · manual confirmation required' : ''}
@@ -460,7 +460,7 @@ export function SlipUploader({ onSaved }: { onSaved: () => void }) {
             <div className="flex flex-col justify-end">
               <div className="flex items-start gap-2">
                 <Checkbox id="confirm-fields" checked={confirmed} onCheckedChange={(v) => setConfirmed(v === true)} aria-required />
-                <Label htmlFor="confirm-fields" className="text-[12.5px] font-normal leading-snug text-zinc-700">
+                <Label htmlFor="confirm-fields" className="text-[12.5px] font-normal leading-snug text-zinc-300">
                   I confirm these fields match the slip I am recording.
                 </Label>
               </div>
@@ -514,7 +514,7 @@ export function SlipUploader({ onSaved }: { onSaved: () => void }) {
           ) : (
             <div className="pst-card rounded-md p-4 flex items-center justify-between flex-wrap gap-2">
               <div>
-                <div className="text-[13px] font-medium text-zinc-800">Recorded for review</div>
+                <div className="text-[13px] font-medium text-zinc-200">Recorded for review</div>
                 <Note>Ledger entry {savedLedgerId} is append-only. See the Ledger tab for its Evidence DNA and grading.</Note>
               </div>
               <Button variant="outline" size="sm" onClick={() => onSaved()}>
@@ -560,9 +560,9 @@ function FieldInput({
   return (
     <div className={className}>
       <div className="flex items-baseline justify-between">
-        <Label className="text-[12px] text-zinc-600">{label}</Label>
+        <Label className="text-[12px] text-zinc-400">{label}</Label>
         {conf !== undefined && (
-          <span className={cn('pst-num text-[10.5px]', low ? 'text-amber-700' : 'text-teal-800')}>
+          <span className={cn('pst-num text-[10.5px]', low ? 'text-amber-300/80' : 'text-emerald-300')}>
             {(conf * 100).toFixed(0)}%
           </span>
         )}
@@ -573,7 +573,7 @@ function FieldInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label={label}
-        className={cn('mt-1 h-9 pst-num text-[13px]', low && 'border-amber-400 bg-amber-50/40')}
+        className={cn('mt-1 h-9 pst-num text-[13px]', low && 'border-amber-500/40 bg-amber-50/40')}
       />
       {hint && <p className="text-[11px] text-zinc-400 mt-0.5">{hint}</p>}
     </div>
@@ -600,15 +600,15 @@ function FieldSelect({
   return (
     <div>
       <div className="flex items-baseline justify-between">
-        <Label className="text-[12px] text-zinc-600">{label}</Label>
+        <Label className="text-[12px] text-zinc-400">{label}</Label>
         {conf !== undefined && (
-          <span className={cn('pst-num text-[10.5px]', low ? 'text-amber-700' : 'text-teal-800')}>
+          <span className={cn('pst-num text-[10.5px]', low ? 'text-amber-300/80' : 'text-emerald-300')}>
             {(conf * 100).toFixed(0)}%
           </span>
         )}
       </div>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger aria-label={label} className={cn('mt-1 h-9 text-[13px]', low && 'border-amber-400 bg-amber-50/40')}>
+        <SelectTrigger aria-label={label} className={cn('mt-1 h-9 text-[13px]', low && 'border-amber-500/40 bg-amber-50/40')}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

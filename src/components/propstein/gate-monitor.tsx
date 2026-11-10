@@ -45,13 +45,13 @@ interface GateStatus {
 }
 
 const VERDICT_STYLES: Record<string, string> = {
-  PASS: 'border-teal-800/40 bg-teal-800/5 text-teal-900',
-  FAIL: 'border-amber-900/40 bg-amber-900/5 text-amber-900',
-  IN_PROGRESS: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-700',
-  INTERIM: 'border-zinc-500/40 bg-zinc-500/5 text-zinc-700',
-  INCONCLUSIVE: 'border-amber-700/40 bg-amber-700/5 text-amber-800',
-  PENDING: 'border-zinc-400/40 bg-zinc-100 text-zinc-500',
-  RETIRED: 'border-zinc-700/50 bg-zinc-800 text-zinc-100',
+  PASS: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
+  FAIL: 'border-amber-900/40 bg-amber-900/5 text-amber-300',
+  IN_PROGRESS: 'border-zinc-500/40 bg-[#0D0F16]0/5 text-zinc-300',
+  INTERIM: 'border-zinc-500/40 bg-[#0D0F16]0/5 text-zinc-300',
+  INCONCLUSIVE: 'border-amber-500/30 bg-amber-500/10 text-amber-300/90',
+  PENDING: 'border-zinc-400/40 bg-white/[0.04] text-zinc-500',
+  RETIRED: 'border-zinc-700/50 bg-white/[0.08] text-zinc-100',
 };
 
 export function GateMonitor() {
@@ -97,7 +97,7 @@ export function GateMonitor() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-lg font-semibold text-zinc-900">Preregistered gate monitor</h2>
+        <h2 className="text-lg font-semibold text-zinc-100">Preregistered gate monitor</h2>
         <p className="mt-0.5 text-[12.5px] text-zinc-500 max-w-2xl">
           One evaluation per sport. A commercial actionable-signal surface may launch for a sport only after the
           preregistered gate records a passing verdict AND an explicit compliance approval record exists. Default is
@@ -116,7 +116,7 @@ export function GateMonitor() {
           <div key={g.sport} className="pst-card rounded-md p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h3 className="text-[15px] font-semibold text-zinc-900">{g.sport}</h3>
+                <h3 className="text-[15px] font-semibold text-zinc-100">{g.sport}</h3>
                 <div className="text-[12px] text-zinc-500 pst-num mt-0.5">
                   attempt {g.currentAttempt} progress: {g.nEvaluable} evaluable qualifying signals of{' '}
                   {g.preregistered.nConfirm} · {g.distinctClusters} distinct game clusters (floor{' '}
@@ -134,8 +134,8 @@ export function GateMonitor() {
 
             {/* progress */}
             <div className="mt-3">
-              <div className="h-1.5 rounded-full bg-zinc-200 overflow-hidden" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-label={`${g.sport} gate progress`}>
-                <div className={cn('h-full rounded-full', progress >= 100 ? 'bg-teal-800' : 'bg-zinc-500')} style={{ width: `${progress}%` }} />
+              <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} aria-label={`${g.sport} gate progress`}>
+                <div className={cn('h-full rounded-full', progress >= 100 ? 'bg-emerald-500/70' : 'bg-indigo-500/60')} style={{ width: `${progress}%` }} />
               </div>
               <div className="flex justify-between mt-1 text-[11px] text-zinc-400 pst-num">
                 <span>0</span>
@@ -152,12 +152,12 @@ export function GateMonitor() {
               ) : (
                 <div className="mt-1 space-y-2">
                   {g.attempts.map((a) => (
-                    <div key={a.attemptNo} className="border-l-2 border-zinc-200 pl-3">
+                    <div key={a.attemptNo} className="border-l-2 border-white/[0.07] pl-3">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className={cn('inline-flex items-center rounded-sm border px-2 py-0.5 text-[11px] font-semibold', VERDICT_STYLES[a.verdict] ?? VERDICT_STYLES.PENDING)}>
                           {a.verdict}
                         </span>
-                        <span className="pst-num text-[12px] text-zinc-700">
+                        <span className="pst-num text-[12px] text-zinc-300">
                           attempt {a.attemptNo} · N={a.nEvaluable} · clusters={a.distinctClusters} · mean {fmtPp(a.meanClvPp)} ·
                           one-sided lower bound {fmtPp(a.bootstrapLbPp)}
                         </span>
@@ -177,7 +177,7 @@ export function GateMonitor() {
               <div>
                 <SectionLabel>Compliance approval</SectionLabel>
                 {g.compliance ? (
-                  <div className="text-[12.5px] text-zinc-700 mt-1">
+                  <div className="text-[12.5px] text-zinc-300 mt-1">
                     <span className="pst-num">{g.compliance.status.toUpperCase()}</span> · {g.compliance.approver}
                     <div className="text-[11.5px] text-zinc-500">{g.compliance.note}</div>
                     <div className="text-[11px] text-zinc-400 pst-num">recorded {fmtEt(g.compliance.recordedAtUtc)}</div>
@@ -191,17 +191,17 @@ export function GateMonitor() {
                 <div
                   className={cn(
                     'mt-1 inline-flex items-center rounded-sm border px-2.5 py-0.5 text-xs font-semibold tracking-wide',
-                    g.commercial.commercialSignalEnabled ? 'border-teal-800/40 bg-teal-800/5 text-teal-900' : 'border-zinc-700/50 bg-zinc-800 text-zinc-100',
+                    g.commercial.commercialSignalEnabled ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300' : 'border-zinc-700/50 bg-white/[0.08] text-zinc-100',
                   )}
                   role="status"
                 >
                   {g.commercial.commercialSignalEnabled ? 'ENABLED' : 'DENIED'}
                 </div>
-                <p className="text-[12px] text-zinc-600 mt-1 leading-snug">{g.commercial.explanation}</p>
+                <p className="text-[12px] text-zinc-400 mt-1 leading-snug">{g.commercial.explanation}</p>
               </div>
             </div>
 
-            <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-zinc-200 pt-3">
+            <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-white/[0.07] pt-3">
               <Button variant="outline" size="sm" disabled={busy === g.sport} onClick={() => recompute(g.sport)}>
                 {busy === g.sport ? 'Recomputing…' : 'Recompute from stored signals (deterministic)'}
               </Button>

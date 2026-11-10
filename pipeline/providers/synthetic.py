@@ -226,11 +226,13 @@ class SyntheticBoardFeed(BoardFeed):
         under_odds = american_from_probability(min(0.97, max(0.03, under_raw)))
 
         # --- capture time: fresh, with seeded stale fixtures ------------------
-        run_morning = datetime(run_date.year, run_date.month, run_date.day, 10, 55, tzinfo=timezone.utc)
+        # Engine run moment is 11:00:00Z; fresh window must sit inside the
+        # 300-second freshness threshold at that moment.
+        run_morning = datetime(run_date.year, run_date.month, run_date.day, 10, 59, tzinfo=timezone.utc)
         if quote_rand() < STALE_QUOTE_RATE:
             captured = run_morning - timedelta(hours=13)  # stale (>300s threshold)
         else:
-            captured = run_morning - timedelta(seconds=int(quote_rand() * 240))
+            captured = run_morning - timedelta(seconds=int(quote_rand() * 120))  # age 60-180s at run moment
 
         # --- context observations (Evidence DNA inputs) -----------------------
         cutoff = captured + timedelta(seconds=60)

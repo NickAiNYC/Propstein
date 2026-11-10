@@ -128,7 +128,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-zinc-900">Immutable ledger</h2>
+          <h2 className="text-lg font-semibold text-zinc-100">Immutable ledger</h2>
           <p className="mt-0.5 text-[12.5px] text-zinc-500 max-w-2xl">
             Append-only records. Corrections create a new revision with a reason and integrity hash; the original is
             never overwritten. Pushes, voids, cancellations, and DNPs are retained with reason codes and excluded from
@@ -162,7 +162,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
       <div className="pst-card rounded-md overflow-hidden">
         <div className="max-h-[28rem] overflow-y-auto">
           <table className="w-full text-[12.5px]">
-            <thead className="sticky top-0 bg-zinc-50/95 backdrop-blur-sm border-b border-zinc-200">
+            <thead className="sticky top-0 bg-[#0D0F16]/95 backdrop-blur-sm border-b border-white/[0.07]">
               <tr className="text-left pst-label">
                 <th className="px-3 py-2 font-medium">Record</th>
                 <th className="px-3 py-2 font-medium">Price assessment</th>
@@ -183,7 +183,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                 rows.map((r) => (
                   <tr
                     key={r.ledgerId}
-                    className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/70 cursor-pointer"
+                    className="border-b border-white/[0.06] last:border-b-0 hover:bg-[#0D0F16]/70 cursor-pointer"
                     onClick={() => openDetail(r.ledgerId)}
                     tabIndex={0}
                     onKeyDown={(ev) => {
@@ -192,7 +192,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                     aria-label={`Open ledger entry ${r.ledgerId}`}
                   >
                     <td className="px-3 py-2">
-                      <div className="font-medium text-zinc-800">{r.playerName}</div>
+                      <div className="font-medium text-zinc-200">{r.playerName}</div>
                       <div className="text-zinc-500 text-[11.5px]">
                         {r.sport} · {marketLabel(r.market)} {selectionLabel(r.selection)} {r.line} @ {fmtAmerican(r.enteredAmericanOdds)}
                       </div>
@@ -206,8 +206,8 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                     <td className="px-3 py-2"><QualityChip quality={r.closingQuality} /></td>
                     <td className="px-3 py-2 pst-num text-zinc-500 text-[11.5px]">{fmtEt(r.capturedAtUtc)}</td>
                     <td className="px-3 py-2 text-[11.5px] text-zinc-500">
-                      {r.duplicate && <span className="text-amber-700">duplicate </span>}
-                      {r.correlated && <span className="text-amber-700">correlated</span>}
+                      {r.duplicate && <span className="text-amber-300/80">duplicate </span>}
+                      {r.correlated && <span className="text-amber-300/80">correlated</span>}
                       {!r.duplicate && !r.correlated && <span className="text-zinc-300">—</span>}
                     </td>
                   </tr>
@@ -233,8 +233,8 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                   <span
                     className={
                       detail.integrity.ok
-                        ? 'text-[11px] text-teal-800 pst-num'
-                        : 'text-[11px] text-amber-700 pst-num'
+                        ? 'text-[11px] text-emerald-300 pst-num'
+                        : 'text-[11px] text-amber-300/80 pst-num'
                     }
                   >
                     {detail.integrity.ok
@@ -249,12 +249,12 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                 <section>
                   <SectionLabel>Immutable core</SectionLabel>
                   <div className="grid grid-cols-2 gap-x-6 text-[12.5px] mt-1">
-                    <div className="space-y-1 pst-num text-zinc-700">
+                    <div className="space-y-1 pst-num text-zinc-300">
                       <div>entered {fmtAmerican(Number(e.enteredAmericanOdds))} · break-even {fmtPct(Number(e.breakEvenProbability))}</div>
                       <div>book {String(e.book)} · captured {fmtEt(String(e.capturedAtUtc))}</div>
                       <div>model {String(e.modelVersion ?? 'none')} ({String(e.modelCoverage)})</div>
                     </div>
-                    <div className="space-y-1 pst-num text-zinc-700">
+                    <div className="space-y-1 pst-num text-zinc-300">
                       <div>entry hash <span className="text-zinc-400">{String(e.entryHash).slice(0, 16)}…</span></div>
                       <div>snapshot hash <span className="text-zinc-400">{String(e.snapshotHash).slice(0, 16)}…</span></div>
                       <div>game cluster {String(e.gameClusterId)}</div>
@@ -272,7 +272,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                 <section>
                   <SectionLabel>Closing reference</SectionLabel>
                   {detail.closingReference && detail.closingReference.provider ? (
-                    <div className="mt-1 text-[12.5px] pst-num text-zinc-700 space-y-1">
+                    <div className="mt-1 text-[12.5px] pst-num text-zinc-300 space-y-1">
                       <div>
                         {fmtAmerican(detail.closingReference.americanOdds)} · fair {fmtPct(detail.closingReference.fairProbability)} ·
                         captured {fmtEt(detail.closingReference.capturedAtUtc)}
@@ -293,7 +293,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                 {/* Settlement + grade */}
                 <section>
                   <SectionLabel>Settlement and grade</SectionLabel>
-                  <div className="mt-1 text-[12.5px] text-zinc-700 space-y-1">
+                  <div className="mt-1 text-[12.5px] text-zinc-300 space-y-1">
                     <div>
                       status <span className="pst-num">{detail.settlement.status}</span>
                       {detail.settlement.result && <span className="pst-num"> · result {detail.settlement.result}</span>}
@@ -307,7 +307,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                         {detail.grade.evaluable ? (
                           <>price CLV {fmtPp(detail.grade.clvPp)} · {detail.grade.beatClose ? 'beat close' : 'did not beat close'}</>
                         ) : (
-                          <span className="text-amber-700">UNEVALUABLE — reason code {detail.grade.reasonCode}. Never counted as a loss or a zero.</span>
+                          <span className="text-amber-300/80">UNEVALUABLE — reason code {detail.grade.reasonCode}. Never counted as a loss or a zero.</span>
                         )}
                       </div>
                     )}
@@ -319,8 +319,8 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                   <SectionLabel>Revision history ({detail.revisions.length})</SectionLabel>
                   <div className="mt-1 space-y-1.5 max-h-40 overflow-y-auto">
                     {detail.revisions.map((r) => (
-                      <div key={r.revisionNo} className="text-[12px] border-l-2 border-zinc-200 pl-2.5">
-                        <div className="pst-num text-zinc-600">
+                      <div key={r.revisionNo} className="text-[12px] border-l-2 border-white/[0.07] pl-2.5">
+                        <div className="pst-num text-zinc-400">
                           #{r.revisionNo} · {r.reasonCode} · {fmtEt(r.createdAtUtc)}
                         </div>
                         <div className="text-zinc-500">{r.reasonText}</div>
@@ -364,7 +364,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                 </section>
 
                 {/* Actions */}
-                <section className="border-t border-zinc-200 pt-3 space-y-3">
+                <section className="border-t border-white/[0.07] pt-3 space-y-3">
                   {!detail.closingReference && (
                     <div className="flex flex-wrap items-center gap-2">
                       <Button size="sm" variant="outline" disabled={busy} onClick={() => act('close')}>
@@ -402,7 +402,7 @@ export function LedgerView({ refreshKey }: { refreshKey: number }) {
                   )}
                   <div className="grid gap-2 md:grid-cols-2">
                     <div className="space-y-1.5">
-                      <Label className="text-[12px] text-zinc-600">Request correction (creates a revision)</Label>
+                      <Label className="text-[12px] text-zinc-400">Request correction (creates a revision)</Label>
                       <Input
                         placeholder="Reason code (e.g. PLAYER_NAME_TYPO)"
                         value={correction.reasonCode}

@@ -76,7 +76,10 @@ def _canonicalize(value: Any) -> Any:
     if isinstance(value, float):
         if not math.isfinite(value):
             raise ValueError("non-finite number in canonical JSON")
-        return round(value, 6)
+        rounded = round(value, 6)
+        if rounded == int(rounded):
+            return int(rounded)  # TS Number.toFixed parity: 1.0 -> 1
+        return rounded
     if isinstance(value, int):
         return value
     if isinstance(value, str):

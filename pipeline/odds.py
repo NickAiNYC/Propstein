@@ -14,6 +14,11 @@ def implied_probability(american_odds: int) -> float:
     raise ValueError("american odds must be non-zero")
 
 
+def break_even_probability(american_odds: int) -> float:
+    """Alias with the charter's hurdle vocabulary (parity with odds.ts)."""
+    return implied_probability(american_odds)
+
+
 def american_from_probability(p: float) -> int:
     """American odds for a raw (juiced) probability — mirrors sim-market.ts."""
     clamp = min(0.97, max(0.03, p))

@@ -35,7 +35,7 @@ export function DocsView() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-semibold text-zinc-900">Specification</h2>
+        <h2 className="text-lg font-semibold text-zinc-100">Specification</h2>
         <p className="mt-0.5 text-[12.5px] text-zinc-500">
           Product spec, database schema, API contract, and launch checklist. The full exported specification PDF adds
           the prohibited-vocabulary appendix and complete test report.
@@ -50,8 +50,8 @@ export function DocsView() {
             className={cn(
               'rounded-sm border px-2.5 py-1 text-[12.5px] transition-colors',
               active === d.id
-                ? 'border-zinc-800 bg-zinc-800 text-zinc-50'
-                : 'border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50',
+                ? 'border-zinc-800 bg-white/[0.08] text-zinc-50'
+                : 'border-white/[0.07] bg-[#12141C] text-zinc-400 hover:bg-[#0D0F16]',
             )}
             aria-pressed={active === d.id}
           >
@@ -63,8 +63,8 @@ export function DocsView() {
           className={cn(
             'rounded-sm border px-2.5 py-1 text-[12.5px] transition-colors',
             active === 'copy-compliance'
-              ? 'border-zinc-800 bg-zinc-800 text-zinc-50'
-              : 'border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-50',
+              ? 'border-zinc-800 bg-white/[0.08] text-zinc-50'
+              : 'border-white/[0.07] bg-[#12141C] text-zinc-400 hover:bg-[#0D0F16]',
           )}
           aria-pressed={active === 'copy-compliance'}
         >
@@ -75,7 +75,7 @@ export function DocsView() {
       <article className="pst-card rounded-md p-5 max-w-3xl">
         {active === 'copy-compliance' ? (
           <div>
-            <h3 className="text-[15px] font-semibold text-zinc-900">Copy compliance report</h3>
+            <h3 className="text-[15px] font-semibold text-zinc-100">Copy compliance report</h3>
             <p className="mt-1 text-[12.5px] text-zinc-500">
               The linter scans every string in the product copy registry (and the test suite additionally scans all UI
               component string literals). The prohibited vocabulary itself is enumerated only in the exported
@@ -88,8 +88,8 @@ export function DocsView() {
                     className={cn(
                       'inline-flex items-center rounded-sm border px-2.5 py-0.5 text-xs font-semibold',
                       report.status === 'COMPLIANT'
-                        ? 'border-teal-800/40 bg-teal-800/5 text-teal-900'
-                        : 'border-amber-800/40 bg-amber-800/5 text-amber-900',
+                        ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                        : 'border-amber-500/30 bg-amber-500/10 text-amber-300',
                     )}
                     role="status"
                   >
@@ -105,7 +105,7 @@ export function DocsView() {
                     actionable-signal claims. Checked {new Date(report.checkedAtUtc).toISOString().slice(0, 19).replace('T', ' ')} UTC.
                   </Note>
                 ) : (
-                  <ul className="text-[12.5px] text-amber-800 list-disc pl-4">
+                  <ul className="text-[12.5px] text-amber-300/90 list-disc pl-4">
                     {report.violations.map((v, i) => (
                       <li key={i}>
                         {v.pattern}: {v.context.slice(0, 80)}
@@ -119,7 +119,7 @@ export function DocsView() {
             )}
           </div>
         ) : (
-          <div className="prose prose-zinc prose-sm max-w-none [&_h2]:text-[15px] [&_h2]:mt-4 [&_h2]:mb-1 [&_h3]:text-[13.5px] [&_table]:text-[12px] [&_th]:border [&_th]:border-zinc-200 [&_th]:px-2 [&_th]:py-1 [&_th]:bg-zinc-50 [&_td]:border [&_td]:border-zinc-200 [&_td]:px-2 [&_td]:py-1 [&_code]:bg-zinc-100 [&_code]:px-1 [&_code]:rounded [&_code]:text-[11.5px] [&_li]:text-[12.5px] [&_p]:text-[12.5px] [&_p]:leading-relaxed">
+          <div className="prose prose-zinc prose-sm max-w-none [&_h2]:text-[15px] [&_h2]:mt-4 [&_h2]:mb-1 [&_h3]:text-[13.5px] [&_table]:text-[12px] [&_th]:border [&_th]:border-white/[0.07] [&_th]:px-2 [&_th]:py-1 [&_th]:bg-[#0D0F16] [&_td]:border [&_td]:border-white/[0.07] [&_td]:px-2 [&_td]:py-1 [&_code]:bg-white/[0.04] [&_code]:px-1 [&_code]:rounded [&_code]:text-[11.5px] [&_li]:text-[12.5px] [&_p]:text-[12.5px] [&_p]:leading-relaxed">
             <Markdown>{doc.markdown}</Markdown>
           </div>
         )}

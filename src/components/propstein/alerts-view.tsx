@@ -81,7 +81,7 @@ export function AlertsView() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-lg font-semibold text-zinc-900">Tracked-entry alerts</h2>
+        <h2 className="text-lg font-semibold text-zinc-100">Tracked-entry alerts</h2>
         <p className="mt-0.5 text-[12.5px] text-zinc-500 max-w-2xl">
           Opt-in, low-volume, factual updates on entries you saved. Alerts carry snapshot time and source, link to the
           immutable ledger entry, and never contain entry, exit, sizing, or timing instructions. Daily cap: at most 3
@@ -95,7 +95,7 @@ export function AlertsView() {
           <div className="mt-2 space-y-2">
             {prefs.map((p) => (
               <div key={p.type} className="flex items-center justify-between gap-3">
-                <span className="text-[12.5px] text-zinc-700">{TYPE_LABELS[p.type] ?? p.type}</span>
+                <span className="text-[12.5px] text-zinc-300">{TYPE_LABELS[p.type] ?? p.type}</span>
                 <Switch checked={p.enabled} onCheckedChange={(v) => toggle(p.type, v)} aria-label={`Toggle ${TYPE_LABELS[p.type] ?? p.type} alerts`} />
               </div>
             ))}
@@ -114,8 +114,8 @@ export function AlertsView() {
           <div className="mt-2 space-y-2 max-h-80 overflow-y-auto">
             {feed.length === 0 && <p className="text-[12.5px] text-zinc-500 py-6 text-center">No alerts yet. Alerts appear for entries you saved and opted into.</p>}
             {feed.map((a) => (
-              <div key={a.id} className="border-l-2 border-zinc-200 pl-3 py-1">
-                <div className="text-[13px] text-zinc-800">{a.message}</div>
+              <div key={a.id} className="border-l-2 border-white/[0.07] pl-3 py-1">
+                <div className="text-[13px] text-zinc-200">{a.message}</div>
                 <div className="text-[11px] text-zinc-400 pst-num mt-0.5">
                   {TYPE_LABELS[a.type] ?? a.type} · snapshot {fmtEt(a.snapshotTimeUtc)} · source {a.sourceProvider} · entry{' '}
                   {a.ledgerEntryId ?? '—'}

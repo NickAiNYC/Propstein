@@ -18,6 +18,7 @@ PropsteinP/
 │   ├── determinism.py            #   FNV-1a, mulberry32, gauss, normal CDF (TS parity)
 │   ├── odds.py                   #   implied probability, devig, American odds conversions
 │   ├── http.py                   #   rate-limited fetcher: retries, exponential backoff + jitter
+│   ├── requirements.txt          #   runtime deps (pydantic, httpx)
 │   ├── providers/
 │   │   ├── base.py               #   provider interface + registry
 │   │   ├── synthetic.py          #   deterministic simulated feed (default; no keys required)
@@ -38,8 +39,12 @@ PropsteinP/
 ├── src/                          # /web + /api — the propstein.com serving layer (Next.js 16)
 │   ├── app/                      #   App Router: single visible route + API routes
 │   │   ├── api/pipeline/         #     telemetry + predictions artifact readers (fail-closed)
-│   │   └── api/…                 #     the 13 charter endpoints (slips, ledger, gates, …)
-│   ├── components/propstein/     #   terminal shell, boards, drawer, scorecards, luck meter…
+│   │   ├── api/slips/            #     upload (extraction only) + confirm (assessment)
+│   │   └── api/…                 #     the charter endpoints (ledger, gates, alerts, …)
+│   │   ├── error.tsx             #     explicit degraded state (no blank screens)
+│   │   └── loading.tsx           #     terminal skeleton
+│   ├── components/propstein/     #   terminal shell, telemetry header, board, drill drawer,
+│   │                             #   sparklines, slip/ledger/record/alerts/gates/docs
 │   └── lib/domain/               #   charter core: hurdle router, ledger, gate, copy-lint…
 │
 ├── .github/workflows/

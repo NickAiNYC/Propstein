@@ -19,12 +19,12 @@ import { cn } from '@/lib/utils';
 import type { LuckMeterReport } from '@/lib/domain/types';
 
 const VERDICT_STYLES: Record<string, string> = {
-  'NO RECORD': 'border-zinc-400/40 bg-zinc-100 text-zinc-600',
-  'INSUFFICIENT SAMPLE': 'border-amber-700/40 bg-amber-700/5 text-amber-800',
-  'DESCRIPTIVE ONLY': 'border-zinc-500/40 bg-zinc-500/5 text-zinc-700',
-  INCONCLUSIVE: 'border-amber-700/40 bg-amber-700/5 text-amber-800',
-  'POSITIVE BUT UNPROVEN': 'border-amber-800/40 bg-amber-800/5 text-amber-900',
-  'GATE PASSED': 'border-teal-800/40 bg-teal-800/5 text-teal-900',
+  'NO RECORD': 'border-zinc-400/40 bg-white/[0.04] text-zinc-400',
+  'INSUFFICIENT SAMPLE': 'border-amber-500/30 bg-amber-500/10 text-amber-300/90',
+  'DESCRIPTIVE ONLY': 'border-zinc-500/40 bg-[#0D0F16]0/5 text-zinc-300',
+  INCONCLUSIVE: 'border-amber-500/30 bg-amber-500/10 text-amber-300/90',
+  'POSITIVE BUT UNPROVEN': 'border-amber-500/30 bg-amber-500/10 text-amber-300',
+  'GATE PASSED': 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300',
 };
 
 export function LuckMeter({ refreshKey }: { refreshKey: number }) {
@@ -58,7 +58,7 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-lg font-semibold text-zinc-900">Your record, reported honestly</h2>
+        <h2 className="text-lg font-semibold text-zinc-100">Your record, reported honestly</h2>
         <p className="mt-0.5 text-[12.5px] text-zinc-500 max-w-2xl">
           Descriptive statistics over your graded ledger entries. This record does not authorize any commercial
           actionable-signal claim. This is not a betting recommendation.
@@ -82,7 +82,7 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
               {report.verdict}
             </span>
           </div>
-          <p className="text-[13px] text-zinc-600 max-w-md">{report.verdictDisplayRule}</p>
+          <p className="text-[13px] text-zinc-400 max-w-md">{report.verdictDisplayRule}</p>
         </div>
         {report.notes.length > 0 && (
           <div className="mt-3 space-y-1">
@@ -120,7 +120,7 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
       {/* CLV explainer */}
       <div className="pst-card rounded-md p-4">
         <SectionLabel>How price CLV is computed</SectionLabel>
-        <p className="mt-1 text-[12.5px] text-zinc-600 leading-relaxed max-w-3xl">
+        <p className="mt-1 text-[12.5px] text-zinc-400 leading-relaxed max-w-3xl">
           CLV = de-vigged closing fair probability − de-vigged entry fair probability, in percentage points, using
           two-way proportional de-vig at both entry and close. Positive means the recorded price was superior to the
           closing reference. Model-versus-close probability difference is a diagnostic only and is never presented as
@@ -158,14 +158,14 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
       {report.calibration && report.calibration.nWithModelProbability > 0 && (
         <div className="pst-card rounded-md p-4">
           <SectionLabel>Model calibration (entries with calibrated model probabilities)</SectionLabel>
-          <div className="mt-1 text-[12.5px] text-zinc-700">
+          <div className="mt-1 text-[12.5px] text-zinc-300">
             <span className="pst-num">Brier score {report.calibration.brierScore ?? '—'}</span>
             <span className="text-zinc-400"> · n = {report.calibration.nWithModelProbability}</span>
           </div>
           {report.calibration.deciles.length > 0 && (
             <table className="w-full text-[12px] mt-2">
               <thead>
-                <tr className="text-left pst-label border-b border-zinc-200">
+                <tr className="text-left pst-label border-b border-white/[0.07]">
                   <th className="py-1 font-medium">Predicted band</th>
                   <th className="py-1 font-medium">n</th>
                   <th className="py-1 font-medium">Mean predicted</th>
@@ -174,7 +174,7 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
               </thead>
               <tbody>
                 {report.calibration.deciles.map((d) => (
-                  <tr key={d.bucket} className="border-b border-zinc-100 last:border-b-0 pst-num">
+                  <tr key={d.bucket} className="border-b border-white/[0.06] last:border-b-0 pst-num">
                     <td className="py-1">{d.bucket}</td>
                     <td className="py-1">{d.n}</td>
                     <td className="py-1">{(d.predicted * 100).toFixed(1)}%</td>
@@ -192,8 +192,8 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
         <SectionLabel>Performance by sport, market, odds band, model version, and entry source</SectionLabel>
         <div className="max-h-72 overflow-y-auto mt-2">
           <table className="w-full text-[12px]">
-            <thead className="sticky top-0 bg-white/95 backdrop-blur-sm">
-              <tr className="text-left pst-label border-b border-zinc-200">
+            <thead className="sticky top-0 bg-[#0D0F16]/95 backdrop-blur-sm">
+              <tr className="text-left pst-label border-b border-white/[0.07]">
                 <th className="py-1.5 font-medium">Dimension</th>
                 <th className="py-1.5 font-medium">Group</th>
                 <th className="py-1.5 font-medium">n</th>
@@ -204,7 +204,7 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
             </thead>
             <tbody>
               {report.slices.map((s, i) => (
-                <tr key={`${s.dimension}-${s.value}`} className={cn('border-b border-zinc-100 last:border-b-0 pst-num', s.belowMinSample && 'text-amber-800')}>
+                <tr key={`${s.dimension}-${s.value}`} className={cn('border-b border-white/[0.06] last:border-b-0 pst-num', s.belowMinSample && 'text-amber-300/90')}>
                   <td className="py-1.5 font-sans">{s.dimension}</td>
                   <td className="py-1.5 font-sans">{s.value}</td>
                   <td className="py-1.5">{s.n}</td>
@@ -215,7 +215,7 @@ export function LuckMeter({ refreshKey }: { refreshKey: number }) {
               ))}
               {report.slices.some((s) => s.belowMinSample) && (
                 <tr>
-                  <td colSpan={6} className="py-2 text-[11.5px] text-amber-800 font-sans">
+                  <td colSpan={6} className="py-2 text-[11.5px] text-amber-300/90 font-sans">
                     Amber rows are below the minimum sample of {report.minSampleThreshold}: not enough evaluable entries
                     to draw a conclusion.
                   </td>
@@ -233,7 +233,7 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
   return (
     <div className="pst-card rounded-md p-4">
       <SectionLabel>{label}</SectionLabel>
-      <div className="pst-num text-xl font-semibold text-zinc-900 mt-1">{value}</div>
+      <div className="pst-num text-xl font-semibold text-zinc-100 mt-1">{value}</div>
       {sub && <div className="text-[11.5px] text-zinc-400 mt-0.5">{sub}</div>}
     </div>
   );

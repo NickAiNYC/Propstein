@@ -61,11 +61,11 @@ export function RatingCard(props: RatingCardProps) {
       </span>
 
       {/* Header */}
-      <header className="px-4 pt-4 pb-3 border-b border-zinc-200/70 bg-white/60">
+      <header className="px-4 pt-4 pb-3 border-b border-white/[0.07]/70 bg-white/60">
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="pst-label">Recorded for review</div>
-            <h3 id="rc-title" className="text-[15px] font-semibold text-zinc-900 leading-tight mt-0.5">
+            <h3 id="rc-title" className="text-[15px] font-semibold text-zinc-100 leading-tight mt-0.5">
               {slip.playerName} — {marketLabel(slip.market)} {selectionLabel(slip.selection)} {slip.line}
             </h3>
             <div className="text-[12px] text-zinc-500 mt-0.5">
@@ -76,13 +76,13 @@ export function RatingCard(props: RatingCardProps) {
         </div>
       </header>
 
-      <div className={cn('grid gap-0', props.compact ? '' : 'md:grid-cols-2 divide-x divide-zinc-200/70')}>
+      <div className={cn('grid gap-0', props.compact ? '' : 'md:grid-cols-2 divide-x divide-white/[0.07]/70')}>
         {/* Price & market comparison */}
         <section aria-label="Entered price and break-even probability" className="px-4 py-3">
           <SectionLabel>Entered price · Break-even probability</SectionLabel>
           <div className="mt-2 flex items-baseline gap-3">
-            <span className="pst-num text-2xl font-semibold text-zinc-900">{fmtAmerican(slip.enteredAmericanOdds)}</span>
-            <span className="pst-num text-lg text-zinc-700">{fmtPct(hurdle.breakEvenProbability)}</span>
+            <span className="pst-num text-2xl font-semibold text-zinc-100">{fmtAmerican(slip.enteredAmericanOdds)}</span>
+            <span className="pst-num text-lg text-zinc-300">{fmtPct(hurdle.breakEvenProbability)}</span>
           </div>
           <div className="mt-3 space-y-0">
             <MetaRow label="Market comparison" mono>
@@ -151,7 +151,7 @@ export function RatingCard(props: RatingCardProps) {
           <div className="mt-3">
             {model.coverage === 'calibrated' ? (
               <details className="text-[12px] text-zinc-500">
-                <summary className="cursor-pointer select-none text-zinc-600">Known model limitations</summary>
+                <summary className="cursor-pointer select-none text-zinc-400">Known model limitations</summary>
                 <ul className="list-disc pl-4 mt-1 space-y-0.5">
                   {model.limitations.map((l, i) => (
                     <li key={i}>{l}</li>
@@ -169,7 +169,7 @@ export function RatingCard(props: RatingCardProps) {
       </div>
 
       {/* Provenance strip */}
-      <section aria-label="Provenance summary" className="px-4 py-3 border-t border-zinc-200/70 bg-zinc-50/60">
+      <section aria-label="Provenance summary" className="px-4 py-3 border-t border-white/[0.07]/70 bg-[#0D0F16]/60">
         <SectionLabel>Provenance (context known before the pricing cutoff)</SectionLabel>
         <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-1">
           {provenance.inputs.map((input) => {
@@ -180,11 +180,11 @@ export function RatingCard(props: RatingCardProps) {
               <div key={input.key} className="flex items-baseline gap-1.5 text-[12px]">
                 <span
                   aria-label={ok ? `${input.label} observed before cutoff` : `${input.label} not verified before cutoff`}
-                  className={cn('shrink-0 font-mono text-[11px]', ok ? 'text-teal-800' : required ? 'text-amber-700' : 'text-zinc-400')}
+                  className={cn('shrink-0 font-mono text-[11px]', ok ? 'text-emerald-300' : required ? 'text-amber-300/80' : 'text-zinc-400')}
                 >
                   {ok ? '●' : required ? '▲' : '○'}
                 </span>
-                <span className="text-zinc-600 truncate">
+                <span className="text-zinc-400 truncate">
                   {input.label}
                   <span className="pst-num text-zinc-400 ml-1.5">{input.observedAtUtc ? fmtEt(input.observedAtUtc) : 'not observed'}</span>
                 </span>
@@ -202,8 +202,8 @@ export function RatingCard(props: RatingCardProps) {
       </section>
 
       {hurdle.detail && (
-        <footer className="px-4 py-3 border-t border-zinc-200/70">
-          <p className={cn('text-[12.5px] leading-relaxed', unavailableFamily ? 'text-amber-800' : 'text-zinc-600')}>
+        <footer className="px-4 py-3 border-t border-white/[0.07]/70">
+          <p className={cn('text-[12.5px] leading-relaxed', unavailableFamily ? 'text-amber-300/90' : 'text-zinc-400')}>
             {hurdle.detail}
           </p>
         </footer>
@@ -239,7 +239,7 @@ function RatingCardUnavailable({ state }: { state: 'loading' | 'unconfirmed' | '
   return (
     <article aria-live="polite" className="pst-card rounded-md border-dashed p-6 text-center">
       <div className="pst-label">Price assessment</div>
-      <div className="mt-1 text-sm font-semibold text-zinc-800">{c.title}</div>
+      <div className="mt-1 text-sm font-semibold text-zinc-200">{c.title}</div>
       <p className="mt-1.5 text-[12.5px] text-zinc-500 max-w-md mx-auto leading-relaxed">{c.body}</p>
     </article>
   );

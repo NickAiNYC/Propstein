@@ -50,10 +50,10 @@ export function EvidenceDna({ provenance, model, comparison, slip, record }: Evi
   return (
     <div>
       <div className="flex items-baseline justify-between">
-        <h3 className="text-sm font-semibold text-zinc-900">Evidence DNA</h3>
+        <h3 className="text-sm font-semibold text-zinc-100">Evidence DNA</h3>
         <span className="text-[11px] text-zinc-400">what existed · when · what was missing</span>
       </div>
-      <p className="mt-1 text-[12px] text-amber-800">
+      <p className="mt-1 text-[12px] text-amber-300/90">
         If spread, total, or weather lacks an observed-at timestamp before the pricing cutoff, the assessment becomes
         UNVERIFIED CONTEXT. The pipeline fails closed in that situation.
       </p>
@@ -65,9 +65,9 @@ export function EvidenceDna({ provenance, model, comparison, slip, record }: Evi
           <AccordionContent className="space-y-0">
             {provenance.inputs.map((i) => (
               <MetaRow key={i.key} label={i.label}>
-                <span className="text-zinc-700">
+                <span className="text-zinc-300">
                   {i.value ?? 'not recorded'}
-                  {i.observedAtUtc ? '' : <span className="text-amber-700"> · not observed</span>}
+                  {i.observedAtUtc ? '' : <span className="text-amber-300/80"> · not observed</span>}
                 </span>
               </MetaRow>
             ))}
@@ -83,7 +83,7 @@ export function EvidenceDna({ provenance, model, comparison, slip, record }: Evi
                 const known = i.observedAtUtc !== null && Date.parse(i.observedAtUtc) <= cutoff;
                 return (
                   <MetaRow key={i.key} label={i.label} mono>
-                    <span className={cn(known ? 'text-zinc-700' : 'text-amber-700')}>
+                    <span className={cn(known ? 'text-zinc-300' : 'text-amber-300/80')}>
                       {i.observedAtUtc ? fmtEt(i.observedAtUtc) : 'never'}
                       <span className="text-zinc-400"> · {i.sourceId}</span>
                     </span>
@@ -127,7 +127,7 @@ export function EvidenceDna({ provenance, model, comparison, slip, record }: Evi
             {model.limitations.length > 0 && (
               <div className="mt-2">
                 <SectionLabel>Known limitations</SectionLabel>
-                <ul className="list-disc pl-4 mt-1 space-y-0.5 text-[12px] text-zinc-600">
+                <ul className="list-disc pl-4 mt-1 space-y-0.5 text-[12px] text-zinc-400">
                   {model.limitations.map((l, i) => (
                     <li key={i}>{l}</li>
                   ))}
