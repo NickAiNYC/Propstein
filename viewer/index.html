@@ -51,15 +51,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ufc.css?v=2026_v200">
-  <link rel="stylesheet" href="/style.css?v=2026_v226">
+  <link rel="stylesheet" href="/style.css?v=2026_v227">
+  <link rel="stylesheet" href="/refresh-2026.css?v=2026_r1">
   <script src="/js/sports/registry.js?v=2026_v179" defer></script>
   <script src="/js/sports/nfl.js?v=2026_v179" defer></script>
   <script src="/js/sports/nba.js?v=2026_v221" defer></script>
   <script src="/js/quant-math.js?v=2026_v215" defer></script>
-  <script src="/app.js?v=2026_v226" defer></script>
+  <script src="/app.js?v=2026_v227" defer></script>
   <script src="/js/sports/ufc.js?v=2026_v200" defer></script>
-  <script src="/js/today-schedule.js?v=2026_v207" defer></script>
+  <script src="/js/today-schedule.js?v=2026_v208" defer></script>
   <script src="/js/front-page.js?v=2026_v210" defer></script>
+  <script src="/js/refresh-2026.js?v=2026_r1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#slateBoard">Skip to slate</a>
@@ -291,7 +293,7 @@
     <section class="home-edge-preview" id="homeEdgePreview" aria-labelledby="homeEdgeTitle" aria-live="polite">
       <div id="marketStateBanner" class="market-state-banner" hidden></div>
       <div class="home-edge-heading">
-        <div><p class="today-schedule-eyebrow">PLAYER PROP BOARD</p><h2 id="homeEdgeTitle">Loading player research</h2></div>
+        <div><p class="today-schedule-eyebrow">PLAYER PROP BOARD</p><h1 id="homeEdgeTitle">Loading player research</h1></div>
         <div class="home-edge-actions">
           <button type="button" id="howMathWorksBtn" class="how-math-works-btn" title="How the quantitative model works">How the Math Works ⓘ</button>
           <button type="button" id="homeEdgeOpenBoard">View player board <span aria-hidden="true">↗</span></button>
@@ -329,7 +331,7 @@
     <section class="coming-soon-page" id="comingSoonPage" hidden aria-live="polite">
       <img class="coming-soon-logo" id="comingSoonLogo" alt="">
       <p class="today-schedule-eyebrow">COMING NEXT</p>
-      <h1 id="comingSoonTitle">Coming soon</h1>
+      <h2 id="comingSoonTitle">Coming soon</h2>
       <p id="comingSoonMessage"></p>
       <button type="button" id="comingSoonBack">Back to today's games</button>
     </section>

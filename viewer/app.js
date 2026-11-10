@@ -445,6 +445,62 @@
     return marketDef().dist(row);
   }
 
+  /**
+   * 2026 refresh: smooth model distribution curve for a prop card.
+   * Approximates the model's projection distribution as a Gamma with
+   * mean = projection and spread matched to the 80% range, then marks the
+   * fair line (dashed) and projection (solid). Visual aid only.
+   */
+  function densityCurveSvg(dist, unit = '') {
+    const mean = Number(dist.proj);
+    const low = Number(dist.low);
+    const high = Number(dist.high);
+    const fair = Number(dist.fair);
+    if (![mean, low, high, fair].every(Number.isFinite) || mean <= 0 || high <= low) return '';
+    const sd = Math.max(0.25, (high - low) / 2.563);
+    const k = Math.max(1.05, (mean / sd) ** 2);
+    const theta = (sd * sd) / mean;
+    const lgamma = (z) => {
+      const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+      let y = z; let t = z + 5.5; t -= (z + 0.5) * Math.log(t); let ser = 1.000000000190015;
+      for (const ci of c) { y += 1; ser += ci / y; }
+      return -t + Math.log(2.5066282746310005 * ser / z);
+    };
+    const lg = lgamma(k);
+    const pdf = (x) => (x <= 0 ? 0 : Math.exp((k - 1) * Math.log(x) - x / theta - k * Math.log(theta) - lg));
+    const xMax = Math.max(high * 1.3, mean * 2, 1);
+    const W = 300; const H = 84; const base = 66; const top = 6;
+    const steps = 72;
+    const pts = [];
+    let peak = 0;
+    for (let i = 0; i <= steps; i += 1) {
+      const x = (xMax * i) / steps; const y = pdf(x);
+      pts.push([x, y]); if (y > peak) peak = y;
+    }
+    if (!(peak > 0)) return '';
+    const X = (v) => ((Math.min(Math.max(v, 0), xMax) / xMax) * W).toFixed(1);
+    const Y = (p) => (base - (p / peak) * (base - top)).toFixed(1);
+    const line = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${X(x)} ${Y(y)}`).join(' ');
+    const band = pts.filter(([x]) => x >= low && x <= high);
+    const bandPath = band.length
+      ? `M${X(low)} ${base} ${band.map(([x, y]) => `L${X(x)} ${Y(y)}`).join(' ')} L${X(high)} ${base} Z`
+      : '';
+    const tickVals = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(xMax * f));
+    const ticks = tickVals.map((v, i) => `<text x="${X(v)}" y="${base + 14}" text-anchor="${i === 0 ? 'start' : i === tickVals.length - 1 ? 'end' : 'middle'}">${v}</text>`).join('');
+    const label = `Model distribution: projection ${mean.toFixed(1)}, fair line ${fair.toFixed(1)}, 80% range ${low} to ${high}${unit ? ` ${unit}` : ''}`;
+    return `<figure class="rf-dist" role="img" aria-label="${esc(label)}">
+      <svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">
+        ${bandPath ? `<path class="rf-dist-band" d="${bandPath}"/>` : ''}
+        <path class="rf-dist-line" d="${line}"/>
+        <line class="rf-dist-base" x1="0" x2="${W}" y1="${base}" y2="${base}"/>
+        <line class="rf-dist-fair" x1="${X(fair)}" x2="${X(fair)}" y1="${top}" y2="${base}"/>
+        <line class="rf-dist-proj" x1="${X(mean)}" x2="${X(mean)}" y1="${top}" y2="${base}"/>
+        <g class="rf-dist-ticks">${ticks}</g>
+      </svg>
+      <figcaption class="rf-dist-legend"><span class="k-fair">Fair ${fair.toFixed(1)}</span><span class="k-proj">Proj ${mean.toFixed(1)}</span><span class="k-band">80% range</span></figcaption>
+    </figure>`;
+  }
+
   function propBulletGraphSvg(dist, evaluation, side = 'OVER') {
     if (dist.isTd) {
       const probPct = Math.min(100, Math.max(0, dist.prob * 100));
@@ -2134,6 +2190,11 @@
   async function fetchData(path) {
     // A stalled dependency must resolve to the fail-closed UI, not leave the
     // homepage on its initial "Checking" state indefinitely.
+    // A missing path (e.g. a sport with no slate configured yet) must not
+    // turn into a request for "/null" — treat it as a clean miss.
+    if (!path || path === 'null' || path === 'undefined') {
+      return { response: { ok: false, status: 0 }, data: null };
+    }
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
     try {
@@ -2423,7 +2484,7 @@
       } else if (health.odds === 'error') {
         snapshotPill.textContent = 'Snapshot unavailable · Odds feed offline';
       } else if (!captured) {
-        snapshotPill.textContent = 'Snapshot time unavailable · Prices unverified';
+        snapshotPill.textContent = 'Between slates · Sportsbook prices post closer to kickoff';
       } else if (ageSeconds > 1800) {
         snapshotPill.textContent = `Snapshot Mode · Captured ${captured}`;
       } else {
@@ -3813,7 +3874,7 @@
         : 'independent quote receipt';
       status.textContent = research.length
         ? `Showing ${homeEdgeExpanded ? research.length : Math.min(HOME_EDGE_LIMIT, research.length)} of ${research.length} model-ranked research lines. ${verifiedQuotes} receipt-verified in snapshot. Qualification paused: waiting on ${waitingOn}.`
-        : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'no odds update available'} · model research only`;
+        : `No verified plays · ${asOf ? `last odds update ${asOf}` : 'sportsbook prices not posted yet'} · model fair lines for research`;
 
       const isPro = isProSubscriber();
       const displayCards = research.slice(0, homeEdgeExpanded ? undefined : HOME_EDGE_LIMIT);
@@ -3831,11 +3892,26 @@
           </article>`;
         }).join('')
         : modelRows.length
-          ? modelRows.map((row) => `<article class="home-edge-card home-research-card">
-            <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.team)} · ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
-            <div class="home-edge-line"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span><strong>${Number(fairValue(row)).toFixed(1)} <small>${esc(marketDef().unit || 'units')}</small></strong><span>Projection ${Number(projectionValue(row)).toFixed(1)}</span></div>
-            <p class="home-research-note">Research only · no current edge or stake is available.</p>
-          </article>`).join('')
+          ? modelRows.map((row) => {
+            const dist = distributionRange(row);
+            const unit = marketDef().unit || 'units';
+            const fair = Number(fairValue(row));
+            const proj = Number(projectionValue(row));
+            const rangeText = dist.isTd ? `P(TD) ${(dist.prob * 100).toFixed(0)}%` : `${dist.low}–${dist.high}`;
+            return `<article class="home-edge-card home-research-card" data-rf-card>
+            <div class="rf-prop-top">
+              ${avatarFor(row.player_id, row.player_display_name, row.team)}
+              <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.position || '')}${row.position ? ' · ' : ''}${esc(row.team)} ${row.is_home ? 'vs' : '@'} ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
+            </div>
+            <div class="rf-prop-stats">
+              <div class="rf-stat"><small>Projection</small><b>${proj.toFixed(1)}</b></div>
+              <div class="rf-stat rf-stat-fair"><small>Fair line</small><b>${fair.toFixed(1)}</b></div>
+              <div class="rf-stat"><small>${dist.isTd ? 'Anytime TD' : '80% range'}</small><b>${rangeText}</b></div>
+            </div>
+            ${dist.isTd ? '' : densityCurveSvg(dist, unit)}
+            <p class="home-research-note"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span> Research only · no current edge or stake is available.</p>
+          </article>`;
+          }).join('')
           : '<p class="home-edge-empty">Prices or news are unavailable. No model slate is loaded; no picks are being recommended.</p>';
       syncBoardRowsToMode(activeBoardMode, BOARD_MODES[activeBoardMode]);
       return;
@@ -6717,7 +6793,7 @@
           ${simCapHtml}
           <div class="card-dist-block" title="${esc(distTitle)}">
             <span class="card-ci-chip">${dist.isTd ? `P(TD) ${(dist.prob * 100).toFixed(0)}%` : `80% CI ${dist.low}–${dist.high}`}</span>
-            ${cardDistStripSvg(dist, { simLine: simVal })}
+            ${dist.isTd || simVal !== null ? cardDistStripSvg(dist, { simLine: simVal }) : densityCurveSvg(dist, marketDef().unit || '')}
           </div>
         </div>
         ${cardSignalRowHtml(row, beneficiary)}
