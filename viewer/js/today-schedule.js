@@ -251,9 +251,12 @@
       }).join('');
       let hasSlate = false;
       try {
-        const sources = await modelSources(sport, dateKey);
+        const nextDateKey = easternDate(first);
+        const sources = await modelSources(sport, nextDateKey);
+        if (requestId !== requestNumber) return;
         hasSlate = Array.isArray(sources) && sources.some((s) => Array.isArray(s.slate) && s.slate.length > 0);
       } catch (_) {}
+      if (requestId !== requestNumber) return;
       const slateStatus = hasSlate
         ? '<span>Model fair lines for the next slate are ready. Sportsbook prices post closer to kickoff.</span>'
         : '<span>Sportsbook prices post closer to kickoff.</span>';
