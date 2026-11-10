@@ -1,0 +1,65 @@
+name: NFL Game Context Ingest
+
+on:
+  schedule:
+    # 1. Tuesday morning post-MNF rollover: 06:00 UTC (01:00 EST / 02:00 EDT)
+    #    Catches the rollover immediately after Monday Night Football grace expires.
+    - cron: '0 6 * * 2'
+    # 2. Daily pre-pricing window: 10:30 UTC (05:30 EST / 06:30 EDT)
+    #    Runs 30 minutes before the 11:00 UTC daily autopilot pricing run.
+    - cron: '30 10 * * *'
+  workflow_dispatch:
+    inputs:
+      week:
+        description: 'NFL week to ingest (leave blank for active week)'
+        required: false
+        type: string
+
+concurrency:
+  group: autopilot
+  cancel-in-progress: false
+
+jobs:
+  ingest-and-commit:
+    name: Ingest live ESPN game context
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: true
+          fetch-depth: 2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Ingest live game context
+        run: |
+          WEEK_ARG=""
+          if [ -n "${{ inputs.week }}" ]; then
+            WEEK_ARG="--week ${{ inputs.week }}"
+          fi
+          PYTHONPATH=. python scripts/ingest_espn_game_context.py $WEEK_ARG
+
+      - name: Verify provenance report
+        run: PYTHONPATH=. python scripts/check_game_context_provenance.py --write-report
+
+      - name: Commit and push game context captures (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/game_context_captures.jsonl \
+            data/game_context_provenance_report.json \
+            data/raw_espn_captures
+          if git diff --cached --quiet; then
+            echo "No new game context captures to commit."
+            exit 0
+          fi
+          git commit -m "chore(data): ingest live nfl game context $(date -u +%F) [skip ci]"
+          git push
