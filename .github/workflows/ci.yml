@@ -166,11 +166,17 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # Full history so the size gate and cache-buster gate can resolve
+          # the PR base (with the same origin/main and HEAD~1 fallback).
           fetch-depth: 0
       - name: Reject newly added files over 500 KB
         env:
           SIZE_GATE_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: python3 scripts/check_large_files.py
+      - name: Reject viewer JS/CSS edits that skip cache busters
+        env:
+          CACHE_BUSTER_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: python3 scripts/check_cache_busters.py
       - name: Secret scanning (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
         env:
