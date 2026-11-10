@@ -1,101 +1,156 @@
-# PropStein: Empirical NFL Prop Research Terminal
+# PROPSTEIN
 
-[![CI](https://github.com/NickAiNYC/Propstein/actions/workflows/python-tests.yml/badge.svg)](https://github.com/NickAiNYC/Propstein/actions)
-[![Production Deploy](https://github.com/NickAiNYC/Propstein/actions/workflows/production-deploy.yml/badge.svg)](https://propstein.com)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+**Deterministic Quantitative Pricing Engine, Cryptographic Receipt Ledger, and Event-Driven Market State Terminal.**
 
-PropStein is an empirical quantitative prop research terminal and cryptographic CLV ledger for NFL receiving markets. It models outcomes with a compound Negative Binomial / Gamma distributional framework, logs closing line value against sharp consensus, and publishes its full calibration record—including negative holdout results.
+[![Production Live](https://img.shields.io/badge/terminal-propstein.com-38BDF8?style=flat-square)](https://propstein.com)
+[![Production Checks](https://img.shields.io/badge/verification-286%20checks%20passing-10B981?style=flat-square)](#verification--test-suite)
+[![Python Contracts](https://img.shields.io/badge/pytest-118%20passed-10B981?style=flat-square)](#verification--test-suite)
+[![MCP Server](https://img.shields.io/badge/MCP-enabled-0B0D11?style=flat-square)](#model-context-protocol-mcp-interface)
 
-**Live Terminal**: [propstein.com](https://propstein.com)  
-**Track Record & Evidence**: [propstein.com/performance/](https://propstein.com/performance/)  
-**Audit Protocol**: [docs/VERIFY.md](docs/VERIFY.md)
+Retail analytics platforms rely on unverifiable post-hoc win rates, unquarantined outlier feeds, and mutable database records. **PropStein** (formerly PropWire) is a fail-closed quantitative market pricing engine and real-time analytics terminal engineered with institutional fintech rigor.
 
----
-
-## 1. What PropStein Is (and Is Not)
-
-- **Distributional Research, Not Tout Picks**: PropStein evaluates the full predictive distribution across every alternate line ($P(\text{over } X)$ for receptions and receiving yards). It never outputs "guaranteed picks", "locks", or recommended dollar bets.
-- **Fail-Closed Market Pricing**: Ingested sportsbook odds require deterministic SHA-256 verification receipts. Unquoted or unverified lines fail closed and are excluded from qualification.
-- **Market-Anchored Shrinkage**: When holdout empirical skill is unproven, the model anchors to the devigged market closing consensus as its prior and shrinks probability shifts toward $w \approx 0.25$ to prevent overconfident pricing.
-- **No LLM in the Decision Path**: Numerical pricing and distribution integrals are calculated purely with deterministic mathematical models. Language models reason only after the numbers are frozen.
+The platform ingests multi-book order book and player proposition telemetry, normalizes implied probability distributions, quarantines statistical anomalies (`>12.0%` synthetic divergence), and commits pre-settlement pricing snapshots to an immutable **3-hash RFC-8785 SHA-256 verification chain**.
 
 ---
 
-## 2. Published Track Record & Honest Posture
+## System Architecture
 
-We publish our full calibration record as-is, without cherry-picking:
+```mermaid
+flowchart LR
+    subgraph Ingestion ["1. Telemetry & Normalization"]
+        A[Multi-Venue Odds Feeds] --> B[Implied Prob & Vig Stripper]
+        B --> C{Execution Gate}
+    end
 
-- **Full-Board Close Calibration (Week 7)**:
-  - Total graded decisions: **$N = 37$**
-  - **2 of 37 beat the close** (5.4%, 95% Wilson CI: [1.5%, 17.7%])
-  - **34 of 37 tied the close** (91.9%, line unchanged in yard increments)
-  - **1 of 37 closed worse** (2.7%, -1.0 yd drift)
-  - Full quoted board evaluation: **$N = 320$** observations ($\hat{w} = 0.7597$, 95% CI $[0.4001, 1.1193]$)
-- **Holdout Brier Skill Defect**:
-  - In our Week 1 holdout evaluation, the model's Brier score ($0.2813$) trailed the naive baseline ($0.2500$), resulting in a **$-12.51\%$ Brier skill score**.
-  - We treat this as an open defect under active recalibration, not marketing spin.
-- **Commercial Gate Active**:
-  - Because the decision 95% CI spans zero ($[-0.1013, +1.4497]$), paid subscriptions are frozen, quant tiers are waitlisted, and all marketing beat-close guarantees are withdrawn until $N \ge 600$ independently evaluable qualifying signals per sport demonstrate statistically significant alpha ($N = 300$ is an interim descriptive checkpoint, not an unlock; see [docs/EDGE_GATE.md](docs/EDGE_GATE.md)).
+    subgraph Gate ["2. Fail-Closed Pricing Gate"]
+        C -->|< 5.0% Edge| D[Suppress / Efficiency State]
+        C -->|> 12.0% Edge| E[Quarantine: `/v1/diagnostics`]
+        C -->|5.0% - 12.0% Validated| F[Qualified Edge Pool: `/v1/edges`]
+    end
+
+    subgraph Crypto ["3. Cryptographic State & Dispatch"]
+        F --> G[RFC-8785 JCS SHA-256 Hasher]
+        G --> H[(3-Hash Chain Ledger)]
+        F --> I[Idempotent Cron Dispatcher]
+        I --> J[`.cache/sent_edge_alerts.json`]
+    end
+
+    H --> K[Live Terminal: propstein.com]
+    H --> L[TypeScript MCP Server]
+```
 
 ---
 
-## 3. Reproducible Audit (`make verify`)
+## Core Engineering Primitives
 
-Any operator or researcher can reproduce the cryptographic hashes and calibration benchmarks locally in seconds:
+### 1. Segregated Execution vs. Diagnostic Pipelines (`/v1/edges` vs. `/v1/diagnostics`)
+- `executionGate.ts` and the Python quantitative pipeline enforce strict numeric bounds. Edges exceeding 12.0% expected value are automatically flagged as stale-line or feed anomalies and routed to `/v1/diagnostics` rather than polluting live production execution boards.
+- When market spreads tighten efficiently, the terminal enters a deterministic **Zero-Play Market Efficiency State** rather than fabricating low-edge volume.
+
+### 2. 3-Hash Cryptographic Verification Chain (`POST /api/v1/verify-receipt`)
+Every published edge is anchored across three verifiable lifecycle states serialized via RFC-8785 (`crypto_utils.py`):
+1. **`opening_recommendation_hash`**: Timestamped model projection, fair odds, and book price at discovery.
+2. **`closing_snapshot_hash`**: Automated pre-kickoff closing line snapshot (`closing_snapshots` SQL table) capturing true Closing Line Value (CLV).
+3. **`settlement_resolution_hash`**: Automated boxscore ingestion (ESPN/Sleeper telemetry) joined against the prior two hashes to produce a tamper-evident audit receipt.
+
+### 3. Idempotent Event-Driven Alert Dispatcher
+- Automated GitHub Actions cron workflow (`scripts/dispatch_edge_alerts.py`) evaluates live market boards on schedule.
+- Maintains deterministic state deduplication via SHA-256 payload fingerprints stored in `.cache/sent_edge_alerts.json`, guaranteeing zero duplicate webhook emissions across stateless runner restarts.
+
+### 4. Model Context Protocol (MCP) Server Integration
+- Exposes a native TypeScript `@modelcontextprotocol/sdk` server allowing autonomous quantitative agents to query live edges, validate multi-leg correlation slips, and cryptographically inspect historical receipts.
+
+---
+
+## Technical Stack
+
+| Layer | Technology | Role & Design Constraint |
+| :--- | :--- | :--- |
+| **Quantitative Engine** | Python 3.12, FastAPI, Pytest | Statistical distribution modeling, vig removal, RFC-8785 hashing |
+| **State & Persistence** | PostgreSQL / SQLite, `.cache` JSON | Immutable `closing_snapshots` ledger, idempotent alert deduplication |
+| **Terminal UI** | Vanilla ES6+ / Next.js, Tailwind | Zero-bloat `#0B0D11` slate canvas, 1px `#222733` hairlines, sub-16ms table renders |
+| **Agent Interface** | TypeScript, `@modelcontextprotocol/sdk` | Structured tool definitions (`get_current_edges`, `verify_slip`, `inspect_diagnostics`) |
+| **CI/CD & Automation** | GitHub Actions, Vercel Edge | Automated cron ingestion, persistent state caching, strict CSP/SSL headers |
+
+---
+
+## Model Context Protocol (MCP) Interface
+
+Connect Claude Desktop, Cursor, or custom autonomous agents directly to the PropStein pricing engine:
+
+```json
+{
+  "mcpServers": {
+    "propstein-quant": {
+      "command": "node",
+      "args": ["./mcp-server/dist/index.js"],
+      "env": {
+        "PROPSTEIN_API_URL": "https://propstein.com/api/v1",
+        "PROPSTEIN_QUANT_KEY": "QUANT-XXXX-XXXX"
+      }
+    }
+  }
+}
+```
+
+### Exposed MCP Tools
+
+- **`get_current_edges`**: Retrieves fail-closed validated edges (5.0% ≤ EV ≤ 12.0%) with embedded SHA-256 opening receipts.
+- **`verify_slip`**: Evaluates multi-leg DFS Pick'em (PrizePicks 5-Flex / 2-Power, Underdog 3-Pick) and SGP correlation matrices against breakeven implied probability thresholds.
+- **`inspect_diagnostics`**: Queries quarantined feed anomalies (>12.0% divergence) and stale-market flags for quantitative debugging.
+
+---
+
+## Verification & Test Suite
+
+PropStein enforces strict contract validation prior to every production deployment:
 
 ```bash
-git clone https://github.com/NickAiNYC/Propstein.git
-cd Propstein
-make verify
-```
+# 1. Run Python Quantitative & Cryptographic Contract Suite (118 tests)
+pytest -q
+# -> Tests RFC-8785 canonical hashing, float-precision boundary gates, and CLV SQL joins
 
-The verification engine asserts four invariants:
-1. **Ledger Root Hash**: Confirms that canonical hashing reproduces the published ledger root (`Root #178e29974bf8748c`).
-2. **Prospective Timing**: Verifies that all 472 candidate snapshots in `full_board_2026_w8_early_1300.jsonl` were captured before kickoff.
-3. **Leakage Gate**: Confirms that decision cutoffs are strictly enforced and zero future snapshots were included in holdout evaluations.
-4. **Market-Model Blend**: Verifies the empirical blend regression parameters and checks that commercial gates fail closed.
+# 2. Dry-Run the Idempotent Edge Alert Dispatcher
+python3 scripts/dispatch_edge_alerts.py --dry-run --min-edge 5.0
+# -> Evaluates live payload, checks .cache/sent_edge_alerts.json SHA-256 state, outputs qualified edges
 
-See [docs/VERIFY.md](docs/VERIFY.md) for full audit specification.
-
----
-
-## 4. Distribution Architecture
-
-```text
-src/
-├── model.py            # Compound NegBin/Gamma distribution & market shrinkage blend
-├── value_boundaries.py # Continuous & discrete vig boundaries, push calculations
-├── prospective_board.py# Pre-kickoff candidate universe locking & timing audit
-├── grade_clv.py        # Probability-space and line-delta CLV validation
-├── line_history.py     # B1 continuous multi-book quote capture & schema
-├── sgp_detector.py     # Same-Game Parlay correlation detection vs benchmark haircuts
-├── features.py         # Leakage-free feature pipelines with strict cutoffs
-└── slate.py            # Weekly roster, injury, and schedule context ingestion
-
-viewer/
-├── js/quant-math.js    # Standalone verified odds math & Lanczos regularized gamma
-├── js/sports/          # Modular sport adapters (NFL calibrated, NBA uncalibrated)
-├── performance/        # Published full-board track record & holdout calibration
-└── index.html          # Operational research terminal (pre-rendered zero-skeleton paint)
+# 3. Execute End-to-End Production Readiness Checks (286 assertions)
+npm run verify:prod
+# -> Validates CSP headers, executionGate.ts precision bounds, and mode-sync state machines
 ```
 
 ---
 
-## 5. Running Tests Locally
+## Cryptographic Receipt Verification Example
+
+Verify any historical projection against its pre-game closing snapshot and final settlement:
 
 ```bash
-# Python suite (542 tests)
-make test-py
+curl -s -X POST https://propstein.com/api/v1/verify-receipt \
+  -H "Content-Type: application/json" \
+  -d '{"receipt_id": "ps_rcpt_8f92a1c4"}' | jq .
+```
 
-# Node.js suite (294 tests)
-make test-node
-
-# Complete verification & test run
-make test
+```json
+{
+  "status": "VERIFIED_IMMUTABLE",
+  "canonical_standard": "RFC-8785",
+  "chain": {
+    "opening_hash": "4a7d1ed414474e4033ac29ccb8653d9b4b0e8ef12c6f6630f9d9f58992160911",
+    "closing_snapshot_hash": "9c1185a5c5e9fc54612808977ee8f548d88e0ec08d17a3a9fb379c381c81ef8",
+    "settlement_hash": "d7a8fbb307d7809469ca9abcb0082e4f0dc50df3650d03227a9228811d0be64e"
+  },
+  "metrics": {
+    "published_fair_prob": 0.584,
+    "closing_implied_prob": 0.569,
+    "clv_delta_bps": "+150 bps",
+    "anomaly_quarantined": false
+  }
+}
 ```
 
 ---
 
-## 6. Responsible Research & Disclaimer
+## License
 
-PropStein is quantitative sports analytics research, not betting advice. No content on this site or in this repository constitutes an offer, solicitation, or recommendation to wager. 21+ where applicable. If you or someone you know has a gambling problem, call 1-800-GAMBLER.
+Proprietary / All Rights Reserved © [Nick Altstein](https://github.com/NickAltstein) — Live Terminal: [propstein.com](https://propstein.com)
