@@ -63,14 +63,17 @@ def get_merge_base(target: str = "origin/main", head: str = "HEAD") -> str | Non
     except subprocess.CalledProcessError:
         pass
 
-    target_ref = target.removeprefix("origin/")
-    if try_fetch(target_ref):
-        try:
-            out = _git("merge-base", target, head).strip()
-            if out:
-                return out
-        except subprocess.CalledProcessError:
-            pass
+    try:
+        subprocess.check_output(
+            ["git", "fetch", "origin", "+refs/heads/main:refs/remotes/origin/main", "--depth=2"],
+            cwd=ROOT,
+            stderr=subprocess.PIPE,
+        )
+        out = _git("merge-base", target, head).strip()
+        if out:
+            return out
+    except subprocess.CalledProcessError:
+        pass
     return None
 
 
@@ -87,9 +90,16 @@ def resolve_base() -> str | None:
             if verify_commit("HEAD~1"):
                 fallback = "HEAD~1"
             else:
-                try_fetch("HEAD")
-                if verify_commit("HEAD~1"):
-                    fallback = "HEAD~1"
+                try:
+                    subprocess.check_output(
+                        ["git", "fetch", "--deepen=1"],
+                        cwd=ROOT,
+                        stderr=subprocess.PIPE,
+                    )
+                    if verify_commit("HEAD~1"):
+                        fallback = "HEAD~1"
+                except subprocess.CalledProcessError:
+                    pass
 
         if fallback:
             print(
