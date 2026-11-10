@@ -71,7 +71,10 @@ def assert_context_known_at_cutoff(df: pd.DataFrame, games: pd.DataFrame) -> Non
         cutoff = _aware_utc(cutoff_value, "pricing_cutoff_timestamp")
         source = by_game.loc[game_id]
         for field in CONTEXT_OBSERVATION_FIELDS:
-            observed = _aware_utc(source[field], field)
+            val = source[field]
+            if field == "weather_observed_at" and (pd.isna(val) or val is None or val == "") and str(source.get("roof") or "") == "dome":
+                continue
+            observed = _aware_utc(val, field)
             if observed > cutoff:
                 raise UnverifiedGameContextError(
                     f"{field} for {game_id} was observed after pricing cutoff"

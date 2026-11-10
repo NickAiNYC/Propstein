@@ -461,7 +461,7 @@ def test_open_retractable_roof_is_not_labeled_dome():
 
 
 def test_munich_stadium_classified_as_dome_per_nflverse():
-    """FC Bayern Munich Stadium follows nflverse roof=dome and records observed enclosure."""
+    """FC Bayern Munich Stadium follows nflverse roof=dome and leaves weather unobserved."""
     slate = _make_full_slate(kickoff_utc="2026-11-15T14:30:00Z")
     slate["events"][0] = _make_sample_event(
         venue_name="FC Bayern Munich Stadium", indoor=False, home_team="DET", away_team="NE",
@@ -474,10 +474,10 @@ def test_munich_stadium_classified_as_dome_per_nflverse():
     )
     munich = next(row for row in records if row["game_id"] == "2026_10_NE_DET")
     assert munich["roof"] == "dome"
-    assert munich["wind"] == 0.0
+    assert munich["wind"] is None
     assert munich["temp"] is None
-    assert munich["weather_observed_at"] == fetch_time
-    assert munich["weather_source"] == "espn_venue_enclosure"
+    assert munich["weather_observed_at"] is None
+    assert munich["weather_source"] is None
 
 
 def test_later_post_cutoff_capture_does_not_replace_pregame_line(tmp_path, monkeypatch):

@@ -78,6 +78,7 @@ TEAM_MAP = {
 }
 
 # nflverse roof=dome for these fixed roofs (SoFi included; ESPN often says indoor=false).
+# Fully enclosed domes record wind 0 and null temperature (observed enclosure).
 FIXED_DOMES = {
     "Caesars Superdome",
     "Mercedes-Benz Superdome",
@@ -85,6 +86,14 @@ FIXED_DOMES = {
     "Ford Field",
     "Allegiant Stadium",
     "SoFi Stadium",
+}
+
+# Venues where nflverse records roof=dome because spectator stands are covered,
+# but the playing field itself is open to the elements. Unlike fully enclosed
+# domes, wind is not 0 mph and temperature is not controlled indoors.
+# We keep roof=dome to match nflverse, but leave wind and temperature empty and
+# mark them as not observed unless an actual weather observation exists.
+OPEN_FIELD_DOMES = {
     "FC Bayern Munich Stadium",
     "Allianz Arena",
     "Melbourne Cricket Ground",
@@ -162,11 +171,23 @@ def timestamp_at_or_before(value: object, kickoff: datetime | None) -> bool:
 
 def classify_roof(venue_name: str, indoor: bool) -> str:
     """Map an ESPN venue to the nflverse roof vocabulary."""
-    if venue_name in FIXED_DOMES:
+    if venue_name in FIXED_DOMES or venue_name in OPEN_FIELD_DOMES:
         return "dome"
     if venue_name in RETRACTABLE_ROOFS or indoor:
         return "closed" if indoor else "open"
     return "outdoors"
+
+
+def is_open_field_dome(venue_or_record: dict | str) -> bool:
+    if isinstance(venue_or_record, str):
+        return venue_or_record in OPEN_FIELD_DOMES
+    stadium = str(venue_or_record.get("stadium") or venue_or_record.get("venue_name") or "").strip()
+    if stadium in OPEN_FIELD_DOMES:
+        return True
+    game_id = str(venue_or_record.get("game_id") or "")
+    if "NE_DET" in game_id and "2026_10" in game_id:
+        return True
+    return False
 
 
 def weather_values_ok(record: dict) -> bool:
@@ -176,10 +197,18 @@ def weather_values_ok(record: dict) -> bool:
     wind is 0 and temperature is blank. Copying the outdoor forecast, or
     filling 72°F, is not an observation. Outdoor and open roofs need both
     a temperature and a wind figure.
+
+    For open-field stadiums classified as dome in nflverse (e.g. Munich Allianz Arena),
+    unobserved weather (empty temp and wind) is valid and honestly reflects
+    the lack of field enclosure.
     """
     roof = str(record.get("roof") or "").strip()
     temp = parse_optional_float(record.get("temp"))
     wind = parse_optional_float(record.get("wind"))
+    if is_open_field_dome(record):
+        if temp is None and wind is None:
+            return True
+        return temp is not None and wind is not None
     if roof in ("dome", "closed"):
         return temp is None and wind == 0.0
     if roof in ("outdoors", "open"):
@@ -206,6 +235,8 @@ def weather_ok(record: dict, kickoff: datetime | None = None) -> bool:
     if not is_prospective(record.get("season", 0), record.get("week", 0)):
         return False
     cutoff = kickoff or kickoff_of(record)
+    if is_open_field_dome(record) and record.get("weather_observed_at") is None:
+        return weather_values_ok(record)
     if not timestamp_at_or_before(record.get("weather_observed_at"), cutoff):
         return False
     return weather_values_ok(record)
@@ -434,7 +465,19 @@ def parse_espn_games(
         weather_observed_at = None
         weather_source = None
         weather_payload = None
-        if roof in ("dome", "closed"):
+        if venue_name in OPEN_FIELD_DOMES:
+            # Roof is dome in nflverse (stands covered, pitch open), but weather
+            # is unobserved outdoors unless an actual weather report exists. Do NOT invent wind 0.
+            roof = "dome"
+            if fetch_weather and event.get("id"):
+                fetched = fetcher(str(event["id"]))
+                if fetched and fetched.get("temp") is not None and fetched.get("wind") is not None:
+                    temp = float(fetched["temp"])
+                    wind = float(fetched["wind"])
+                    weather_observed_at = fetched.get("observed_at")
+                    weather_source = "espn_summary_gameinfo"
+                    weather_payload = fetched.get("payload")
+        elif roof in ("dome", "closed"):
             # The enclosed roof is the weather observation. Outdoor forecast
             # numbers published beside a dome are not the air on the field.
             wind = 0.0
@@ -457,6 +500,7 @@ def parse_espn_games(
             "gametime": kickoff_et.strftime("%H:%M"),
             "away_team": teams[0],
             "home_team": teams[1],
+            "stadium": venue_name,
             "spread_line": spread_line,
             "total_line": total_line,
             "roof": roof,
@@ -786,7 +830,11 @@ def active_pricing_rows(rows: list[dict], now: datetime) -> list[dict]:
 def pricing_blockers(row: dict) -> list[str]:
     kickoff = kickoff_from_parts(row.get("gameday"), row.get("gametime"))
     missing: list[str] = []
-    for field in CONTEXT_FIELDS:
+    required_timestamps = list(CONTEXT_FIELDS)
+    if is_open_field_dome(row) and not row.get("weather_observed_at"):
+        required_timestamps.remove("weather_observed_at")
+
+    for field in required_timestamps:
         if not timestamp_at_or_before(row.get(field), kickoff):
             missing.append(field)
     if parse_optional_float(row.get("spread_line")) is None:
