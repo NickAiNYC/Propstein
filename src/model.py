@@ -100,8 +100,20 @@ class ReceivingModel:
 
     # ---------------- prediction ----------------
 
+    @property
+    def panel_mean_wind(self) -> float:
+        """Exact wind column mean of the training panel the model was fitted on."""
+        idx = self.cols.index("wind")
+        return float(self.means[idx])
+
     def predict_params(self, df: pd.DataFrame) -> pd.DataFrame:
-        X, _, _ = _design(df, self.cols, self.means, self.sds)
+        data = df.copy()
+        if "wind" in self.cols and "wind" in data.columns:
+            wind_mean = self.panel_mean_wind
+            if "is_open_field" in data.columns:
+                data.loc[data["is_open_field"] == 1, "wind"] = wind_mean
+            data["wind"] = data["wind"].fillna(wind_mean)
+        X, _, _ = _design(data, self.cols, self.means, self.sds)
         mu_n = np.exp(np.clip(X @ self.rec_params, -6, 4))
         mu_ypr = np.exp(np.clip(X @ self.ypr_params, -2, 4.2))
         return pd.DataFrame({"mu_rec": mu_n, "mu_ypr": mu_ypr}, index=df.index)

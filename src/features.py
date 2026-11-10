@@ -47,9 +47,23 @@ OPEN_FIELD_GAME_IDS = {
 }
 
 # Neutral wind imputation for open-field venues or unobserved wind:
-# Equal to the historical training panel mean (~5.15 mph), yielding z = 0.0
-# in standardized model design matrices so no calm or adverse wind adjustment is applied.
-PANEL_MEAN_WIND: float = 5.15
+# Computed dynamically from empirical games data (enclosed domes at 0.0 mph,
+# observed outdoor winds as recorded) to yield z = 0.0 in standardized space.
+def compute_panel_mean_wind(games: pd.DataFrame | None = None) -> float:
+    """Compute empirical mean wind across games with known conditions."""
+    if games is None:
+        games = load_games()
+    stadiums = games.get("stadium", pd.Series("", index=games.index)).fillna("").astype(str)
+    is_open = (
+        stadiums.isin(OPEN_FIELD_DOMES)
+        | stadiums.str.contains("munich|allianz|melbourne|stade de france", case=False, na=False)
+        | games["game_id"].isin(OPEN_FIELD_GAME_IDS)
+    )
+    is_dome = games["roof"].isin(["dome", "closed"]) & (~is_open)
+    winds = pd.to_numeric(games["wind"], errors="coerce").copy()
+    winds.loc[is_dome] = 0.0
+    valid = winds.dropna()
+    return float(valid.mean()) if len(valid) > 0 else 5.56
 
 
 class UnverifiedGameContextError(ValueError):
@@ -184,7 +198,11 @@ def load_games() -> pd.DataFrame:
     return g[keep + extra]
 
 
-def _join_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
+def _join_game_context(
+    df: pd.DataFrame,
+    games: pd.DataFrame,
+    default_wind: float | None = None,
+) -> pd.DataFrame:
     long = []
     for _, side in (("home", "home"), ("away", "away")):
         pass
@@ -223,11 +241,12 @@ def _join_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
 
     # Wind handling:
     # 1. Enclosed domes (is_dome == 1) get wind = 0.0 (controlled indoor conditions).
-    # 2. Open-field venues with unobserved weather get the panel mean (z = 0, assuming neutral conditions).
-    # 3. Missing outdoor wind also falls back to panel mean rather than calm 0.0.
+    # 2. Open-field venues with unobserved weather get the computed panel mean (z = 0, assuming neutral conditions).
+    # 3. Missing outdoor wind also falls back to computed mean rather than calm 0.0.
     ctx["wind"] = pd.to_numeric(ctx["wind"], errors="coerce")
-    ctx.loc[ctx["is_open_field"] == 1, "wind"] = ctx.loc[ctx["is_open_field"] == 1, "wind"].fillna(PANEL_MEAN_WIND)
-    ctx["wind"] = ctx["wind"].fillna(PANEL_MEAN_WIND)
+    neutral_wind = default_wind if default_wind is not None else compute_panel_mean_wind(games)
+    ctx.loc[ctx["is_open_field"] == 1, "wind"] = ctx.loc[ctx["is_open_field"] == 1, "wind"].fillna(neutral_wind)
+    ctx["wind"] = ctx["wind"].fillna(neutral_wind)
     # Fix line 186: only true enclosed domes overwrite wind to 0.0. Open-field domes have is_dome == 0.
     ctx.loc[ctx.is_dome == 1, "wind"] = 0.0
 
@@ -236,11 +255,15 @@ def _join_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
     return df.merge(ctx[cols], on=["game_id", "team"], how="left")
 
 
-def attach_game_context(df: pd.DataFrame, games: pd.DataFrame) -> pd.DataFrame:
+def attach_game_context(
+    df: pd.DataFrame,
+    games: pd.DataFrame,
+    default_wind: float | None = None,
+) -> pd.DataFrame:
     """Join market context. spread_line is HOME-relative in nflverse:
     positive means the home team is favoured by that many points."""
     assert_context_known_at_cutoff(df, games)
-    return _join_game_context(df, games)
+    return _join_game_context(df, games, default_wind=default_wind)
 
 
 # ----------------------------------------------------------------------------

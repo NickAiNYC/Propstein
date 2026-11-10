@@ -15,6 +15,7 @@ from src.features import (
     assert_context_known_at_cutoff,
     assert_inactive_timestamp_before_cutoff,
     attach_game_context,
+    compute_panel_mean_wind,
 )
 
 
@@ -66,7 +67,7 @@ def test_open_field_dome_gets_zero_dome_and_panel_mean_wind() -> None:
     res_open = attach_game_context(_player(), game_open)
     assert res_open.loc[0, "is_open_field"] == 1
     assert res_open.loc[0, "is_dome"] == 0
-    assert res_open.loc[0, "wind"] == 5.15
+    assert res_open.loc[0, "wind"] == pytest.approx(compute_panel_mean_wind(game_open), rel=1e-3)
 
     # Enclosed dome (e.g. Ford Field)
     game_enclosed = _game().copy()
