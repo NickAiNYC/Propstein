@@ -263,6 +263,8 @@ html body [data-rf-card] .home-edge-player span {
 .rf-dist-ticks text { fill: var(--rf-muted); font: 500 10px var(--rf-mono); }
 .rf-dist-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 500 12px/1.2 var(--rf-mono); color: var(--rf-muted); }
 .rf-dist-legend span::before { content: ""; display: inline-block; width: 12px; height: 2px; margin-right: 6px; vertical-align: middle; border-radius: 2px; }
+.rf-dist-legend .k-shape::before { display: none; }
+.rf-dist-legend .k-shape { color: var(--rf-muted); opacity: 0.8; }
 .rf-dist-legend .k-fair::before { background: var(--rf-accent-hi); }
 .rf-dist-legend .k-proj::before { background: var(--rf-text); }
 .rf-dist-legend .k-band::before { height: 8px; background: rgba(56, 189, 248, 0.3); }
