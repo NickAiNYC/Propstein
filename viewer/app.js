@@ -8956,8 +8956,11 @@
     parts.push(`Game script: ${row.team} spread ${num(row.team_spread) > 0 ? '+' : ''}${num(row.team_spread).toFixed(1)}.`);
 
     const game = state.games.find((item) => item.game_id === row.game_id);
-    const isDome = row.is_dome || game?.roof === 'dome';
-    if (isDome) {
+    const isOpenField = Boolean(row.is_open_field || game?.is_open_field);
+    const isDome = !isOpenField && Boolean(row.is_dome || game?.roof === 'dome');
+    if (isOpenField) {
+      parts.push('Environment: Covered stands, open field, weather unobserved.');
+    } else if (isDome) {
       parts.push('Environment: Indoor Dome (Controlled conditions).');
     } else {
       const wind = game?.wind ?? row.wind_speed ?? row.wind;

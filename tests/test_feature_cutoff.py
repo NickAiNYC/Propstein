@@ -56,6 +56,30 @@ def test_context_is_allowed_only_when_every_source_precedes_cutoff() -> None:
     assert result.loc[0, "wind"] == 8.0
 
 
+def test_open_field_dome_gets_zero_dome_and_panel_mean_wind() -> None:
+    # Open-field dome (Munich / Allianz, Melbourne, Stade de France)
+    game_open = _game().copy()
+    game_open.loc[0, "roof"] = "dome"
+    game_open.loc[0, "stadium"] = "FC Bayern Munich Stadium"
+    game_open.loc[0, "wind"] = None
+    game_open.loc[0, "weather_observed_at"] = None
+    res_open = attach_game_context(_player(), game_open)
+    assert res_open.loc[0, "is_open_field"] == 1
+    assert res_open.loc[0, "is_dome"] == 0
+    assert res_open.loc[0, "wind"] == 5.15
+
+    # Enclosed dome (e.g. Ford Field)
+    game_enclosed = _game().copy()
+    game_enclosed.loc[0, "roof"] = "dome"
+    game_enclosed.loc[0, "stadium"] = "Ford Field"
+    game_enclosed.loc[0, "wind"] = None
+    game_enclosed.loc[0, "weather_observed_at"] = None
+    res_enclosed = attach_game_context(_player(), game_enclosed)
+    assert res_enclosed.loc[0, "is_open_field"] == 0
+    assert res_enclosed.loc[0, "is_dome"] == 1
+    assert res_enclosed.loc[0, "wind"] == 0.0
+
+
 @pytest.mark.parametrize("field", ["spread_observed_at", "total_observed_at", "weather_observed_at"])
 def test_late_source_blocks_all_context(field: str) -> None:
     games = _game()

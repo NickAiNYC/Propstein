@@ -4564,10 +4564,11 @@
     `;
 
     const game = state.games.find((item) => item.game_id === row.game_id);
-    const isDome = row.is_dome || game?.roof === 'dome';
+    const isOpenField = Boolean(row.is_open_field || game?.is_open_field);
+    const isDome = !isOpenField && Boolean(row.is_dome || game?.roof === 'dome');
     const wind = game?.wind ?? row.wind_speed ?? row.wind;
-    const envTag = isDome ? 'ENV: DOME' : (Number.isFinite(wind) && wind > 0) ? `ENV: ${wind} MPH WIND` : 'ENV: MILD / OUTDOOR';
-    const weatherDesc = isDome ? 'Indoor Dome (Controlled Conditions)' : (Number.isFinite(wind) && wind > 0) ? `${wind} mph wind (${game?.home_team ? `${game.home_team} stadium` : 'Open'})` : 'Controlled / mild conditions';
+    const envTag = isOpenField ? 'ENV: OPEN FIELD' : isDome ? 'ENV: DOME' : (Number.isFinite(wind) && wind > 0) ? `ENV: ${wind} MPH WIND` : 'ENV: MILD / OUTDOOR';
+    const weatherDesc = isOpenField ? 'Covered stands, open field, weather unobserved' : isDome ? 'Indoor Dome (Controlled Conditions)' : (Number.isFinite(wind) && wind > 0) ? `${wind} mph wind (${game?.home_team ? `${game.home_team} stadium` : 'Open'})` : 'Controlled / mild conditions';
 
     const isReceptions = state.filters.market === 'receptions';
     const isAnytimeTd = state.filters.market === 'anytime_td';
