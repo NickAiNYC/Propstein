@@ -4,10 +4,12 @@
   "private": true,
   "description": "Institutional quantitative receiving props terminal and CLV ledger.",
   "scripts": {
-    "test": "node --test",
-    "check": "node --check viewer/app.js && node --check viewer/sw.js && node --test",
+    "test": "node --test \"test/**/*.test.mjs\" \"test/**/*.test.cjs\" \"test/**/*.snapshot.mjs\" \"test/**/*.golden.mjs\"",
+    "check": "node --check viewer/app.js && node --check viewer/sw.js && npm test",
     "check:production": "npm run check",
-    "build:extension": "bash scripts/package_extension.sh"
+    "build:extension": "bash scripts/package_extension.sh",
+    "test:extensions": "npm run test:core --prefix extensions",
+    "test:all": "npm test && npm run test:extensions"
   },
   "engines": {
     "node": ">=20"
