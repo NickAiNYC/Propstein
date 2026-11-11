@@ -846,170 +846,42 @@ def get_v1_diagnostics(
 
 @app.post("/api/v1/verify-receipt")
 async def post_verify_receipt(request: Request):
-    """
-    Cryptographically audits and reconstructs the 3-stage lifecycle of a slip:
-    1. Entry Receipt (RFC-8785 SHA-256 hash)
-    2. T-0 Closing Snapshot (Kickoff lock)
-    3. Boxscore Settlement (Dual-source consensus + CLV realization)
-    """
-    body = {}
+    """Look up legacy reports and refuse a verdict without the original commitments."""
     try:
         body = await request.json()
-    except Exception:
-        pass
+    except ValueError:
+        body = None
+    if not isinstance(body, dict):
+        raise HTTPException(400, "Expected a JSON object with receipt_hash")
 
-    target_hash = (body.get("receipt_hash") or body.get("rootHash") or "").strip().lower().replace("#", "")
+    supplied_hash = body.get("receipt_hash") or body.get("rootHash")
+    if not isinstance(supplied_hash, str):
+        raise HTTPException(400, "Missing or invalid receipt_hash in request body")
+    target_hash = supplied_hash.strip().lower().removeprefix("#")
     if not target_hash:
         raise HTTPException(400, "Missing receipt_hash in request body")
 
     report_path = Path(resolve_file("AUDIT_REPORT", "public/clv_audit_report.json"))
     if not report_path.exists():
         report_path = Path(resolve_file("AUDIT_REPORT", "viewer/clv_audit_report.json"))
+    try:
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        raise HTTPException(503, "Receipt verification data unavailable") from None
 
-    record = None
-    report_data = {}
-    if report_path.exists():
-        try:
-            report_data = json.loads(report_path.read_text(encoding="utf-8"))
-            records = report_data.get("records", [])
-            for r in records:
-                s_rec = str(r.get("settlement_receipt", "")).lower().strip()
-                e_rec = str(r.get("entry_receipt", "")).lower().strip()
-                p_hash = str(r.get("receipt_hash", "")).lower().strip()
-                if (
-                    (s_rec and (target_hash in s_rec or s_rec in target_hash))
-                    or (e_rec and (target_hash in e_rec or e_rec in target_hash))
-                    or (p_hash and (target_hash in p_hash or p_hash in target_hash))
-                    or (target_hash == report_data.get("ledger_root_hash", "").lower().strip())
-                ):
-                    record = r
-                    break
-            if not record and records:
-                # If target_hash is the ledger root hash or general audit inquiry, inspect top record
-                if target_hash == report_data.get("ledger_root_hash", "").lower().strip():
-                    record = records[0]
-        except Exception as e:
-            print(f"[verify-receipt] Error parsing audit report: {e}")
+    records = report.get("records") if isinstance(report, dict) else None
+    if not isinstance(records, list) or any(not isinstance(record, dict) for record in records):
+        raise HTTPException(503, "Receipt verification data unavailable")
 
-    # VERIFICATION LAYER (Phase 2): the demo fallback has been removed. It
-    # fabricated a "CRYPTOGRAPHICALLY_PROVEN" lifecycle for ANY unknown hash —
-    # exactly the fake-trust pattern the master prompt bans on reachable
-    # routes. Report missing/unreadable -> 503 (data unavailable); unknown
-    # hash -> 404 (honest not-found). Neither case mints trust.
-    if not report_path.exists():
-        raise HTTPException(
-            503,
-            "verification data unavailable: CLV audit report not found — refusing to fabricate a receipt lifecycle",
-        )
-    if not record:
-        raise HTTPException(
-            404,
-            "receipt not found: no entry, closing, settlement, or ledger-root hash matches the supplied receipt_hash",
-        )
+    commitments = [report.get("ledger_root_hash")]
+    for record in records:
+        commitments.extend(record.get(field) for field in (
+            "entry_receipt", "settlement_receipt", "receipt_hash",
+        ))
+    if any(isinstance(value, str) and value.strip().lower() == target_hash for value in commitments):
+        raise HTTPException(422, "Receipt found, but the report lacks original lifecycle commitments")
+    raise HTTPException(404, "Receipt not found")
 
-    # Reconstruct 64-character SHA-256 digests for RFC-8785 compliance
-    from src.crypto_utils import canonical_json_sha256
-
-    entry_payload = {
-        "event_id": record.get("event_id", "nfl_2026_w7_det_min"),
-        "player_id": record.get("player_id", record.get("player", "").lower().replace(" ", "_")),
-        "book": record.get("book", "draftkings"),
-        "market": record.get("market", "rec_yds"),
-        "direction": record.get("side", "OVER"),
-        "line": float(record.get("line", 0.0)),
-        "price": int(record.get("odds", -110)),
-        "fair_line_at_entry": float(record.get("fair_line", record.get("line", 0.0))),
-        "timestamp": int(record.get("timestamp", 1761090000)),
-    }
-    entry_hash = canonical_json_sha256(entry_payload)
-
-    has_closing = record.get("close_line") is not None
-    closing_hash = None
-    if has_closing:
-        closing_payload = {
-            "line": float(record.get("close_line", 0.0)),
-            "over_odds": int(record.get("close_odds", -115)),
-            "under_odds": -115,
-            "fair_line": float(record.get("fair_line", record.get("close_line", 0.0))),
-            "provider_update_ts": int(record.get("close_timestamp", 1761093600)),
-        }
-        closing_hash = canonical_json_sha256(closing_payload)
-
-    has_settlement = record.get("outcome") in ("WIN", "LOSS", "PUSH")
-    settlement_hash = None
-    if has_settlement:
-        settlement_payload = {
-            "player": record.get("player"),
-            "market": record.get("market", "rec_yds"),
-            "side": record.get("side", "OVER"),
-            "line": float(record.get("line", 0.0)),
-            "close_line": float(record.get("close_line", 0.0)),
-            "actual_yards": record.get("actual_yards"),
-            "outcome": record.get("outcome"),
-        }
-        settlement_hash = canonical_json_sha256(settlement_payload)
-
-    lifecycle_stage = (
-        "STAGE_3_SETTLEMENT_FINALIZED"
-        if has_settlement
-        else "STAGE_2_CLV_LOCKED"
-        if has_closing
-        else "STAGE_1_ENTRY_PROVEN"
-    )
-
-    return {
-        "status": "success",
-        "integrity": {
-            "tamper_detected": False,
-            "lifecycle_stage": lifecycle_stage,
-            "entry_receipt_valid": True,
-            "closing_snapshot_valid": True if has_closing else None,
-            "settlement_receipt_valid": True if has_settlement else None,
-            "overall_trust": "CRYPTOGRAPHICALLY_PROVEN",
-        },
-        "lifecycle": {
-            "entry": {
-                "player": record.get("player", "Tucker Kraft"),
-                "team": record.get("team", "GB"),
-                "book": record.get("book", "DraftKings"),
-                "market": record.get("market", "Receiving Yards"),
-                "direction": record.get("side", "OVER"),
-                "line": float(record.get("line", 34.5)),
-                "price": int(record.get("odds", -110)),
-                "fair_line_at_entry": float(record.get("fair_line", 39.0)),
-                "edge_pct_at_entry": float(record.get("edge_pct", 11.7)),
-                "timestamp": int(record.get("timestamp", 1761090000)),
-                "receipt_hash": entry_hash,
-                "event_id": record.get("event_id", "nfl_2026_w7_gb"),
-                "player_id": record.get("player_id", "kraft_tucker"),
-                "entry_raw_payload_sha256": entry_hash,
-            },
-            "closing": (
-                {
-                    "line": float(record.get("close_line", 37.5)),
-                    "over_odds": int(record.get("close_odds", -115)),
-                    "under_odds": -115,
-                    "fair_line": float(record.get("fair_line", 39.0)),
-                    "provider_update_ts": int(record.get("close_timestamp", 1761093600)),
-                    "snapshot_hash": closing_hash or entry_hash,
-                }
-                if has_closing
-                else None
-            ),
-            "settlement": (
-                {
-                    "outcome": record.get("outcome", "WIN"),
-                    "settled_stat": record.get("actual_yards", 48.0),
-                    "offensive_snaps": 54,
-                    "clv_delta_yards": float(record.get("clv_yards", 3.0)),
-                    "clv_no_vig_pct": float(record.get("clv_prob_pct", 5.4)),
-                    "settlement_hash": settlement_hash or entry_hash,
-                }
-                if has_settlement
-                else None
-            ),
-        },
-    }
 
 # ---------------------------------------------------------------------------
 # VERIFICATION LAYER (Phase 2): POST /api/v1/verify-quote + context freshness
