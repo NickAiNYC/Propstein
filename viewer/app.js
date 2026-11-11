@@ -1556,9 +1556,8 @@
     try {
       const mql = window.matchMedia('(max-width: 768px)');
       mql.addEventListener('change', (e) => {
-        if (e.matches && state.view === 'table') {
-          setView('cards');
-        }
+        if (e.matches && state.view === 'table') setView('cards');
+        else renderBoard();
       });
     } catch (_) {}
 
@@ -1593,7 +1592,16 @@
         }
       }
     });
-    $('#cardView').addEventListener('click', inspectFromEvent);
+    $('#cardView').addEventListener('click', (event) => {
+      if (!event.target.closest('[data-board-show-more]')) {
+        inspectFromEvent(event);
+        return;
+      }
+      const previousLimit = mobileBoardLimit;
+      mobileBoardLimit += MOBILE_BOARD_PAGE_SIZE;
+      renderBoard();
+      $('#cardView').children[previousLimit]?.focus();
+    });
 
     // v175 fail-closed heartbeat probe: re-fetches the odds feed with
     // cache:'no-store' (via triggerOddsPoll) and reports the OBSERVED feed
@@ -3395,6 +3403,10 @@
     return rows;
   }
 
+  const MOBILE_BOARD_PAGE_SIZE = 25;
+  let mobileBoardLimit = MOBILE_BOARD_PAGE_SIZE;
+  let mobileBoardKey = '';
+
   function renderBoard() {
     renderHomeEdgePreview();
     if (SPORT_ID === 'nba' && state.slate.length === 0 && SLATES[state.slateKey]?.marketOnly) {
@@ -3552,20 +3564,28 @@
     $('#slateHead').innerHTML = tableHead(displayHasPrices);
 
     // Stop Dual-Rendering: populate only the active view layout to save DOM weight and boost performance
-    const isCardLayout = state.view === 'cards' || state.view === 'compact-grid';
-    if (state.view === 'table') {
+    const isMobile = Boolean(window.matchMedia?.('(max-width: 768px)').matches);
+    const isCardLayout = isMobile || state.view === 'cards' || state.view === 'compact-grid';
+    if (!isCardLayout) {
       $('#slateRows').innerHTML = displayRows.map((row, idx) => tableRow(row, displayHasPrices, idx)).join('');
       $('#cardView').innerHTML = '';
       $('#cardView').classList.remove('compact-grid');
     } else {
       $('#slateRows').innerHTML = '';
-      $('#cardView').innerHTML = displayRows.map((row, idx) => propCard(row, idx)).join('');
+      const boardKey = JSON.stringify([state.slateKey, state.bottomTab, state.proView, state.view, state.filters]);
+      if (boardKey !== mobileBoardKey) {
+        mobileBoardKey = boardKey;
+        mobileBoardLimit = MOBILE_BOARD_PAGE_SIZE;
+      }
+      const visibleRows = isMobile ? displayRows.slice(0, mobileBoardLimit) : displayRows;
+      const remaining = displayRows.length - visibleRows.length;
+      const more = remaining > 0
+        ? `<div style="grid-column: 1 / -1; text-align: center;"><button type="button" class="pw-btn-nav" data-board-show-more>Show ${Math.min(remaining, MOBILE_BOARD_PAGE_SIZE)} more · ${visibleRows.length} of ${displayRows.length} shown</button></div>`
+        : '';
+      $('#cardView').innerHTML = visibleRows.map((row, idx) => propCard(row, idx)).join('') + more;
       $('#cardView').classList.toggle('compact-grid', state.view === 'compact-grid');
-      // v176: card-prog-track/fill retired with the decision-card redesign —
-      // the distribution strip replaced the pseudo proj/fair progress bar.
     }
 
-    const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
     if (isResearchMode) {
       $('#emptyState').hidden = false;
       $('#tableView').hidden = isMobile || state.view !== 'table';
