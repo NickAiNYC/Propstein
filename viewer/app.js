@@ -1600,7 +1600,10 @@
       const previousLimit = mobileBoardLimit;
       mobileBoardLimit += MOBILE_BOARD_PAGE_SIZE;
       renderBoard();
-      $('#cardView').children[previousLimit]?.focus();
+      const cards = $('#cardView');
+      cards.children[previousLimit]?.focus();
+      const status = $('#boardPageStatus');
+      if (status) status.textContent = `${cards.querySelectorAll('.mobile-quant-row').length} player cards shown.`;
     });
 
     // v175 fail-closed heartbeat probe: re-fetches the odds feed with
@@ -3580,7 +3583,7 @@
       const visibleRows = isMobile ? displayRows.slice(0, mobileBoardLimit) : displayRows;
       const remaining = displayRows.length - visibleRows.length;
       const more = remaining > 0
-        ? `<div style="grid-column: 1 / -1; text-align: center;"><button type="button" class="pw-btn-nav" data-board-show-more>Show ${Math.min(remaining, MOBILE_BOARD_PAGE_SIZE)} more · ${visibleRows.length} of ${displayRows.length} shown</button></div>`
+        ? `<div style="grid-column: 1 / -1; text-align: center;"><button type="button" class="board-show-more" data-board-show-more>Show ${Math.min(remaining, MOBILE_BOARD_PAGE_SIZE)} more · ${visibleRows.length} of ${displayRows.length} shown</button></div>`
         : '';
       $('#cardView').innerHTML = visibleRows.map((row, idx) => propCard(row, idx)).join('') + more;
       $('#cardView').classList.toggle('compact-grid', state.view === 'compact-grid');

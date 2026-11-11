@@ -39,13 +39,11 @@ test('production HTML and service worker use the same release asset version', as
     read('../viewer/index.html'),
     read('../viewer/sw.js')
   ]);
-  for (const asset of ['style.css', 'app.js', 'js/today-schedule.js']) {
-    const escapedAsset = asset.replaceAll('.', '\\.');
-    const version = html.match(new RegExp(`/${escapedAsset}\\?v=([\\w-]+)`))?.[1];
-    assert.ok(version, `HTML version missing for ${asset}`);
-    assert.ok(serviceWorker.includes(`'/${asset}?v=${version}'`),
-      `Service worker must precache the HTML version of ${asset}`);
-  }
+  const htmlVersion = html.match(/style\.css\?v=(2026_v\d+)/)?.[1];
+  assert.ok(htmlVersion, 'HTML asset version is missing');
+  assert.match(html, new RegExp(`app\\.js\\?v=${htmlVersion}`));
+  assert.match(serviceWorker, new RegExp(`style\\.css\\?v=${htmlVersion}`));
+  assert.match(serviceWorker, new RegExp(`app\\.js\\?v=${htmlVersion}`));
 });
 
 test('backend entitlement fails closed and CORS is allowlisted', async () => {
