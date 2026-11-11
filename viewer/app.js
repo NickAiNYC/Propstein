@@ -183,6 +183,7 @@
 
   const state = {
     slateKey: '2026_w7',
+    noCurrentSlate: false,
     slate: [],
     games: [],
     picks: {},
@@ -194,7 +195,7 @@
     lineHistoryCache: {},
     filters: { search: '', market: adapter.defaultMarket, position: 'ALL', team: '', gameId: '', playMode: 'actionable', intent: 'all' },
     proView: 'all',
-    view: 'table',
+    view: 'cards',
     deferredInstall: null,
     selectedPlayerId: null,
     selectedExecutionPlayerId: null,
@@ -964,6 +965,16 @@
       for (const [key, cfg] of Object.entries(entry.slates)) {
         if (!cfg || typeof cfg !== 'object' || !key) continue;
         if (key in registry) {
+          // The manifest is the freshness source for slates the adapter
+          // already knows. Historical audits must not stay labeled upcoming.
+          if (cfg.historical === true || cfg.historical === false) registry[key].historical = cfg.historical === true;
+          if (typeof cfg.shortLabel === 'string') registry[key].shortLabel = cfg.shortLabel;
+          if (typeof cfg.state === 'string') registry[key].state = cfg.state;
+          if (Object.prototype.hasOwnProperty.call(cfg, 'odds')) {
+            registry[key].odds = typeof cfg.odds === 'string' ? cfg.odds : null;
+          }
+          if (typeof cfg.modelContextStatus === 'string') registry[key].modelContextStatus = cfg.modelContextStatus;
+          if (cfg.actionLocked === true) registry[key].actionLocked = true;
           // Built-in slate keys still need a live fail-closed lock from the
           // manifest. Never let a frozen registry entry bypass it.
           if (cfg.actionLocked === true && cfg.modelContextStatus === 'BLOCKED_UNTIMESTAMPED') {
@@ -1001,11 +1012,15 @@
         };
         merged += 1;
       }
+      const def = entry.default_slate;
+      if (def == null) {
+        // No current slate. Do not boot a fixture or historical night in its place.
+        state.noCurrentSlate = true;
+      } else if (typeof def === 'string' && registry[def] && !registry[def].historical && registry[def].actionLocked !== true) {
+        state.noCurrentSlate = false;
+        state.slateKey = def;
+      }
       if (merged > 0) {
-        const def = entry.default_slate;
-        if (typeof def === 'string' && registry[def] && !registry[def].historical) {
-          state.slateKey = def;
-        }
         try {
           console.info(`[slate-index] merged ${merged} slate(s); boot ${state.slateKey}`);
         } catch (_) {}
@@ -1220,6 +1235,11 @@
     const exportBtn = $('#exportBtn');
     if (exportBtn) exportBtn.addEventListener('click', handleSlateExportCsv);
     if ($('#searchInput')) $('#searchInput').addEventListener('input', syncFilters);
+    if ($('#pickGame')) $('#pickGame').addEventListener('change', () => { state.pickLineTouched = false; renderPickFlow(); });
+    if ($('#pickPlayer')) $('#pickPlayer').addEventListener('change', () => { state.pickLineTouched = false; renderPickFlow(); });
+    if ($('#pickMarket')) $('#pickMarket').addEventListener('change', () => { state.pickLineTouched = false; renderPickFlow(); });
+    if ($('#pickBreakeven')) $('#pickBreakeven').addEventListener('change', () => renderPickFlow());
+    if ($('#pickLine')) $('#pickLine').addEventListener('input', () => { state.pickLineTouched = true; renderPickFlow(); });
     if ($('#marketFilter')) $('#marketFilter').addEventListener('change', syncFilters);
     if ($('#positionFilter')) $('#positionFilter').addEventListener('change', syncFilters);
     if ($('#teamFilter')) $('#teamFilter').addEventListener('input', syncFilters);
@@ -1490,7 +1510,20 @@
         } catch (_) {}
       };
       if (dismissBriefingBtn) dismissBriefingBtn.addEventListener('click', closeBriefing);
-      if (enterTerminalBtn) enterTerminalBtn.addEventListener('click', closeBriefing);
+      const openTerminal = () => {
+        closeBriefing();
+        setPlayMode('all');
+        document.body.classList.add('front-board-open');
+        const explore = $('#explorePropsBtn');
+        if (explore) explore.setAttribute('aria-expanded', 'true');
+        const board = document.getElementById('fullPlayerBoard') || document.getElementById('slateBoard');
+        if (board && typeof board.scrollIntoView === 'function') {
+          board.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        const focusTarget = document.getElementById('pickFlow') || document.getElementById('searchInput');
+        if (focusTarget && typeof focusTarget.focus === 'function') focusTarget.focus({ preventScroll: true });
+      };
+      if (enterTerminalBtn) enterTerminalBtn.addEventListener('click', openTerminal);
       firstRunBanner.addEventListener('click', (e) => {
         if (e.target === firstRunBanner) closeBriefing();
       });
@@ -2162,8 +2195,9 @@
     if (adapter.pageTitle) document.title = adapter.pageTitle;
   }
 
-  /** Boot slate: keep the stored key when the adapter knows it, else the adapter default. */
+  /** Boot slate: a missing current slate stays empty. Otherwise keep a known key. */
   function defaultBootSlate() {
+    if (state.noCurrentSlate) return null;
     if (adapter.slates[state.slateKey]) return state.slateKey;
     return typeof adapter.defaultSlateKey === 'function' ? adapter.defaultSlateKey() : state.slateKey;
   }
@@ -2267,15 +2301,79 @@
     if ($('#cardView')) $('#cardView').innerHTML = cardSkeleton;
   }
 
+  function quoteIsSynthetic(quote) {
+    if (!quote || typeof quote !== 'object') return false;
+    if (quote._fixture === true) return true;
+    const book = String(quote.book || '').toLowerCase();
+    const source = String(quote.source || '').toLowerCase();
+    return book.includes('synthetic') || book.includes('demo')
+      || source.includes('demonstration fixture') || source.includes('synthetic sample');
+  }
+
+  function slateRowsAreFixture(rows) {
+    const modeled = (rows || []).filter((row) => row && typeof row === 'object');
+    return modeled.length > 0 && modeled.every((row) => row._fixture === true);
+  }
+
+  /** Real model rows are never sample data. Fixture feeds and fixture rows still are. */
+  function resolveDataKind(rows, odds) {
+    if (adapter.fixturesOnly === true || slateRowsAreFixture(rows)) return 'fixture';
+    const hasRealModel = (rows || []).some((row) => row && row._fixture !== true && (
+      Number.isFinite(Number(row.proj_yards)) || Number.isFinite(Number(row.proj_rec))
+      || Number.isFinite(Number(row.mu_rec)) || Number.isFinite(Number(row.fair_line_yards))
+      || Number.isFinite(Number(row.fair_line_rec)) || Number.isFinite(Number(row.proj_pts))
+    ));
+    if (hasRealModel) return 'live';
+    return String(odds && odds.feed_status || '').toLowerCase() === 'fixture' ? 'fixture' : 'live';
+  }
+
+  function slateContextReady(rows, config) {
+    if (!config || config.actionLocked === true || config.modelContextStatus !== 'AVAILABLE') return false;
+    return (rows || []).some((row) => row && row.pricing_cutoff_timestamp
+      && row.team_spread != null && row.total_line != null && row.wind != null);
+  }
+
+  async function renderEmptySlate() {
+    state.slateKey = null;
+    state.slate = [];
+    state.games = [];
+    state.picks = {};
+    state.livePicks = { picks: [] };
+    state.odds = { quotes: [], feed_status: 'absent' };
+    state.featureContextLocked = false;
+    state.feedHealth = {
+      slate: 'ok', games: 'ok', odds: 'ok', news: 'ok', dataKind: 'live',
+      oddsUpdatedAt: null, newsLastPolledAt: null
+    };
+    const label = adapter.label || 'This sport';
+    const title = $('#homeEdgeTitle');
+    if (title) title.textContent = `No current ${label} slate`;
+    const status = $('#homeEdgeStatus');
+    if (status) status.textContent = 'No fixture board is standing in for a live slate.';
+    const list = $('#homeEdgeList');
+    if (list) list.innerHTML = '';
+    const empty = $('#emptyState');
+    if (empty) {
+      empty.hidden = false;
+      empty.innerHTML = `<div class="sport-empty"><h2>No current ${esc(label)} slate</h2><p>There is no live ${esc(label)} prop slate on this board. Historical audits stay in the slate menu. Fixture nights are sample data and are not shown as the current slate.</p></div>`;
+    }
+    if ($('#cardView')) $('#cardView').innerHTML = '';
+    if ($('#slateRows')) $('#slateRows').innerHTML = '';
+    renderPickFlow();
+    updateFeedHealthUI();
+    window.__PROP_WIRE_READY__ = true;
+    window.__PROP_WIRE_STATE__ = state;
+  }
+
   async function loadSlate(slateKey) {
     const config = SLATES[slateKey];
-    if (!config) return;
+    if (!config) {
+      await renderEmptySlate();
+      return;
+    }
+    state.noCurrentSlate = false;
     state.slateKey = slateKey;
-    // No shipped NFL model artifact proves that game spread, total, and
-    // weather were captured before each pricing cutoff. Manifest metadata
-    // cannot certify that retrospectively, so lock NFL execution by default.
-    state.featureContextLocked = SPORT_ID === 'nfl';
-    const initialMode = config.historical ? 'all' : 'actionable';
+    const initialMode = (config.historical || config.modelContextStatus === 'AVAILABLE') ? 'all' : 'actionable';
     state.filters = { search: '', market: state.filters.market, position: 'ALL', team: '', gameId: '', playMode: initialMode, intent: 'all' };
     if ($('#searchInput')) $('#searchInput').value = '';
     if ($('#positionFilter')) $('#positionFilter').value = 'ALL';
@@ -2307,6 +2405,9 @@
       ? slate.filter(row => !String(row.excl_reason || '').trim())
       : [];
     state.games = Array.isArray(games) ? games : [];
+    // Lock execution only when this slate's own context is unproven.
+    // A published model with pre-pricing context is research data, not a fixture.
+    state.featureContextLocked = SPORT_ID === 'nfl' && !slateContextReady(state.slate, config);
     state.picks = picks && typeof picks === 'object' ? picks : {};
     state.livePicks = livePicksRes.ok && Array.isArray(livePicksRes.data?.picks)
       ? livePicksRes.data : { picks: [] };
@@ -2328,7 +2429,7 @@
       games: gamesRes.ok ? 'ok' : 'error',
       odds: oddsRes.ok ? 'ok' : 'error',
       news: newsRes.ok ? 'ok' : 'error',
-      dataKind: (state.odds.feed_status === 'fixture') || adapter.fixturesOnly === true ? 'fixture' : 'live',
+      dataKind: resolveDataKind(state.slate, state.odds),
       oddsUpdatedAt: state.odds.updated_at || null,
       newsLastPolledAt: state.newsWatcherState.last_polled_at || null
     };
@@ -2362,6 +2463,8 @@
     });
 
     renderAll(clvReport);
+    renderPickFlow();
+    if (document.body && document.body.classList) document.body.classList.add('front-board-open');
     updateFeedHealthUI();
     updateClvRibbon(clvReport);
     updateSniperUIBadges();
@@ -2687,6 +2790,133 @@
     } else {
       el.innerHTML = `<strong>CLV</strong> 0 verified live records.`;
     }
+  }
+
+  const PICK_MARKETS = {
+    receptions: { label: 'Receptions', unit: 'rec' },
+    receiving_yards: { label: 'Receiving yards', unit: 'yds' }
+  };
+  const PICK_CAVEAT = 'This is the published model probability at the line you entered, not a sportsbook price, and it can be wrong.';
+
+  function pickMarketId() {
+    const selected = $('#pickMarket') && $('#pickMarket').value;
+    if (PICK_MARKETS[selected]) return selected;
+    return PICK_MARKETS[state.filters.market] ? state.filters.market : 'receiving_yards';
+  }
+
+  function verifiedSportsbookQuote(row, market) {
+    if (!row) return null;
+    return (state.odds.quotes || []).find((quote) => {
+      if (!quote || quoteIsSynthetic(quote)) return false;
+      if (String(quote.book || '').toLowerCase() === 'polymarket') return false;
+      if (quote.market !== market) return false;
+      if (quoteState(quote) !== 'verified') return false;
+      const sameId = quote.player_id && quote.player_id === row.player_id;
+      const sameName = String(quote.player_name || '').toLowerCase() === String(row.player_display_name || '').toLowerCase();
+      return sameId || sameName;
+    }) || null;
+  }
+
+  function priceLine(row, market, line) {
+    if (!row || !adapter.model || !PICK_MARKETS[market] || !Number.isFinite(Number(line))) return null;
+    const muRec = Number(row.mu_rec);
+    const muYpr = Number(row.mu_ypr);
+    if (!Number.isFinite(muRec)) return null;
+    if (market === 'receiving_yards' && !Number.isFinite(muYpr)) return null;
+    const pOver = market === 'receptions' ? pRecOver(muRec, Number(line)) : pYardsOver(muRec, muYpr, Number(line));
+    if (!Number.isFinite(pOver)) return null;
+    const fair = market === 'receptions' ? Number(row.fair_line_rec) : Number(row.fair_line_yards);
+    const mean = market === 'receptions' ? Number(row.proj_rec != null ? row.proj_rec : row.mu_rec) : Number(row.proj_yards);
+    return {
+      pOver: Math.max(0, Math.min(1, pOver)),
+      pUnder: Math.max(0, Math.min(1, 1 - pOver)),
+      fair,
+      mean
+    };
+  }
+
+  function versusBreakEven(probability, breakEven) {
+    const delta = probability - breakEven;
+    if (Math.abs(delta) < 0.005) return 'in line with this break-even';
+    return delta > 0 ? 'above this break-even' : 'below this break-even';
+  }
+
+  function renderPickFlow() {
+    const root = $('#pickFlow');
+    const gameSelect = $('#pickGame');
+    const playerSelect = $('#pickPlayer');
+    const result = $('#pickResult');
+    if (!root || !gameSelect || !playerSelect || !result) return;
+    if (!adapter.model) {
+      root.hidden = false;
+      gameSelect.innerHTML = '';
+      playerSelect.innerHTML = '';
+      result.innerHTML = `<p class="pick-caveat">No current ${esc(adapter.label || 'sport')} model slate. This picker prices NFL receptions and receiving yards from the published NegBin-Gamma fit.</p>`;
+      return;
+    }
+    if (!state.slate.length) {
+      result.innerHTML = '<p class="pick-caveat">No players are on the current slate.</p>';
+      return;
+    }
+    const games = state.games.length ? state.games : [];
+    const previousGame = gameSelect.value;
+    const gameIds = games.map((game) => game.game_id).filter(Boolean);
+    const fallbackIds = [...new Set(state.slate.map((row) => row.game_id).filter(Boolean))];
+    const ids = gameIds.length ? gameIds : fallbackIds;
+    gameSelect.innerHTML = ids.map((id) => {
+      const game = games.find((item) => item.game_id === id);
+      const label = game ? `${game.away_team} @ ${game.home_team}` : id;
+      return `<option value="${esc(id)}">${esc(label)}</option>`;
+    }).join('');
+    if (previousGame && ids.includes(previousGame)) gameSelect.value = previousGame;
+    const byProjection = (a, b) => Number(b.proj_yards || b.proj_rec || 0) - Number(a.proj_yards || a.proj_rec || 0)
+      || String(a.player_display_name).localeCompare(String(b.player_display_name));
+    if (!previousGame && state.slate.length) {
+      const featured = state.slate.slice().sort(byProjection)[0];
+      if (featured && ids.includes(featured.game_id)) gameSelect.value = featured.game_id;
+    }
+    const gameId = gameSelect.value || ids[0];
+    const pool = state.slate.filter((row) => !gameId || row.game_id === gameId)
+      .slice()
+      .sort(byProjection);
+    const previousPlayer = playerSelect.value;
+    playerSelect.innerHTML = pool.map((row) => `<option value="${esc(row.player_id)}">${esc(row.player_display_name)} · ${esc(row.position || '')}</option>`).join('');
+    if (previousPlayer && pool.some((row) => row.player_id === previousPlayer)) playerSelect.value = previousPlayer;
+    const row = pool.find((item) => item.player_id === playerSelect.value) || pool[0];
+    const market = pickMarketId();
+    const marketSelect = $('#pickMarket');
+    if (marketSelect && marketSelect.value !== market && PICK_MARKETS[market]) marketSelect.value = market;
+    const lineInput = $('#pickLine');
+    const spec = PICK_MARKETS[market];
+    const fairDefault = row ? (market === 'receptions' ? Number(row.fair_line_rec) : Number(row.fair_line_yards)) : NaN;
+    if (lineInput && document.activeElement !== lineInput) {
+      const typed = Number(lineInput.value);
+      if (!state.pickLineTouched || !Number.isFinite(typed)) {
+        lineInput.value = Number.isFinite(fairDefault) ? String(fairDefault) : '';
+      }
+    }
+    const line = Number(lineInput && lineInput.value);
+    const breakEven = Number(($('#pickBreakeven') && $('#pickBreakeven').value) || 0.542);
+    const priced = row ? priceLine(row, market, line) : null;
+    if (!row || !priced) {
+      result.innerHTML = '<p class="pick-caveat">This player does not have the published distribution inputs for this market.</p>';
+      return;
+    }
+    const book = verifiedSportsbookQuote(row, market);
+    const pct1 = (value) => `${(value * 100).toFixed(1)}%`;
+    const bookLine = book
+      ? `<p class="pick-book">Verified ${esc(book.book)} line ${Number(book.line).toFixed(1)}</p>`
+      : '<p class="pick-book">No verified sportsbook price yet</p>';
+    result.innerHTML = `
+      ${bookLine}
+      <dl class="pick-metrics">
+        <div><dt>Fair line</dt><dd>${Number.isFinite(priced.fair) ? priced.fair.toFixed(1) : '—'} ${esc(spec.unit)}</dd></div>
+        <div><dt>Projected volume</dt><dd>${Number.isFinite(priced.mean) ? priced.mean.toFixed(1) : '—'} ${esc(spec.unit)}</dd></div>
+        <div><dt>Over</dt><dd>${pct1(priced.pOver)} <span>${versusBreakEven(priced.pOver, breakEven)}</span></dd></div>
+        <div><dt>Under</dt><dd>${pct1(priced.pUnder)} <span>${versusBreakEven(priced.pUnder, breakEven)}</span></dd></div>
+        <div><dt>Break-even</dt><dd>${pct1(breakEven)}</dd></div>
+      </dl>
+      <p class="pick-caveat">${PICK_CAVEAT}</p>`;
   }
 
   function renderAll(clvReport = null) {
@@ -3349,6 +3579,7 @@
     updateHeroCard(isResearchMode, quotedCount, displayRows.length);
     updateStickyContext(displayRows);
     updateActiveFilterBadge();
+    renderPickFlow();
   }
 
   function renderNbaMarketOnly() {
@@ -3912,7 +4143,7 @@
               <div class="rf-stat"><small>${dist.isTd ? 'Anytime TD' : '80% range'}</small><b>${rangeText}</b></div>
             </div>
             ${dist.isTd ? '' : densityCurveSvg(dist, unit)}
-            <p class="home-research-note"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span> Research only · no current edge or stake is available.</p>
+            <p class="home-research-note"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span> No verified sportsbook price yet. Research only · no current edge or stake is available.</p>
           </article>`;
           }).join('')
           : '<p class="home-edge-empty">Prices or news are unavailable. No model slate is loaded; no picks are being recommended.</p>';
@@ -4020,8 +4251,8 @@
         const pod2Sub = pods[1].querySelector('.hero-pod-sub');
         const pod3Val = pods[2].querySelector('.hero-pod-val');
         const pod3Sub = pods[2].querySelector('.hero-pod-sub');
-        if (pod1Val) pod1Val.textContent = '74.2%';
-        if (pod1Sub) pod1Sub.textContent = 'Goal: 60% · Calibrated';
+        if (pod1Val && pod1Val.id !== 'clvBeatRateVal') pod1Val.textContent = '—';
+        if (pod1Sub) pod1Sub.textContent = 'From the graded ledger';
         if (pod2Val) pod2Val.textContent = 'PAUSED';
         if (pod2Sub) pod2Sub.textContent = 'Standby for verified quotes';
         if (pod3Val) pod3Val.textContent = String(totalModeled);
@@ -4038,7 +4269,7 @@
       metricVal.innerHTML = `${qualifiedCount} <span class="hero-metric-unit">QUALIFIED</span>`;
       if (metricBadge) {
         metricBadge.className = 'hero-metric-badge';
-        metricBadge.innerHTML = `<span class="badge-arrow">↗</span> +14.8% AVG EDGE`;
+        metricBadge.innerHTML = `<span class="badge-arrow">●</span> PUBLISHED MODEL`;
       }
       if (metricSub) metricSub.textContent = `Feed-verified player lines clearing Poisson-Gamma hurdle · ${state.odds.quotes.length} quotes ingested`;
       if (pods.length >= 3) {
@@ -4048,8 +4279,8 @@
         const pod2Sub = pods[1].querySelector('.hero-pod-sub');
         const pod3Val = pods[2].querySelector('.hero-pod-val');
         const pod3Sub = pods[2].querySelector('.hero-pod-sub');
-        if (pod1Val) pod1Val.textContent = '74.2%';
-        if (pod1Sub) pod1Sub.textContent = 'Goal: 60% · Calibrated';
+        if (pod1Val && pod1Val.id !== 'clvBeatRateVal') pod1Val.textContent = '—';
+        if (pod1Sub) pod1Sub.textContent = 'From the graded ledger';
         if (pod2Val) pod2Val.textContent = gatePct;
         if (pod2Sub) pod2Sub.textContent = 'Minimum edge gate';
         if (pod3Val) pod3Val.textContent = String(totalModeled);
@@ -6804,6 +7035,7 @@
           <button type="button" class="card-sim-primary${simVal !== null ? ' has-sim' : ''}${simOpen ? ' open' : ''}" data-simulate-player="${esc(row.player_id)}" title="Open the approximate line simulator inside this card">⚡ ${simOpen ? 'CLOSE SIM' : simVal !== null ? `SIM ${simVal.toFixed(1)} · EDIT` : 'SIM LINE'}</button>
           <button type="button" class="card-ghost-act" data-copy-fair="${esc(row.player_id)}" title="Copy model fair line + range to clipboard">COPY FAIR</button>
           <span class="card-research-tag${simVal !== null ? ' sim-active' : ''}">${simVal !== null ? 'SIMULATED · NOT A BOOK QUOTE' : 'NO LIVE QUOTE'}</span>
+          ${simVal !== null ? '' : '<span class="card-book-absent">No verified sportsbook price yet</span>'}
         </div>
         ${inlineSimPanelHtml(row, dist)}`;
     } else {
@@ -7793,7 +8025,7 @@
         if (navigator.canShare({ files: [file] })) {
           navigator.share({
             files: [file],
-            title: 'PropStein Week 7 Slate Export',
+            title: `PropStein ${SLATES[state.slateKey]?.shortLabel || 'slate'} export`,
             text: `Export of ${rows.length} NFL receiving props from PropStein`
           }).then(() => toast(`Exported ${rows.length} props`)).catch(() => {});
           return;
@@ -8083,7 +8315,7 @@
   async function openClvReport() {
     const dialog = $('#clvDialog');
     if (!dialog) return;
-    $('#clvReportContent').innerHTML = '<div style="padding:24px; text-align:center; color:var(--muted); font-family:var(--mono);">Loading Week 7 CLV validation ledger…</div>';
+    $('#clvReportContent').innerHTML = '<div style="padding:24px; text-align:center; color:var(--muted); font-family:var(--mono);">Loading the public CLV audit…</div>';
     dialog.showModal();
 
     let report = state.clvAuditReport;
@@ -8209,7 +8441,8 @@
       </div>
     `;
 
-    $('#clvReportTitle').textContent = 'Closing Line Value (CLV) & Settlement Audit';
+    const auditWhen = report.generated_at ? String(report.generated_at).slice(0, 10) : `${totalRecords} graded records`;
+    $('#clvReportTitle').textContent = `Public CLV audit · ${auditWhen}`;
     $('#clvReportEyebrow').innerHTML = `<span class="clv-root-tag">Root #${rootHash}</span>`;
     $('#clvReportContent').innerHTML = kpiHtml;
   }
@@ -8888,7 +9121,7 @@
     const isOverridden = Boolean(state.gateOverride?.[row.player_id]);
 
     const priceStat = evaluation.state === 'none'
-      ? '<div class="detail-stat"><span>Book Offer</span><strong>No quote</strong></div>'
+      ? '<div class="detail-stat"><span>Book offer</span><strong>No verified sportsbook price yet</strong></div>'
       : `<div class="detail-stat">
           <span>Book Offer</span>
           <strong class="${evaluation.side === 'UNDER' ? 'text-sky' : 'text-accent'}">
@@ -9125,6 +9358,9 @@
       renderBoard();
     },
     getVisibleCount() { return filteredRows().length; },
-    getSlateCount() { return state.slate.length; }
+    getSlateCount() { return state.slate.length; },
+    priceLine,
+    quoteIsSynthetic,
+    resolveDataKind
   });
 })();

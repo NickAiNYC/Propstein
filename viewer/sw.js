@@ -1,15 +1,16 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v228-refresh-2026';
+const CACHE_NAME = 'propstein-v229-terminal';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v228',
-  '/app.js?v=2026_v228',
+  '/style.css?v=2026_v229',
+  '/app.js?v=2026_v229',
+  '/design-system.css?v=2026_v229',
   '/refresh-2026.css?v=2026_r2',
   '/js/refresh-2026.js?v=2026_r1',
   '/js/quant-math.js?v=2026_v215',
-  '/js/today-schedule.js?v=2026_v209',
+  '/js/today-schedule.js?v=2026_v229',
   '/js/sports/ufc.js?v=2026_v200',
   '/ufc.css?v=2026_v200',
   '/js/ufc-fighter.js?v=2026_v199',
@@ -21,7 +22,7 @@ const STATIC_ASSETS = [
   // v171: public verify landing assets (externalized from a336e2f inline blocks)
   '/verify-landing.css',
   '/verify-landing.js',
-  '/verify-landing.css?v=2026_v189',
+  '/verify-landing.css?v=2026_v229',
   '/verify-landing.js?v=2026_v179',
   '/js/sports/registry.js?v=2026_v179',
   '/js/sports/nfl.js?v=2026_v179',

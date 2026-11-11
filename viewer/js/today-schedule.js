@@ -357,12 +357,13 @@
     ufcActive = true;
     document.body.classList.add('ufc-active');
     requestNumber += 1; // cancel any in-flight league schedule render
-    document.getElementById('todayScheduleDate').textContent = 'Next UFC card · fight winner and total rounds';
-    if (window.PropSteinUFC) {
-      window.PropSteinUFC.render(gamesEl, document.getElementById('todayScheduleTitle'), document.getElementById('todayScheduleSource'));
-    } else {
-      gamesEl.innerHTML = '<p class="today-schedule-message">The UFC card is unavailable right now.</p>';
-    }
+    const titleEl = document.getElementById('todayScheduleTitle');
+    const dateEl = document.getElementById('todayScheduleDate');
+    const sourceEl = document.getElementById('todayScheduleSource');
+    if (titleEl) titleEl.textContent = 'No current UFC slate';
+    if (dateEl) dateEl.textContent = '';
+    if (sourceEl) sourceEl.textContent = 'Fight-winner and totals models are not published as a live slate.';
+    gamesEl.innerHTML = '<div class="sport-empty"><h3>No current UFC slate</h3><p>There is no priced UFC prop slate on this board. Upcoming cards are not shown as model picks, and fixture outputs are not used in their place.</p></div>';
     document.getElementById('todaySchedule')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 

@@ -1,0 +1,418 @@
+/* PropStein terminal — design system.
+   Dark, quiet, one accent. The board is the product. */
+
+:root {
+  --ps-bg: #0c0f14;
+  --ps-elev: #151a22;
+  --ps-elev-2: #1c232e;
+  --ps-line: rgba(244, 246, 248, 0.12);
+  --ps-text: #f4f6f8;
+  --ps-muted: #b7c0cc;
+  --ps-faint: #8b95a3;
+  --ps-accent: #8ee0bf;
+  --ps-accent-ink: #06281c;
+  --ps-warn: #f3d48a;
+  --ps-danger: #f3b4b8;
+  --ps-info: #b9d4ff;
+  --ps-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --ps-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --ps-display: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  --ps-radius: 14px;
+  --ps-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  color-scheme: dark;
+  --bg-app: var(--ps-bg);
+  --bg-card: var(--ps-elev);
+  --text-main: var(--ps-text);
+  --text-muted: var(--ps-muted);
+  --accent-primary: var(--ps-info);
+}
+
+html, body {
+  background: var(--ps-bg);
+  color: var(--ps-text);
+  font-family: var(--ps-sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+body {
+  letter-spacing: 0;
+}
+
+/* Quiet the duplicate chrome. The nodes stay in the DOM for the app. */
+.pw-hero-telemetry-suite,
+.pw-telemetry-pod,
+.pw-receipt-badge,
+.pw-injury-header-pill,
+.slim-injury-dismiss,
+.front-pro-bar,
+.pw-risk-group,
+.front-inline-search,
+.live-polling-widget {
+  display: none !important;
+}
+
+.pw-terminal-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(12, 15, 20, 0.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--ps-line);
+}
+
+.pw-topbar {
+  min-height: 64px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pw-brand-img { height: 28px !important; width: auto; }
+
+.desktop-league-nav,
+.pw-filterbar {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px 12px;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.sport-switcher {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  width: max-content;
+  background: var(--ps-elev);
+  border: 1px solid var(--ps-line);
+  border-radius: 999px;
+}
+
+.sport-switch-btn {
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--ps-muted) !important;
+  border-radius: 999px !important;
+  min-height: 36px;
+  padding: 0 12px !important;
+  font-weight: 600;
+}
+
+.sport-switch-btn.active,
+.sport-switch-btn[aria-checked="true"] {
+  background: var(--ps-text) !important;
+  color: #12161c !important;
+}
+
+.pw-select,
+.pick-flow select,
+.pick-flow input,
+#searchInput {
+  background: var(--ps-elev-2);
+  color: var(--ps-text);
+  border: 1px solid var(--ps-line);
+  border-radius: 10px;
+  min-height: 40px;
+  padding: 0 12px;
+  font: inherit;
+}
+
+.pw-btn-nav,
+.first-run-enter-btn,
+#homeEdgeOpenBoard,
+.today-schedule-refresh,
+#explorePropsBtn {
+  background: var(--ps-text) !important;
+  color: #12161c !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  min-height: 36px;
+  padding: 0 14px !important;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.shell.page,
+body:not(.front-board-open) .shell.page,
+body.front-board-open .shell.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 8px 20px 48px;
+}
+
+.home-edge-preview {
+  padding: 28px 0 8px;
+}
+
+.today-schedule-eyebrow,
+.pick-kicker {
+  margin: 0 0 8px;
+  color: var(--ps-accent);
+  font-family: var(--ps-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-edge-heading h1,
+#homeEdgeTitle {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--ps-display);
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: 560;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  color: var(--ps-text);
+}
+
+.product-line,
+.home-edge-status {
+  max-width: 52ch;
+  margin: 14px 0 0;
+  color: var(--ps-muted);
+  font-size: 16px;
+}
+
+.home-edge-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+
+.pick-flow {
+  margin: 22px 0;
+  padding: 18px;
+  background: var(--ps-elev);
+  border: 1px solid var(--ps-line);
+  border-radius: var(--ps-radius);
+  box-shadow: var(--ps-shadow);
+}
+
+.pick-flow h2 {
+  margin: 0 0 14px;
+  font-family: var(--ps-display);
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+
+.pick-flow-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1.4fr 1fr 0.7fr 1.3fr;
+  gap: 12px;
+}
+
+.pick-flow label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--ps-faint);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pick-flow select,
+.pick-flow input { width: 100%; }
+
+.pick-result { margin-top: 16px; }
+
+.pick-book {
+  margin: 0 0 12px;
+  color: var(--ps-warn);
+  font-weight: 650;
+}
+
+.pick-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin: 0;
+}
+
+.pick-metrics div {
+  padding: 12px;
+  background: var(--ps-bg);
+  border-radius: 12px;
+  border: 1px solid var(--ps-line);
+}
+
+.pick-metrics dt {
+  color: var(--ps-faint);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pick-metrics dd {
+  margin: 6px 0 0;
+  font-family: var(--ps-mono);
+  font-size: 18px;
+  color: var(--ps-text);
+}
+
+.pick-metrics span,
+.pick-caveat {
+  display: block;
+  margin-top: 4px;
+  color: var(--ps-muted);
+  font-family: var(--ps-sans);
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.card-action-bar { flex-wrap: wrap; }
+.card-book-absent {
+  flex: 1 0 100%;
+  margin-top: 8px;
+  color: var(--ps-warn);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.sport-empty,
+.noscript-note {
+  padding: 16px;
+  border: 1px solid var(--ps-line);
+  border-radius: 12px;
+  background: var(--ps-elev);
+}
+
+.sport-empty h2,
+.sport-empty h3 { margin: 0 0 8px; color: var(--ps-text); }
+
+.sport-empty p,
+.noscript-note { margin: 0; color: var(--ps-muted); }
+
+.data-board { margin-top: 8px; }
+
+.slate-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ps-elev);
+  border: 1px solid var(--ps-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.slate-table th {
+  color: var(--ps-faint);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.slate-table td,
+.slate-table th { padding: 12px 14px; border-bottom: 1px solid var(--ps-line); }
+
+.mobile-quant-row,
+.home-edge-card,
+.today-game-card {
+  background: var(--ps-elev) !important;
+  border: 1px solid var(--ps-line) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  color: var(--ps-text);
+}
+
+.card-player-name,
+.home-edge-player strong { color: var(--ps-text); font-weight: 640; }
+
+.card-money-val,
+.fair-value,
+.proj-value { font-family: var(--ps-mono); }
+
+.card-grid,
+#cardView {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.data-quality-banner {
+  position: static !important;
+  top: auto !important;
+  z-index: 1;
+  margin: 12px 0 !important;
+  padding: 12px 14px;
+  border-radius: 12px !important;
+  border: 1px solid rgba(243, 212, 138, 0.45) !important;
+  background: #241c14 !important;
+  color: var(--ps-text);
+}
+
+.data-quality-banner.fixture,
+.data-quality-banner.warn { border-color: rgba(243, 212, 138, 0.45); }
+.data-quality-banner.error { border-color: rgba(243, 180, 184, 0.5); }
+
+.snapshot-age-pill {
+  display: inline-flex;
+  margin: 8px 0;
+  color: var(--ps-muted);
+  font-family: var(--ps-mono);
+  font-size: 12px;
+}
+
+.today-schedule { margin: 28px 0; }
+.today-schedule h2 { font-family: var(--ps-display); letter-spacing: -0.02em; }
+
+.terminal-compliance-footer {
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ps-line);
+  color: var(--ps-muted);
+}
+
+.compliance-pill,
+.compliance-badge-21 {
+  border: 1px solid var(--ps-line);
+  border-radius: 999px;
+  color: var(--ps-text);
+  background: var(--ps-elev);
+}
+
+.compliance-disclaimer { color: var(--ps-muted); font-size: 13px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .pick-flow,
+  .mobile-quant-row,
+  .home-edge-card,
+  .sport-switch-btn,
+  .pw-btn-nav {
+    transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+  }
+  .mobile-quant-row:hover,
+  .home-edge-card:hover { transform: translateY(-1px); }
+}
+
+@media (max-width: 900px) {
+  .pick-flow-grid,
+  .pick-metrics { grid-template-columns: 1fr 1fr; }
+  .home-edge-heading h1,
+  #homeEdgeTitle { max-width: 20ch; }
+}
+
+@media (max-width: 640px) {
+  .pw-topbar,
+  .desktop-league-nav,
+  .pw-filterbar,
+  .shell.page,
+  body:not(.front-board-open) .shell.page { padding-left: 14px; padding-right: 14px; }
+  .pick-flow-grid,
+  .pick-metrics { grid-template-columns: 1fr; }
+  .pw-desktop-only { display: none !important; }
+  #cardView { grid-template-columns: 1fr; }
+  .home-edge-heading h1,
+  #homeEdgeTitle { font-size: 34px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pick-flow,
+  .mobile-quant-row,
+  .home-edge-card { transition: none; }
+}

@@ -255,6 +255,7 @@ export function loadApp(sandbox) {
     setPlayMode, breakerFor,
     sportSwitcherItems, switchToSport, defaultBootSlate, initSlateIndex,
     feedHealthStates, updateFeedHealthUI, feedVerificationLabel, updateFeedVerificationUI, marketFeedSourceLabel, detectBookDiscrepancy, executionDecision, stampProvenance,
+    priceLine, quoteIsSynthetic, resolveDataKind,
     renderSportChrome, renderDetailModal,
     quantMath: { americanToDecimal, impliedProbability, devig, pRecOver, pYardsOver, compoundYardsCdf, regularizedGammaP, logGamma },
     storage: { loadPortfolio, savePortfolio, loadWatchlist, saveWatchlist, migrateLegacyStorage, MIGRATION_FLAG, STORE, migrationResult }
