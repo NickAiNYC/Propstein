@@ -97,6 +97,9 @@ jobs:
       - name: Run production readiness gate
         run: npm run check:production
 
+      - name: Run extension unit and integration tests
+        run: npm run test:extensions
+
   ledger-verify:
     name: Ledger foundation (blocking)
     runs-on: ubuntu-24.04
