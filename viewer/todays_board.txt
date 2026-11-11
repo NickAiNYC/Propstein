@@ -1,1 +1,14 @@
-PropStein NFL 2026 Week 9: research board paused. Game context has no pre-pricing capture timestamps; no picks are published.
+PROPSTEIN PRE-KICKOFF RESEARCH BOARD
+Slate: 2026_w10 | Generated: 2026-11-11 00:58 UTC
+Zero Tout Fluff · Pure Distribution Math · Transparent Limitations
+============================================================
+STATUS NOTE:
+The Odds API model-scored observations; entry prices are not independently receipt-audited. Confirm price and availability at the book.
+Model has no statistically verified edge over market closing lines at this time.
+Historical Week 07 trigger decisions (N=37) 95% CI: [-0.10, +1.45], spans zero.
+------------------------------------------------------------
+PLAYER               MKT    LINE   ODDS   FAIR   PROJ   BOOK
+------------------------------------------------------------
+============================================================
+Research terminal: https://propstein.com
+To inspect model distributions: https://propstein.com/methodology/

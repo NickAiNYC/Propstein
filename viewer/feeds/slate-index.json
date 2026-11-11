@@ -1,10 +1,10 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-11-10T04:45:17Z",
+  "generated_at": "2026-11-11T00:57:29Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
-      "default_slate": "2026_w9",
+      "default_slate": "2026_w10",
       "slates": {
         "2026_w1": {
           "season": 2026,
@@ -19,6 +19,22 @@
           "odds": null,
           "snapshots": "snapshots_2026_w1.json",
           "historical": true,
+          "modelContextStatus": "AVAILABLE",
+          "actionLocked": false
+        },
+        "2026_w10": {
+          "season": 2026,
+          "week": 10,
+          "shortLabel": "W10 Live",
+          "state": "Upcoming slate \u00b7 Nov 12-16",
+          "slate": "slate_2026_w10.json",
+          "games": "games_2026_w10.json",
+          "picks": "current_picks_2026_w10.json",
+          "livePicks": "live_picks_2026_w10.json",
+          "injuries": "injuries_2026_w10.json",
+          "odds": "live_odds_feed.json",
+          "snapshots": "snapshots_2026_w10.json",
+          "historical": false,
           "modelContextStatus": "AVAILABLE",
           "actionLocked": false
         },
@@ -57,18 +73,18 @@
         "2026_w9": {
           "season": 2026,
           "week": 9,
-          "shortLabel": "W9 Research",
-          "state": "Model refresh blocked: untimestamped game context",
+          "shortLabel": "W9 Audit",
+          "state": "Historical audit \u00b7 Nov 5-9",
           "slate": "slate_2026_w9.json",
           "games": "games_2026_w9.json",
-          "picks": null,
+          "picks": "current_picks_2026_w9.json",
           "livePicks": null,
-          "injuries": "injuries_2026_w9.json",
+          "injuries": null,
           "odds": null,
           "snapshots": "snapshots_2026_w9.json",
-          "historical": false,
-          "modelContextStatus": "BLOCKED_UNTIMESTAMPED",
-          "actionLocked": true
+          "historical": true,
+          "modelContextStatus": "AVAILABLE",
+          "actionLocked": false
         }
       }
     },
@@ -251,7 +267,7 @@
         "2026-11-14": {
           "date": "2026-11-14",
           "event_name": "UFC 334: Gane vs. Hokit",
-          "fights": 13,
+          "fights": 12,
           "card": "ufc_card_2026-11-14.json",
           "status": "ufc_status_2026-11-14.json",
           "snapshots": "ufc_snapshots_2026-11-14.json",

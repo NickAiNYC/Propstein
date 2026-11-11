@@ -1,15 +1,21 @@
 {
   "date": "2026-11-14",
   "event_id": "600061400",
-  "updated_at": "2026-11-10T04:45:22Z",
+  "updated_at": "2026-11-11T00:58:01Z",
   "fights": {
     "401932013": {
       "status": "scheduled",
       "events": []
     },
     "401922646": {
-      "status": "scheduled",
-      "events": []
+      "status": "cancelled",
+      "events": [
+        {
+          "at": "2026-11-11T00:58:01Z",
+          "type": "cancelled",
+          "detail": "Adrian Yañez vs Juan Diaz left the card"
+        }
+      ]
     },
     "401922645": {
       "status": "scheduled",
