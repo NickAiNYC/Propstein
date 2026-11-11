@@ -126,6 +126,8 @@ const NFL_DOM_ALLOWLIST = new Set([
   // Feed-health failure-mode UI
   'dataQualityBanner', 'dqRetryBtn',
   'snapshotAgePill',
+  // Line picker. It prices the published NegBin-Gamma fit; it does not invent parameters.
+  'pickFlow', 'pickGame', 'pickPlayer', 'pickMarket', 'pickLine', 'pickBreakeven', 'pickResult',
 ]);
 
 async function dumpLedger(P, lsStore) {
