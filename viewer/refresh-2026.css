@@ -462,3 +462,29 @@ html body .data-quality-banner { border-radius: 12px !important; }
   html body .data-quality-banner { align-items: flex-start !important; padding: 10px 12px !important; }
   html body .data-quality-banner .dq-item { flex-direction: column !important; gap: 4px !important; overflow: visible !important; }
 }
+
+/* Mobile board pagination */
+.board-show-more {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 12px;
+  border: 1px solid var(--rf-accent-line);
+  border-radius: 12px;
+  background: var(--rf-accent-soft);
+  color: var(--rf-accent-hi);
+  font: 600 15px/1.2 var(--rf-sans);
+  cursor: pointer;
+}
+.board-show-more:focus-visible {
+  outline: 2px solid var(--rf-accent-hi);
+  outline-offset: 2px;
+}
+.board-page-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
