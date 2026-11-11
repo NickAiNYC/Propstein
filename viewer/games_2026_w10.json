@@ -54,7 +54,7 @@
     "away_team": "HOU",
     "home_team": "CLE",
     "spread_line": -4.5,
-    "total_line": 39.5,
+    "total_line": 40.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0
@@ -102,7 +102,7 @@
     "away_team": "MIN",
     "home_team": "GB",
     "spread_line": 3.5,
-    "total_line": 41.5,
+    "total_line": 42.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0
@@ -137,7 +137,7 @@
     "gametime": "16:25",
     "away_team": "SF",
     "home_team": "DAL",
-    "spread_line": -4.5,
+    "spread_line": -3.5,
     "total_line": 55.5,
     "roof": null,
     "wind": null,

@@ -4556,5 +4556,86 @@
         "round": 2
       }
     ]
+  },
+  "3154389": {
+    "id": "3154389",
+    "name": "Alatengheili",
+    "record": "18-10-2",
+    "flag": "https://a.espncdn.com/i/teamlogos/countries/500/chn.png",
+    "age": 34,
+    "height": "5' 5\"",
+    "reach_in": 66.0,
+    "stance": "Orthodox",
+    "weight_class": "Bantamweight",
+    "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3154389.png",
+    "elo": 1521.4,
+    "ufc_fights": 8,
+    "finish_rate": 0.125,
+    "recent": [
+      {
+        "date": "2026-09-26",
+        "opponent": "John Castaneda",
+        "event": "UFC Fight Night: Rosas Jr. vs. Barcelos",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2025-04-26",
+        "opponent": "Da'Mon Blackshear",
+        "event": "UFC Fight Night: Machado Garry vs. Prates",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2024-05-18",
+        "opponent": "Kleydson Rodrigues",
+        "event": "UFC Fight Night: Barboza vs. Murphy",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2023-10-14",
+        "opponent": "Chris Gutierrez",
+        "event": "UFC Fight Night: Yusuff vs. Barboza",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2022-09-10",
+        "opponent": "Chad Anheliger",
+        "event": "UFC 279: Diaz vs. Ferguson",
+        "result": "W",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2022-04-16",
+        "opponent": "Kevin Croom",
+        "event": "UFC Fight Night: Luque vs. Muhammad 2",
+        "result": "W",
+        "finish": true,
+        "round": 1
+      },
+      {
+        "date": "2021-09-18",
+        "opponent": "Gustavo Lopez",
+        "event": "UFC Fight Night: Smith vs. Spann",
+        "result": "D/NC",
+        "finish": false,
+        "round": 3
+      },
+      {
+        "date": "2020-10-03",
+        "opponent": "Casey Kenney",
+        "event": "UFC Fight Night: Holm vs. Aldana",
+        "result": "L",
+        "finish": false,
+        "round": 3
+      }
+    ]
   }
 }
