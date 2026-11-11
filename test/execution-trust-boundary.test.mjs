@@ -39,7 +39,7 @@ test('NFL execution defaults locked when no cutoff proof is present', async () =
   assert.equal(P.executionDecision(row).code, 'feature_cutoff_unverified');
 });
 
-test('stale odds block an otherwise verified and entitled quote', async () => {
+test('stale odds block an otherwise verified quote', async () => {
   const { P, quote, row } = await setup();
   authorizeSyntheticExecution(P, quote);
   P.state.feedHealth.oddsUpdatedAt = '2026-10-01T00:00:00Z';
@@ -50,18 +50,18 @@ test('stale odds block an otherwise verified and entitled quote', async () => {
   assert.equal(P.state.portfolio.length, 0);
 });
 
-test('client-side entitlement escalation is impossible and defaults closed', async () => {
+test('public visitors can review verified quotes without writing to the ledger', async () => {
   const { P, quote, row } = await setup();
   authorizeSyntheticExecution(P, quote);
   P.state.userTier = 'free';
   const decision = P.executionDecision(row);
-  assert.equal(decision.allowed, false);
-  assert.equal(decision.code, 'unauthorized');
+  assert.equal(decision.allowed, true);
+  assert.equal(decision.code, 'actionable');
   P.logBet(quote.player_id);
   assert.equal(P.state.portfolio.length, 0);
 });
 
-test('only explicit confirmation of a complete, fresh, verified, entitled quote creates a wager record', async () => {
+test('only explicit confirmation of a complete, fresh, verified quote creates a wager record', async () => {
   const { P, quote, row, lsStore, registry } = await setup();
   authorizeSyntheticExecution(P, quote);
   const decision = P.executionDecision(row);
