@@ -219,21 +219,14 @@ def lock_imminent_closing_snapshots_sqlite(conn) -> Dict[str, int]:
 def run_stage_a_lock() -> Dict[str, int]:
     """Single-pass Stage A lock execution."""
     db_url = os.getenv("DATABASE_URL")
-    if db_url and HAS_PSYCOPG2:
-        try:
-            with psycopg2.connect(db_url) as conn:
-                res = lock_imminent_closing_snapshots_postgres(conn)
-                print(f"[Stage A Cron] ✔ Locked {res['locked_snapshots']} closing snapshots in Postgres.")
-                return res
-        except Exception as e:
-            print(f"[Stage A Cron] Postgres connection error: {e}. Falling back to SQLite...")
-
-    sqlite_path = BASE_DIR / "data" / "market_edges.db"
-    conn = sqlite3.connect(sqlite_path)
-    res = lock_imminent_closing_snapshots_sqlite(conn)
-    conn.close()
-    print(f"[Stage A Cron] ✔ Locked {res['locked_snapshots']} closing snapshots in SQLite ({sqlite_path}).")
-    return res
+    if not db_url:
+        raise RuntimeError("DATABASE_URL is required to lock observed closing quotes")
+    if not HAS_PSYCOPG2:
+        raise RuntimeError("psycopg2 is required to lock observed closing quotes")
+    with psycopg2.connect(db_url) as conn:
+        result = lock_imminent_closing_snapshots_postgres(conn)
+    print(f"[Stage A Cron] Locked {result['locked_snapshots']} closing snapshots in Postgres.")
+    return result
 
 
 if __name__ == "__main__":
