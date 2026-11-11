@@ -1,0 +1,32 @@
+name: Usage shrinkage evaluation
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - .github/workflows/usage-shrinkage-evaluation.yml
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    if: github.head_ref == 'codex/usage-shrinkage-evaluation' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install locked dependencies
+        run: python -m pip install -r requirements.lock
+      - name: Download historical nflverse inputs
+        run: |
+          python src/fetch_data.py
+          for year in $(seq 2016 2025); do
+            test -s "data/stats_${year}.parquet"
+          done
+          rm -f data/stats_2026.parquet
+      - name: Compare held-out seasons
+        run: python src/backtest.py --usage-shrinkage | tee "$GITHUB_STEP_SUMMARY"
