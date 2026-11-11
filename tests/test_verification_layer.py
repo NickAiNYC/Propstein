@@ -854,3 +854,23 @@ class TestVerifyReceiptFailClosed:
         r = client.post("/api/v1/verify-receipt", json={"receipt_hash": "zzzz-not-a-receipt"})
         assert r.status_code == 404
         assert "Tucker Kraft" not in r.text
+
+    def test_legacy_receipt_requires_original_commitments(self, client, monkeypatch, tmp_path):
+        from api import main
+
+        receipt = "8e038b2029e5b60d"
+        report = tmp_path / "report.json"
+        report.write_text(json.dumps({
+            "records": [{"settlement_receipt": receipt, "outcome": "WIN"}],
+        }), encoding="utf-8")
+        monkeypatch.setattr(main, "resolve_file", lambda *_: str(report))
+
+        known = client.post("/api/v1/verify-receipt", json={"receipt_hash": receipt})
+        assert known.status_code == 422
+        assert "original lifecycle commitments" in known.json()["detail"]
+        partial = client.post("/api/v1/verify-receipt", json={"receipt_hash": receipt[:-1]})
+        assert partial.status_code == 404
+
+    def test_non_object_body_is_400(self, client):
+        response = client.post("/api/v1/verify-receipt", json=["receipt"])
+        assert response.status_code == 400

@@ -261,8 +261,6 @@ def main() -> None:
             print(f"[DRY RUN / NO WEBHOOK] Alert queued: {edge['player']} ({edge['team']}) - {edge['market']} EV: {edge['ev_pct']:.1f}% DFS: {edge['pp_flex_edge']:.1f}%")
             if not (discord_url or (tg_token and tg_chat)):
                 print("  Note: Set DISCORD_EDGE_WEBHOOK or TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID to dispatch live.")
-            sent_log[edge_id] = now
-            new_dispatches += 1
             continue
 
         success = False
@@ -279,7 +277,8 @@ def main() -> None:
             new_dispatches += 1
             print(f"[DISPATCHED] {edge['player']} - {edge['market']} (+{edge['ev_pct']:.1f}% EV)")
 
-    save_sent_alerts(sent_log)
+    if new_dispatches:
+        save_sent_alerts(sent_log)
     print(f"Summary: {new_dispatches} new alerts processed.")
 
 
