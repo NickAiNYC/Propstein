@@ -462,3 +462,125 @@ html body .data-quality-banner { border-radius: 12px !important; }
   html body .data-quality-banner { align-items: flex-start !important; padding: 10px 12px !important; }
   html body .data-quality-banner .dq-item { flex-direction: column !important; gap: 4px !important; overflow: visible !important; }
 }
+
+/* Player research and board surfaces */
+#detailDialog {
+  --research-panel: #131e2a;
+  --research-panel-top: #1b2b39;
+  --research-border: #354c60;
+  --research-focus: #8bdcff;
+}
+html[data-theme="light"] #detailDialog {
+  --research-panel: #eff5fa;
+  --research-panel-top: #f9fcff;
+  --research-border: #b7cadb;
+  --research-focus: #075985;
+}
+dialog#detailDialog .dialog-shell {
+  background: var(--rf-surface) !important;
+  border: 1px solid var(--research-border) !important;
+}
+#detailDialog .dialog-header {
+  gap: 12px;
+  border-bottom: 1px solid var(--research-border);
+}
+#detailDialog .detail-header-copy { min-width: 0; }
+#detailDialog .detail-title-row { color: var(--rf-text); }
+#detailDialog .detail-title-row .pw-avatar {
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+}
+#detailDialog .detail-header-summary { color: var(--rf-dim); }
+#detailDialog .detail-hero {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+#detailDialog .detail-stat,
+#detailDialog .scenario-box,
+#detailDialog .spec-grid-card {
+  background: linear-gradient(155deg, var(--research-panel-top), var(--research-panel));
+  border: 1px solid var(--research-border);
+  border-radius: 14px;
+  color: var(--rf-text);
+}
+#detailDialog .detail-stat { padding: clamp(12px, 2vw, 20px); }
+#detailDialog .detail-stat > span,
+#detailDialog .detail-stat-head > span:first-child { color: var(--rf-dim); }
+#detailDialog .detail-stat strong {
+  font-size: clamp(17px, 3vw, 27px);
+  color: var(--rf-text) !important;
+  overflow-wrap: anywhere;
+}
+#detailDialog .detail-stat-fair {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+#detailDialog .detail-stat-fair strong { color: var(--research-focus) !important; }
+#detailDialog .detail-fair-plot {
+  margin-top: 12px;
+  width: 100%;
+  max-width: none;
+}
+#detailDialog .detail-fair-plot svg { width: 100%; display: block; }
+#detailDialog .detail-two-col { gap: 12px; }
+#detailDialog .detail-col { min-width: 0; }
+
+html body #cardView .mobile-quant-row {
+  border-color: var(--rf-line-strong) !important;
+  border-radius: 14px !important;
+  background: linear-gradient(155deg, var(--rf-surface-2), var(--rf-surface)) !important;
+}
+html body #cardView .mobile-quant-row:hover,
+html body #cardView .mobile-quant-row:focus-within {
+  border-color: var(--rf-accent-line) !important;
+}
+html body #cardView .card-grid-col {
+  min-width: 0;
+  border-radius: 10px !important;
+}
+#detailDialog :is(button, a, input):focus-visible,
+#cardView :is([tabindex], button):focus-visible,
+.mobile-bottom-nav button:focus-visible {
+  outline: 2px solid var(--rf-accent-hi);
+  outline-offset: 2px;
+}
+
+@media (min-width: 769px) {
+  dialog#detailDialog .dialog-shell {
+    width: min(1060px, calc(100vw - 48px)) !important;
+    max-width: none !important;
+    border-radius: 18px 0 0 18px !important;
+  }
+  #detailDialog .detail-hero { grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)); }
+  #detailDialog .detail-stat-fair { grid-column: 1; grid-row: 1; }
+}
+
+@media (max-width: 768px) {
+  dialog#detailDialog .dialog-shell {
+    max-height: calc(100dvh - env(safe-area-inset-top, 0px)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  #detailDialog .dialog-body { overscroll-behavior: contain; }
+  #detailDialog .dialog-header > button {
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
+  }
+  #detailDialog .detail-title-row .pw-avatar {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+  #detailDialog .detail-hero { gap: 8px; }
+  #detailDialog .detail-stat-head { flex-wrap: wrap; gap: 6px; }
+  #detailDialog .detail-two-col { grid-template-columns: minmax(0, 1fr); }
+  html body .mobile-bottom-nav .bottom-nav-item {
+    min-height: 44px;
+    border-radius: 10px;
+  }
+  html body .mobile-bottom-nav .bottom-nav-item.active {
+    background: var(--rf-accent-soft);
+    color: var(--rf-accent-hi) !important;
+  }
+}
