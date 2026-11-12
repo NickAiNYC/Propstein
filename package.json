@@ -10,8 +10,8 @@
     "build:extension": "bash scripts/package_extension.sh",
     "test:extensions": "npm run test:core --prefix extensions",
     "test:all": "npm test && npm run test:extensions",
-    "visual:baseline": "node scripts/visual/capture.mjs .visual/baseline",
-    "visual:check": "node scripts/visual/capture.mjs .visual/actual && node scripts/visual/compare.mjs .visual/baseline .visual/actual .visual/diff"
+    "visual:baseline": "node scripts/visual/capture.mjs .visual/baseline --styles",
+    "visual:check": "node scripts/visual/capture.mjs .visual/actual --styles && node scripts/visual/compare.mjs .visual/baseline .visual/actual .visual/diff"
   },
   "engines": {
     "node": ">=20"

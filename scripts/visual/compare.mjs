@@ -48,5 +48,29 @@ for (const name of [...names].sort()) {
     console.log(`ok       ${name}${diff ? ` (${diff} px within --max-pixels)` : ''}`);
   }
 }
-console.log(failed ? `\n${failed} of ${names.size} screenshots changed.` : `\nAll ${names.size} screenshots match.`);
+// Computed-style dumps (capture --styles): element-by-element, property-by-property.
+const styleNames = [...new Set([...fs.readdirSync(baseDir), ...fs.readdirSync(actualDir)].filter((f) => f.endsWith('.styles.json')))].sort();
+let styleFailed = 0;
+for (const name of styleNames) {
+  const b = path.join(baseDir, name); const a = path.join(actualDir, name);
+  if (!fs.existsSync(b) || !fs.existsSync(a)) { console.log(`MISSING  ${name}`); styleFailed += 1; continue; }
+  const B = JSON.parse(fs.readFileSync(b, 'utf8')); const A = JSON.parse(fs.readFileSync(a, 'utf8'));
+  const props = (dump, id) => (id < 0 ? new Map() : new Map(dump.styles[id].split(';').map((kv) => { const i = kv.indexOf(':'); return [kv.slice(0, i), kv.slice(i + 1)]; })));
+  if (A.elements.length !== B.elements.length) { console.log(`STYLES   ${name}: element count ${B.elements.length} -> ${A.elements.length}`); styleFailed += 1; continue; }
+  const diffs = [];
+  for (let i = 0; i < A.elements.length; i += 1) {
+    const [pb, ...sb] = B.elements[i]; const [pa, ...sa] = A.elements[i];
+    if (pb !== pa) { diffs.push(`DOM differs at ${pb} vs ${pa}`); break; }
+    ['', '::before', '::after'].forEach((pseudo, k) => {
+      const strB = sb[k] < 0 ? '' : B.styles[sb[k]]; const strA = sa[k] < 0 ? '' : A.styles[sa[k]];
+      if (strB === strA) return; // ids index each dump's own table, so compare the strings
+      const mb = props(B, sb[k]); const ma = props(A, sa[k]);
+      for (const key of new Set([...mb.keys(), ...ma.keys()])) if (mb.get(key) !== ma.get(key)) diffs.push(`${pa}${pseudo} ${key}: ${mb.get(key)} -> ${ma.get(key)}`);
+    });
+  }
+  if (diffs.length) { styleFailed += 1; console.log(`STYLES   ${name}: ${diffs.length} computed values differ\n    ${diffs.slice(0, 8).join('\n    ')}`); }
+  else console.log(`ok       ${name} (${A.elements.length} elements)`);
+}
+failed += styleFailed;
+console.log(failed ? `\n${failed} of ${names.size + styleNames.length} checks changed.` : `\nAll ${names.size} screenshots${styleNames.length ? ` and ${styleNames.length} computed-style dumps` : ''} match.`);
 process.exit(failed ? 1 : 0);
