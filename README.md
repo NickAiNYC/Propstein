@@ -9,7 +9,7 @@
 
 Retail analytics platforms rely on unverifiable post-hoc win rates, unquarantined outlier feeds, and mutable database records. **PropStein** (formerly PropWire) is a fail-closed quantitative market pricing engine and real-time analytics terminal engineered with institutional fintech rigor.
 
-The platform ingests multi-book order book and player proposition telemetry, normalizes implied probability distributions, quarantines statistical anomalies (`>12.0%` synthetic divergence), and commits pre-settlement pricing snapshots to an immutable **3-hash RFC-8785 SHA-256 verification chain**.
+The platform ingests multi-book order book and player proposition telemetry, normalizes implied probability distributions, quarantines statistical anomalies (`>12.0%` synthetic divergence), and commits pre-settlement pricing snapshots to a **3-hash SHA-256 verification chain** over canonical JSON (sorted keys).
 
 ---
 
@@ -29,7 +29,7 @@ flowchart LR
     end
 
     subgraph Crypto ["3. Cryptographic State & Dispatch"]
-        F --> G[RFC-8785 JCS SHA-256 Hasher]
+        F --> G[Canonical JSON SHA-256 Hasher]
         G --> H[(3-Hash Chain Ledger)]
         F --> I[Idempotent Cron Dispatcher]
         I --> J[`.cache/sent_edge_alerts.json`]
@@ -48,7 +48,7 @@ flowchart LR
 - When market spreads tighten efficiently, the terminal enters a deterministic **Zero-Play Market Efficiency State** rather than fabricating low-edge volume.
 
 ### 2. 3-Hash Cryptographic Verification Chain (`POST /api/v1/verify-receipt`)
-Every published edge is anchored across three verifiable lifecycle states serialized via RFC-8785 (`crypto_utils.py`):
+Every published edge is anchored across three verifiable lifecycle states serialized as canonical JSON (`crypto_utils.py`):
 1. **`opening_recommendation_hash`**: Timestamped model projection, fair odds, and book price at discovery.
 2. **`closing_snapshot_hash`**: Automated pre-kickoff closing line snapshot (`closing_snapshots` SQL table) capturing true Closing Line Value (CLV).
 3. **`settlement_resolution_hash`**: Automated boxscore ingestion (ESPN/Sleeper telemetry) joined against the prior two hashes to produce a tamper-evident audit receipt.
@@ -66,8 +66,8 @@ Every published edge is anchored across three verifiable lifecycle states serial
 
 | Layer | Technology | Role & Design Constraint |
 | :--- | :--- | :--- |
-| **Quantitative Engine** | Python 3.12, FastAPI, Pytest | Statistical distribution modeling, vig removal, RFC-8785 hashing |
-| **State & Persistence** | PostgreSQL / SQLite, `.cache` JSON | Immutable `closing_snapshots` ledger, idempotent alert deduplication |
+| **Quantitative Engine** | Python 3.12, FastAPI, Pytest | Statistical distribution modeling, vig removal, canonical JSON hashing |
+| **State & Persistence** | PostgreSQL / SQLite, `.cache` JSON | `closing_snapshots` ledger, idempotent alert deduplication |
 | **Terminal UI** | Vanilla ES6+ / Next.js, Tailwind | Zero-bloat `#0B0D11` slate canvas, 1px `#222733` hairlines, sub-16ms table renders |
 | **Agent Interface** | TypeScript, `@modelcontextprotocol/sdk` | Structured tool definitions (`get_current_edges`, `verify_slip`, `inspect_diagnostics`) |
 | **CI/CD & Automation** | GitHub Actions, Vercel Edge | Automated cron ingestion, persistent state caching, strict CSP/SSL headers |
@@ -108,7 +108,7 @@ PropStein enforces strict contract validation prior to every production deployme
 ```bash
 # 1. Run Python Quantitative & Cryptographic Contract Suite (118 tests)
 pytest -q
-# -> Tests RFC-8785 canonical hashing, float-precision boundary gates, and CLV SQL joins
+# -> Tests canonical JSON hashing, float-precision boundary gates, and CLV SQL joins
 
 # 2. Dry-Run the Idempotent Edge Alert Dispatcher
 python3 scripts/dispatch_edge_alerts.py --dry-run --min-edge 5.0
@@ -133,8 +133,8 @@ curl -s -X POST https://propstein.com/api/v1/verify-receipt \
 
 ```json
 {
-  "status": "VERIFIED_IMMUTABLE",
-  "canonical_standard": "RFC-8785",
+  "status": "VERIFIED",
+  "canonical_form": "canonical JSON (sorted keys)",
   "chain": {
     "opening_hash": "4a7d1ed414474e4033ac29ccb8653d9b4b0e8ef12c6f6630f9d9f58992160911",
     "closing_snapshot_hash": "9c1185a5c5e9fc54612808977ee8f548d88e0ec08d17a3a9fb379c381c81ef8",
