@@ -22,16 +22,60 @@ test('deployment config ships baseline browser security headers', async () => {
   }
 });
 
+// Vercel applies every matching header rule in order; for the same key the later rule wins.
+function cacheControlFor(config, pathname) {
+  let value;
+  for (const rule of config.headers) {
+    const re = new RegExp(`^${rule.source}$`);
+    if (!re.test(pathname)) continue;
+    const header = rule.headers.find((h) => h.key.toLowerCase() === 'cache-control');
+    if (header) value = header.value;
+  }
+  return value;
+}
+
 test('market data is never cached by the deployment or service worker', async () => {
   const config = JSON.parse(await read('../vercel.json'));
   const dataRule = config.headers.find((rule) => rule.source.includes('json|csv'));
   assert.ok(dataRule, 'missing JSON/CSV cache rule');
   assert.match(dataRule.headers[0].value, /no-store/);
+  for (const live of ['/live_odds_feed.json', '/live_odds_feed.manifest.json', '/current_picks.json',
+    '/live_picks_2026_w10.json', '/current_picks_2026_w10.json', '/clv_audit_report.json',
+    '/circuit_breaker_config.json', '/snapshots_2026_w8.manifest.json', '/feeds/slate-index.json',
+    '/slate_projections.csv']) {
+    assert.match(cacheControlFor(config, live) || '', /no-store/, `${live} must be no-store`);
+  }
 
   const serviceWorker = await read('../viewer/sw.js');
   assert.match(serviceWorker, /json\|csv/);
-  assert.match(serviceWorker, /cache:\s*'no-store'/);
+  assert.match(serviceWorker, /cache:\s*revalidate \? 'no-cache' : 'no-store'/);
   assert.doesNotMatch(serviceWorker, /cache\.put\(event\.request[\s\S]*json/i);
+
+  const app = await read('../viewer/app.js');
+  assert.match(app, /cache: revalidate \? 'no-cache' : 'no-store'/);
+  assert.match(app, /revalidate \? path : `\$\{path\}\?v=\$\{Date\.now\(\)\}`/, 'non-slate data keeps a unique URL');
+});
+
+test('per-slate artifacts always revalidate and are never served stale', async () => {
+  const config = JSON.parse(await read('../vercel.json'));
+  for (const slate of ['/slate_projections.json', '/slate_2026_w10.json', '/snapshots_2026_w8.json']) {
+    const value = cacheControlFor(config, slate) || '';
+    assert.match(value, /no-cache/, `${slate} must revalidate on every use`);
+    assert.match(value, /must-revalidate/);
+    assert.doesNotMatch(value, /no-store/, `${slate} must be storable so the browser can send If-None-Match`);
+    assert.doesNotMatch(value, /max-age=[1-9]|stale-while-revalidate|immutable/, `${slate} must never be served from cache without revalidation`);
+  }
+});
+
+test('the service worker script is never cached by the generic .js rule', async () => {
+  const config = JSON.parse(await read('../vercel.json'));
+  const sources = config.headers.map((rule) => rule.source);
+  const jsRule = sources.findIndex((src) => src.includes('js|css'));
+  const swRule = sources.indexOf('/sw.js');
+  assert.ok(jsRule >= 0 && swRule > jsRule, '/sw.js must come after the .js rule so it wins');
+  assert.match(cacheControlFor(config, '/sw.js'), /no-store/);
+  assert.match(cacheControlFor(config, '/app.js'), /max-age=300/);
+  assert.match(cacheControlFor(config, '/propstein-logo.webp'), /max-age=/);
 });
 
 test('production HTML and service worker use the same release asset version', async () => {
