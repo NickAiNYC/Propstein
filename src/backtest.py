@@ -167,5 +167,60 @@ def simulate(d, pcol, hcol, mcol, vig=0.045):
               f"{roi:>+7.2%} {pval:>7.3f}  bet-rate={n / len(d):.1%}")
 
 
+def compare_usage_shrinkage(test_seasons=(2022, 2023, 2024, 2025)):
+    """Evaluate one fixed candidate on prior-season-trained models and proxy lines."""
+    panel = build_panel()
+    assert_no_leakage(panel)
+    for season in test_seasons:
+        train = panel[panel.season < season]
+        test = panel[panel.season == season]
+        if train.season.nunique() < 4 or test.empty:
+            continue
+        model = ReceivingModel.fit(train)
+        lines = BaselineLineSetter.fit(train).lines(test)
+        flagged = (test.c_targets > 0) & (test.f_targets > 1.3 * test.c_targets)
+        adjusted = test.copy()
+        for recent, career in (("f_targets", "c_targets"), ("f_yards", "c_yards")):
+            changed = flagged & (test[recent] > test[career])
+            adjusted.loc[changed, recent] = (test.loc[changed, recent] + test.loc[changed, career]) / 2
+        original = model.predict_params(test)
+        candidate = model.predict_params(adjusted)
+        for market, actual, line, minimum in (
+            ("receptions", test.receptions, lines.line_rec, 1.5),
+            ("yards", test.receiving_yards, lines.line_yards, 15),
+        ):
+            eligible = (line >= minimum) & (line % 1 == 0.5)
+            for cohort, mask in (("all", eligible), ("flagged", eligible & flagged)):
+                if not mask.any():
+                    continue
+                outcomes = actual[mask].to_numpy()
+                thresholds = line[mask].to_numpy()
+                scores = []
+                for params in (original, candidate):
+                    mu_rec = params.mu_rec[mask].to_numpy()
+                    if market == "yards":
+                        mu_ypr = params.mu_ypr[mask].to_numpy()
+                        estimate = mu_rec * mu_ypr
+                        probability = model.p_yards_over_vec(mu_rec, mu_ypr, thresholds)
+                    else:
+                        estimate = mu_rec
+                        probability = model.p_rec_over_vec(mu_rec, thresholds)
+                    mae = np.abs(estimate - outcomes).mean()
+                    brier = ((probability - (outcomes > thresholds)) ** 2).mean()
+                    scores.append((mae, brier))
+                (base_mae, base_brier), (new_mae, new_brier) = scores
+                print(f"{season} {market} {cohort} n={int(mask.sum())} "
+                      f"MAE {base_mae:.3f} -> {new_mae:.3f} "
+                      f"Brier {base_brier:.5f} -> {new_brier:.5f}")
+
+
 if __name__ == "__main__":
-    run()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--usage-shrinkage", action="store_true")
+    args = parser.parse_args()
+    if args.usage_shrinkage:
+        compare_usage_shrinkage()
+    else:
+        run()

@@ -234,13 +234,25 @@
   async function renderNextUp(sport, dateKey, requestId) {
     if (nextUpTimer) { clearInterval(nextUpTimer); nextUpTimer = null; }
     try {
-      const url = `https://site.api.espn.com/apis/site/v2/sports/${leaguePaths[sport]}/scoreboard?dates=${addDaysKey(dateKey, 1)}-${addDaysKey(dateKey, 8)}&limit=1000`;
-      const response = await fetch(url, { cache: 'no-store' });
-      if (!response.ok) return;
-      const data = await response.json();
-      if (requestId !== requestNumber || !Array.isArray(data.events)) return;
-      const upcoming = data.events
-        .filter((event) => { const t = new Date(event.date).getTime(); return Number.isFinite(t) && t > Date.now(); })
+      const days = Array.from({ length: 7 }, (_, index) => addDaysKey(dateKey, index + 1));
+      const results = await Promise.allSettled(days.map(async (day) => {
+        const url = `https://site.api.espn.com/apis/site/v2/sports/${leaguePaths[sport]}/scoreboard?dates=${day}&limit=1000`;
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) return [];
+        const data = await response.json();
+        return Array.isArray(data.events) ? data.events : [];
+      }));
+      if (requestId !== requestNumber) return;
+      const seen = new Set();
+      const upcoming = results.flatMap((result) => result.status === 'fulfilled' ? result.value : [])
+        .filter((event) => {
+          const kickoff = new Date(event?.date).getTime();
+          if (!Number.isFinite(kickoff) || kickoff <= Date.now()) return false;
+          if (event.id == null) return true;
+          if (seen.has(event.id)) return false;
+          seen.add(event.id);
+          return true;
+        })
         .sort((a, b) => new Date(a.date) - new Date(b.date));
       if (!upcoming.length) return;
       const first = new Date(upcoming[0].date);

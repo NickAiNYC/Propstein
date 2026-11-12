@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-from features import build_panel
+from features import build_panel, load_player_weeks
 from model import ReceivingModel, prob_to_american, ev_per_unit, kelly_fraction
 from slate import (build_slate, load_injuries, injury_exclusions,
                    availability_eligible, confirmed_inactive_ids,
@@ -179,6 +179,20 @@ def score_settled_games(season: int, week: int, model: ReceivingModel) -> pd.Dat
         return None
 
 
+def recent_receiving_games(season: int, week: int) -> dict:
+    """Newest first, with only regular-season games before the requested slate."""
+    games = load_player_weeks()
+    prior = games[(games.season < season) | ((games.season == season) & (games.week < week))]
+    history = {}
+    prior = prior.dropna(subset=["game_id"]).sort_values(["season", "week"], ascending=False)
+    for player_id, rows in prior.groupby("player_id", sort=False):
+        history[player_id] = [
+            {"receptions": int(row.receptions), "yards": int(row.receiving_yards)}
+            for row in rows.drop_duplicates("game_id").head(10).itertuples()
+        ]
+    return history
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", type=int, default=2026)
@@ -241,8 +255,10 @@ def main():
     # Export sanitized JSON (convert NaN to None for standard JSON compliance)
     import math
     records = sorted_slate.to_dict(orient="records")
+    history = recent_receiving_games(a.season, a.week)
     clean_records = []
     for r in records:
+        r["recent_receiving_games"] = history.get(r["player_id"], [])
         clean_records.append({
             k: (None if (v is None or (isinstance(v, float) and math.isnan(v))) else v)
             for k, v in r.items()
