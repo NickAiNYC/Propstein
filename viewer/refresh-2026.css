@@ -568,3 +568,109 @@ html body .bottom-nav-item.active::before { top: 0 !important; width: calc(100% 
 html[data-theme="light"] .rf-prop-stats { background: var(--rf-surface-3); }
 html[data-theme="light"] .rf-stat + .rf-stat, html[data-theme="light"] .rf-prop-stats { border-color: rgba(15,23,42,0.1); }
 html[data-theme="light"] .rf-dist-tail { fill: rgba(15,23,42,0.05); }
+
+/* ================= Nov 2026 hairline pass: Slate tab cards ================= */
+/* Same language as the home [data-rf-card]: flat card, neutral hairline border,
+   10px radius, no glow or lift; stats sit in one edge-to-edge hairline strip
+   (no box-in-box); header status reads as a compact badge. CSS only, so the
+   rendered markup (and its golden snapshots) is unchanged. */
+html body #cardView .mobile-quant-row {
+  padding: 14px 16px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  background: var(--rf-surface) !important;
+  box-shadow: 0 12px 32px -14px rgba(0,0,0,0.7) !important;
+  overflow: hidden;
+}
+html body #cardView .mobile-quant-row:hover,
+html body #cardView .mobile-quant-row:focus-visible {
+  background: var(--rf-surface) !important;
+  border-color: rgba(255,255,255,0.16) !important;
+  box-shadow: 0 12px 32px -14px rgba(0,0,0,0.7) !important;
+  transform: none !important;
+}
+html body #cardView .mobile-quant-row .card-hairline-sep { height: 0 !important; margin: 10px 0 0 !important; background: none !important; border: 0 !important; }
+html body #cardView .mobile-quant-row .avatar,
+html body #cardView .mobile-quant-row .pw-avatar { border-radius: 6px !important; box-shadow: 0 0 0 1px rgba(255,255,255,0.12); }
+html body #cardView .mobile-quant-row .card-player-name { font: 600 15px/1.2 var(--rf-sans) !important; letter-spacing: -0.01em; }
+html body #cardView .mobile-quant-row .card-team-matchup { font: 400 12px/1.3 var(--rf-mono) !important; color: var(--rf-muted) !important; }
+
+/* header status: compact badge, right-aligned */
+html body #cardView .mobile-quant-row .card-hero-edge-block { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; margin-left: auto; }
+html body #cardView .mobile-quant-row .card-hero-edge { font: 600 13px/1 var(--rf-mono) !important; font-variant-numeric: tabular-nums; background: none !important; border: 0 !important; padding: 0 !important; }
+html body #cardView .mobile-quant-row .card-edge-sub {
+  padding: 3px 8px !important; border-radius: 4px !important;
+  background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(255,255,255,0.06) !important;
+  font: 500 10px/1.2 var(--rf-mono) !important; letter-spacing: .06em !important; text-transform: uppercase; white-space: nowrap;
+}
+
+/* research cards: PROJ | FAIR | 80% CI as one hairline strip, curve full width below */
+html body #cardView .mobile-quant-row .card-money-row {
+  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 !important;
+  margin: 0 -16px !important; padding: 0 !important;
+  border-block: 1px solid rgba(255,255,255,0.06); background: rgba(11,13,17,0.5);
+}
+html body #cardView .mobile-quant-row .card-money-div { display: none !important; }
+html body #cardView .mobile-quant-row .card-dist-block { display: contents !important; }
+html body #cardView .mobile-quant-row .card-money-cell,
+html body #cardView .mobile-quant-row .card-ci-chip {
+  grid-row: 1; min-width: 0; padding: 10px 14px !important; gap: 4px !important;
+  border: 0 !important; border-radius: 0 !important; background: none !important;
+}
+html body #cardView .mobile-quant-row .card-money-cell + .card-money-div + .card-money-cell,
+html body #cardView .mobile-quant-row .card-ci-chip { border-left: 1px solid rgba(255,255,255,0.06) !important; }
+html body #cardView .mobile-quant-row .card-ci-chip {
+  grid-column: 3; display: flex; align-items: center; width: auto !important;
+  font: 600 12px/1.25 var(--rf-mono) !important; font-variant-numeric: tabular-nums; color: var(--rf-text) !important; letter-spacing: 0 !important;
+}
+html body #cardView .mobile-quant-row .card-money-lbl { font: 600 10px/1 var(--rf-sans) !important; letter-spacing: .08em !important; color: #94A3B8 !important; }
+html body #cardView .mobile-quant-row .card-money-val,
+html body #cardView .mobile-quant-row .card-money-val.fair { font: 600 19px/1.1 var(--rf-mono) !important; letter-spacing: -0.01em; color: var(--rf-text) !important; }
+html body #cardView .mobile-quant-row .card-money-val.fair { color: var(--rf-accent) !important; }
+html body #cardView .mobile-quant-row .card-money-row > .rf-dist,
+html body #cardView .mobile-quant-row .card-money-row > svg { grid-column: 1 / -1; grid-row: 2; padding: 8px 16px 6px; background: var(--rf-surface); }
+
+/* quoted cards: flatten the boxed grid cells into hairline-separated columns */
+html body #cardView .mobile-quant-row .card-grid-col:not(.col-action) {
+  background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+}
+html body #cardView .mobile-quant-row .grid-col-lbl { font: 600 10px/1 var(--rf-sans) !important; letter-spacing: .08em !important; color: #94A3B8 !important; }
+
+/* action bar: research tag reads like the home card badge */
+html body #cardView .mobile-quant-row .card-research-tag {
+  padding: 3px 8px !important; border-radius: 4px !important;
+  background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(255,255,255,0.06) !important;
+  font: 500 10px/1.2 var(--rf-mono) !important; letter-spacing: .06em !important; color: #94a3b8 !important;
+}
+
+/* ================= mobile header: no flicker while scrolling ================= */
+@media (max-width: 768px) {
+  /* The chrome is a solid colour, so the blur only cost a full repaint every frame
+     the collapse animated. Drop it and give the sticky header its own layer.
+     (backdrop-filter already made this a containing block for fixed children,
+     so translateZ(0) does not change positioning.) */
+  html body .pw-terminal-chrome {
+    background: #0B0D11 !important;
+    -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+    transform: translateZ(0); -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  }
+  html body .pw-filterbar { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  /* Don't let the browser re-anchor scrollY when the header changes height;
+     that correction is what used to bounce the condense check back and forth. */
+  html, body { overflow-anchor: none; }
+}
+
+/* ================= mobile above-the-fold: first card right under the status strip ================= */
+/* Hidden visually only; the nodes stay in the DOM for tests and desktop.
+   - .home-edge-actions ("View player board") is already hidden on mobile above;
+     "How the Math Works" lives on as #howMathWorksBtn ("? Math") in .rf-status-strip.
+   - #productLine: hero subcopy ("…against a DFS break-even.").
+   - .research-mode-details: "Compare research formats". The same DFS break-evens
+     stay reachable in the pick flow (#pickBreakeven). */
+@media (max-width: 768px) {
+  html body #homeEdgePreview #productLine,
+  html body #homeEdgePreview .research-mode-details { display: none !important; }
+  html body #homeEdgePreview .home-edge-heading { margin: 0 0 4px !important; padding: 0 !important; border-bottom: 0 !important; gap: 0 !important; }
+  html body #homeEdgePreview .home-edge-heading h1 { margin-bottom: 0 !important; }
+  html body #homeEdgePreview .rf-status-strip { margin-bottom: 4px; }
+}
