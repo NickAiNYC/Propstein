@@ -471,7 +471,8 @@
     const lg = lgamma(k);
     const pdf = (x) => (x <= 0 ? 0 : Math.exp((k - 1) * Math.log(x) - x / theta - k * Math.log(theta) - lg));
     const xMax = Math.max(high * 1.3, mean * 2, 1);
-    const W = 300; const H = 96; const base = 76; const top = 20;
+    // Compact on purpose: callouts sit in the 0-11 band, the curve peaks at `top`, ticks below `base`.
+    const W = 300; const H = 74; const base = 58; const top = 15;
     const steps = 72;
     const pts = [];
     let peak = 0;
@@ -488,7 +489,7 @@
       ? `M${X(low)} ${base} ${band.map(([x, y]) => `L${X(x)} ${Y(y)}`).join(' ')} L${X(high)} ${base} Z`
       : '';
     const tickVals = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(xMax * f));
-    const ticks = tickVals.map((v, i) => `<text x="${X(v)}" y="${base + 14}" text-anchor="${i === 0 ? 'start' : i === tickVals.length - 1 ? 'end' : 'middle'}">${v}</text>`).join('');
+    const ticks = tickVals.map((v, i) => `<text x="${X(v)}" y="${base + 12}" text-anchor="${i === 0 ? 'start' : i === tickVals.length - 1 ? 'end' : 'middle'}">${v}</text>`).join('');
     const label = `Approximate shape: projection ${mean.toFixed(1)}, fair line ${fair.toFixed(1)}, 80% range ${low} to ${high}${unit ? ` ${unit}` : ''}`;
     rfDistSeq += 1;
     const gid = `rfFill${rfDistSeq}`;
@@ -6864,11 +6865,12 @@
         heroEdgeHtml = `<span class="card-hero-edge ${isPos ? 'positive' : 'negative'}">${isPos ? '+' : ''}${rawEdge.toFixed(1)}%</span>`;
         heroSubHtml = `<span class="card-edge-sub status-active">SIM EDGE</span>`;
       } else {
-        const rawModelSkew = fairVal > 0 ? (((dist.proj - fairVal) / fairVal) * 100) : 0;
-        const isSkewPos = rawModelSkew >= 0;
-        const skewArrow = isSkewPos ? '↑' : '↓';
-        heroEdgeHtml = `<span class="card-hero-edge model-lean ${isSkewPos ? 'positive' : 'negative'}" title="Model Skew: Proj ${dist.proj.toFixed(1)} vs Fair ${fairVal.toFixed(1)}">${skewArrow} ${isSkewPos ? '+' : ''}${Math.abs(rawModelSkew).toFixed(1)}%</span>`;
-        heroSubHtml = `<span class="card-edge-sub status-lean">MODEL SKEW</span>`;
+        // No directional marker without a price. The fair line is the model's 50/50 point and
+        // the projection is the (right-skewed) mean, so "proj vs fair" is positive on every yards
+        // card: it would imply a lean that does not exist. SIM EDGE above compares against a line
+        // the user entered, which is a real comparison.
+        heroEdgeHtml = '<span class="card-hero-edge none">—</span>';
+        heroSubHtml = '<span class="card-edge-sub status-sub-gate">NO LIVE QUOTE</span>';
       }
     } else if (evaluation.volatilityHalt) {
       heroEdgeHtml = `<span class="card-hero-edge text-shift" title="${esc(evaluation.haltReason)}">SHIFT</span>`;
