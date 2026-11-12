@@ -6,7 +6,7 @@
     "away_team": "WAS",
     "home_team": "NYG",
     "spread_line": 2.5,
-    "total_line": 41.5,
+    "total_line": 40.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0
@@ -54,7 +54,7 @@
     "away_team": "HOU",
     "home_team": "CLE",
     "spread_line": -4.5,
-    "total_line": 40.5,
+    "total_line": 41.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0
@@ -77,8 +77,8 @@
     "gametime": "13:00",
     "away_team": "KC",
     "home_team": "ATL",
-    "spread_line": -3.5,
-    "total_line": 45.5,
+    "spread_line": -3.0,
+    "total_line": 46.5,
     "roof": null,
     "wind": null,
     "is_open_field": 0
@@ -101,7 +101,7 @@
     "gametime": "13:00",
     "away_team": "MIN",
     "home_team": "GB",
-    "spread_line": 3.5,
+    "spread_line": 3.0,
     "total_line": 42.5,
     "roof": "outdoors",
     "wind": null,

@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-11T18:27:37Z",
+  "generated_at": "2026-11-12T02:05:01Z",
   "event_id": "600061400",
   "event_name": "UFC 334: Gane vs. Hokit",
   "date": "2026-11-14",
@@ -94,17 +94,6 @@
       "went_distance": null,
       "fighters": [
         {
-          "id": "5310574",
-          "name": "Juan Diaz",
-          "record": "16-1-1",
-          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/per.png",
-          "winner": false,
-          "age": 28,
-          "reach_in": 69.5,
-          "stance": "Orthodox",
-          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5310574.png"
-        },
-        {
           "id": "3154389",
           "name": "Alatengheili",
           "record": "18-10-2",
@@ -114,33 +103,44 @@
           "reach_in": 66.0,
           "stance": "Orthodox",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/3154389.png"
+        },
+        {
+          "id": "5310574",
+          "name": "Juan Diaz",
+          "record": "16-1-1",
+          "flag": "https://a.espncdn.com/i/teamlogos/countries/500/per.png",
+          "winner": false,
+          "age": 28,
+          "reach_in": 69.5,
+          "stance": "Orthodox",
+          "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/5310574.png"
         }
       ],
       "model": {
         "p": [
-          0.61,
-          0.39
+          0.39,
+          0.61
         ],
         "elo": [
-          1547.2,
-          1521.4
+          1521.4,
+          1547.2
         ],
         "fights": [
-          2,
-          8
+          8,
+          2
         ],
         "adjustments": [
           {
-            "reach": 14.0
-          },
-          {
             "reach": -14.0,
             "age": -24.0
+          },
+          {
+            "reach": 14.0
           }
         ],
         "fair_american": [
-          -156,
-          156
+          156,
+          -156
         ],
         "p_finish": 0.4577,
         "p_over_by_line": {
