@@ -73,13 +73,22 @@ test('paid access cannot be activated by URL or local storage', () => {
   assert.equal(app.state.userTier, 'free');
 });
 
-test('all public pricing panels present frozen paid access without checkout controls', async () => {
+test('all public pricing panels keep paid access closed without checkout controls', async () => {
   for (const page of ['../viewer/index.html', '../viewer/audit.html', '../viewer/ledger.html', '../viewer/ledger/index.html']) {
     const html = await read(page);
     const panel = html.match(/<dialog class="detail-dialog pricing-dialog"[\s\S]*?<\/dialog>/)?.[0];
     assert.ok(panel, `pricing panel missing in ${page}`);
-    assert.match(panel, /Paid signups frozen/);
-    assert.match(panel, /Quant waitlisted/);
+    assert.match(panel, /Paid signups frozen/, `${page}: paid access must read as closed`);
     assert.doesNotMatch(panel, /data-checkout-tier|data-switch-tier|Sub-minute priority ingestion/);
   }
+});
+
+test('the homepage pricing panel presents the free public terminal', async () => {
+  const html = await read('../viewer/index.html');
+  const panel = html.match(/<dialog class="detail-dialog pricing-dialog"[\s\S]*?<\/dialog>/)?.[0];
+  assert.ok(panel, 'pricing panel missing in index.html');
+  assert.match(panel, /research terminal is free and open/i);
+  assert.match(panel, /without an account/i);
+  assert.match(panel, /every 4 hours/i, 'free access must still disclose the real refresh cadence');
+  assert.doesNotMatch(panel, /data-checkout-tier|data-switch-tier|checkout\.stripe\.com/);
 });

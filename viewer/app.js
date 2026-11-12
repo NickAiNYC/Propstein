@@ -7800,7 +7800,14 @@
         }
       });
     } else {
-      logOneUnit(playerId);
+      // Fail closed: "Log" never writes to the ledger directly. It must pass the
+      // execution guard and then the explicit "I placed this bet" confirmation slip.
+      const decision = executionDecision(row, evaluation);
+      if (!decision.allowed) {
+        toast(`Blocked: ${decision.message}`);
+        return;
+      }
+      openExecutionSlip(playerId);
     }
   }
 
