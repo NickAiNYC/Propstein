@@ -53,9 +53,8 @@ function renderRows(logRows, status) {
   body.innerHTML = logRows.map((row) => {
     const found = byHash.get(row.payload_sha256);
     let state = found && found.state ? found.state : "COMMITTED";
-    if (!tape && state !== "COMMITTED" && state !== "AWAITING_CLOSE") state = "COMMITTED";
-    const verified = tape && found && found.verified === true;
-    const label = verified ? "verified" : state;
+    if (!tape) state = state === "AWAITING_CLOSE" ? "AWAITING_CLOSE" : "COMMITTED";
+    const label = tape && found && found.state === "VERIFIED" && found.verified === true ? "VERIFIED" : state;
     return `<tr><td>${row.received_at}</td><td><code>${row.payload_sha256.slice(0, 12)}</code></td><td>${label}</td></tr>`;
   }).join("");
 }

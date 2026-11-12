@@ -14,8 +14,9 @@ import os
 import sqlite3
 import sys
 import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 try:
     from dotenv import load_dotenv
@@ -60,10 +61,19 @@ def ensure_closing_schema(db_conn, is_postgres: bool = True):
                     provider_update_ts BIGINT NOT NULL,
                     raw_provider_payload_sha256 CHAR(64) NOT NULL,
                     closing_snapshot_sha256 CHAR(64) NOT NULL,
+                    kickoff_at TIMESTAMPTZ,
+                    captured_at TIMESTAMPTZ,
                     locked_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
                     UNIQUE (event_id, player_id, book, market)
                 );
                 CREATE INDEX IF NOT EXISTS idx_closing_lookup ON closing_snapshots(event_id, player_id, book, market);
+            """)
+            # These two fields exist so a later reader can prove captured_at < kickoff_at.
+            # New locks only. Do not backfill existing rows.
+            cur.execute("""
+                ALTER TABLE closing_snapshots
+                    ADD COLUMN IF NOT EXISTS kickoff_at TIMESTAMPTZ,
+                    ADD COLUMN IF NOT EXISTS captured_at TIMESTAMPTZ;
             """)
         else:
             cur.executescript("""
@@ -83,6 +93,8 @@ def ensure_closing_schema(db_conn, is_postgres: bool = True):
                     provider_update_ts INTEGER NOT NULL,
                     raw_provider_payload_sha256 TEXT NOT NULL,
                     closing_snapshot_sha256 TEXT NOT NULL,
+                    kickoff_at TEXT,
+                    captured_at TEXT,
                     locked_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     UNIQUE (event_id, player_id, book, market)
                 );
@@ -90,8 +102,61 @@ def ensure_closing_schema(db_conn, is_postgres: bool = True):
             """)
 
 
+def utc_z(value: datetime) -> str:
+    """Second-precision UTC. Naive datetimes are not a proof."""
+    if value.tzinfo is None:
+        raise ValueError("timestamp must be timezone-aware")
+    return value.astimezone(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def prove_close_times(
+    game_kickoff_ts: int,
+    provider_update_ts: int,
+    locked_at: datetime,
+) -> Optional[tuple[datetime, datetime]]:
+    """These two fields exist so a later reader can prove captured_at < kickoff_at."""
+    kickoff_at = datetime.fromtimestamp(int(game_kickoff_ts), tz=timezone.utc).replace(microsecond=0)
+    locked_at = locked_at.astimezone(timezone.utc).replace(microsecond=0)
+    provider_at = datetime.fromtimestamp(int(provider_update_ts) / 1000.0, tz=timezone.utc).replace(microsecond=0)
+    earliest = locked_at - timedelta(seconds=MAX_QUOTE_STALENESS_SEC)
+    if earliest <= provider_at < locked_at and provider_at < kickoff_at:
+        captured_at = provider_at
+    elif locked_at < kickoff_at:
+        captured_at = locked_at
+    else:
+        return None
+    if not captured_at < kickoff_at:
+        return None
+    return captured_at, kickoff_at
+
+
+def closing_receipt_payload(row: Dict[str, Any], captured_at: str, kickoff_at: str) -> Dict[str, Any]:
+    """Hash input for a new lock. Both timestamps are inside the receipt."""
+    line = row["closing_line"] if "closing_line" in row else row["book_line"]
+    over = row["closing_over_odds"] if "closing_over_odds" in row else row["over_odds"]
+    under = row["closing_under_odds"] if "closing_under_odds" in row else row["under_odds"]
+    fair = row["closing_fair_line"] if "closing_fair_line" in row else row["fair_line"]
+    raw = row["raw_provider_payload_sha256"] if "raw_provider_payload_sha256" in row else row["raw_payload_sha256"]
+    return {
+        "schema": "propwire.closing_snapshot.v1",
+        "event_id": row["event_id"],
+        "player_id": row["player_id"],
+        "book": row["book"],
+        "market": row["market"],
+        "closing_line": float(line),
+        "closing_over_odds": int(over),
+        "closing_under_odds": int(under),
+        "closing_fair_line": float(fair),
+        "provider_event_id": row["provider_event_id"],
+        "provider_update_ts": int(row["provider_update_ts"]),
+        "raw_provider_payload_sha256": raw,
+        "captured_at": captured_at,
+        "kickoff_at": kickoff_at,
+    }
+
+
 def lock_imminent_closing_snapshots_postgres(db_conn) -> Dict[str, int]:
-    """Locks T-0 closing snapshots in Postgres."""
+    """Locks T-0 closing snapshots in Postgres. Does not update existing rows."""
     ensure_closing_schema(db_conn, is_postgres=True)
     locked_count = 0
 
@@ -117,21 +182,18 @@ def lock_imminent_closing_snapshots_postgres(db_conn) -> Dict[str, int]:
         candidates = cur.fetchall()
 
         for row in candidates:
+            proved = prove_close_times(
+                int(row["game_kickoff_ts"]),
+                int(row["provider_update_ts"]),
+                datetime.now(timezone.utc),
+            )
+            if proved is None:
+                continue
+            captured_at, kickoff_at = proved
+            captured_text = utc_z(captured_at)
+            kickoff_text = utc_z(kickoff_at)
             devig = devig_two_way_market(row["over_odds"], row["under_odds"])
-            canonical_close_payload = {
-                "schema": "propwire.closing_snapshot.v1",
-                "event_id": row["event_id"],
-                "player_id": row["player_id"],
-                "book": row["book"],
-                "market": row["market"],
-                "closing_line": float(row["book_line"]),
-                "closing_over_odds": int(row["over_odds"]),
-                "closing_under_odds": int(row["under_odds"]),
-                "closing_fair_line": float(row["fair_line"]),
-                "provider_event_id": row["provider_event_id"],
-                "provider_update_ts": int(row["provider_update_ts"]),
-                "raw_provider_payload_sha256": row["raw_payload_sha256"],
-            }
+            canonical_close_payload = closing_receipt_payload(row, captured_text, kickoff_text)
             snapshot_hash = canonical_json_sha256(canonical_close_payload)
 
             cur.execute("SAVEPOINT sp_closing_lock;")
@@ -142,8 +204,9 @@ def lock_imminent_closing_snapshots_postgres(db_conn) -> Dict[str, int]:
                         closing_over_odds, closing_under_odds,
                         closing_de_vig_over_prob, closing_de_vig_under_prob,
                         closing_fair_line, provider_event_id, provider_update_ts,
-                        raw_provider_payload_sha256, closing_snapshot_sha256
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        raw_provider_payload_sha256, closing_snapshot_sha256,
+                        kickoff_at, captured_at
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     ON CONFLICT (event_id, player_id, book, market) DO NOTHING;
                 """, (
                     row["event_id"], row["player_id"], row["book"], row["market"],
@@ -151,6 +214,7 @@ def lock_imminent_closing_snapshots_postgres(db_conn) -> Dict[str, int]:
                     devig["over_prob"], devig["under_prob"], row["fair_line"],
                     row["provider_event_id"], row["provider_update_ts"],
                     row["raw_payload_sha256"], snapshot_hash,
+                    kickoff_at, captured_at,
                 ))
                 locked_count += 1
                 cur.execute("RELEASE SAVEPOINT sp_closing_lock;")
@@ -166,7 +230,7 @@ def lock_imminent_closing_snapshots_postgres(db_conn) -> Dict[str, int]:
 def lock_imminent_closing_snapshots_sqlite(conn) -> Dict[str, int]:
     """Locks T-0 closing snapshots in local SQLite fallback."""
     ensure_closing_schema(conn, is_postgres=False)
-    # Synthetic candidate generation from snapshots/live data for offline testing
+    # No game_kickoff_ts on this path. Do not invent kickoff_at or captured_at.
     locked_count = 0
     cur = conn.cursor()
     # Check if we have sample market edges to snapshot
