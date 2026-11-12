@@ -17,7 +17,6 @@ ROOT = Path(__file__).resolve().parent.parent
 TAPE = ROOT / "snapshots" / "close_tape.jsonl"
 ET = ZoneInfo("America/New_York")
 UTC = ZoneInfo("UTC")
-EMPTY = "No proved close tape yet. Board grading remains off."
 REQUIRED = ("player_id", "market", "book", "line", "captured_at", "kickoff_at", "receipt_sha256")
 
 
@@ -93,7 +92,6 @@ def _slates() -> dict[str, dict[datetime, list[str]]]:
 def main() -> int:
     rows = _load()
     if not rows:
-        print(EMPTY)
         return 0
     slates = _slates()
     game_slate = {}
@@ -123,7 +121,7 @@ def main() -> int:
         slate = "unmatched" if not used_slates else "mixed"
         full = False
     print(f"slate {slate}")
-    print(f"unique games {len(covered)}")
+    print(f"unique game_ids {len(covered)}")
     print(f"full board {'yes' if full else 'no'}")
     return 0
 

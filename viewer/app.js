@@ -8257,7 +8257,7 @@
         <div class="portfolio-summary-stat"><span>Lose</span><strong>${loseN}</strong></div>
         <div class="portfolio-summary-stat"><span>No close</span><strong>${noCloseN}</strong></div>
       </div>
-      <p class="cell-sub">Grading is off until a close tape with captured_at < kickoff_at exists. Rows stay UNGRADED. They are not written to clv_audit_report.json.</p>
+      <p class="cell-sub">Grading off. Log 1u rows stay UNGRADED until a proved close tape exists.</p>
       <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 10px;">
         <div style="display:flex; gap:6px;">
           <button type="button" class="view-chip ${state.ledgerFilter === 'all' ? 'active' : ''}" data-ledger-filter="all" style="font-size:11px; padding:3px 8px;">All (${portfolio.length})</button>
