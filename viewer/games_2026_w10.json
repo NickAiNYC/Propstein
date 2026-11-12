@@ -5,7 +5,7 @@
     "gametime": "20:15",
     "away_team": "WAS",
     "home_team": "NYG",
-    "spread_line": 2.5,
+    "spread_line": 1.5,
     "total_line": 40.5,
     "roof": "outdoors",
     "wind": null,
@@ -54,7 +54,7 @@
     "away_team": "HOU",
     "home_team": "CLE",
     "spread_line": -4.5,
-    "total_line": 41.5,
+    "total_line": 40.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0
