@@ -229,24 +229,24 @@ html body [data-rf-card] .home-edge-player span {
   font: 400 13px/1.3 var(--rf-sans) !important;
   color: var(--rf-muted) !important;
 }
-.rf-prop-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.rf-prop-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 -16px; border-block: 1px solid rgba(255,255,255,0.06); background: rgba(11,13,17,0.5); }
 .rf-stat {
-  display: flex; flex-direction: column; gap: 3px; min-width: 0;
-  padding: 9px 10px;
-  border-radius: var(--rf-r-sm);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(0, 0, 0, 0.26);
+  display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  padding: 10px 14px;
+  border: 0; border-radius: 0; background: none;
 }
+.rf-stat + .rf-stat { border-left: 1px solid rgba(255,255,255,0.06); }
 .rf-stat small {
-  font: 600 11px/1 var(--rf-mono);
+  font: 600 10px/1 var(--rf-sans);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--rf-muted);
+  color: #64748B;
   white-space: nowrap;
 }
 .rf-stat b {
-  font: 600 20px/1.1 var(--rf-mono);
+  font: 600 19px/1.1 var(--rf-mono);
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
   color: var(--rf-text);
   white-space: nowrap;
 }
@@ -255,21 +255,16 @@ html body [data-rf-card] .home-edge-player span {
 /* ---------- model distribution curve ---------- */
 .rf-dist { margin: 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .rf-dist svg { display: block; width: 100%; height: auto; overflow: visible; }
-.rf-dist-band { fill: rgba(56, 189, 248, 0.18); }
+.rf-dist-tail { fill: rgba(255,255,255,0.04); stroke: none; }
+.rf-dist-call { font: 600 10px var(--rf-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.rf-dist-call-fair { fill: var(--rf-accent); }
+.rf-dist-call-proj { fill: var(--rf-text); }
 .rf-dist-line { fill: none; stroke: var(--rf-accent); stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .rf-dist-base { stroke: rgba(148, 163, 184, 0.22); stroke-width: 1; }
 .rf-dist-fair { stroke: var(--rf-accent-hi); stroke-width: 2; stroke-dasharray: 4 3; }
 .rf-dist-proj { stroke: var(--rf-text); stroke-width: 1.5; }
-.rf-dist-ticks text { fill: var(--rf-muted); font: 500 10px var(--rf-mono); }
-.rf-dist-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font: 500 12px/1.2 var(--rf-mono); color: var(--rf-muted); }
-.rf-dist-legend span::before { content: ""; display: inline-block; width: 12px; height: 2px; margin-right: 6px; vertical-align: middle; border-radius: 2px; }
-.rf-dist-legend .k-shape::before { display: none; }
-.rf-dist-legend .k-shape { color: var(--rf-muted); opacity: 0.8; }
-.rf-dist-legend .k-fair::before { background: var(--rf-accent-hi); }
-.rf-dist-legend .k-proj::before { background: var(--rf-text); }
-.rf-dist-legend .k-band::before { height: 8px; background: rgba(56, 189, 248, 0.3); }
+.rf-dist-ticks text { fill: #64748B; font: 500 9px var(--rf-mono); font-variant-numeric: tabular-nums; }
 .card-dist-block .rf-dist { width: 100%; }
-.card-dist-block .rf-dist-legend { display: none; }
 
 /* ---------- next-up (no games today) ---------- */
 .rf-next-up { display: flex; flex-direction: column; gap: 12px; }
@@ -411,7 +406,6 @@ html body .terminal-compliance-footer button {
   html body .front-inline-search { position: relative !important; top: auto !important; }
 
   html body [data-rf-card] .home-edge-player strong { font-size: 16px !important; }
-  .rf-stat b { font-size: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -488,3 +482,84 @@ html body .data-quality-banner { border-radius: 12px !important; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+
+/* ================= Nov 2026 hairline pass ================= */
+/* flat card: neutral hairline border, 10px radius, no glow */
+html body .home-edge-card[data-rf-card] {
+  gap: 12px !important;
+  padding: 14px 16px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  background: var(--rf-surface) !important;
+  box-shadow: 0 12px 32px -14px rgba(0,0,0,0.7) !important;
+  overflow: hidden;
+}
+html body .home-edge-card[data-rf-card]:hover { border-color: rgba(255,255,255,0.16) !important; transform: none; box-shadow: 0 12px 32px -14px rgba(0,0,0,0.7) !important; }
+.rf-prop-top .pw-avatar { width: 36px !important; height: 36px !important; border-radius: 6px !important; box-shadow: 0 0 0 1px rgba(255,255,255,0.12); }
+.rf-prop-top .home-edge-player { flex: 1; }
+html body [data-rf-card] .home-edge-player strong { font: 600 15px/1.2 var(--rf-sans) !important; letter-spacing: -0.01em; }
+html body [data-rf-card] .home-edge-player span { font: 400 12px/1.3 var(--rf-mono) !important; }
+.rf-badge {
+  flex: none; margin-left: auto; padding: 3px 8px; border-radius: 4px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  font: 500 10px/1.2 var(--rf-mono); letter-spacing: .06em; text-transform: uppercase; color: #94a3b8; white-space: nowrap;
+}
+.rf-dist { gap: 0; }
+/* footer disclosure stays (trust-boundary copy) but is one quiet line */
+html body .home-edge-card[data-rf-card] .home-research-note { font: 400 11px/1.4 var(--rf-sans) !important; padding-top: 8px !important; border-top-color: rgba(255,255,255,0.06) !important; }
+html body .home-edge-card[data-rf-card] .home-research-note .home-research-label { font: 600 10px/1 var(--rf-mono) !important; }
+
+/* status strip (replaces the two big CTAs) */
+.rf-status-strip {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 28px; padding: 0 2px;
+}
+.rf-status-strip .home-edge-status {
+  position: relative; margin: 0 !important; padding-left: 14px;
+  font: 500 11px/1.3 var(--rf-mono) !important; letter-spacing: .02em;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rf-status-strip .home-edge-status::before {
+  content: ""; position: absolute; left: 0; top: 50%; width: 6px; height: 6px; margin-top: -3px;
+  border-radius: 50%; background: var(--rf-accent); animation: rf-pulse 2s ease-in-out infinite;
+}
+@keyframes rf-pulse { 50% { opacity: .35; } }
+.rf-status-strip .how-math-works-btn {
+  flex: none; height: 24px; padding: 0 9px !important; border-radius: 4px !important;
+  background: rgba(255,255,255,0.04) !important; border: 1px solid rgba(255,255,255,0.08) !important;
+  font: 500 11px/1 var(--rf-mono) !important; color: #cbd5e1 !important; box-shadow: none !important; min-height: 0 !important; width: auto !important;
+}
+
+@media (max-width: 768px) {
+  /* drop the big CTAs above the fold: you are already on the slate */
+  html body .home-edge-actions { display: none !important; }
+  html body .research-mode-details > summary { min-height: 0 !important; padding: 4px 2px !important; font: 500 11px/1.2 var(--rf-mono) !important; color: #64748B !important; background: none !important; border: 0 !important; }
+  html body .home-edge-heading { margin-bottom: 6px !important; }
+
+  /* solid sticky chrome: nothing bleeds through */
+  html body .pw-terminal-chrome, html body .pw-filterbar {
+    background: #0B0D11 !important;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  html body .pw-terminal-chrome { border-bottom: 1px solid rgba(255,255,255,0.07) !important; }
+
+  /* segmented controls: 6px inner radius, #11141B track, #1E2330 thumb */
+  html body #mobileFilterStrip .chip-segment-group { background: #11141B !important; border: 1px solid rgba(255,255,255,0.07) !important; border-radius: 8px !important; padding: 2px !important; gap: 0 !important; }
+  html body #mobileFilterStrip .chip-segment-group .chip-pill { border: 1px solid transparent !important; border-radius: 6px !important; background: transparent !important; box-shadow: none !important; }
+  html body #mobileFilterStrip .chip-segment-group .chip-pill.active { background: #1E2330 !important; border-color: rgba(255,255,255,0.08) !important; color: #fff !important; }
+}
+
+/* bottom dock: edge-to-edge, hairline top, 2px accent over the active tab */
+html body .mobile-bottom-nav {
+  background: rgba(11,13,17,0.9) !important;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 0 !important; box-shadow: none !important;
+}
+html body .bottom-nav-item, html body .bottom-nav-item.active { border: 0 !important; box-shadow: none !important; }
+html body .bottom-nav-item.active { background: transparent !important; color: var(--rf-accent) !important; border-radius: 0 !important; }
+html body .bottom-nav-item.active::before { top: 0 !important; width: calc(100% - 24px) !important; height: 2px !important; border-radius: 0 !important; background: var(--rf-accent) !important; box-shadow: 0 0 8px rgba(56,189,248,.6); }
+html[data-theme="light"] .rf-prop-stats { background: var(--rf-surface-3); }
+html[data-theme="light"] .rf-stat + .rf-stat, html[data-theme="light"] .rf-prop-stats { border-color: rgba(15,23,42,0.1); }
+html[data-theme="light"] .rf-dist-tail { fill: rgba(15,23,42,0.05); }
