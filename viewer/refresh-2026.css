@@ -720,3 +720,10 @@ html body [data-rf-card] .rf-stat b { font-size: 17.5px !important; font-weight:
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
 }
+
+/* The home card is a centered flex column (align-items: center). With the one-line
+   subtitle/footer (white-space: nowrap), those children sized to their unwrapped text
+   (footer ~620px, header row ~352px in a 321px card at 375px), were centered, and
+   spilled past both edges, so overflow: hidden clipped the avatar and badge.
+   Children take the card's width so the ellipsis applies inside it. */
+html body .home-edge-card[data-rf-card] > * { align-self: stretch; min-width: 0; }
