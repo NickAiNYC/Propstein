@@ -2175,10 +2175,13 @@
     const items = ['nba', 'nfl'].map((id) => registered.find((item) => item.id === id)).filter(Boolean)
       .concat([{ id: 'ufc', label: 'UFC', active: false }, { id: 'nhl', label: 'NHL', active: false }]);
     switchers.forEach((switcher) => {
+      // League badges are always above the fold (header switcher), so no loading="lazy".
+      // width/height give the box its aspect ratio (500x500 PNGs; UFC SVG is 1675x580)
+      // before the image arrives; CSS still sets the rendered size.
       switcher.innerHTML = items.map((item) => `
         <button type="button" class="sport-switch-btn${item.active ? ' active' : ''}" role="radio"
           aria-checked="${item.active}" aria-label="${esc(item.label)}${item.id === 'ufc' || item.id === 'nhl' ? ' coming soon' : ''}" data-sport="${esc(item.id)}" title="${item.id === 'ufc' || item.id === 'nhl' ? `${esc(item.label)} coming soon` : `Switch to ${esc(item.label)}`}">
-          <img class="league-badge league-badge-${esc(item.id)}" src="/league-logos/${esc(item.id)}.${item.id === 'ufc' ? 'svg' : 'png'}" alt="" aria-hidden="true">${item.id === 'ufc' ? '' : `<span class="sport-switch-label">${esc(item.label)}</span>`}</button>`).join('');
+          <img class="league-badge league-badge-${esc(item.id)}" src="/league-logos/${esc(item.id)}.${item.id === 'ufc' ? 'svg' : 'png'}" width="${item.id === 'ufc' ? 69 : 40}" height="${item.id === 'ufc' ? 24 : 40}" decoding="async" alt="" aria-hidden="true">${item.id === 'ufc' ? '' : `<span class="sport-switch-label">${esc(item.label)}</span>`}</button>`).join('');
       switcher.addEventListener('click', (e) => {
         const btn = e.target && e.target.closest ? e.target.closest('[data-sport]') : null;
         if (btn) switchToSport(btn.dataset.sport);
