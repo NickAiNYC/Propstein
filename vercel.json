@@ -4,6 +4,8 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "rewrites": [
+    { "source": "/precommit", "destination": "/verify/index.html" },
+    { "source": "/precommit/", "destination": "/verify/index.html" },
     { "source": "/ledger", "destination": "/index.html" },
     { "source": "/audit", "destination": "/index.html" },
     { "source": "/verify/:id*", "destination": "/verify.html" },

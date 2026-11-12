@@ -2692,80 +2692,42 @@
   }
 
   /**
-   * v175 CLV honesty: the hero CALIBRATION pod (beat rate, trend sparkline,
-   * delta chip) is driven from the SAME clv_audit_report.json ledger that
-   * powers /verify and the CLV dialog — never from static markup. With no
-   * (or too little) graded ledger data the pod renders "n/a" instead of an
-   * invented figure. Sparkline points are the CUMULATIVE beat rate over the
-   * graded ledger sequence, in ledger order.
+   * Board ribbon. Reads only clv_report_2026_w7.json.
+   * Does not count records[].beat_close and does not fall back to clv_audit_report.json.
+   * A missing root surfaces as LEDGER ROOT UNAVAILABLE.
    */
-  function updateClvRibbon(report) {
-    const rateEl = $('#clvBeatRateVal');
-    const deltaEl = $('#clvTrendDelta');
-    const wrapEl = $('#clvTrendWrap');
-    const lineEl = $('#clvSparkLine');
-    const dotEl = $('#clvSparkDot');
-    const barEl = document.querySelector('.telemetry-progress-bar');
-    if (!rateEl) return;
-
-    const records = (report && (report.records || report.ledger)) || [];
-    const graded = records.filter((r) => r && typeof r.beat_close === 'boolean');
-
-    if (!graded.length) {
-      rateEl.textContent = 'n/a';
-      if (deltaEl) deltaEl.textContent = 'n/a';
-      if (wrapEl) {
-        wrapEl.title = 'CLV ledger unavailable — no graded receipts yet';
-        wrapEl.setAttribute('aria-label', 'CLV beat rate unavailable');
-      }
-      if (lineEl) lineEl.setAttribute('points', '');
-      if (dotEl) dotEl.setAttribute('cx', '0');
-      if (barEl && barEl.style && typeof barEl.style.setProperty === 'function') {
-        barEl.style.setProperty('--clv-beat-rate', '0%');
-      }
-      return;
-    }
-
-    let beats = 0;
-    const cumulative = graded.map((r, i) => {
-      if (r.beat_close) beats++;
-      return beats / (i + 1);
-    });
-    const rate = Math.round((beats / graded.length) * 1000) / 10;
-
-    rateEl.textContent = `${rate.toFixed(1)}%`;
-    if (deltaEl) deltaEl.textContent = `n=${graded.length}`;
-    if (wrapEl) {
-      wrapEl.title = `CLV beat rate: ${beats}/${graded.length} graded receipts beat close (cumulative ledger trend)`;
-      wrapEl.setAttribute('aria-label', `CLV beat rate ${rate.toFixed(1)}% over ${graded.length} graded receipts`);
-    }
-    if (barEl && barEl.style && typeof barEl.style.setProperty === 'function') {
-      barEl.style.setProperty('--clv-beat-rate', `${Math.min(100, rate).toFixed(1)}%`);
-    }
-
-    // Sparkline: cumulative beat rate (0..1) mapped into the 56x18 box.
-    if (lineEl && graded.length >= 2) {
-      const n = graded.length;
-      const x = (i) => +(2 + (i * (54 - 2)) / (n - 1)).toFixed(1);
-      const y = (v) => +(16 - v * 14).toFixed(1);
-      lineEl.setAttribute('points', cumulative.map((v, i) => `${x(i)},${y(v)}`).join(' '));
-      if (dotEl) {
-        dotEl.setAttribute('cx', String(x(n - 1)));
-        dotEl.setAttribute('cy', String(y(cumulative[n - 1])));
-      }
-    } else if (lineEl) {
-      lineEl.setAttribute('points', '');
-      if (dotEl) dotEl.setAttribute('cx', '0');
-    }
+  function updateClvRibbon() {
+    publishBoardRecord();
   }
 
-  /**
-   * Per-sport calibration badge (audit H9): the spec requires a VISIBLE
-   * uncalibrated badge on rows of an uncalibrated sport, not just a config
-   * flag. Sourced from the breaker config's sports block with the adapter
-   * fallback, so badge truth = breaker truth. Calibrated sports (NFL)
-   * render nothing — the badge must be a real signal, not chrome.
-   */
+  function updateClvFooter() {
+    publishBoardRecord();
+  }
+
+  function publishBoardRecord() {
+    const rateEl = $('#clvBeatRateVal');
+    const footer = $('#clvStatus');
+    const apply = (text, footerHtml) => {
+      if (rateEl) rateEl.textContent = text;
+      if (footer) footer.innerHTML = footerHtml;
+    };
+    fetchJson('clv_report_2026_w7.json', null).then((report) => {
+      const summary = report && report.summary;
+      const beat = summary && Number.isFinite(Number(summary.beat_close_count)) ? Number(summary.beat_close_count) : null;
+      const total = summary && Number.isFinite(Number(summary.total_graded)) ? Number(summary.total_graded) : null;
+      if (beat === null || total === null) {
+        apply('unavailable', '<strong>Board</strong> unavailable. LEDGER ROOT UNAVAILABLE');
+        return;
+      }
+      apply(
+        `${beat}/${total}`,
+        `<strong>Board</strong> ${beat}/${total} beat close. Hand ledger excluded (8 rows, hash 178e29974bf8748c).`
+      );
+    }).catch(() => {
+      apply('unavailable', '<strong>Board</strong> unavailable. LEDGER ROOT UNAVAILABLE');
+    });
+  }
+
   function sportCalibrationBadge() {
     const cfgSport = state.breakerConfig && state.breakerConfig.sports
       ? state.breakerConfig.sports[SPORT_ID]
@@ -2787,20 +2749,6 @@
     const gate = Number(state.picks.gate_edge);
     const cap = Number(state.picks.unit_cap ?? state.picks.kelly_cap);
     return Number.isFinite(gate) && Number.isFinite(cap) ? { gate, cap } : null;
-  }
-
-  function updateClvFooter(report) {
-    const el = $('#clvStatus');
-    if (!el) return;
-    if (report && (report.total_records || report.records?.length)) {
-      const total = report.total_records ?? report.records.length;
-      const beatRate = report.beat_close_rate_pct ?? (report.summary ? +(report.summary.positive_clv_pct * 100).toFixed(1) : 0);
-      const avgClv = report.avg_clv_prob_pct ?? (report.summary ? +(report.summary.avg_clv_ev * 100).toFixed(2) : 0);
-      const rootText = report.ledger_root_hash ? `Root #${report.ledger_root_hash}` : 'LEDGER ROOT UNAVAILABLE';
-      el.innerHTML = `<strong>CLV</strong> ${total} verified records · ${beatRate}% beat close · +${avgClv}% mean CLV · ${rootText}`;
-    } else {
-      el.innerHTML = `<strong>CLV</strong> 0 verified live records.`;
-    }
   }
 
   const PICK_MARKETS = {
@@ -4268,18 +4216,16 @@
       }
       if (metricSub) metricSub.textContent = `Research Mode · Live qualification paused · Top projections active`;
       if (pods.length >= 3) {
-        const pod1Val = pods[0].querySelector('.hero-pod-val');
-        const pod1Sub = pods[0].querySelector('.hero-pod-sub');
         const pod2Val = pods[1].querySelector('.hero-pod-val');
         const pod2Sub = pods[1].querySelector('.hero-pod-sub');
         const pod3Val = pods[2].querySelector('.hero-pod-val');
         const pod3Sub = pods[2].querySelector('.hero-pod-sub');
-        if (pod1Val && pod1Val.id !== 'clvBeatRateVal') pod1Val.textContent = '—';
-        if (pod1Sub) pod1Sub.textContent = 'From the graded ledger';
         if (pod2Val) pod2Val.textContent = 'PAUSED';
-        if (pod2Sub) pod2Sub.textContent = 'Standby for verified quotes';
+        if (pod2Sub) pod2Sub.textContent = 'Paid access frozen. Board is 2/37.';
         if (pod3Val) pod3Val.textContent = String(totalModeled);
-        if (pod3Sub) pod3Sub.textContent = `${state.livePicks.picks.length} observed · ${verifiedLiveLines} feed-verified`;
+        if (pod3Sub && pod3Sub.id !== 'ribbonHeartbeatStatus') {
+          pod3Sub.textContent = `${state.livePicks.picks.length} observed · ${verifiedLiveLines} feed-verified`;
+        }
       }
     } else {
       const activePolicy = policy();
@@ -4296,18 +4242,16 @@
       }
       if (metricSub) metricSub.textContent = `Feed-verified player lines clearing Poisson-Gamma hurdle · ${state.odds.quotes.length} quotes ingested`;
       if (pods.length >= 3) {
-        const pod1Val = pods[0].querySelector('.hero-pod-val');
-        const pod1Sub = pods[0].querySelector('.hero-pod-sub');
         const pod2Val = pods[1].querySelector('.hero-pod-val');
         const pod2Sub = pods[1].querySelector('.hero-pod-sub');
         const pod3Val = pods[2].querySelector('.hero-pod-val');
         const pod3Sub = pods[2].querySelector('.hero-pod-sub');
-        if (pod1Val && pod1Val.id !== 'clvBeatRateVal') pod1Val.textContent = '—';
-        if (pod1Sub) pod1Sub.textContent = 'From the graded ledger';
-        if (pod2Val) pod2Val.textContent = gatePct;
-        if (pod2Sub) pod2Sub.textContent = 'Minimum edge gate';
+        if (pod2Val) pod2Val.textContent = 'PAUSED';
+        if (pod2Sub) pod2Sub.textContent = 'Paid access frozen. Board is 2/37.';
         if (pod3Val) pod3Val.textContent = String(totalModeled);
-        if (pod3Sub) pod3Sub.textContent = `${state.odds.quotes.length} ingested lines`;
+        if (pod3Sub && pod3Sub.id !== 'ribbonHeartbeatStatus') {
+          pod3Sub.textContent = `${state.odds.quotes.length} ingested lines`;
+        }
       }
     }
   }
@@ -7119,9 +7063,7 @@
         <div class="card-grid-col col-action">
           <button type="button" class="card-btn-view card-btn-view-ghost" data-inspect="${esc(row.player_id)}" aria-label="View Details" title="Open full quantitative model drawer">›</button>
           <button type="button" class="card-btn-sim-quick${state.inlineSim && state.inlineSim.pid === row.player_id ? ' open' : ''}" data-simulate-player="${esc(row.player_id)}" aria-label="Simulate Line" title="Quick line stress-test (approx. model)">⚡ Sim</button>
-          ${isLogged || execution.allowed
-            ? `<button type="button" class="card-btn-log ${isLogged ? 'logged' : ''}" data-log-bet="${esc(row.player_id)}" aria-label="${isLogged ? 'Remove from Ledger' : 'Review verified play'}" title="${isLogged ? 'Remove from Ledger' : 'Review verified play'}">${isLogged ? 'Logged' : 'Review'}</button>`
-            : `<button type="button" class="card-btn-log blocked" disabled aria-label="Execution blocked: ${esc(execution.message)}" title="${esc(execution.message)}">${SVG_ICONS.lock}</button>`}
+          <button type="button" class="card-btn-log ${isLogged ? 'logged' : ''}" data-log-bet="${esc(row.player_id)}" aria-label="${isLogged ? 'Remove from Ledger' : 'Log 1u'}" title="${isLogged ? 'Remove from Ledger' : 'Log 1u'}">${isLogged ? 'Logged' : 'Log 1u'}</button>
         </div>
         ${inlineSimPanelHtml(row, dist)}
       `;
@@ -7454,12 +7396,9 @@
       </div>`;
     }
 
-    const decision = row ? executionDecision(row, evaluation) : { allowed: false, message: '' };
-    const logBtn = row && (isLogged || decision.allowed)
-      ? `<button class="row-log-btn ${isLogged ? 'logged' : ''}" type="button" data-log-bet="${esc(row.player_id)}" title="${isLogged ? 'Remove from Ledger' : 'Review verified play'}" aria-label="${isLogged ? 'Remove from Ledger' : 'Review verified play'}">${isLogged ? 'Logged' : 'Review'}</button>`
-      : row
-        ? `<button class="row-log-btn blocked" type="button" disabled aria-label="Execution blocked: ${esc(decision.message)}" title="${esc(decision.message)}">${SVG_ICONS.lock}</button>`
-        : '';
+    const logBtn = row
+      ? `<button class="row-log-btn ${isLogged ? 'logged' : ''}" type="button" data-log-bet="${esc(row.player_id)}" title="${isLogged ? 'Remove from Ledger' : 'Log 1u'}" aria-label="${isLogged ? 'Remove from Ledger' : 'Log 1u'}">${isLogged ? 'Logged' : 'Log 1u'}</button>`
+      : '';
 
     const quoteKey = row ? `${row.player_id}::${state.filters.market}` : '';
     const flash = quoteKey && state.tickFlashes ? state.tickFlashes[quoteKey] : null;
@@ -7825,6 +7764,96 @@
 
   // ── §18. Ledger mutations & data import/export ────────────────────────
 
+
+  function canonicalJson(value) {
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return `[${value.map((item) => canonicalJson(item)).join(',')}]`;
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(',')}}`;
+  }
+
+  async function sha256Hex(textValue) {
+    if (!globalThis.crypto || !crypto.subtle) throw new Error('SHA-256 unavailable');
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(textValue));
+    return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  function quoteReceiptSha(quote) {
+    const candidates = [quote && quote.raw_payload_sha256, quote && quote.receipt_sha256, quote && quote.content_hash];
+    for (const candidate of candidates) {
+      if (typeof candidate === 'string' && /^[0-9a-f]{64}$/i.test(candidate)) return candidate.toLowerCase();
+    }
+    return null;
+  }
+
+  // Personal log. Grading is off until a close tape with captured_at < kickoff_at exists.
+  // Do not write these rows into clv_audit_report.json. Stake is 1u. Undo is the toast.
+  async function logOneUnit(playerId) {
+    const row = state.slate.find((item) => item.player_id === playerId);
+    if (!row) return;
+    const evaluation = evaluateRow(row);
+    if (!evaluation || !Number.isFinite(Number(evaluation.line)) || !Number.isFinite(Number(evaluation.odds))) {
+      toast('No quote on this row');
+      return;
+    }
+    const frozen = {
+      schema: 'personal_clv.v1',
+      id: `bet_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      sport: SPORT_ID,
+      player_id: row.player_id,
+      player_name: row.player_display_name,
+      team: row.team,
+      opponent: row.opponent_team,
+      market: state.filters.market,
+      side: evaluation.side || 'OVER',
+      line: Number(evaluation.line),
+      odds: Number(evaluation.odds),
+      book: evaluation.book || '',
+      stake_units: 1,
+      logged_at: new Date().toISOString(),
+      quote_state: evaluation.state === 'verified' ? 'verified' : 'unverified',
+      quote_receipt_sha256: quoteReceiptSha(evaluation.quote)
+    };
+    let entryHash;
+    try {
+      entryHash = await sha256Hex(canonicalJson(frozen));
+    } catch (_) {
+      toast('Could not hash this log entry');
+      return;
+    }
+    const entry = {
+      ...frozen,
+      entry_hash: entryHash,
+      grade: {
+        status: 'UNGRADED',
+        close_line: null,
+        close_odds: null,
+        close_captured_at: null,
+        close_receipt_sha256: null,
+        line_delta: null,
+        price_clv_pp: null,
+        graded_at: null,
+        source: null
+      }
+    };
+    stampProvenance(entry, row);
+    if (!Array.isArray(state.portfolio)) state.portfolio = [];
+    state.portfolio.unshift(entry);
+    savePortfolio(state.portfolio);
+    updatePortfolioBadge(true);
+    renderBoard();
+    if ($('#detailDialog').open && state.selectedPlayerId === playerId) renderDetailModal(row);
+    toast(`Logged 1u ${entry.side} ${Number(entry.line).toFixed(1)} ${entry.player_name}`, () => {
+      const idx = state.portfolio.findIndex((bet) => bet.id === entry.id);
+      if (idx >= 0) {
+        state.portfolio.splice(idx, 1);
+        savePortfolio(state.portfolio);
+        updatePortfolioBadge(true);
+        renderBoard();
+        if ($('#detailDialog').open && state.selectedPlayerId === playerId) renderDetailModal(row);
+      }
+    });
+  }
+
   function logBet(playerId) {
     const row = state.slate.find((item) => item.player_id === playerId);
     if (!row) return;
@@ -7848,12 +7877,7 @@
         }
       });
     } else {
-      const decision = executionDecision(row, evaluation);
-      if (!decision.allowed) {
-        toast(`Blocked: ${decision.message}`);
-        return;
-      }
-      openExecutionSlip(playerId);
+      logOneUnit(playerId);
     }
   }
 
@@ -8002,7 +8026,7 @@
     }
     const payload = {
       app: 'PropStein Institutional Terminal',
-      schema_version: '1.0',
+      schema_version: '1.1',
       exported_at: new Date().toISOString(),
       total_bets: portfolio.length,
       portfolio: portfolio
@@ -8127,7 +8151,13 @@
             model_fair: Number(item.model_fair || lineVal),
             edge: Number(item.edge || 0),
             ev: Number(item.ev || 0),
-            logged_at: item.logged_at || new Date().toISOString()
+            logged_at: item.logged_at || new Date().toISOString(),
+            schema: item.schema || undefined,
+            stake_units: item.stake_units,
+            quote_state: item.quote_state,
+            quote_receipt_sha256: item.quote_receipt_sha256 || null,
+            entry_hash: item.entry_hash || null,
+            grade: item.grade || { status: 'UNGRADED', close_line: null, close_odds: null, close_captured_at: null, close_receipt_sha256: null, line_delta: null, price_clv_pp: null, graded_at: null, source: null }
           };
 
           const existingIdx = current.findIndex((b) => (b.id && b.id === entry.id) || (b.player_id && b.player_id === entry.player_id && b.sport === entry.sport && b.market === entry.market && b.side === entry.side));
@@ -8164,9 +8194,6 @@
     const dialog = $('#portfolioDialog');
     if (!dialog) return;
     const portfolio = state.portfolio || [];
-    let positiveClv = 0;
-    let totalClvYards = 0;
-    let gradedCount = 0;
 
     const conflicts = getPortfolioCorrelations(portfolio);
     const conflictHtml = conflicts.length > 0 ? `
@@ -8194,17 +8221,7 @@
         : portfolio;
 
     const rowsHtml = filteredBets.map((bet) => {
-      const currentQuote = state.odds.quotes.find((q) => q.market === bet.market && (q.player_id === bet.player_id || String(q.player_name).toLowerCase() === String(bet.player_name).toLowerCase()));
-      let clvText = '0.0 (At entry)';
-      let clvClass = '';
-      if (currentQuote && finite(currentQuote.line)) {
-        gradedCount++;
-        const delta = bet.side === 'UNDER' ? (bet.line - currentQuote.line) : (currentQuote.line - bet.line);
-        totalClvYards += delta;
-        if (delta > 0) positiveClv++;
-        clvText = `${delta > 0 ? '+' : ''}${delta.toFixed(1)} ${bet.market === 'receptions' ? 'rec' : 'yds'} (${signedPct(delta / (bet.line || 1))})`;
-        clvClass = delta > 0 ? 'actionable' : delta < 0 ? 'closed' : '';
-      }
+      const status = (bet.grade && bet.grade.status) || 'UNGRADED';
       const conflictItem = conflicts.find((c) => c.team === bet.team && c.market === bet.market);
       let conflictBadge = '';
       if (conflictItem) {
@@ -8214,29 +8231,33 @@
           conflictBadge = `<span class="badge corr-risk-badge" title="${esc(conflictItem.title)}">EXPOSURE</span> `;
         }
       }
-      const volatileBadge = bet.volatility_flag
-        ? `<span class="badge" style="background:rgba(239, 68, 68, 0.2); color:#fca5a5; border:1px solid rgba(239, 68, 68, 0.4); font-size:10px; margin-left:4px;" title="${esc(bet.volatility_reason || 'Line shifted sharply')}">VOLATILE</span>`
-        : '';
-
+      const when = bet.logged_at ? String(bet.logged_at).replace('T', ' ').slice(0, 16) : '';
       return `<tr>
-        <td>${conflictBadge}<strong>${esc(bet.player_name)}</strong>${volatileBadge}<br><small class="cell-sub">${esc(bet.team)} vs ${esc(bet.opponent)} · ${esc(bet.market === 'receptions' ? 'Rec' : 'Yards')}</small></td>
-        <td><span class="badge ${esc(bet.side.toLowerCase())}">${esc(bet.side)}</span></td>
-        <td class="num"><strong>${bet.line.toFixed(1)}</strong><br><small class="cell-sub">${oddsText(bet.odds)}</small></td>
-        <td class="num"><strong>${currentQuote ? currentQuote.line.toFixed(1) : bet.line.toFixed(1)}</strong><br><small class="cell-sub">${currentQuote ? currentQuote.book : 'At entry'}</small></td>
-        <td class="num ${clvClass}"><strong>${clvText}</strong></td>
+        <td class="num"><small class="cell-sub">${esc(when)}</small></td>
+        <td>${conflictBadge}<strong>${esc(bet.player_name)}</strong><br><small class="cell-sub">${esc(bet.team)} vs ${esc(bet.opponent)}</small></td>
+        <td><small class="cell-sub">${esc(bet.market)}</small></td>
+        <td><span class="badge ${esc(String(bet.side || '').toLowerCase())}">${esc(bet.side)}</span> <strong>${Number(bet.line).toFixed(1)}</strong> <small class="cell-sub">${oddsText(bet.odds)}</small></td>
+        <td>${esc(bet.book || '')}</td>
+        <td><strong>${esc(status)}</strong></td>
         <td><button type="button" class="text-button" data-remove-bet="${esc(bet.id)}" style="color:var(--muted); font-size:16px;" aria-label="Remove bet">×</button></td>
       </tr>`;
     }).join('');
 
-    const avgClv = gradedCount > 0 ? (totalClvYards / gradedCount).toFixed(1) : '0.0';
-    const beatRate = gradedCount > 0 ? pct(positiveClv / gradedCount, 0) : '—';
+    const gradeOf = (bet) => (bet.grade && bet.grade.status) || 'UNGRADED';
+    const beatN = portfolio.filter((bet) => gradeOf(bet) === 'BEAT').length;
+    const tieN = portfolio.filter((bet) => gradeOf(bet) === 'TIE').length;
+    const loseN = portfolio.filter((bet) => gradeOf(bet) === 'LOSE').length;
+    const noCloseN = portfolio.filter((bet) => gradeOf(bet) === 'NO_CLOSE').length;
 
     $('#portfolioContent').innerHTML = `
       <div class="portfolio-summary-bar">
-        <div class="portfolio-summary-stat"><span>Logged Bets</span><strong>${portfolio.length}</strong></div>
-        <div class="portfolio-summary-stat"><span>Beat Close Rate</span><strong>${beatRate}</strong></div>
-        <div class="portfolio-summary-stat"><span>Avg CLV Delta</span><strong>${Number(avgClv) > 0 ? '+' : ''}${avgClv}</strong></div>
+        <div class="portfolio-summary-stat"><span>Logged</span><strong>${portfolio.length}</strong></div>
+        <div class="portfolio-summary-stat"><span>Beat</span><strong>${beatN}</strong></div>
+        <div class="portfolio-summary-stat"><span>Tie</span><strong>${tieN}</strong></div>
+        <div class="portfolio-summary-stat"><span>Lose</span><strong>${loseN}</strong></div>
+        <div class="portfolio-summary-stat"><span>No close</span><strong>${noCloseN}</strong></div>
       </div>
+      <p class="cell-sub">Grading is off until a close tape with captured_at < kickoff_at exists. Rows stay UNGRADED. They are not written to clv_audit_report.json.</p>
       <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 10px;">
         <div style="display:flex; gap:6px;">
           <button type="button" class="view-chip ${state.ledgerFilter === 'all' ? 'active' : ''}" data-ledger-filter="all" style="font-size:11px; padding:3px 8px;">All (${portfolio.length})</button>
@@ -8247,7 +8268,7 @@
       </div>
       ${portfolio.length === 0 ? `
         <div class="portfolio-empty">
-          <p>No bets logged yet. Click "+ Log" on any player card or inside the Inspect drawer to record your play and track closing line value.</p>
+          <p>No bets logged yet. Log 1u on a quoted row. Grading stays off until a close tape exists.</p>
           <div style="margin-top:16px; display:flex; justify-content:center;">
             <button type="button" class="portfolio-action-btn" id="emptyImportLedgerBtn">
               <svg class="prop-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 10v3.5h11V10M8 2.5v8M5 5.5l3-3 3 3"/></svg>
@@ -8261,11 +8282,12 @@
           <table class="portfolio-table">
             <thead>
               <tr>
-                <th>Player / Market</th>
-                <th>Side</th>
-                <th class="num">Bought</th>
-                <th class="num">Current</th>
-                <th class="num">CLV Alpha</th>
+                <th>Logged</th>
+                <th>Player</th>
+                <th>Market</th>
+                <th>Side / line / odds</th>
+                <th>Book</th>
+                <th>Status</th>
                 <th></th>
               </tr>
             </thead>
@@ -8361,139 +8383,39 @@
   async function openClvReport() {
     const dialog = $('#clvDialog');
     if (!dialog) return;
-    $('#clvReportContent').innerHTML = '<div style="padding:24px; text-align:center; color:var(--muted); font-family:var(--mono);">Loading the public CLV audit…</div>';
+    $('#clvReportContent').innerHTML = '<div style="padding:24px; text-align:center; color:var(--muted); font-family:var(--mono);">Loading the Week 7 board…</div>';
     dialog.showModal();
 
-    let report = state.clvAuditReport;
-    if (!report) {
-      report = await fetchJson('clv_audit_report.json', null);
-      if (!report) report = await fetchJson('clv_report_2026_w7.json', null);
-      state.clvAuditReport = report;
-    }
-
-    if (!report || (!report.records && !report.ledger)) {
-      $('#clvReportContent').innerHTML = '<div style="padding:20px; color:var(--danger);">Failed to load CLV validation report. Run settle_ledger.py to generate ledger.</div>';
+    const report = await fetchJson('clv_report_2026_w7.json', null);
+    const rows = report && Array.isArray(report.ledger) ? report.ledger : null;
+    const summary = report && report.summary;
+    if (!rows || !summary || !Number.isFinite(Number(summary.beat_close_count)) || !Number.isFinite(Number(summary.total_graded))) {
+      $('#clvReportTitle').textContent = 'Week 7 board unavailable';
+      $('#clvReportContent').innerHTML = '<div style="padding:20px;">unavailable</div>';
       return;
     }
 
-    const records = report.records || report.ledger;
-    const beatCloseRate = report.beat_close_rate_pct ?? (report.summary ? +(report.summary.positive_clv_pct * 100).toFixed(1) : 0);
-    const avgClvProb = report.avg_clv_prob_pct ?? (report.summary ? +(report.summary.avg_clv_ev * 100).toFixed(2) : 0);
-    const avgClvYards = report.avg_clv_yards ?? (report.summary ? +(report.summary.avg_line_delta).toFixed(2) : 0);
-    const totalRecords = report.total_records ?? (report.summary ? report.summary.total_graded : records.length);
-    const recordStr = report.record_str ?? `${Math.round(totalRecords * (beatCloseRate / 100))}-${totalRecords - Math.round(totalRecords * (beatCloseRate / 100))}-0`;
-    const winRate = report.win_rate_pct ?? beatCloseRate;
-    const realizedRoi = report.realized_roi_pct ?? 0;
-    const netPnl = report.net_pnl ?? 0;
-    const rootHash = report.ledger_root_hash || 'UNAVAILABLE';
+    const body = rows.map((row) => `<tr>
+      <td>${esc(row.player_name)}</td>
+      <td>${esc(row.market)}</td>
+      <td>${esc(row.side)} ${Number(row.trigger_line).toFixed(1)} (${row.trigger_odds})</td>
+      <td>${Number(row.close_line).toFixed(1)} (${row.close_odds})</td>
+      <td>${esc(row.status)}</td>
+    </tr>`).join('');
 
-    const kpiHtml = `
-      <div class="clv-modal-shell font-mono select-none">
-        <!-- 4-Card Institutional KPI Strip -->
-        <div class="clv-kpi-grid">
-          <div class="clv-kpi-box">
-            <span class="clv-kpi-lbl">Beat Closing Line</span>
-            <span class="clv-kpi-val text-volt">${beatCloseRate}%</span>
-            <span class="clv-kpi-sub">${totalRecords} verified tickets</span>
-          </div>
-          <div class="clv-kpi-box">
-            <span class="clv-kpi-lbl">Mean CLV Edge</span>
-            <span class="clv-kpi-val text-volt">
-              +${avgClvProb}% <small class="clv-kpi-yards">(${avgClvYards > 0 ? `+${avgClvYards}` : avgClvYards}y)</small>
-            </span>
-            <span class="clv-kpi-sub">De-vigged vs Kickoff Close</span>
-          </div>
-        </div>
-
-        <!-- Scrollable Ticket Audit Table -->
-        <div class="clv-table-scroll">
-          <table class="clv-audit-table">
-            <thead>
-              <tr>
-                <th>Player / Ticket</th>
-                <th>Bet Entry</th>
-                <th>Kickoff Close</th>
-                <th>CLV (Yds / Prob)</th>
-                <th>Actual / Grade</th>
-                <th class="th-num">Net</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${records.map((r) => {
-                const player = r.player || r.player_name;
-                const team = r.team;
-                const receipt = r.settlement_receipt || r.receipt_id || 'receipt_verified';
-                const crest = teamCrest(team, 'sm');
-                const side = r.side || 'OVER';
-                const line = r.line ?? r.trigger_line;
-                const odds = r.odds ?? r.trigger_odds;
-                const closeLine = r.close_line;
-                const closeOdds = r.close_odds;
-                const clvYds = r.clv_yards ?? r.line_movement ?? 0;
-                const clvProb = r.clv_prob_pct ?? (r.clv_ev ? +(r.clv_ev * 100).toFixed(2) : 0);
-                const actualYards = r.actual_yards;
-                const outcome = r.outcome || (r.status === 'BEAT_CLOSE' ? 'WIN' : 'PENDING');
-                const pnl = r.net_pnl ?? 0;
-
-                const outcomePill = outcome === 'WIN'
-                  ? '<span class="clv-pill clv-pill-win">WIN</span>'
-                  : outcome === 'LOSS'
-                    ? '<span class="clv-pill clv-pill-loss">LOSS</span>'
-                    : outcome === 'PUSH'
-                      ? '<span class="clv-pill clv-pill-push">PUSH</span>'
-                      : '<span class="clv-pill clv-pill-pending">PENDING</span>';
-
-                return `
-                  <tr>
-                    <td>
-                      <div class="clv-player-cell">
-                        ${crest}
-                        <div class="clv-player-info">
-                          <span class="clv-player-name">${esc(player)}</span>
-                          <span class="clv-receipt-id">#${esc(receipt)}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span class="text-white font-bold">${side === 'OVER' ? 'O' : 'U'} ${Number(line).toFixed(1)}</span>
-                      <span class="clv-muted">(${oddsText(odds)})</span>
-                    </td>
-                    <td>
-                      <span class="text-slate-200">${Number(closeLine).toFixed(1)}</span>
-                      <span class="clv-muted">(${oddsText(closeOdds)})</span>
-                    </td>
-                    <td>
-                      <span class="${clvProb >= 0 ? 'text-volt font-bold' : 'text-amber'}">
-                        ${clvYds >= 0 ? `+${clvYds}y` : `${clvYds}y`} (${clvProb >= 0 ? `+${clvProb}%` : `${clvProb}%`})
-                      </span>
-                    </td>
-                    <td>
-                      <div class="clv-grade-cell">
-                        ${actualYards !== null && actualYards !== undefined ? `<span class="text-white font-semibold">${actualYards}y</span>` : ''}
-                        ${outcomePill}
-                      </div>
-                    </td>
-                    <td class="td-num">
-                      <span class="${pnl > 0 ? 'text-volt font-bold' : pnl < 0 ? 'text-danger font-bold' : 'clv-muted'}">
-                        ${pnl > 0 ? `+$${Number(pnl).toFixed(2)}` : pnl < 0 ? `-$${Math.abs(Number(pnl)).toFixed(2)}` : '$0.00'}
-                      </span>
-                    </td>
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    `;
-
-    const auditWhen = report.generated_at ? String(report.generated_at).slice(0, 10) : `${totalRecords} graded records`;
-    $('#clvReportTitle').textContent = `Public CLV audit · ${auditWhen}`;
-    $('#clvReportEyebrow').innerHTML = `<span class="clv-root-tag">Root #${rootHash}</span>`;
-    $('#clvReportContent').innerHTML = kpiHtml;
+    $('#clvReportTitle').textContent = 'Week 7 board · 2 of 37 beat close';
+    $('#clvReportEyebrow').textContent = 'Hand ledger excluded';
+    $('#clvReportContent').innerHTML = `
+      <p>The 8-row hand ledger is a different file and is not this denominator.</p>
+      <p>${summary.beat_close_count} of ${summary.total_graded} beat close. This is not a model-skill claim. See the time-to-close table on the performance page.</p>
+      <div class="clv-table-scroll">
+        <table class="clv-audit-table">
+          <thead><tr><th>Player</th><th>Market</th><th>Entry</th><th>Snapshot labeled close</th><th>Status</th></tr></thead>
+          <tbody>${body}</tbody>
+        </table>
+      </div>`;
   }
 
-  // ── §20. Detail analytics markups — hurdle ruler, bridge, ticket ──────
 
   function quantHurdleRuler(row, evaluation, fair, projection) {
     if (evaluation.state === 'none' || !Number.isFinite(Number(evaluation.line))) return '';

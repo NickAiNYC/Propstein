@@ -12,6 +12,7 @@ data/raw_espn_captures/*
 *.jsonl
 !snapshots/*.jsonl
 !viewer/feeds/nba_model/*.jsonl
+!viewer/precommit_log.jsonl
 !data/game_context_captures.jsonl
 __pycache__/
 .env
