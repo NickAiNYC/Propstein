@@ -4030,6 +4030,7 @@
             <div class="rf-prop-top">
               ${avatarFor(row.player_id, row.player_display_name, row.team)}
               <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.position || '')}${row.position ? ' · ' : ''}${esc(row.team)} ${row.is_home ? 'vs' : '@'} ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
+              <!-- Unconditional on purpose: this template only renders when research (observed prices) is empty; it repeats the MODEL FAIR · NO LIVE PRICE footer. Priced cards use the data-prop-card template above. -->
               <span class="rf-badge">No live price</span>
             </div>
             <div class="rf-prop-stats">
