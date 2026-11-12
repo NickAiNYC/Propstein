@@ -27,6 +27,10 @@ const VIEWER = path.join(ROOT, 'viewer');
 const args = process.argv.slice(2);
 const outDir = path.resolve(ROOT, args[0] || '.visual/actual');
 const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
+// --styles: also dump the computed style of every element (all properties, plus ::before/
+// ::after) to <name>.styles.json. Catches cascade changes in hidden, off-screen or
+// closed-dialog elements that screenshots cannot see.
+const STYLES = args.includes('--styles');
 
 const DATA_REF = fs.readFileSync(path.join(ROOT, 'scripts/visual/data-ref'), 'utf8').trim();
 const FIXED_TIME = execFileSync('git', ['log', '-1', '--format=%cI', DATA_REF], { cwd: ROOT }).toString().trim();
@@ -185,6 +189,24 @@ try {
       await page.mouse.move(0, 0);
       await finishMotion(page);
       await s.shot(page, path.join(outDir, `${name}.png`));
+      if (STYLES) {
+        const dump = await page.evaluate(() => {
+          const table = new Map(); const ids = []; const out = [];
+          const intern = (str) => { if (!table.has(str)) { table.set(str, ids.length); ids.push(str); } return table.get(str); };
+          const ser = (cs) => { const parts = []; for (let i = 0; i < cs.length; i += 1) { const k = cs[i]; parts.push(`${k}:${cs.getPropertyValue(k)}`); } return parts.join(';'); };
+          const pathOf = (el) => { const seg = []; for (let n = el; n && n.nodeType === 1; n = n.parentElement) {
+            let i = 1; for (let sib = n.previousElementSibling; sib; sib = sib.previousElementSibling) if (sib.tagName === n.tagName) i += 1;
+            seg.unshift(`${n.tagName.toLowerCase()}${n.id ? `#${n.id}` : ''}:${i}`); } return seg.join('>'); };
+          for (const el of document.querySelectorAll('body, body *')) {
+            if (el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue; // SVG internals are geometry, not CSS
+            const b = getComputedStyle(el, '::before'); const a = getComputedStyle(el, '::after');
+            out.push([pathOf(el), intern(ser(getComputedStyle(el))),
+              b.content && b.content !== 'none' ? intern(ser(b)) : -1, a.content && a.content !== 'none' ? intern(ser(a)) : -1]);
+          }
+          return { styles: ids, elements: out };
+        });
+        fs.writeFileSync(path.join(outDir, `${name}.styles.json`), JSON.stringify(dump));
+      }
       await context.close();
       count += 1;
       process.stdout.write(`  captured ${name}\n`);
