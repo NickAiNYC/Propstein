@@ -2247,6 +2247,8 @@
 
   // ── §12. Data ingestion — fetch, slate loading, feed health ───────────
 
+  const REVALIDATED_DATA_RE = /(?:^|\/)(?:slate_[^/.]+|snapshots_[^/.]+)\.json$/;
+
   async function fetchData(path) {
     // A stalled dependency must resolve to the fail-closed UI, not leave the
     // homepage on its initial "Checking" state indefinitely.
@@ -2257,8 +2259,14 @@
     }
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
+    // Per-slate artifacts (slate_*.json, snapshots_*.json; ~1 MB) are revalidated on every
+    // load (no-cache + ETag -> 304 when unchanged), so they are never stale but are not
+    // re-downloaded. Everything else (odds, picks, receipts, health) stays no-store with a
+    // unique URL. Keep this pattern in sync with viewer/sw.js and vercel.json.
+    const revalidate = REVALIDATED_DATA_RE.test(String(path).split('?')[0]);
     try {
-      const response = await fetch(`${path}?v=${Date.now()}`, { cache: 'no-store', signal: controller.signal });
+      const url = revalidate ? path : `${path}?v=${Date.now()}`;
+      const response = await fetch(url, { cache: revalidate ? 'no-cache' : 'no-store', signal: controller.signal });
       return { response, data: response.ok ? await response.json() : null };
     } finally {
       clearTimeout(timeout);

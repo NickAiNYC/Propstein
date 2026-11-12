@@ -1,11 +1,11 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v238-terminal';
+const CACHE_NAME = 'propstein-v239-terminal';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v236',
-  '/app.js?v=2026_v236',
+  '/style.css?v=2026_v237',
+  '/app.js?v=2026_v237',
   '/design-system.css?v=2026_v229',
   '/refresh-2026.css?v=2026_r7',
   '/js/refresh-2026.js?v=2026_r2',
@@ -28,8 +28,8 @@ const STATIC_ASSETS = [
   '/js/sports/nfl.js?v=2026_v179',
   '/js/sports/nba.js?v=2026_v221',
   // brand marks: PropStein lighter ice-blue logo suite
-  '/propstein-logo.webp?v=2026_v236',
-  '/propstein-logo-dark.webp?v=2026_v236',
+  '/propstein-logo.webp?v=2026_v237',
+  '/propstein-logo-dark.webp?v=2026_v237',
   '/propstein-logo.svg?v=2026_v179',
   '/propstein-logo-dark.svg?v=2026_v179',
   '/propwire-logo.svg?v=2026_v179',
@@ -87,8 +87,13 @@ self.addEventListener('fetch', (event) => {
 
   // Never cache quotes, health state, picks, receipts, or other JSON/CSV data.
   // An offline research shell is useful; an offline price presented as current is not.
+  // Per-slate artifacts (slate_*.json, snapshots_*.json) are the one exception: the HTTP
+  // cache may keep them, but every use revalidates with the server (no-cache + ETag), so
+  // they are never served stale. The service worker itself still never stores JSON.
+  // Keep this pattern in sync with viewer/app.js (REVALIDATED_DATA_RE) and vercel.json.
   if (/\.(?:json|csv)$/i.test(url.pathname)) {
-    event.respondWith(fetch(event.request, { cache: 'no-store' }));
+    const revalidate = /^\/(?:slate_[^/.]+|snapshots_[^/.]+)\.json$/.test(url.pathname);
+    event.respondWith(fetch(event.request, { cache: revalidate ? 'no-cache' : 'no-store' }));
     return;
   }
 
