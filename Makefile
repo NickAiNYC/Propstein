@@ -8,6 +8,7 @@ all: test
 # Reproducible audit of the published frozen artifacts.
 verify-audit:
 	@PYTHONPATH=. $(PYTHON) scripts/verify_audit.py
+	@PYTHONPATH=. $(PYTHON) scripts/grade_first_tape.py
 
 # Ledger migration, registry hash, append-only invariants, and cohort checks.
 verify-ledger:
