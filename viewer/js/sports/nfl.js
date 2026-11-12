@@ -152,7 +152,8 @@
         actual: (row) => num(row.receptions),
         settledActual: (row) => num(row.receptions),
         settledLine: (row) => num(row.fair_line_rec),
-        fairProbText: () => 'Poisson Red Zone Model (Holdout)',
+        // Not a fitted model: P(TD) = clamp(target share x 1.8, 12%, 65%); rushing TDs are not modeled.
+        fairProbText: () => 'Receiving-Share Heuristic (Rushing TDs Excluded)',
         dist: (row) => {
           const share = num(row.f_tgt_share || row.target_share, 0.15);
           const prob = Math.min(0.65, Math.max(0.12, share * 1.8));
@@ -288,8 +289,8 @@
     detail: {
       scenarioCapable: true,
       marketLabel: (market) => (market === 'receptions' ? 'Receptions' : 'Receiving yards'),
-      modelSpec: (market) => market === 'receptions' ? 'MODEL SPEC: NEGATIVE BINOMIAL' : market === 'anytime_td' ? 'MODEL SPEC: ZERO-INFLATED POISSON' : 'MODEL SPEC: CONTINUOUS MEDIAN',
-      distributionDesc: (market) => market === 'receptions' ? 'Discrete NegBin2 (Half-step)' : market === 'anytime_td' ? 'Poisson Red Zone Model' : 'Calibrated Continuous Log-Normal',
+      modelSpec: (market) => market === 'receptions' ? 'MODEL SPEC: NEGATIVE BINOMIAL' : market === 'anytime_td' ? 'MODEL SPEC: RECEIVING-SHARE HEURISTIC' : 'MODEL SPEC: CONTINUOUS MEDIAN',
+      distributionDesc: (market) => market === 'receptions' ? 'Discrete NegBin2 (Half-step)' : market === 'anytime_td' ? 'Receiving-Share Heuristic (Rushing TDs Excluded)' : 'Calibrated Continuous Log-Normal',
       sampleNote: (row) => `${num(row.games_prior, 16)} games prior · ${row.season || '2026'}`,
       scopeNote: (row, market) => market === 'receptions'
         ? `Receptions use integer outcomes and half-step lines. Fair line calibrated at P(over) = ${pct(row.p_rec_at_fair_line)}.`

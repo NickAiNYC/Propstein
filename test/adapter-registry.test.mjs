@@ -105,7 +105,7 @@ test('NFL adapter: market hooks reproduce pre-adapter value branches exactly', (
   assert.equal(t.fair(row), Math.round(0.105 * 2.2 * 10) / 10);
   assert.equal(t.projection(row), Math.round(0.105 * 2.4 * 10) / 10);
   assert.equal(t.settledActual(row), 4); // legacy quirk: anytime_td settles against receptions
-  assert.equal(t.fairProbText(row), 'Poisson Red Zone Model (Holdout)');
+  assert.equal(t.fairProbText(row), 'Receiving-Share Heuristic (Rushing TDs Excluded)');
 
   const distY = y.dist(row);
   assert.equal(distY.low, Math.max(0, Math.round(43.5 * 0.58)));
