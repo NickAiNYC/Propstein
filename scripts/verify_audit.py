@@ -155,6 +155,20 @@ def verify_close_tape_gate() -> None:
     )
     if tracked.returncode != 0:
         raise ValueError("viewer/precommit_log.jsonl is not tracked")
+    emit = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "emit_close_tape.py")],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if emit.returncode != 0 or emit.stdout.strip() != "No close tape source that can prove captured_at < kickoff_at":
+        raise ValueError("emit_close_tape.py must exit 0 and refuse to invent a tape")
+    emit_src = (ROOT / "scripts" / "emit_close_tape.py").read_text(encoding="utf-8")
+    if "psycopg2" in emit_src or "connect(" in emit_src:
+        raise ValueError("emit_close_tape.py must not open a database")
+    performance = (ROOT / "viewer" / "performance" / "index.html").read_text(encoding="utf-8")
+    if "Missing fields on the stored close row: kickoff_at and captured_at." not in performance:
+        raise ValueError("performance page omits the missing close-row fields")
 
 
 def verify_player_market_page() -> None:
