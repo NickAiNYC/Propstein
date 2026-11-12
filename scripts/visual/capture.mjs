@@ -178,6 +178,10 @@ try {
         if (type === 'stylesheet') return route.fulfill({ status: 200, contentType: 'text/css', body: '' });
         return route.abort();
       });
+      // One-time UI hints run on timers after load (e.g. the mobile swipe hint slides the first
+      // card 42px for ~550ms). Mark them as already seen, like a returning visitor, so whether a
+      // capture lands inside that window can't depend on load timing.
+      await context.addInitScript(() => { try { localStorage.setItem('pw_swipe_hint_seen', 'true'); } catch (_) { /* storage blocked */ } });
       const page = await context.newPage();
       await page.clock.setFixedTime(new Date(FIXED_TIME));
       await page.goto(ORIGIN + s.path, { waitUntil: 'load' });
