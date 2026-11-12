@@ -164,6 +164,41 @@ def run_full_verification() -> int:
             print(f"      Shrinkage Weight w:     UNIDENTIFIABLE (95% CI spans [0.0, 1.0] across full space; point estimate suppressed until N grows)")
             print(f"      Commercial Gate:        FROZEN (Sample insufficient / both CIs span zero / no proven edge)")
 
+        from scripts.time_to_close import summarize
+
+        timing = summarize()
+        print(
+            f"      Beat close: {timing['beat']}/{timing['n']}  "
+            f"within_2h: {timing['within_2h']}/{timing['n']}"
+        )
+        performance = (ROOT / "viewer" / "performance" / "index.html").read_text(encoding="utf-8")
+        paragraph = "34 of 37 Week 7 rows were graded against a second snapshot"
+        if paragraph not in performance:
+            raise ValueError("performance page omits the time-to-close paragraph")
+
+        status_path = ROOT / "viewer" / "precommit_status.json"
+        if status_path.exists():
+            status = json.loads(status_path.read_text(encoding="utf-8"))
+            log_rows = []
+            log_path = ROOT / "viewer" / "precommit_log.jsonl"
+            if log_path.exists():
+                log_rows = [json.loads(line) for line in log_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+            for row in status.get("rows", []):
+                if row.get("verified") is not True:
+                    continue
+                digest = row.get("payload_sha256")
+                logged = next((item for item in log_rows if item.get("payload_sha256") == digest), None)
+                if logged is None or logged.get("received_at") != row.get("received_at"):
+                    raise ValueError(f"verified precommit {digest} has no matching log row")
+                if not (row.get("received_at") and row.get("kickoff_at") and row["received_at"] < row["kickoff_at"]):
+                    raise ValueError(f"verified precommit {digest} is not before kickoff")
+                receipt = row.get("close_receipt_sha256")
+                if not isinstance(receipt, str) or len(receipt) != 64:
+                    raise ValueError(f"verified precommit {digest} has no close receipt")
+            print(f"      Precommit verified rows: {sum(1 for row in status.get('rows', []) if row.get('verified') is True)}")
+        else:
+            print("      Precommit verified rows: 0")
+
         print("=" * 65)
         print("  VERIFICATION RESULT: 100% REPRODUCIBLE AUDIT GREEN")
         print("=" * 65)

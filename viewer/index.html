@@ -370,24 +370,24 @@
           </div>
         </div>
 
-        <!-- Col 2: Calibration -->
-        <div class="telemetry-col telemetry-col-calibration hero-pod">
-          <span class="telemetry-col-label hero-pod-lbl">CALIBRATION</span>
+        <!-- Col 2: Calibration. Full board only. The 8-row hand ledger is not the denominator. -->
+        <div class="telemetry-col telemetry-col-calibration hero-pod" id="calibrationPod">
+          <span class="telemetry-col-label hero-pod-lbl">FULL BOARD · 2026-W07</span>
           <div class="telemetry-metric-row">
-            <span class="telemetry-metric-number hero-pod-val" id="clvBeatRateVal">—</span>
-            <span class="telemetry-metric-unit">CLV BEAT RATE</span>
-            <div class="clv-trend-sparkline-wrap" id="clvTrendWrap" title="Loading graded CLV ledger…" aria-label="CLV beat rate trend">
-              <svg class="clv-sparkline-svg" width="56" height="18" viewBox="0 0 56 18" fill="none" aria-hidden="true">
-                <polyline id="clvSparkLine" points="" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                <circle id="clvSparkDot" cx="0" cy="0" r="2.2" fill="#80c6f6" stroke="#060a12" stroke-width="0.8" />
-              </svg>
-              <span class="clv-trend-delta" id="clvTrendDelta" aria-hidden="true">…</span>
-            </div>
+            <span class="telemetry-metric-number hero-pod-val" id="clvBeatRateVal">2/37</span>
+            <span class="telemetry-metric-unit">BEAT THE CLOSE</span>
           </div>
-          <div class="telemetry-progress-track">
-            <div class="telemetry-progress-bar"></div>
-          </div>
-          <div class="telemetry-subtext hero-pod-sub">Ledger-graded · Goal: 60%</div>
+          <p class="hero-pod-sub" id="calibrationDetail">
+            5.4% beat · 34 tied · 1 faded · mean line Δ +0.05 yd.
+            Holdout Brier skill −12.5% (model 0.2813 vs baseline 0.2500).
+            Paid access stays frozen.
+          </p>
+          <p class="hero-pod-sub" id="subsetDetail">
+            Hand ledger, excluded: 8 rows in clv_audit_report.json
+            (file hash 178e29974bf8748c). Not added to the 37.
+            5 of those 8 match no Week 7 board row.
+          </p>
+          <a class="hero-pod-sub" href="/performance/">Source table</a>
         </div>
 
         <!-- Col 3: Execution Gate -->
@@ -397,7 +397,7 @@
             <span class="gate-status-text hero-pod-val">PAUSED</span>
             <span class="gate-status-dot"></span>
           </div>
-          <div class="telemetry-subtext hero-pod-sub" id="gateSubtext">Standby for verified quotes</div>
+          <div class="telemetry-subtext hero-pod-sub" id="gateSubtext">Paid access frozen. Board is 2/37.</div>
         </div>
 
         <!-- Col 4: Feed Health -->
@@ -411,7 +411,7 @@
             </div>
             <button type="button" class="telemetry-refresh-btn" id="ribbonRefreshBtn" title="Probe live sportsbook feeds (DraftKings, FanDuel)" aria-label="Refresh feed">↻</button>
           </div>
-          <div class="telemetry-subtext telemetry-root-hash hero-pod-sub" id="ribbonHeartbeatStatus">Root #178e29974bf8748c · Auto-probe active</div>
+          <div class="telemetry-subtext telemetry-root-hash hero-pod-sub" id="ribbonHeartbeatStatus">Quote probe only. This hash is not a feed check.</div>
         </div>
       </div>
     </section>
@@ -514,7 +514,7 @@
     <section class="trust-line" aria-label="Data integrity status">
       <div><span class="status-dot grey"></span><strong>Price check</strong> <span id="priceCheckText">Syncing fresh quotes…</span></div>
       <div><strong>Verification Receipt</strong> SHA-256 hashes detect price changes; unverified quotes fail closed.</div>
-      <div id="clvStatus"><strong>CLV Audit</strong> 8 verified records · Root #178e29974bf8748c.</div>
+      <div id="clvStatus"><strong>Board</strong> 2/37 beat close. Hand ledger excluded (8 rows, hash 178e29974bf8748c).</div>
     </section>
 
     <!-- Terminal Compliance & Responsible Gaming Footer -->
@@ -721,7 +721,7 @@
       <div class="dialog-header">
         <div>
           <div class="eyebrow">Personal CLV Ledger</div>
-          <h2 id="portfolioTitle">Portfolio &amp; CLV Scorecard</h2>
+          <h2 id="portfolioTitle">Personal log</h2>
         </div>
         <button class="icon-button" value="cancel" aria-label="Close portfolio dialog">×</button>
       </div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Precommit log · PropStein</title>
+  <style>
+    body { font-family: ui-monospace, monospace; background: #0b0d12; color: #e8e6e3; margin: 0; padding: 24px; }
+    main { max-width: 760px; }
+    a { color: #9ecbff; }
+    label { display: block; margin: 10px 0 4px; }
+    input, select, button { font: inherit; }
+    input, select { width: 100%; box-sizing: border-box; padding: 8px; background: #151922; color: inherit; border: 1px solid #2c3344; }
+    button { margin-top: 12px; padding: 8px 12px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { text-align: left; border-bottom: 1px solid #2c3344; padding: 6px 4px; vertical-align: top; }
+    code { word-break: break-all; }
+    .note { color: #c8c2b4; }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="/performance/">Track record</a></p>
+  <h1>Precommit log</h1>
+  <p class="note">Submit the hash only. The payload stays with you until reveal. A stored hash is not a grade.</p>
+  <p id="tapeNote" class="note">No close tape with captured_at < kickoff_at. This page shows COMMITTED and AWAITING_CLOSE only.</p>
+
+  <h2>Hash a payload</h2>
+  <label>book <input id="book" autocomplete="off"></label>
+  <label>kickoff_at <input id="kickoff_at" placeholder="2026-11-16T18:00:00Z" autocomplete="off"></label>
+  <label>line <input id="line" inputmode="decimal" autocomplete="off"></label>
+  <label>market <input id="market" placeholder="receiving_yards" autocomplete="off"></label>
+  <label>odds <input id="odds" inputmode="numeric" autocomplete="off"></label>
+  <label>player_id <input id="player_id" autocomplete="off"></label>
+  <label>side
+    <select id="side"><option>OVER</option><option>UNDER</option></select>
+  </label>
+  <label>slate <input id="slate" placeholder="2026-W11" autocomplete="off"></label>
+  <button type="button" id="hashBtn">Hash payload</button>
+  <p><code id="hashOut">—</code></p>
+  <p class="note">Founder appends that digest with <code>python3 scripts/reveal_precommit.py append <hash></code> and commits <code>viewer/precommit_log.jsonl</code>. Non-64-hex is rejected. Do not commit the payload.</p>
+
+  <h2>Public record</h2>
+  <table>
+    <thead><tr><th>received_at</th><th>hash</th><th>state</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</main>
+<script src="/verify/precommit.js"></script>
+</body>
+</html>
