@@ -93,7 +93,7 @@ jobs:
             echo "ALARM_WEBHOOK_URL secret not configured; alarm visible only in Actions history and owner email."
             exit 0
           fi
-          MESSAGE="PropStein odds freshness alarm: feed stale (>6h), empty (no observed CLOB quotes), or manifest mismatch. See https://github.com/NickAiNYC/Propstein/actions/workflows/odds_freshness.yml"
+          MESSAGE="PropStein odds freshness alarm: feed stale (>6h), empty (no observed CLOB quotes), or manifest mismatch. See https://github.com/NickAltstein/Propstein/actions/workflows/odds_freshness.yml"
           curl -fsS -X POST "$ALARM_WEBHOOK_URL" \
             -H 'Content-Type: application/json' \
             -d "{\"content\": \"$MESSAGE\", \"text\": \"$MESSAGE\"}" \

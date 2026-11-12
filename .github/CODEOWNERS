@@ -1,8 +1,8 @@
 # PropStein Code Owners
 # High-risk governance and evidence boundaries require explicit review.
 
-/governance/                @NickAiNYC
-/src/ledger/                @NickAiNYC
-/docs/EDGE_GATE.md          @NickAiNYC
-/research/battery.v1.yaml   @NickAiNYC
+/governance/                @NickAltstein
+/src/ledger/                @NickAltstein
+/docs/EDGE_GATE.md          @NickAltstein
+/research/battery.v1.yaml   @NickAltstein
 
