@@ -7,9 +7,25 @@ import {
   authorizeSyntheticExecution,
 } from './helpers/sandbox.mjs';
 
+// logBet's ledger paths can resolve asynchronously (entry hashing awaits WebCrypto).
+// Await the call AND drain pending tasks before asserting, so an async write can
+// never land after the assertion and let a test pass by accident.
+async function logBetAndSettle(P, playerId) {
+  await P.logBet(playerId);
+  for (let i = 0; i < 5; i += 1) await new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+// Real WebCrypto, so the ledger's SHA-256 entry hashing works in the sandbox. Without it,
+// any direct ledger write fails at the hash step and a guard bypass would go unnoticed.
+function withWebCrypto(sandbox) {
+  sandbox.crypto = globalThis.crypto;
+  sandbox.TextEncoder = globalThis.TextEncoder;
+  return sandbox;
+}
+
 async function setup() {
   const { sandbox, lsStore, registry } = buildSandbox();
-  const P = loadApp(sandbox);
+  const P = loadApp(withWebCrypto(sandbox));
   await P.loadSlate('2026_w7');
   P.state.featureContextLocked = false; // exercise downstream quote gates in isolation
   const quote = attachSyntheticQuote(P);
@@ -24,7 +40,7 @@ test('unverified quote is blocked in both the decision and mutation paths', asyn
   const decision = P.executionDecision(row);
   assert.equal(decision.allowed, false);
   assert.equal(decision.code, 'unverified');
-  P.logBet(quote.player_id);
+  await logBetAndSettle(P, quote.player_id);
   assert.equal(P.state.portfolio.length, 0);
   assert.equal(lsStore.get('propwire_portfolio_ledger_v2'), undefined);
 });
@@ -46,7 +62,7 @@ test('stale odds block an otherwise verified quote', async () => {
   const decision = P.executionDecision(row);
   assert.equal(decision.allowed, false);
   assert.equal(decision.code, 'stale_odds');
-  P.logBet(quote.player_id);
+  await logBetAndSettle(P, quote.player_id);
   assert.equal(P.state.portfolio.length, 0);
 });
 
@@ -57,7 +73,7 @@ test('public visitors can review verified quotes without writing to the ledger',
   const decision = P.executionDecision(row);
   assert.equal(decision.allowed, true);
   assert.equal(decision.code, 'actionable');
-  P.logBet(quote.player_id);
+  await logBetAndSettle(P, quote.player_id);
   assert.equal(P.state.portfolio.length, 0);
 });
 
@@ -66,7 +82,7 @@ test('only explicit confirmation of a complete, fresh, verified quote creates a 
   authorizeSyntheticExecution(P, quote);
   const decision = P.executionDecision(row);
   assert.equal(decision.allowed, true);
-  P.logBet(quote.player_id);
+  await logBetAndSettle(P, quote.player_id);
   assert.equal(P.state.portfolio.length, 0, 'reviewing a slip must not write to the ledger');
   assert.equal(registry.get('#executionDialog').open, true);
   assert.match(registry.get('#executionContent').innerHTML, /Cross-book comparison/);
@@ -82,7 +98,7 @@ test('only explicit confirmation of a complete, fresh, verified quote creates a 
 test('confirmation rechecks the guard and fails closed if the quote becomes stale', async () => {
   const { P, quote } = await setup();
   authorizeSyntheticExecution(P, quote);
-  P.logBet(quote.player_id);
+  await logBetAndSettle(P, quote.player_id);
   P.state.feedHealth.oddsUpdatedAt = '2026-10-01T00:00:00Z';
   assert.equal(P.confirmExecution(quote.player_id), false);
   assert.equal(P.state.portfolio.length, 0);
