@@ -1,10 +1,231 @@
 {
-  "as_of": "2026-11-11T00:58:01Z",
+  "as_of": "2026-11-12T02:05:01Z",
   "slate_week": 10,
   "season": 2026,
   "total_active_injuries": 0,
-  "total_practice_entries": 0,
+  "total_practice_entries": 20,
   "source": "nflverse injuries_2026.parquet",
   "impacted_beneficiaries": {},
-  "injuries": []
+  "injuries": [
+    {
+      "player_id": "00-0033290",
+      "player_name": "Jermaine Eluemunor",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "T",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0036280",
+      "player_name": "Malik Harrison",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "LB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0036309",
+      "player_name": "Darnell Mooney",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "WR",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0036386",
+      "player_name": "Andrew Thomas",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "T",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0038576",
+      "player_name": "Charlie Jones",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "WR",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0039337",
+      "player_name": "Malik Nabers",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "WR",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0039847",
+      "player_name": "Theo Johnson",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "TE",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0039923",
+      "player_name": "J.J. McCarthy",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "QB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0040677",
+      "player_name": "Abdul Carter",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "LB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0040715",
+      "player_name": "Cam Skattebo",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "RB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0041462",
+      "player_name": "Colton Hood",
+      "team": "NYG",
+      "opponent": "WAS",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "CB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0033082",
+      "player_name": "Lucas Patrick",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "C",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0035409",
+      "player_name": "Shy Tuttle",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "DT",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0036375",
+      "player_name": "Amik Robertson",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "CB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0036628",
+      "player_name": "John Bates",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "TE",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0037742",
+      "player_name": "Treylon Burks",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "WR",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Limited Participation in Practice"
+    },
+    {
+      "player_id": "00-0037809",
+      "player_name": "Chig Okonkwo",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "TE",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0039686",
+      "player_name": "Colson Yankoff",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "TE",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Did Not Participate In Practice"
+    },
+    {
+      "player_id": "00-0039910",
+      "player_name": "Jayden Daniels",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "QB",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    },
+    {
+      "player_id": "00-0041108",
+      "player_name": "Matt Gulbin",
+      "team": "WAS",
+      "opponent": "NYG",
+      "game_id": "2026_10_WAS_NYG",
+      "position": "C",
+      "injury_type": "Injury",
+      "report_status": "PRACTICE ONLY",
+      "practice_status": "Full Participation in Practice"
+    }
+  ]
 }

@@ -2,7 +2,7 @@
 
 v1 scope: **game points**, fully interpretable, published only through
 fail-closed gates with SHA-256 receipts on PropWire's existing trust
-primitives (`src/crypto_utils.py`, RFC-8785 canonical JSON).
+primitives (`src/crypto_utils.py`, canonical JSON).
 
 This package shares **zero code** with the NFL receiving stack
 (`src/model.py`) and imports **no external model**. See `DECISIONS.md`

@@ -1556,9 +1556,8 @@
     try {
       const mql = window.matchMedia('(max-width: 768px)');
       mql.addEventListener('change', (e) => {
-        if (e.matches && state.view === 'table') {
-          setView('cards');
-        }
+        if (e.matches && state.view === 'table') setView('cards');
+        else renderBoard();
       });
     } catch (_) {}
 
@@ -1593,7 +1592,19 @@
         }
       }
     });
-    $('#cardView').addEventListener('click', inspectFromEvent);
+    $('#cardView').addEventListener('click', (event) => {
+      if (!event.target.closest('[data-board-show-more]')) {
+        inspectFromEvent(event);
+        return;
+      }
+      const previousLimit = cardPageLimit;
+      cardPageLimit += CARD_PAGE_SIZE;
+      renderBoard();
+      const cards = $('#cardView');
+      cards.children[previousLimit]?.focus();
+      const status = $('#boardPageStatus');
+      if (status) status.textContent = `${cards.querySelectorAll('.mobile-quant-row').length} player cards shown.`;
+    });
 
     // v175 fail-closed heartbeat probe: re-fetches the odds feed with
     // cache:'no-store' (via triggerOddsPoll) and reports the OBSERVED feed
@@ -3394,6 +3405,10 @@
     return rows;
   }
 
+  const CARD_PAGE_SIZE = 25;
+  let cardPageLimit = CARD_PAGE_SIZE;
+  let cardPageKey = '';
+
   function renderBoard() {
     renderHomeEdgePreview();
     if (SPORT_ID === 'nba' && state.slate.length === 0 && SLATES[state.slateKey]?.marketOnly) {
@@ -3551,20 +3566,28 @@
     $('#slateHead').innerHTML = tableHead(displayHasPrices);
 
     // Stop Dual-Rendering: populate only the active view layout to save DOM weight and boost performance
-    const isCardLayout = state.view === 'cards' || state.view === 'compact-grid';
-    if (state.view === 'table') {
+    const isMobile = Boolean(window.matchMedia?.('(max-width: 768px)').matches);
+    const isCardLayout = isMobile || state.view === 'cards' || state.view === 'compact-grid';
+    if (!isCardLayout) {
       $('#slateRows').innerHTML = displayRows.map((row, idx) => tableRow(row, displayHasPrices, idx)).join('');
       $('#cardView').innerHTML = '';
       $('#cardView').classList.remove('compact-grid');
     } else {
       $('#slateRows').innerHTML = '';
-      $('#cardView').innerHTML = displayRows.map((row, idx) => propCard(row, idx)).join('');
+      const boardKey = JSON.stringify([state.slateKey, state.bottomTab, state.proView, state.view, state.filters]);
+      if (boardKey !== cardPageKey) {
+        cardPageKey = boardKey;
+        cardPageLimit = CARD_PAGE_SIZE;
+      }
+      const visibleRows = displayRows.slice(0, cardPageLimit);
+      const remaining = displayRows.length - visibleRows.length;
+      const more = remaining > 0
+        ? `<div style="grid-column: 1 / -1; text-align: center;"><button type="button" class="board-show-more" data-board-show-more>Show ${Math.min(remaining, CARD_PAGE_SIZE)} more · ${visibleRows.length} of ${displayRows.length} shown</button></div>`
+        : '';
+      $('#cardView').innerHTML = visibleRows.map((row, idx) => propCard(row, idx)).join('') + more;
       $('#cardView').classList.toggle('compact-grid', state.view === 'compact-grid');
-      // v176: card-prog-track/fill retired with the decision-card redesign —
-      // the distribution strip replaced the pseudo proj/fair progress bar.
     }
 
-    const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
     if (isResearchMode) {
       $('#emptyState').hidden = false;
       $('#tableView').hidden = isMobile || state.view !== 'table';
@@ -6804,6 +6827,29 @@
     }
   }
 
+  function recentHitRateMarkup(row, evaluation, market) {
+    if (market !== 'receiving_yards' && market !== 'receptions') return '';
+    const history = row.recent_receiving_games;
+    if (!Array.isArray(history) || !history.length) return '';
+
+    const hasBookLine = evaluation.state === 'verified' && evaluation.quote
+      && !quoteIsSynthetic(evaluation.quote) && Number.isFinite(evaluation.line);
+    const line = hasBookLine ? evaluation.line : fairValue(row);
+    if (!Number.isFinite(line) || line <= 0) return '';
+
+    const field = market === 'receiving_yards' ? 'yards' : 'receptions';
+    const values = history.map((game) => game?.[field]).filter(Number.isFinite);
+    if (!values.length) return '';
+    const side = hasBookLine && evaluation.side === 'UNDER' ? 'Under' : 'Over';
+    const summarize = (limit) => {
+      const sample = values.slice(0, limit);
+      const hits = sample.filter((value) => side === 'Under' ? value < line : value > line).length;
+      const pushes = sample.filter((value) => value === line).length;
+      return `Last ${sample.length}: ${hits}/${sample.length}${pushes ? ` (${pushes} push${pushes === 1 ? '' : 'es'})` : ''}`;
+    };
+    return `<p class="cell-sub card-hit-rate">${side} ${line.toFixed(1)} · ${hasBookLine ? 'Book line' : 'Model fair line'} · ${summarize(5)}${values.length > 5 ? ` · ${summarize(10)}` : ''}</p>`;
+  }
+
   function propCard(row, index = 0) {
     const evaluation = evaluateRow(row);
     const injury = injuryFor(row);
@@ -7009,7 +7055,7 @@
         <!-- Row 2: decision layout (research) or 4-column tabular grid (quoted) -->
         <div class="card-grid-row${isResearchCard ? ' v176-research' : ''}">
           ${gridColsHtml}
-        </div>
+        </div>${recentHitRateMarkup(row, evaluation, state.filters.market)}
       </article>`;
   }
 

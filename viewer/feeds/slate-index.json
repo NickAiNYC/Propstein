@@ -1,6 +1,6 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-11-11T00:57:29Z",
+  "generated_at": "2026-11-12T02:04:21Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
@@ -267,7 +267,7 @@
         "2026-11-14": {
           "date": "2026-11-14",
           "event_name": "UFC 334: Gane vs. Hokit",
-          "fights": 12,
+          "fights": 13,
           "card": "ufc_card_2026-11-14.json",
           "status": "ufc_status_2026-11-14.json",
           "snapshots": "ufc_snapshots_2026-11-14.json",
