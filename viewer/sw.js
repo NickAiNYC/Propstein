@@ -1,11 +1,11 @@
 // PropStein Service Worker (offline shell only; market data always fails closed)
-const CACHE_NAME = 'propstein-v236-terminal';
+const CACHE_NAME = 'propstein-v237-terminal';
 const STATIC_ASSETS = [
   '/index.html',
   '/style.css',
   '/app.js',
-  '/style.css?v=2026_v235',
-  '/app.js?v=2026_v235',
+  '/style.css?v=2026_v236',
+  '/app.js?v=2026_v236',
   '/design-system.css?v=2026_v229',
   '/refresh-2026.css?v=2026_r6',
   '/js/refresh-2026.js?v=2026_r1',
@@ -28,8 +28,8 @@ const STATIC_ASSETS = [
   '/js/sports/nfl.js?v=2026_v179',
   '/js/sports/nba.js?v=2026_v221',
   // brand marks: PropStein lighter ice-blue logo suite
-  '/propstein-logo.webp?v=2026_v235',
-  '/propstein-logo-dark.webp?v=2026_v235',
+  '/propstein-logo.webp?v=2026_v236',
+  '/propstein-logo-dark.webp?v=2026_v236',
   '/propstein-logo.svg?v=2026_v179',
   '/propstein-logo-dark.svg?v=2026_v179',
   '/propwire-logo.svg?v=2026_v179',
