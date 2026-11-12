@@ -452,6 +452,7 @@
    * mean = projection and spread matched to the 80% range, then marks the
    * fair line (dashed) and projection (solid). Visual aid only.
    */
+  let rfDistSeq = 0;
   function densityCurveSvg(dist, unit = '') {
     const mean = Number(dist.proj);
     const low = Number(dist.low);
@@ -470,7 +471,7 @@
     const lg = lgamma(k);
     const pdf = (x) => (x <= 0 ? 0 : Math.exp((k - 1) * Math.log(x) - x / theta - k * Math.log(theta) - lg));
     const xMax = Math.max(high * 1.3, mean * 2, 1);
-    const W = 300; const H = 84; const base = 66; const top = 6;
+    const W = 300; const H = 96; const base = 76; const top = 20;
     const steps = 72;
     const pts = [];
     let peak = 0;
@@ -489,16 +490,30 @@
     const tickVals = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(xMax * f));
     const ticks = tickVals.map((v, i) => `<text x="${X(v)}" y="${base + 14}" text-anchor="${i === 0 ? 'start' : i === tickVals.length - 1 ? 'end' : 'middle'}">${v}</text>`).join('');
     const label = `Approximate shape: projection ${mean.toFixed(1)}, fair line ${fair.toFixed(1)}, 80% range ${low} to ${high}${unit ? ` ${unit}` : ''}`;
+    rfDistSeq += 1;
+    const gid = `rfFill${rfDistSeq}`;
+    const fullArea = `M0 ${base} ${pts.map(([x, y]) => `L${X(x)} ${Y(y)}`).join(' ')} L${W} ${base} Z`;
+    const fx = Number(X(fair)); const mx = Number(X(mean));
+    const fairLeft = fx <= mx;
+    const gap = Math.abs(mx - fx);
+    const fairAnchor = fairLeft ? 'end' : 'start';
+    const projAnchor = fairLeft ? 'start' : 'end';
+    const off = gap < 44 ? 4 : 0;
+    const fairLabelX = fx + (fairLeft ? -4 - off : 4 + off);
+    const projLabelX = mx + (fairLeft ? 4 + off : -4 - off);
     return `<figure class="rf-dist" role="img" aria-label="${esc(label)}">
       <svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">
-        ${bandPath ? `<path class="rf-dist-band" d="${bandPath}"/>` : ''}
+        <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38BDF8" stop-opacity="0.22"/><stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/></linearGradient></defs>
+        <path class="rf-dist-tail" d="${fullArea}"/>
+        ${bandPath ? `<path class="rf-dist-band" fill="url(#${gid})" d="${bandPath}"/>` : ''}
         <path class="rf-dist-line" d="${line}"/>
         <line class="rf-dist-base" x1="0" x2="${W}" y1="${base}" y2="${base}"/>
-        <line class="rf-dist-fair" x1="${X(fair)}" x2="${X(fair)}" y1="${top}" y2="${base}"/>
-        <line class="rf-dist-proj" x1="${X(mean)}" x2="${X(mean)}" y1="${top}" y2="${base}"/>
+        <line class="rf-dist-fair" x1="${fx}" x2="${fx}" y1="${top - 4}" y2="${base}"/>
+        <line class="rf-dist-proj" x1="${mx}" x2="${mx}" y1="${top - 4}" y2="${base}"/>
+        <text class="rf-dist-call rf-dist-call-fair" x="${fairLabelX}" y="9" text-anchor="${fairAnchor}">${fair.toFixed(1)}</text>
+        <text class="rf-dist-call rf-dist-call-proj" x="${projLabelX}" y="9" text-anchor="${projAnchor}">${mean.toFixed(1)}</text>
         <g class="rf-dist-ticks">${ticks}</g>
       </svg>
-      <figcaption class="rf-dist-legend"><span class="k-shape">Approximate shape</span><span class="k-fair">Fair ${fair.toFixed(1)}</span><span class="k-proj">Proj ${mean.toFixed(1)}</span><span class="k-band">80% range</span></figcaption>
     </figure>`;
   }
 
@@ -4015,6 +4030,7 @@
             <div class="rf-prop-top">
               ${avatarFor(row.player_id, row.player_display_name, row.team)}
               <div class="home-edge-player"><strong>${esc(row.player_display_name)}</strong><span>${esc(row.position || '')}${row.position ? ' · ' : ''}${esc(row.team)} ${row.is_home ? 'vs' : '@'} ${esc(row.opponent_team)} · ${esc(previewMarketLabel(state.filters.market))}</span></div>
+              <span class="rf-badge">No live price</span>
             </div>
             <div class="rf-prop-stats">
               <div class="rf-stat"><small>Projection</small><b>${proj.toFixed(1)}</b></div>
