@@ -62,3 +62,6 @@ test-results/
 # Research data corpora (nflverse parquet/csv downloads, ~100MB): regenerable
 # via research/drive-rec-v2/00_download_data.py — never commit the raw data.
 research/drive-rec-v2/data/
+
+# visual regression captures (machine-specific, see scripts/visual/README.md)
+.visual/
