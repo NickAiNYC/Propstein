@@ -30,13 +30,12 @@ Schema in src/closing_snapshot_cron.py, table closing_snapshots:
   provider_event_id, provider_update_ts, raw_provider_payload_sha256,
   closing_snapshot_sha256, locked_at.
 kickoff_at is absent. captured_at is absent.
-game_kickoff_ts is selected from latest_market_quotes and then discarded.
-provider_update_ts (bigint) and locked_at (insert time) cannot be compared
-to a kickoff that was not stored.
+game_kickoff_ts is selected from latest_market_quotes and then discarded
+unless a new lock writes it. New locks store kickoff_at and captured_at and
+include both in closing_snapshot_sha256. Older rows do not have those columns
+populated. Do not backfill them.
 A future snapshots/close_tape.jsonl row needs player_id, market, book, line,
 captured_at, kickoff_at, and receipt_sha256, with captured_at < kickoff_at.
-Those two timestamps must be written at lock time. Existing rows cannot grow them.
-closing_snapshot_sha256 does not cover captured_at or kickoff_at, so it is not that receipt.
 """
 
 

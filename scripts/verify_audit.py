@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -155,17 +156,21 @@ def verify_close_tape_gate() -> None:
     )
     if tracked.returncode != 0:
         raise ValueError("viewer/precommit_log.jsonl is not tracked")
+    emit_env = os.environ.copy()
+    emit_env.pop("DATABASE_URL", None)
     emit = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "emit_close_tape.py")],
         cwd=ROOT,
         capture_output=True,
         text=True,
+        env=emit_env,
     )
-    if emit.returncode != 0 or emit.stdout.strip() != "No close tape source that can prove captured_at < kickoff_at":
-        raise ValueError("emit_close_tape.py must exit 0 and refuse to invent a tape")
+    refusal = "No close tape source that can prove captured_at < kickoff_at"
     emit_src = (ROOT / "scripts" / "emit_close_tape.py").read_text(encoding="utf-8")
-    if "psycopg2" in emit_src or "connect(" in emit_src:
-        raise ValueError("emit_close_tape.py must not open a database")
+    if emit.returncode != 0 or emit.stdout.strip() != refusal or refusal not in emit_src:
+        raise ValueError("emit_close_tape.py must exit 0 and refuse to invent a tape")
+    if "datetime.now" in emit_src or "time.time" in emit_src:
+        raise ValueError("emit_close_tape.py must not invent a timestamp")
     performance = (ROOT / "viewer" / "performance" / "index.html").read_text(encoding="utf-8")
     if "Missing fields on the stored close row: kickoff_at and captured_at." not in performance:
         raise ValueError("performance page omits the missing close-row fields")
