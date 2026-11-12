@@ -10,6 +10,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -82,6 +84,94 @@ def verify_paired_market(root: Path) -> dict[str, Any]:
         run_paired_audit()
     data = json.loads(eval_file.read_text(encoding="utf-8"))
     return data
+
+
+def verify_banned_claims() -> None:
+    """Fail if a public page or JSON repeats the retired claim strings.
+
+    Methodology pages and the historical 8-row hand ledger are excluded.
+    Layout uses of 100% (width, height, gradients) are not claims.
+    """
+    banned = ("100%", "7-1-0", "69.57%", "+4.29%")
+    historical = {(ROOT / "viewer" / "clv_audit_report.json").resolve()}
+    css_markers = ("width", "height", "calc(", "flex", "opacity", "gradient", "translate", "inset", "rgba")
+    offenders: list[str] = []
+    for path in (ROOT / "viewer").rglob("*"):
+        if path.suffix not in {".html", ".json", ".js"}:
+            continue
+        if "methodology" in path.parts:
+            continue
+        if path.resolve() in historical:
+            continue
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if path.suffix == ".html":
+            text = re.sub(r"<style\b[^>]*>.*?</style>", "", text, flags=re.I | re.S)
+            text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+            text = re.sub(r"\sstyle=\"[^\"]*\"", "", text)
+        for token in banned:
+            if token not in text:
+                continue
+            if token == "100%":
+                bad_lines = [
+                    line for line in text.splitlines()
+                    if "100%" in line and not any(marker in line.lower() for marker in css_markers)
+                ]
+                if not bad_lines:
+                    continue
+            rel = path.relative_to(ROOT)
+            offenders.append(f"{rel} contains {token}")
+    if offenders:
+        raise ValueError("banned claim strings: " + "; ".join(offenders[:12]))
+
+
+def verify_close_tape_gate() -> None:
+    from scripts.reveal_precommit import CLOSE_TAPE, reveal
+
+    if CLOSE_TAPE.exists():
+        raise ValueError("snapshots/close_tape.jsonl exists; auto-grade stays off until captured_at < kickoff_at is proven")
+    probe = reveal({
+        "book": "probe",
+        "kickoff_at": "2099-01-01T00:00:00Z",
+        "line": 1.5,
+        "market": "receiving_yards",
+        "odds": -110,
+        "player_id": "probe",
+        "side": "OVER",
+        "slate": "probe",
+    })
+    if probe.get("verified") is True or probe.get("state") == "VERIFIED":
+        raise ValueError("reveal set verified without a close tape")
+    page = (ROOT / "viewer" / "verify" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "viewer" / "verify" / "precommit.js").read_text(encoding="utf-8")
+    if "COMMITTED and AWAITING_CLOSE only" not in page:
+        raise ValueError("precommit page no longer refuses a grade without a close tape")
+    if 'found.state === "VERIFIED" && found.verified === true' not in script:
+        raise ValueError("precommit.js can label a row verified without the reveal state")
+    tracked = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", "viewer/precommit_log.jsonl"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if tracked.returncode != 0:
+        raise ValueError("viewer/precommit_log.jsonl is not tracked")
+
+
+def verify_player_market_page() -> None:
+    sample = ROOT / "viewer" / "nfl" / "00-0039075" / "receiving_yards" / "index.html"
+    if not sample.exists():
+        raise ValueError("player-market page missing for 00-0039075/receiving_yards")
+    text = sample.read_text(encoding="utf-8")
+    required = (
+        "This is not a pick and not a price.",
+        "PropStein full board: 2 of 37 beat close (Week 7). Holdout Brier skill −12.5%. Paid access frozen.",
+        "Puka Nacua",
+    )
+    missing = [line for line in required if line not in text]
+    if missing:
+        raise ValueError("player-market page missing: " + "; ".join(missing))
+    if "<button" in text.lower():
+        raise ValueError("player-market page has a bet button")
 
 
 def run_full_verification() -> int:
@@ -175,6 +265,13 @@ def run_full_verification() -> int:
         paragraph = "34 of 37 Week 7 rows were graded against a second snapshot"
         if paragraph not in performance:
             raise ValueError("performance page omits the time-to-close paragraph")
+        if "Auto-grade off. No close tape with captured_at" not in performance:
+            raise ValueError("performance page omits the auto-grade sentence")
+        verify_banned_claims()
+        verify_close_tape_gate()
+        verify_player_market_page()
+        print("      Close tape: absent. Auto-grade off.")
+        print("      Banned claim strings: none outside methodology and the 8-row ledger")
 
         status_path = ROOT / "viewer" / "precommit_status.json"
         if status_path.exists():

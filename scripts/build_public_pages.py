@@ -1068,7 +1068,9 @@ def main():
     with open(os.path.join(VIEWER, "sitemap.xml"), "w") as f:
         f.write("\n".join(sitemap) + "\n")
     with open(os.path.join(VIEWER, "robots.txt"), "w") as f:
-        f.write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n")
+        players = os.path.join(VIEWER, "sitemap-players.xml")
+        extra = f"Sitemap: {BASE_URL}/sitemap-players.xml\n" if os.path.exists(players) else ""
+        f.write(f"User-agent: *\nAllow: /\n\nSitemap: {BASE_URL}/sitemap.xml\n{extra}")
 
     print(f"generated {count_players} player-market pages, "
           f"{len(MARKETS)} market pages, performance, methodology, "

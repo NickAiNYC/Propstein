@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://propstein.com/sitemap.xml
+Sitemap: https://propstein.com/sitemap-players.xml
