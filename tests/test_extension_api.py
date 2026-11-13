@@ -549,15 +549,17 @@ def test_extension_placements_and_telemetry_routes(client, monkeypatch):
     assert resp_bad.status_code == 400
     assert resp_bad.json()["detail"]["error"] == "SIGNAL_NOT_IN_LEDGER"
 
-    # 2. Placement route with committed forecast in feed succeeds (200)
+    # 2. Placement route with a committed forecast succeeds (200). Uses the
+    # frozen Week 7 pre-kickoff snapshot, not the live odds feed: live quotes
+    # are replaced every refresh (the old demo row here was pruned in #165).
     valid_placement_payload = {
         "audit_id": "audit-valid-1234",
-        "signal_id": "syn_a_ne_chi_player_a_yds_open",
-        "market_key": "player_a:receiving_yards:34.5",
+        "signal_id": "b05d3c69-0c21-4387-b49d-787b7cce4511",
+        "market_key": "kalif_raymond:receiving_yards:34.5",
         "sport": "nfl",
         "user_reported_price": -110,
         "user_reported_line": 34.5,
-        "book": "Synthetic Book A",
+        "book": "DraftKings",
         "model_fair_line": 43.5,
         "achieved_at": "2026-11-04T18:00:00Z",
         "client_observed_latency_ms": 142,

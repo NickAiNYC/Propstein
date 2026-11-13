@@ -13,6 +13,11 @@ from zoneinfo import ZoneInfo
 from autopilot import VIEWER, write_manifest
 
 
+#: FanDuel via The Odds API, or Kalshi (scripts/fetch_kalshi_nba.py) when that
+#: key is out of credits.
+REFERENCE_BOOKS = {"fanduel", "kalshi"}
+
+
 def publish(day: str) -> None:
     datetime.strptime(day, "%Y-%m-%d")
     games_path = VIEWER / f"nba_games_{day}.json"
@@ -26,8 +31,10 @@ def publish(day: str) -> None:
     if not odds.get("quotes") or odds.get("total_quotes") != len(odds["quotes"]):
         raise ValueError("No paired, published player prop quotes")
     game_ids = {g["game_id"] for g in games}
-    if any(q.get("game_id") not in game_ids or q.get("verified") is not False or q.get("book", "").lower() != "fanduel" for q in odds["quotes"]):
-        raise ValueError("NBA odds reference missing game, claim verification, or include a non-FanDuel book")
+    if any(q.get("game_id") not in game_ids or q.get("verified") is not False or q.get("book", "").lower() not in REFERENCE_BOOKS for q in odds["quotes"]):
+        raise ValueError("NBA odds reference missing game, claim verification, or include an unsupported book")
+    if len({q["book"].lower() for q in odds["quotes"]}) != 1:
+        raise ValueError("NBA market slate must come from one reference book")
     (VIEWER / f"nba_slate_{day}.json").write_text("[]\n", encoding="utf-8")
     (VIEWER / f"nba_injuries_{day}.json").write_text(json.dumps({
         "_fixture": False,
@@ -39,7 +46,7 @@ def publish(day: str) -> None:
     }, indent=2) + "\n", encoding="utf-8")
     now = datetime.now(ZoneInfo("America/New_York"))
     write_manifest(now)
-    print(f"Registered NBA {day}: {len(games)} games, {len(odds['quotes'])} unverified points quotes; no modeled predictions")
+    print(f"Registered NBA {day}: {len(games)} games, {len(odds['quotes'])} unverified {odds['quotes'][0]['book']} points quotes; no modeled predictions")
 
 
 if __name__ == "__main__":
