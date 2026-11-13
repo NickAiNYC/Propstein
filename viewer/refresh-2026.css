@@ -1148,3 +1148,80 @@ html.light body .pw-view-toggle { background: #f4f4f5 !important; border-color: 
 html.light body .pw-view-toggle .pw-seg-btn { color: #52525b !important; }
 html.light body .pw-view-toggle .pw-seg-btn.active, html.light body .pw-view-toggle .pw-seg-btn[aria-pressed="true"] { background: #fff !important; color: #09090b !important; border-color: rgba(15, 23, 42, 0.18) !important; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12) !important; }
 html.light body #mobileFilterStrip .chip-segment-group .chip-pill:not(.active) { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
+
+/* ================= Segmented controls: electric cyan-blue active state =================
+   One active treatment for every segmented toggle and view switch (mode, market,
+   position, view, theme, drawer market tabs, Distribution/CDF):
+   active  = sky→blue gradient, white medium text, sky-400/40 border, sky-500/30 glow
+   inactive = transparent, zinc-400 text (zinc-200 on hover, zinc-800/50 hover fill)
+   Gradient starts at sky-600 so white 11-13px labels stay legible (~4.1-5.2:1). */
+html body #mobileFilterStrip .chip-segment-group .chip-pill,
+html body .pw-view-toggle .pw-seg-btn,
+html body #themeToggle.rf-theme-toggle span,
+html body #detailDialog .pd-tab,
+html body #detailDialog .pd-seg-btn {
+  background: transparent !important; color: #a1a1aa !important; border: 1px solid transparent !important;
+  box-shadow: none !important; font-weight: 500 !important;
+  transition: background-color .15s ease, color .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+@media (hover: hover) {
+  html body #mobileFilterStrip .chip-segment-group .chip-pill:not(.active):hover,
+  html body .pw-view-toggle .pw-seg-btn:not(.active):hover,
+  html body #themeToggle.rf-theme-toggle span:not(.on):hover,
+  html body #detailDialog .pd-tab:not(.is-active):hover,
+  html body #detailDialog .pd-seg-btn:not(.is-active):hover {
+    background: rgba(39, 39, 42, 0.5) !important; color: #e4e4e7 !important;
+  }
+}
+html body #mobileFilterStrip .chip-segment-group .chip-pill.active,
+html body .pw-view-toggle .pw-seg-btn.active,
+html body #themeToggle.rf-theme-toggle span.on,
+html body #detailDialog .pd-tab.is-active,
+html body #detailDialog .pd-seg-btn.is-active {
+  background: linear-gradient(90deg, #0284c7, #2563eb) !important; color: #fff !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 1px 2px 0 rgba(14, 165, 233, 0.3), 0 0 12px -3px rgba(14, 165, 233, 0.3) !important;
+}
+/* count chips inside an active segment read on the gradient */
+html body #mobileFilterStrip .chip-segment-group .chip-pill.active .chip-count-pill {
+  background: rgba(255, 255, 255, 0.2) !important; color: #fff !important; border-color: transparent !important;
+}
+/* light theme: same active accent; inactive text darkens for contrast on light trays */
+html.light body #mobileFilterStrip .chip-segment-group .chip-pill:not(.active),
+html.light body .pw-view-toggle .pw-seg-btn:not(.active),
+html.light body #themeToggle.rf-theme-toggle span:not(.on) { color: #52525b !important; }
+@media (hover: hover) {
+  html.light body #mobileFilterStrip .chip-segment-group .chip-pill:not(.active):hover,
+  html.light body .pw-view-toggle .pw-seg-btn:not(.active):hover,
+  html.light body #themeToggle.rf-theme-toggle span:not(.on):hover { background: rgba(228, 228, 231, 0.7) !important; color: #18181b !important; }
+}
+/* specificity: beat the older .pw-chip-scroll-row .view-switch rule and the
+   light/glass active rules so every theme gets the same cyan-blue active tile */
+html body .pw-view-toggle.view-switch .pw-seg-btn.active,
+html.light body .pw-view-toggle.view-switch .pw-seg-btn.active,
+html.light body #mobileFilterStrip .chip-segment-group .chip-pill.active,
+html.light body #themeToggle.rf-theme-toggle span.on {
+  background: linear-gradient(90deg, #0284c7, #2563eb) !important; color: #fff !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 1px 2px 0 rgba(14, 165, 233, 0.3), 0 0 12px -3px rgba(14, 165, 233, 0.3) !important;
+}
+html.light body #mobileFilterStrip .chip-segment-group .chip-pill.active .chip-count-pill {
+  background: rgba(255, 255, 255, 0.2) !important; color: #fff !important; border-color: transparent !important;
+}
+html body .pw-view-toggle.view-switch .pw-seg-btn:not(.active) { background: transparent !important; color: #a1a1aa !important; border-color: transparent !important; }
+html.light body .pw-view-toggle.view-switch .pw-seg-btn:not(.active) { color: #52525b !important; }
+/* sport switcher (NBA / NFL / UFC / NHL) is a segmented toggle too */
+html body #sportSwitcher .sport-switch-btn.active,
+html body .mobile-league-list .sport-switch-btn.active,
+html.light body #sportSwitcher .sport-switch-btn.active,
+html.light body .mobile-league-list .sport-switch-btn.active {
+  background: linear-gradient(90deg, #0284c7, #2563eb) !important; color: #fff !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  box-shadow: 0 1px 2px 0 rgba(14, 165, 233, 0.3), 0 0 12px -3px rgba(14, 165, 233, 0.3) !important;
+}
+html body :is(#sportSwitcher, .mobile-league-list) .sport-switch-btn.active .sport-switch-label { color: #fff !important; }
+html body #sportSwitcher .sport-switch-btn:not(.active) { color: #a1a1aa !important; }
+@media (hover: hover) {
+  html body #sportSwitcher .sport-switch-btn:not(.active):hover { background: rgba(39, 39, 42, 0.5) !important; color: #e4e4e7 !important; }
+  html.light body #sportSwitcher .sport-switch-btn:not(.active):hover { background: rgba(228, 228, 231, 0.7) !important; color: #18181b !important; }
+}
