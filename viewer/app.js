@@ -2399,6 +2399,7 @@
       oddsUpdatedAt: null, newsLastPolledAt: null
     };
     const label = adapter.label || 'This sport';
+    syncHomeEdgeEyebrow();
     const title = $('#homeEdgeTitle');
     if (title) title.textContent = `No current ${label} slate`;
     const status = $('#homeEdgeStatus');
@@ -3954,7 +3955,16 @@
     const short = meta?.short || knownFallback?.short || name;
     return `<span class="home-book-pill" style="--book-accent:${meta?.color || knownFallback?.color || '#8daec2'}" title="${esc(name)}">${esc(short)}</span>`;
   };
+  // Home card eyebrow follows the active sport (it was static "NFL receiving
+  // props" in index.html, so the NBA board carried the NFL label).
+  function syncHomeEdgeEyebrow() {
+    const labels = { nfl: 'NFL receiving props', nba: 'NBA player props', ufc: 'UFC fight markets' };
+    const eyebrow = $('#homeEdgeEyebrow');
+    if (eyebrow) eyebrow.textContent = labels[SPORT_ID] || `${adapter.label || 'Player'} props`;
+  }
+
   function renderHomeEdgePreview() {
+    syncHomeEdgeEyebrow();
     const list = $('#homeEdgeList');
     const status = $('#homeEdgeStatus');
     if (!list || !status) return;
