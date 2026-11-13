@@ -17,7 +17,7 @@ import sys
 import time
 import urllib.request
 
-API = "https://api.github.com/repos/NickAiNYC/Propstein"
+API = "https://api.github.com/repos/NickAltstein/Propstein"
 
 
 def req(method, url, token, payload=None):
@@ -45,7 +45,7 @@ def main():
         print(f"ref {ref} -> {sha}")
 
     # 2. idempotent: existing open pr?
-    prs = req("GET", f"{API}/pulls?head=NickAiNYC:{head}&base={base}&state=open",
+    prs = req("GET", f"{API}/pulls?head=NickAltstein:{head}&base={base}&state=open",
               token)
     if isinstance(prs, list) and prs:
         pr = prs[0]

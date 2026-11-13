@@ -18,7 +18,7 @@
     "away_team": "NE",
     "home_team": "DET",
     "spread_line": 2.5,
-    "total_line": 51.5,
+    "total_line": 50.5,
     "roof": "dome",
     "wind": null,
     "is_open_field": 1
@@ -102,7 +102,7 @@
     "away_team": "MIN",
     "home_team": "GB",
     "spread_line": 3.0,
-    "total_line": 42.5,
+    "total_line": 41.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0

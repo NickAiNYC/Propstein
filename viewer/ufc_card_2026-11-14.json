@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-12T18:44:54Z",
+  "generated_at": "2026-11-13T03:30:16Z",
   "event_id": "600061400",
   "event_name": "UFC 334: Gane vs. Hokit",
   "date": "2026-11-14",
@@ -963,7 +963,7 @@
     }
   ],
   "odds_meter": {
-    "skipped": "outside 48h window or --no-odds"
+    "error": "HTTP Error 401: Unauthorized"
   },
   "market_as_of": null,
   "backtest": {

@@ -321,113 +321,6 @@
     ]
   },
   {
-    "player_id": "00-0036963",
-    "player_display_name": "Amon-Ra St. Brown",
-    "position_hist": "WR",
-    "team": "DET",
-    "targets": 10,
-    "receptions": 8,
-    "receiving_yards": 86,
-    "receiving_air_yards": 82,
-    "receiving_yards_after_catch": 32,
-    "target_share": 0.4,
-    "air_yards_share": 0.5222929936305732,
-    "receiving_tds": 0,
-    "adot": 8.2,
-    "catch_rate_g": 0.8,
-    "ypr_g": 10.75,
-    "f_targets": 10.048922921698473,
-    "f_tgt_share": 0.351087504920253,
-    "f_ay_share": 0.4056335084177245,
-    "f_rec": 7.6323166313160975,
-    "f_yards": 83.49940826254154,
-    "f_adot": 8.04360516652867,
-    "f_catch_rate": 0.7641671217562184,
-    "f_ypr": 10.59015268989279,
-    "c_targets": 9.191011235955056,
-    "c_yards": 76.66292134831461,
-    "games_prior": 90,
-    "f_tgt_sd": 2.5599944196367743,
-    "current_team": "DET",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 5,
-    "full_name": "Amon-Ra St. Brown",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0968920006598522,
-    "def_rec_idx": 1.087690442577334,
-    "def_tgt_idx": 0.9518919323246735,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 8.708084684782696,
-    "mu_ypr": 12.217388015158793,
-    "proj_rec": 8.708084684782696,
-    "proj_yards": 106.39004946285195,
-    "fair_line_rec": 8.5,
-    "fair_line_yards": 98.5,
-    "p_rec_at_fair_line": 0.4728,
-    "recent_receiving_games": [
-      {
-        "receptions": 8,
-        "yards": 86
-      },
-      {
-        "receptions": 7,
-        "yards": 46
-      },
-      {
-        "receptions": 9,
-        "yards": 153
-      },
-      {
-        "receptions": 6,
-        "yards": 69
-      },
-      {
-        "receptions": 8,
-        "yards": 75
-      },
-      {
-        "receptions": 4,
-        "yards": 19
-      },
-      {
-        "receptions": 9,
-        "yards": 142
-      },
-      {
-        "receptions": 10,
-        "yards": 67
-      },
-      {
-        "receptions": 11,
-        "yards": 139
-      },
-      {
-        "receptions": 8,
-        "yards": 68
-      }
-    ]
-  },
-  {
     "player_id": "00-0038543",
     "player_display_name": "Jaxon Smith-Njigba",
     "position_hist": "WR",
@@ -535,109 +428,109 @@
     ]
   },
   {
-    "player_id": "00-0039337",
-    "player_display_name": "Malik Nabers",
+    "player_id": "00-0036963",
+    "player_display_name": "Amon-Ra St. Brown",
     "position_hist": "WR",
-    "team": "NYG",
-    "targets": 8,
-    "receptions": 5,
-    "receiving_yards": 43,
+    "team": "DET",
+    "targets": 10,
+    "receptions": 8,
+    "receiving_yards": 86,
     "receiving_air_yards": 82,
-    "receiving_yards_after_catch": 12,
-    "target_share": 0.2962962962962963,
-    "air_yards_share": 0.3037037037037037,
+    "receiving_yards_after_catch": 32,
+    "target_share": 0.4,
+    "air_yards_share": 0.5222929936305732,
     "receiving_tds": 0,
-    "adot": 10.25,
-    "catch_rate_g": 0.625,
-    "ypr_g": 8.6,
-    "f_targets": 10.179632826504363,
-    "f_tgt_share": 0.31052996734067423,
-    "f_ay_share": 0.35569869392736564,
-    "f_rec": 7.012245525586131,
-    "f_yards": 87.60242850613798,
-    "f_adot": 11.484645007144636,
-    "f_catch_rate": 0.6892324116771447,
-    "f_ypr": 11.682735438191987,
-    "c_targets": 10.576923076923077,
-    "c_yards": 80.0,
-    "games_prior": 27,
-    "f_tgt_sd": 5.743008171432708,
-    "current_team": "NYG",
+    "adot": 8.2,
+    "catch_rate_g": 0.8,
+    "ypr_g": 10.75,
+    "f_targets": 10.048922921698473,
+    "f_tgt_share": 0.351087504920253,
+    "f_ay_share": 0.4056335084177245,
+    "f_rec": 7.6323166313160975,
+    "f_yards": 83.49940826254154,
+    "f_adot": 8.04360516652867,
+    "f_catch_rate": 0.7641671217562184,
+    "f_ypr": 10.59015268989279,
+    "c_targets": 9.191011235955056,
+    "c_yards": 76.66292134831461,
+    "games_prior": 90,
+    "f_tgt_sd": 2.5599944196367743,
+    "current_team": "DET",
     "position": "WR",
     "status": "ACT",
-    "years_exp": 2,
-    "full_name": "Malik Nabers",
+    "years_exp": 5,
+    "full_name": "Amon-Ra St. Brown",
     "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
+    "game_id": "2026_10_NE_DET",
     "season": 2026,
     "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 1,
     "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
     "is_dome": 0,
-    "wind": 14.0,
+    "wind": 5.68,
     "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0968920006598522,
+    "def_rec_idx": 1.087690442577334,
+    "def_tgt_idx": 0.9518919323246735,
     "pos_WR": 1,
     "pos_TE": 0,
     "pos_RB": 0,
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 7.904628661940445,
-    "mu_ypr": 12.304498061730254,
-    "proj_rec": 7.904628661940445,
-    "proj_yards": 97.26248804954362,
-    "fair_line_rec": 7.5,
-    "fair_line_yards": 89.5,
-    "p_rec_at_fair_line": 0.4945,
+    "mu_rec": 8.658698633924661,
+    "mu_ypr": 12.160809444647873,
+    "proj_rec": 8.658698633924661,
+    "proj_yards": 105.29678412579065,
+    "fair_line_rec": 8.5,
+    "fair_line_yards": 97.5,
+    "p_rec_at_fair_line": 0.4681,
     "recent_receiving_games": [
       {
-        "receptions": 5,
-        "yards": 43
+        "receptions": 8,
+        "yards": 86
       },
       {
         "receptions": 7,
-        "yards": 111
+        "yards": 46
       },
       {
-        "receptions": 12,
-        "yards": 165
-      },
-      {
-        "receptions": 11,
-        "yards": 121
-      },
-      {
-        "receptions": 6,
-        "yards": 112
-      },
-      {
-        "receptions": 5,
-        "yards": 26
-      },
-      {
-        "receptions": 1,
-        "yards": 1
+        "receptions": 9,
+        "yards": 153
       },
       {
         "receptions": 6,
         "yards": 69
       },
       {
-        "receptions": 2,
-        "yards": 20
+        "receptions": 8,
+        "yards": 75
       },
       {
-        "receptions": 2,
-        "yards": 13
+        "receptions": 4,
+        "yards": 19
+      },
+      {
+        "receptions": 9,
+        "yards": 142
+      },
+      {
+        "receptions": 10,
+        "yards": 67
+      },
+      {
+        "receptions": 11,
+        "yards": 139
+      },
+      {
+        "receptions": 8,
+        "yards": 68
       }
     ]
   },
@@ -1110,9 +1003,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -1126,13 +1019,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 4.687437674980207,
-    "mu_ypr": 14.692655882445253,
-    "proj_rec": 4.687437674980207,
-    "proj_yards": 68.87090872889344,
+    "mu_rec": 4.660853868805816,
+    "mu_ypr": 14.624614377517513,
+    "proj_rec": 4.660853868805816,
+    "proj_yards": 68.16319050124567,
     "fair_line_rec": 4.5,
-    "fair_line_yards": 61.0,
-    "p_rec_at_fair_line": 0.4765,
+    "fair_line_yards": 60.5,
+    "p_rec_at_fair_line": 0.4726,
     "recent_receiving_games": [
       {
         "receptions": 3,
@@ -3352,113 +3245,6 @@
     ]
   },
   {
-    "player_id": "00-0037240",
-    "player_display_name": "Jameson Williams",
-    "position_hist": "WR",
-    "team": "DET",
-    "targets": 2,
-    "receptions": 1,
-    "receiving_yards": 31,
-    "receiving_air_yards": 46,
-    "receiving_yards_after_catch": 5,
-    "target_share": 0.08,
-    "air_yards_share": 0.2929936305732484,
-    "receiving_tds": 0,
-    "adot": 23.0,
-    "catch_rate_g": 0.5,
-    "ypr_g": 31.0,
-    "f_targets": 5.001352271714019,
-    "f_tgt_share": 0.16789752697195703,
-    "f_ay_share": 0.38750272194409524,
-    "f_rec": 3.057938297997083,
-    "f_yards": 57.59187295547295,
-    "f_adot": 18.00231291110741,
-    "f_catch_rate": 0.5891534257316549,
-    "f_ypr": 22.20874640133914,
-    "c_targets": 5.052631578947368,
-    "c_yards": 51.75438596491228,
-    "games_prior": 58,
-    "f_tgt_sd": 2.267786838055364,
-    "current_team": "DET",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 4,
-    "full_name": "Jameson Williams",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0968920006598522,
-    "def_rec_idx": 1.087690442577334,
-    "def_tgt_idx": 0.9518919323246735,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.9909883226987395,
-    "mu_ypr": 15.81405803348426,
-    "proj_rec": 2.9909883226987395,
-    "proj_yards": 47.29966291263161,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 39.5,
-    "p_rec_at_fair_line": 0.5434,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 31
-      },
-      {
-        "receptions": 4,
-        "yards": 70
-      },
-      {
-        "receptions": 5,
-        "yards": 91
-      },
-      {
-        "receptions": 2,
-        "yards": 47
-      },
-      {
-        "receptions": 6,
-        "yards": 102
-      },
-      {
-        "receptions": 4,
-        "yards": 49
-      },
-      {
-        "receptions": 2,
-        "yards": 33
-      },
-      {
-        "receptions": 4,
-        "yards": 45
-      },
-      {
-        "receptions": 6,
-        "yards": 74
-      },
-      {
-        "receptions": 2,
-        "yards": 37
-      }
-    ]
-  },
-  {
     "player_id": "00-0030506",
     "player_display_name": "Travis Kelce",
     "position_hist": "TE",
@@ -3562,6 +3348,113 @@
       {
         "receptions": 5,
         "yards": 36
+      }
+    ]
+  },
+  {
+    "player_id": "00-0037240",
+    "player_display_name": "Jameson Williams",
+    "position_hist": "WR",
+    "team": "DET",
+    "targets": 2,
+    "receptions": 1,
+    "receiving_yards": 31,
+    "receiving_air_yards": 46,
+    "receiving_yards_after_catch": 5,
+    "target_share": 0.08,
+    "air_yards_share": 0.2929936305732484,
+    "receiving_tds": 0,
+    "adot": 23.0,
+    "catch_rate_g": 0.5,
+    "ypr_g": 31.0,
+    "f_targets": 5.001352271714019,
+    "f_tgt_share": 0.16789752697195703,
+    "f_ay_share": 0.38750272194409524,
+    "f_rec": 3.057938297997083,
+    "f_yards": 57.59187295547295,
+    "f_adot": 18.00231291110741,
+    "f_catch_rate": 0.5891534257316549,
+    "f_ypr": 22.20874640133914,
+    "c_targets": 5.052631578947368,
+    "c_yards": 51.75438596491228,
+    "games_prior": 58,
+    "f_tgt_sd": 2.267786838055364,
+    "current_team": "DET",
+    "position": "WR",
+    "status": "ACT",
+    "years_exp": 4,
+    "full_name": "Jameson Williams",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0968920006598522,
+    "def_rec_idx": 1.087690442577334,
+    "def_tgt_idx": 0.9518919323246735,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 2.9740255683425803,
+    "mu_ypr": 15.740823329274072,
+    "proj_rec": 2.9740255683425803,
+    "proj_yards": 46.81361104802447,
+    "fair_line_rec": 2.5,
+    "fair_line_yards": 39.0,
+    "p_rec_at_fair_line": 0.5401,
+    "recent_receiving_games": [
+      {
+        "receptions": 1,
+        "yards": 31
+      },
+      {
+        "receptions": 4,
+        "yards": 70
+      },
+      {
+        "receptions": 5,
+        "yards": 91
+      },
+      {
+        "receptions": 2,
+        "yards": 47
+      },
+      {
+        "receptions": 6,
+        "yards": 102
+      },
+      {
+        "receptions": 4,
+        "yards": 49
+      },
+      {
+        "receptions": 2,
+        "yards": 33
+      },
+      {
+        "receptions": 4,
+        "yards": 45
+      },
+      {
+        "receptions": 6,
+        "yards": 74
+      },
+      {
+        "receptions": 2,
+        "yards": 37
       }
     ]
   },
@@ -3820,9 +3713,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 1,
     "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -3836,13 +3729,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 4.012688914550594,
-    "mu_ypr": 10.92227554570226,
-    "proj_rec": 4.012688914550594,
-    "proj_yards": 43.8276940039065,
+    "mu_rec": 3.989931802512193,
+    "mu_ypr": 10.87169462477747,
+    "proj_rec": 3.989931802512193,
+    "proj_yards": 43.377320130600495,
     "fair_line_rec": 3.5,
     "fair_line_yards": 38.0,
-    "p_rec_at_fair_line": 0.5335,
+    "p_rec_at_fair_line": 0.5298,
     "recent_receiving_games": [
       {
         "receptions": 4,
@@ -3927,9 +3820,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -3943,13 +3836,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 3.374901465037236,
-    "mu_ypr": 12.880885407049218,
-    "proj_rec": 3.374901465037236,
-    "proj_yards": 43.47171903122717,
+    "mu_rec": 3.3557614289183353,
+    "mu_ypr": 12.82123418844656,
+    "proj_rec": 3.3557614289183353,
+    "proj_yards": 43.02500316071804,
     "fair_line_rec": 3.5,
-    "fair_line_yards": 37.0,
-    "p_rec_at_fair_line": 0.4225,
+    "fair_line_yards": 36.5,
+    "p_rec_at_fair_line": 0.4189,
     "recent_receiving_games": [
       {
         "receptions": 5,
@@ -3990,113 +3883,6 @@
       {
         "receptions": 2,
         "yards": 29
-      }
-    ]
-  },
-  {
-    "player_id": "00-0031588",
-    "player_display_name": "Stefon Diggs",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 5,
-    "receptions": 3,
-    "receiving_yards": 51,
-    "receiving_air_yards": 60,
-    "receiving_yards_after_catch": 24,
-    "target_share": 0.14705882352941177,
-    "air_yards_share": 0.24096385542168675,
-    "receiving_tds": 0,
-    "adot": 12.0,
-    "catch_rate_g": 0.6,
-    "ypr_g": 17.0,
-    "f_targets": 6.223316923715496,
-    "f_tgt_share": 0.19619909198772006,
-    "f_ay_share": 0.20067729111134083,
-    "f_rec": 3.9288952415802982,
-    "f_yards": 45.254751073166446,
-    "f_adot": 9.497678489607221,
-    "f_catch_rate": 0.6333672711886649,
-    "f_ypr": 12.411843274123239,
-    "c_targets": 8.467532467532468,
-    "c_yards": 71.66233766233766,
-    "games_prior": 155,
-    "f_tgt_sd": 1.9226098333849693,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 11,
-    "full_name": "Stefon Diggs",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 3.7033034376804967,
-    "mu_ypr": 11.33092617300211,
-    "proj_rec": 3.7033034376804967,
-    "proj_yards": 41.96185784858263,
-    "fair_line_rec": 3.5,
-    "fair_line_yards": 36.0,
-    "p_rec_at_fair_line": 0.4815,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 51
-      },
-      {
-        "receptions": 3,
-        "yards": 38
-      },
-      {
-        "receptions": 6,
-        "yards": 44
-      },
-      {
-        "receptions": 5,
-        "yards": 35
-      },
-      {
-        "receptions": 4,
-        "yards": 33
-      },
-      {
-        "receptions": 5,
-        "yards": 47
-      },
-      {
-        "receptions": 4,
-        "yards": 55
-      },
-      {
-        "receptions": 3,
-        "yards": 43
-      },
-      {
-        "receptions": 6,
-        "yards": 101
-      },
-      {
-        "receptions": 9,
-        "yards": 138
       }
     ]
   },
@@ -4208,113 +3994,6 @@
     ]
   },
   {
-    "player_id": "00-0035659",
-    "player_display_name": "Terry McLaurin",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 27,
-    "receiving_air_yards": 23,
-    "receiving_yards_after_catch": 4,
-    "target_share": 0.02857142857142857,
-    "air_yards_share": 0.07744107744107744,
-    "receiving_tds": 0,
-    "adot": 23.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 27.0,
-    "f_targets": 4.416638866822444,
-    "f_tgt_share": 0.160642482378498,
-    "f_ay_share": 0.2302927127270173,
-    "f_rec": 2.968605404031477,
-    "f_yards": 47.863563665931785,
-    "f_adot": 15.300003216328221,
-    "f_catch_rate": 0.8133286559391546,
-    "f_ypr": 19.297452114093844,
-    "c_targets": 7.315315315315315,
-    "c_yards": 64.54054054054055,
-    "games_prior": 112,
-    "f_tgt_sd": 2.3260942125619684,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 7,
-    "full_name": "Terry McLaurin",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 3.0645433994261726,
-    "mu_ypr": 13.17143755010042,
-    "proj_rec": 3.0645433994261726,
-    "proj_yards": 40.36444200511428,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 34.0,
-    "p_rec_at_fair_line": 0.5576,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 27
-      },
-      {
-        "receptions": 4,
-        "yards": 62
-      },
-      {
-        "receptions": 6,
-        "yards": 77
-      },
-      {
-        "receptions": 2,
-        "yards": 50
-      },
-      {
-        "receptions": 2,
-        "yards": 14
-      },
-      {
-        "receptions": 4,
-        "yards": 57
-      },
-      {
-        "receptions": 5,
-        "yards": 63
-      },
-      {
-        "receptions": 3,
-        "yards": 53
-      },
-      {
-        "receptions": 3,
-        "yards": 69
-      },
-      {
-        "receptions": 3,
-        "yards": 41
-      }
-    ]
-  },
-  {
     "player_id": "00-0034827",
     "player_display_name": "DJ Moore",
     "position_hist": "WR",
@@ -4418,113 +4097,6 @@
       {
         "receptions": 4,
         "yards": 69
-      }
-    ]
-  },
-  {
-    "player_id": "00-0037838",
-    "player_display_name": "Isaiah Likely",
-    "position_hist": "TE",
-    "team": "NYG",
-    "targets": 6,
-    "receptions": 5,
-    "receiving_yards": 53,
-    "receiving_air_yards": 23,
-    "receiving_yards_after_catch": 31,
-    "target_share": 0.2222222222222222,
-    "air_yards_share": 0.08518518518518518,
-    "receiving_tds": 1,
-    "adot": 3.8333333333333335,
-    "catch_rate_g": 0.8333333333333334,
-    "ypr_g": 10.6,
-    "f_targets": 7.367321528713014,
-    "f_tgt_share": 0.22653662675574113,
-    "f_ay_share": 0.15565266080798576,
-    "f_rec": 5.026875786455831,
-    "f_yards": 52.770423505111374,
-    "f_adot": 6.520306958804172,
-    "f_catch_rate": 0.6762631845292211,
-    "f_ypr": 9.908288260687765,
-    "c_targets": 4.145161290322581,
-    "c_yards": 31.661290322580644,
-    "games_prior": 63,
-    "f_tgt_sd": 4.051013982414067,
-    "current_team": "NYG",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 4,
-    "full_name": "Isaiah Likely",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.342411725058031,
-    "def_rec_idx": 1.1843104641100375,
-    "def_tgt_idx": 1.058465736481679,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 4.0146847077731085,
-    "mu_ypr": 9.975410942961668,
-    "proj_rec": 4.0146847077731085,
-    "proj_yards": 40.04812976646073,
-    "fair_line_rec": 3.5,
-    "fair_line_yards": 35.0,
-    "p_rec_at_fair_line": 0.5338,
-    "recent_receiving_games": [
-      {
-        "receptions": 5,
-        "yards": 53
-      },
-      {
-        "receptions": 2,
-        "yards": 12
-      },
-      {
-        "receptions": 6,
-        "yards": 99
-      },
-      {
-        "receptions": 11,
-        "yards": 94
-      },
-      {
-        "receptions": 7,
-        "yards": 66
-      },
-      {
-        "receptions": 2,
-        "yards": 13
-      },
-      {
-        "receptions": 5,
-        "yards": 33
-      },
-      {
-        "receptions": 8,
-        "yards": 78
-      },
-      {
-        "receptions": 2,
-        "yards": 32
-      },
-      {
-        "receptions": 3,
-        "yards": 27
       }
     ]
   },
@@ -4743,113 +4315,6 @@
     ]
   },
   {
-    "player_id": "00-0037816",
-    "player_display_name": "Romeo Doubs",
-    "position_hist": "WR",
-    "team": "NE",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 42,
-    "receiving_air_yards": 42,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.03333333333333333,
-    "air_yards_share": 0.16030534351145037,
-    "receiving_tds": 1,
-    "adot": 42.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 42.0,
-    "f_targets": 3.473592718122879,
-    "f_tgt_share": 0.11305976416939191,
-    "f_ay_share": 0.21690641692106466,
-    "f_rec": 2.210091688336248,
-    "f_yards": 41.80144235082941,
-    "f_adot": 25.213499414266188,
-    "f_catch_rate": 0.6961288875956239,
-    "f_ypr": 24.893926369008845,
-    "c_targets": 5.359375,
-    "c_yards": 41.296875,
-    "games_prior": 65,
-    "f_tgt_sd": 2.1339098923270954,
-    "current_team": "NE",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 4,
-    "full_name": "Romeo Doubs",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "DET",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.1088162921931597,
-    "def_rec_idx": 1.1875683627777367,
-    "def_tgt_idx": 1.2068432618811875,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.4305494050838456,
-    "mu_ypr": 16.332216477869817,
-    "proj_rec": 2.4305494050838456,
-    "proj_yards": 39.69625904398706,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 32.0,
-    "p_rec_at_fair_line": 0.4247,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 42
-      },
-      {
-        "receptions": 1,
-        "yards": 16
-      },
-      {
-        "receptions": 6,
-        "yards": 58
-      },
-      {
-        "receptions": 3,
-        "yards": 49
-      },
-      {
-        "receptions": 3,
-        "yards": 96
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 62
-      },
-      {
-        "receptions": 5,
-        "yards": 84
-      },
-      {
-        "receptions": 2,
-        "yards": 36
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0041547",
     "player_display_name": "KC Concepcion",
     "position_hist": "WR",
@@ -4949,6 +4414,113 @@
       {
         "receptions": 4,
         "yards": 43
+      }
+    ]
+  },
+  {
+    "player_id": "00-0037816",
+    "player_display_name": "Romeo Doubs",
+    "position_hist": "WR",
+    "team": "NE",
+    "targets": 1,
+    "receptions": 1,
+    "receiving_yards": 42,
+    "receiving_air_yards": 42,
+    "receiving_yards_after_catch": 0,
+    "target_share": 0.03333333333333333,
+    "air_yards_share": 0.16030534351145037,
+    "receiving_tds": 1,
+    "adot": 42.0,
+    "catch_rate_g": 1.0,
+    "ypr_g": 42.0,
+    "f_targets": 3.473592718122879,
+    "f_tgt_share": 0.11305976416939191,
+    "f_ay_share": 0.21690641692106466,
+    "f_rec": 2.210091688336248,
+    "f_yards": 41.80144235082941,
+    "f_adot": 25.213499414266188,
+    "f_catch_rate": 0.6961288875956239,
+    "f_ypr": 24.893926369008845,
+    "c_targets": 5.359375,
+    "c_yards": 41.296875,
+    "games_prior": 65,
+    "f_tgt_sd": 2.1339098923270954,
+    "current_team": "NE",
+    "position": "WR",
+    "status": "ACT",
+    "years_exp": 4,
+    "full_name": "Romeo Doubs",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "DET",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 0,
+    "team_spread": -2.5,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.1088162921931597,
+    "def_rec_idx": 1.1875683627777367,
+    "def_tgt_idx": 1.2068432618811875,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 2.416765060893647,
+    "mu_ypr": 16.25658218840908,
+    "proj_rec": 2.416765060893647,
+    "proj_yards": 39.288339842493045,
+    "fair_line_rec": 2.5,
+    "fair_line_yards": 31.5,
+    "p_rec_at_fair_line": 0.4215,
+    "recent_receiving_games": [
+      {
+        "receptions": 1,
+        "yards": 42
+      },
+      {
+        "receptions": 1,
+        "yards": 16
+      },
+      {
+        "receptions": 6,
+        "yards": 58
+      },
+      {
+        "receptions": 3,
+        "yards": 49
+      },
+      {
+        "receptions": 3,
+        "yards": 96
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 3,
+        "yards": 62
+      },
+      {
+        "receptions": 5,
+        "yards": 84
+      },
+      {
+        "receptions": 2,
+        "yards": 36
+      },
+      {
+        "receptions": 0,
+        "yards": 0
       }
     ]
   },
@@ -6705,9 +6277,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -6721,13 +6293,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 2.647020605305268,
-    "mu_ypr": 13.019568771198365,
-    "proj_rec": 2.647020605305268,
-    "proj_yards": 34.46306680955106,
+    "mu_rec": 2.6320085907271005,
+    "mu_ypr": 12.95927531167748,
+    "proj_rec": 2.6320085907271005,
+    "proj_yards": 34.10892394993275,
     "fair_line_rec": 2.5,
     "fair_line_yards": 28.0,
-    "p_rec_at_fair_line": 0.4728,
+    "p_rec_at_fair_line": 0.4695,
     "recent_receiving_games": [
       {
         "receptions": 3,
@@ -6986,105 +6558,6 @@
     ]
   },
   {
-    "player_id": "00-0041040",
-    "player_display_name": "Antonio Williams",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 6,
-    "receptions": 3,
-    "receiving_yards": 25,
-    "receiving_air_yards": 60,
-    "receiving_yards_after_catch": 7,
-    "target_share": 0.17647058823529413,
-    "air_yards_share": 0.24096385542168675,
-    "receiving_tds": 0,
-    "adot": 10.0,
-    "catch_rate_g": 0.5,
-    "ypr_g": 8.333333333333334,
-    "f_targets": 5.518536506394691,
-    "f_tgt_share": 0.17904431657390335,
-    "f_ay_share": 0.20696806743561103,
-    "f_rec": 3.4461712805569054,
-    "f_yards": 36.43953375424964,
-    "f_adot": 10.522121233146002,
-    "f_catch_rate": 0.6595319040680867,
-    "f_ypr": 10.45308941773245,
-    "c_targets": 4.714285714285714,
-    "c_yards": 37.0,
-    "games_prior": 8,
-    "f_tgt_sd": 1.9760470401187076,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 0,
-    "full_name": "Antonio Williams",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.7767331806108664,
-    "mu_ypr": 12.065103998149606,
-    "proj_rec": 2.7767331806108664,
-    "proj_yards": 33.50157459918284,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 27.5,
-    "p_rec_at_fair_line": 0.5003,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 25
-      },
-      {
-        "receptions": 5,
-        "yards": 54
-      },
-      {
-        "receptions": 3,
-        "yards": 50
-      },
-      {
-        "receptions": 3,
-        "yards": 31
-      },
-      {
-        "receptions": 3,
-        "yards": 21
-      },
-      {
-        "receptions": 2,
-        "yards": 15
-      },
-      {
-        "receptions": 3,
-        "yards": 24
-      },
-      {
-        "receptions": 4,
-        "yards": 64
-      }
-    ]
-  },
-  {
     "player_id": "00-0038104",
     "player_display_name": "Tyquan Thornton",
     "position_hist": "WR",
@@ -7188,105 +6661,6 @@
       {
         "receptions": 0,
         "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0041042",
-    "player_display_name": "Malachi Fields",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 5,
-    "receptions": 3,
-    "receiving_yards": 40,
-    "receiving_air_yards": 61,
-    "receiving_yards_after_catch": 6,
-    "target_share": 0.18518518518518517,
-    "air_yards_share": 0.22592592592592592,
-    "receiving_tds": 0,
-    "adot": 12.2,
-    "catch_rate_g": 0.6,
-    "ypr_g": 13.333333333333334,
-    "f_targets": 4.887971507204146,
-    "f_tgt_share": 0.1591112160492921,
-    "f_ay_share": 0.19834314818258963,
-    "f_rec": 2.805407155577141,
-    "f_yards": 43.98542982030112,
-    "f_adot": 11.669127408126924,
-    "f_catch_rate": 0.6470454913388377,
-    "f_ypr": 14.872726782148833,
-    "c_targets": 4.285714285714286,
-    "c_yards": 35.42857142857143,
-    "games_prior": 8,
-    "f_tgt_sd": 2.214669705568283,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 0,
-    "full_name": "Malachi Fields",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.608475323018849,
-    "mu_ypr": 12.714207168741467,
-    "proj_rec": 2.608475323018849,
-    "proj_yards": 33.16469565141146,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 27.0,
-    "p_rec_at_fair_line": 0.4644,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 40
-      },
-      {
-        "receptions": 4,
-        "yards": 83
-      },
-      {
-        "receptions": 2,
-        "yards": 19
-      },
-      {
-        "receptions": 2,
-        "yards": 20
-      },
-      {
-        "receptions": 2,
-        "yards": 52
-      },
-      {
-        "receptions": 2,
-        "yards": 19
-      },
-      {
-        "receptions": 2,
-        "yards": 30
-      },
-      {
-        "receptions": 2,
-        "yards": 25
       }
     ]
   },
@@ -7652,9 +7026,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -7668,13 +7042,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 3.25213424476627,
-    "mu_ypr": 10.000746500425032,
-    "proj_rec": 3.25213424476627,
-    "proj_yards": 32.52377016725868,
+    "mu_rec": 3.233690456835515,
+    "mu_ypr": 9.954433168939284,
+    "proj_rec": 3.233690456835515,
+    "proj_yards": 32.18955554160588,
     "fair_line_rec": 2.5,
     "fair_line_yards": 27.5,
-    "p_rec_at_fair_line": 0.592,
+    "p_rec_at_fair_line": 0.5887,
     "recent_receiving_games": [
       {
         "receptions": 3,
@@ -8040,105 +7414,6 @@
     ]
   },
   {
-    "player_id": "00-0041395",
-    "player_display_name": "Eli Raridon",
-    "position_hist": "TE",
-    "team": "NE",
-    "targets": 6,
-    "receptions": 3,
-    "receiving_yards": 52,
-    "receiving_air_yards": 52,
-    "receiving_yards_after_catch": 19,
-    "target_share": 0.16666666666666666,
-    "air_yards_share": 0.12064965197215777,
-    "receiving_tds": 0,
-    "adot": 8.666666666666666,
-    "catch_rate_g": 0.5,
-    "ypr_g": 17.333333333333332,
-    "f_targets": 4.383033835195079,
-    "f_tgt_share": 0.1527381162123166,
-    "f_ay_share": 0.1009169081264904,
-    "f_rec": 2.2611299983810915,
-    "f_yards": 33.999352436457826,
-    "f_adot": 7.403426690410664,
-    "f_catch_rate": 0.5237170147320707,
-    "f_ypr": 13.379979493821166,
-    "c_targets": 2.857142857142857,
-    "c_yards": 24.714285714285715,
-    "games_prior": 8,
-    "f_tgt_sd": 1.5735915849388862,
-    "current_team": "NE",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 0,
-    "full_name": "Eli Raridon",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "DET",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.5550774326841055,
-    "def_rec_idx": 1.4165133504504548,
-    "def_tgt_idx": 1.3203725511203452,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.697823297255801,
-    "mu_ypr": 11.59316716708889,
-    "proj_rec": 2.697823297255801,
-    "proj_yards": 31.27631647235344,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 25.5,
-    "p_rec_at_fair_line": 0.4837,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 52
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 3,
-        "yards": 56
-      },
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 5,
-        "yards": 57
-      },
-      {
-        "receptions": 1,
-        "yards": 12
-      },
-      {
-        "receptions": 1,
-        "yards": 30
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      }
-    ]
-  },
-  {
     "player_id": "00-0037112",
     "player_display_name": "Jake Tonges",
     "position_hist": "TE",
@@ -8242,6 +7517,105 @@
       {
         "receptions": 3,
         "yards": 15
+      }
+    ]
+  },
+  {
+    "player_id": "00-0041395",
+    "player_display_name": "Eli Raridon",
+    "position_hist": "TE",
+    "team": "NE",
+    "targets": 6,
+    "receptions": 3,
+    "receiving_yards": 52,
+    "receiving_air_yards": 52,
+    "receiving_yards_after_catch": 19,
+    "target_share": 0.16666666666666666,
+    "air_yards_share": 0.12064965197215777,
+    "receiving_tds": 0,
+    "adot": 8.666666666666666,
+    "catch_rate_g": 0.5,
+    "ypr_g": 17.333333333333332,
+    "f_targets": 4.383033835195079,
+    "f_tgt_share": 0.1527381162123166,
+    "f_ay_share": 0.1009169081264904,
+    "f_rec": 2.2611299983810915,
+    "f_yards": 33.999352436457826,
+    "f_adot": 7.403426690410664,
+    "f_catch_rate": 0.5237170147320707,
+    "f_ypr": 13.379979493821166,
+    "c_targets": 2.857142857142857,
+    "c_yards": 24.714285714285715,
+    "games_prior": 8,
+    "f_tgt_sd": 1.5735915849388862,
+    "current_team": "NE",
+    "position": "TE",
+    "status": "ACT",
+    "years_exp": 0,
+    "full_name": "Eli Raridon",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "DET",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 0,
+    "team_spread": -2.5,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.5550774326841055,
+    "def_rec_idx": 1.4165133504504548,
+    "def_tgt_idx": 1.3203725511203452,
+    "pos_WR": 0,
+    "pos_TE": 1,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 2.68252316601143,
+    "mu_ypr": 11.539479355488398,
+    "proj_rec": 2.68252316601143,
+    "proj_yards": 30.954920694808276,
+    "fair_line_rec": 2.5,
+    "fair_line_yards": 25.5,
+    "p_rec_at_fair_line": 0.4804,
+    "recent_receiving_games": [
+      {
+        "receptions": 3,
+        "yards": 52
+      },
+      {
+        "receptions": 1,
+        "yards": 5
+      },
+      {
+        "receptions": 3,
+        "yards": 56
+      },
+      {
+        "receptions": 1,
+        "yards": 11
+      },
+      {
+        "receptions": 5,
+        "yards": 57
+      },
+      {
+        "receptions": 1,
+        "yards": 12
+      },
+      {
+        "receptions": 1,
+        "yards": 30
+      },
+      {
+        "receptions": 1,
+        "yards": 2
       }
     ]
   },
@@ -8456,113 +7830,6 @@
       {
         "receptions": 0,
         "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0037809",
-    "player_display_name": "Chig Okonkwo",
-    "position_hist": "TE",
-    "team": "WAS",
-    "targets": 7,
-    "receptions": 6,
-    "receiving_yards": 57,
-    "receiving_air_yards": 36,
-    "receiving_yards_after_catch": 25,
-    "target_share": 0.20588235294117646,
-    "air_yards_share": 0.14457831325301204,
-    "receiving_tds": 0,
-    "adot": 5.142857142857143,
-    "catch_rate_g": 0.8571428571428571,
-    "ypr_g": 9.5,
-    "f_targets": 5.744667046990487,
-    "f_tgt_share": 0.18475417736324434,
-    "f_ay_share": 0.14521750629698077,
-    "f_rec": 4.375428418067815,
-    "f_yards": 45.79965066444005,
-    "f_adot": 7.3804296483932585,
-    "f_catch_rate": 0.723655772315922,
-    "f_ypr": 10.916354689517998,
-    "c_targets": 4.169014084507042,
-    "c_yards": 30.971830985915492,
-    "games_prior": 72,
-    "f_tgt_sd": 1.7728105208558367,
-    "current_team": "WAS",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 4,
-    "full_name": "Chig Okonkwo",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.7770721789808446,
-    "def_rec_idx": 0.9705215298735477,
-    "def_tgt_idx": 0.9629504154699327,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 3.0671023358749627,
-    "mu_ypr": 9.734279814117082,
-    "proj_rec": 3.0671023358749627,
-    "proj_yards": 29.856032355939,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 25.0,
-    "p_rec_at_fair_line": 0.558,
-    "recent_receiving_games": [
-      {
-        "receptions": 6,
-        "yards": 57
-      },
-      {
-        "receptions": 2,
-        "yards": 32
-      },
-      {
-        "receptions": 7,
-        "yards": 69
-      },
-      {
-        "receptions": 4,
-        "yards": 60
-      },
-      {
-        "receptions": 2,
-        "yards": 5
-      },
-      {
-        "receptions": 2,
-        "yards": 16
-      },
-      {
-        "receptions": 2,
-        "yards": 2
-      },
-      {
-        "receptions": 3,
-        "yards": 55
-      },
-      {
-        "receptions": 6,
-        "yards": 44
-      },
-      {
-        "receptions": 4,
-        "yards": 33
       }
     ]
   },
@@ -9637,113 +8904,6 @@
     ]
   },
   {
-    "player_id": "00-0040131",
-    "player_display_name": "Kyle Williams",
-    "position_hist": "WR",
-    "team": "NE",
-    "targets": 2,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 83,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.05555555555555555,
-    "air_yards_share": 0.1925754060324826,
-    "receiving_tds": 0,
-    "adot": 41.5,
-    "catch_rate_g": 0.0,
-    "ypr_g": null,
-    "f_targets": 1.5956516675580212,
-    "f_tgt_share": 0.05370871574518896,
-    "f_ay_share": 0.1569924480372008,
-    "f_rec": 0.595893526825762,
-    "f_yards": 18.332583487820152,
-    "f_adot": 28.201158862198728,
-    "f_catch_rate": 0.4314101142981357,
-    "f_ypr": 31.579084020616857,
-    "c_targets": 1.5454545454545454,
-    "c_yards": 18.136363636363637,
-    "games_prior": 23,
-    "f_tgt_sd": 1.0606601717798212,
-    "current_team": "NE",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 1,
-    "full_name": "Kyle Williams",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "DET",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.1088162921931597,
-    "def_rec_idx": 1.1875683627777367,
-    "def_tgt_idx": 1.2068432618811875,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.509495796349038,
-    "mu_ypr": 18.25850937321245,
-    "proj_rec": 1.509495796349038,
-    "proj_yards": 27.561143146463706,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 19.0,
-    "p_rec_at_fair_line": 0.4322,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 43
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 12
-      },
-      {
-        "receptions": 3,
-        "yards": 91
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 34
-      },
-      {
-        "receptions": 1,
-        "yards": 10
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0039342",
     "player_display_name": "Xavier Legette",
     "position_hist": "WR",
@@ -10053,6 +9213,113 @@
       {
         "receptions": 1,
         "yards": 18
+      }
+    ]
+  },
+  {
+    "player_id": "00-0040131",
+    "player_display_name": "Kyle Williams",
+    "position_hist": "WR",
+    "team": "NE",
+    "targets": 2,
+    "receptions": 0,
+    "receiving_yards": 0,
+    "receiving_air_yards": 83,
+    "receiving_yards_after_catch": 0,
+    "target_share": 0.05555555555555555,
+    "air_yards_share": 0.1925754060324826,
+    "receiving_tds": 0,
+    "adot": 41.5,
+    "catch_rate_g": 0.0,
+    "ypr_g": null,
+    "f_targets": 1.5956516675580212,
+    "f_tgt_share": 0.05370871574518896,
+    "f_ay_share": 0.1569924480372008,
+    "f_rec": 0.595893526825762,
+    "f_yards": 18.332583487820152,
+    "f_adot": 28.201158862198728,
+    "f_catch_rate": 0.4314101142981357,
+    "f_ypr": 31.579084020616857,
+    "c_targets": 1.5454545454545454,
+    "c_yards": 18.136363636363637,
+    "games_prior": 23,
+    "f_tgt_sd": 1.0606601717798212,
+    "current_team": "NE",
+    "position": "WR",
+    "status": "ACT",
+    "years_exp": 1,
+    "full_name": "Kyle Williams",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "DET",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 0,
+    "team_spread": -2.5,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.1088162921931597,
+    "def_rec_idx": 1.1875683627777367,
+    "def_tgt_idx": 1.2068432618811875,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.5009350118749554,
+    "mu_ypr": 18.17395444553767,
+    "proj_rec": 1.5009350118749554,
+    "proj_yards": 27.277924531527983,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 19.0,
+    "p_rec_at_fair_line": 0.4296,
+    "recent_receiving_games": [
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 43
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 12
+      },
+      {
+        "receptions": 3,
+        "yards": 91
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 34
+      },
+      {
+        "receptions": 1,
+        "yards": 10
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
       }
     ]
   },
@@ -11341,113 +10608,6 @@
     ]
   },
   {
-    "player_id": "00-0036309",
-    "player_display_name": "Darnell Mooney",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 4,
-    "receptions": 3,
-    "receiving_yards": 54,
-    "receiving_air_yards": 60,
-    "receiving_yards_after_catch": 7,
-    "target_share": 0.14814814814814814,
-    "air_yards_share": 0.2222222222222222,
-    "receiving_tds": 0,
-    "adot": 15.0,
-    "catch_rate_g": 0.75,
-    "ypr_g": 18.0,
-    "f_targets": 3.565032870725701,
-    "f_tgt_share": 0.11567671841531507,
-    "f_ay_share": 0.1725707417656827,
-    "f_rec": 1.6985296041037226,
-    "f_yards": 24.123321072724927,
-    "f_adot": 14.105386056313732,
-    "f_catch_rate": 0.4430038088485212,
-    "f_ypr": 11.058793010642122,
-    "c_targets": 5.833333333333333,
-    "c_yards": 43.135416666666664,
-    "games_prior": 97,
-    "f_tgt_sd": 2.133909892327094,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 6,
-    "full_name": "Darnell Mooney",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.074699699563833,
-    "mu_ypr": 12.298855866137897,
-    "proj_rec": 2.074699699563833,
-    "proj_yards": 25.51643257045518,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 20.0,
-    "p_rec_at_fair_line": 0.5851,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 54
-      },
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 14
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 20
-      },
-      {
-        "receptions": 2,
-        "yards": 48
-      },
-      {
-        "receptions": 2,
-        "yards": 27
-      },
-      {
-        "receptions": 3,
-        "yards": 20
-      },
-      {
-        "receptions": 2,
-        "yards": 35
-      }
-    ]
-  },
-  {
     "player_id": "00-0033307",
     "player_display_name": "Kendrick Bourne",
     "position_hist": "WR",
@@ -12078,113 +11238,6 @@
     ]
   },
   {
-    "player_id": "00-0040669",
-    "player_display_name": "Isaac TeSlaa",
-    "position_hist": "WR",
-    "team": "DET",
-    "targets": 2,
-    "receptions": 1,
-    "receiving_yards": 9,
-    "receiving_air_yards": 2,
-    "receiving_yards_after_catch": 6,
-    "target_share": 0.08,
-    "air_yards_share": 0.012738853503184714,
-    "receiving_tds": 0,
-    "adot": 1.0,
-    "catch_rate_g": 0.5,
-    "ypr_g": 9.0,
-    "f_targets": 2.80431936997597,
-    "f_tgt_share": 0.08400585418851922,
-    "f_ay_share": 0.08206821478042828,
-    "f_rec": 1.3436499218927471,
-    "f_yards": 21.721973422450443,
-    "f_adot": 7.542044598951869,
-    "f_catch_rate": 0.4513549602263336,
-    "f_ypr": 13.235886399918405,
-    "c_targets": 2.4,
-    "c_yards": 21.8,
-    "games_prior": 21,
-    "f_tgt_sd": 2.3754698783308417,
-    "current_team": "DET",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 1,
-    "full_name": "Isaac TeSlaa",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0968920006598522,
-    "def_rec_idx": 1.087690442577334,
-    "def_tgt_idx": 0.9518919323246735,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.917580451365112,
-    "mu_ypr": 12.2370943683904,
-    "proj_rec": 1.917580451365112,
-    "proj_yards": 23.465612942335532,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 18.0,
-    "p_rec_at_fair_line": 0.5466,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 9
-      },
-      {
-        "receptions": 1,
-        "yards": 10
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 4,
-        "yards": 95
-      },
-      {
-        "receptions": 3,
-        "yards": 66
-      },
-      {
-        "receptions": 2,
-        "yards": 26
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 18
-      },
-      {
-        "receptions": 3,
-        "yards": 49
-      },
-      {
-        "receptions": 4,
-        "yards": 52
-      }
-    ]
-  },
-  {
     "player_id": "00-0040584",
     "player_display_name": "Gunnar Helm",
     "position_hist": "TE",
@@ -12395,6 +11448,113 @@
       {
         "receptions": 1,
         "yards": 23
+      }
+    ]
+  },
+  {
+    "player_id": "00-0040669",
+    "player_display_name": "Isaac TeSlaa",
+    "position_hist": "WR",
+    "team": "DET",
+    "targets": 2,
+    "receptions": 1,
+    "receiving_yards": 9,
+    "receiving_air_yards": 2,
+    "receiving_yards_after_catch": 6,
+    "target_share": 0.08,
+    "air_yards_share": 0.012738853503184714,
+    "receiving_tds": 0,
+    "adot": 1.0,
+    "catch_rate_g": 0.5,
+    "ypr_g": 9.0,
+    "f_targets": 2.80431936997597,
+    "f_tgt_share": 0.08400585418851922,
+    "f_ay_share": 0.08206821478042828,
+    "f_rec": 1.3436499218927471,
+    "f_yards": 21.721973422450443,
+    "f_adot": 7.542044598951869,
+    "f_catch_rate": 0.4513549602263336,
+    "f_ypr": 13.235886399918405,
+    "c_targets": 2.4,
+    "c_yards": 21.8,
+    "games_prior": 21,
+    "f_tgt_sd": 2.3754698783308417,
+    "current_team": "DET",
+    "position": "WR",
+    "status": "ACT",
+    "years_exp": 1,
+    "full_name": "Isaac TeSlaa",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0968920006598522,
+    "def_rec_idx": 1.087690442577334,
+    "def_tgt_idx": 0.9518919323246735,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.9067053015332571,
+    "mu_ypr": 12.180424538005076,
+    "proj_rec": 1.9067053015332571,
+    "proj_yards": 23.22448004154005,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 17.5,
+    "p_rec_at_fair_line": 0.5438,
+    "recent_receiving_games": [
+      {
+        "receptions": 1,
+        "yards": 9
+      },
+      {
+        "receptions": 1,
+        "yards": 10
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 4,
+        "yards": 95
+      },
+      {
+        "receptions": 3,
+        "yards": 66
+      },
+      {
+        "receptions": 2,
+        "yards": 26
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 18
+      },
+      {
+        "receptions": 3,
+        "yards": 49
+      },
+      {
+        "receptions": 4,
+        "yards": 52
       }
     ]
   },
@@ -13346,113 +12506,6 @@
     ]
   },
   {
-    "player_id": "00-0039847",
-    "player_display_name": "Theo Johnson",
-    "position_hist": "TE",
-    "team": "NYG",
-    "targets": 3,
-    "receptions": 2,
-    "receiving_yards": 35,
-    "receiving_air_yards": 29,
-    "receiving_yards_after_catch": 12,
-    "target_share": 0.057692307692307696,
-    "air_yards_share": 0.05708661417322835,
-    "receiving_tds": 0,
-    "adot": 9.666666666666666,
-    "catch_rate_g": 0.6666666666666666,
-    "ypr_g": 17.5,
-    "f_targets": 2.7662784081270537,
-    "f_tgt_share": 0.08356904185083439,
-    "f_ay_share": 0.08809843660185764,
-    "f_rec": 1.4182753380194164,
-    "f_yards": 22.16601018212465,
-    "f_adot": 9.604200389937562,
-    "f_catch_rate": 0.6262602137946247,
-    "f_ypr": 14.08320528332332,
-    "c_targets": 4.241379310344827,
-    "c_yards": 30.310344827586206,
-    "games_prior": 30,
-    "f_tgt_sd": 2.326094212561969,
-    "current_team": "NYG",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 2,
-    "full_name": "Theo Johnson",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.342411725058031,
-    "def_rec_idx": 1.1843104641100375,
-    "def_tgt_idx": 1.058465736481679,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.071219075670783,
-    "mu_ypr": 10.9341938737379,
-    "proj_rec": 2.071219075670783,
-    "proj_yards": 22.647110928368555,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 17.5,
-    "p_rec_at_fair_line": 0.5843,
-    "recent_receiving_games": [
-      {
-        "receptions": 2,
-        "yards": 35
-      },
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 9
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 72
-      },
-      {
-        "receptions": 3,
-        "yards": 29
-      },
-      {
-        "receptions": 3,
-        "yards": 77
-      },
-      {
-        "receptions": 3,
-        "yards": 36
-      },
-      {
-        "receptions": 7,
-        "yards": 75
-      }
-    ]
-  },
-  {
     "player_id": "00-0039814",
     "player_display_name": "Erick All",
     "position_hist": "TE",
@@ -13881,113 +12934,6 @@
     ]
   },
   {
-    "player_id": "00-0039139",
-    "player_display_name": "Jahmyr Gibbs",
-    "position_hist": "RB",
-    "team": "DET",
-    "targets": 1,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 4,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.04,
-    "air_yards_share": 0.025477707006369428,
-    "receiving_tds": 0,
-    "adot": 4.0,
-    "catch_rate_g": 0.0,
-    "ypr_g": null,
-    "f_targets": 4.09032328219349,
-    "f_tgt_share": 0.13341136978591114,
-    "f_ay_share": -0.016946812346754887,
-    "f_rec": 2.6962330832427086,
-    "f_yards": 21.620024041684836,
-    "f_adot": 0.48814910553054036,
-    "f_catch_rate": 0.46128153563434826,
-    "f_ypr": 7.918927056315198,
-    "c_targets": 4.857142857142857,
-    "c_yards": 30.964285714285715,
-    "games_prior": 57,
-    "f_tgt_sd": 1.4577379737113254,
-    "current_team": "DET",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 3,
-    "full_name": "Jahmyr Gibbs",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 0.7742334431315565,
-    "def_rec_idx": 0.7806338051966686,
-    "def_tgt_idx": 0.803500745291329,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.692315786550711,
-    "mu_ypr": 8.08439466044758,
-    "proj_rec": 2.692315786550711,
-    "proj_yards": 21.7657433690293,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 18.0,
-    "p_rec_at_fair_line": 0.4825,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 15
-      },
-      {
-        "receptions": 5,
-        "yards": 27
-      },
-      {
-        "receptions": 5,
-        "yards": 56
-      },
-      {
-        "receptions": 4,
-        "yards": 31
-      },
-      {
-        "receptions": 7,
-        "yards": 65
-      },
-      {
-        "receptions": 6,
-        "yards": 61
-      },
-      {
-        "receptions": 5,
-        "yards": 30
-      },
-      {
-        "receptions": 3,
-        "yards": 33
-      },
-      {
-        "receptions": 2,
-        "yards": 23
-      }
-    ]
-  },
-  {
     "player_id": "00-0041525",
     "player_display_name": "Chris Bell",
     "position_hist": "WR",
@@ -14083,6 +13029,113 @@
       {
         "receptions": 1,
         "yards": 25
+      }
+    ]
+  },
+  {
+    "player_id": "00-0039139",
+    "player_display_name": "Jahmyr Gibbs",
+    "position_hist": "RB",
+    "team": "DET",
+    "targets": 1,
+    "receptions": 0,
+    "receiving_yards": 0,
+    "receiving_air_yards": 4,
+    "receiving_yards_after_catch": 0,
+    "target_share": 0.04,
+    "air_yards_share": 0.025477707006369428,
+    "receiving_tds": 0,
+    "adot": 4.0,
+    "catch_rate_g": 0.0,
+    "ypr_g": null,
+    "f_targets": 4.09032328219349,
+    "f_tgt_share": 0.13341136978591114,
+    "f_ay_share": -0.016946812346754887,
+    "f_rec": 2.6962330832427086,
+    "f_yards": 21.620024041684836,
+    "f_adot": 0.48814910553054036,
+    "f_catch_rate": 0.46128153563434826,
+    "f_ypr": 7.918927056315198,
+    "c_targets": 4.857142857142857,
+    "c_yards": 30.964285714285715,
+    "games_prior": 57,
+    "f_tgt_sd": 1.4577379737113254,
+    "current_team": "DET",
+    "position": "RB",
+    "status": "ACT",
+    "years_exp": 3,
+    "full_name": "Jahmyr Gibbs",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 0.7742334431315565,
+    "def_rec_idx": 0.7806338051966686,
+    "def_tgt_idx": 0.803500745291329,
+    "pos_WR": 0,
+    "pos_TE": 0,
+    "pos_RB": 1,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 2.677046889982349,
+    "mu_ypr": 8.046955930273283,
+    "proj_rec": 2.677046889982349,
+    "proj_yards": 21.542078346963113,
+    "fair_line_rec": 2.5,
+    "fair_line_yards": 17.5,
+    "p_rec_at_fair_line": 0.4792,
+    "recent_receiving_games": [
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 2,
+        "yards": 15
+      },
+      {
+        "receptions": 5,
+        "yards": 27
+      },
+      {
+        "receptions": 5,
+        "yards": 56
+      },
+      {
+        "receptions": 4,
+        "yards": 31
+      },
+      {
+        "receptions": 7,
+        "yards": 65
+      },
+      {
+        "receptions": 6,
+        "yards": 61
+      },
+      {
+        "receptions": 5,
+        "yards": 30
+      },
+      {
+        "receptions": 3,
+        "yards": 33
+      },
+      {
+        "receptions": 2,
+        "yards": 23
       }
     ]
   },
@@ -14923,113 +13976,6 @@
     ]
   },
   {
-    "player_id": "00-0031235",
-    "player_display_name": "Odell Beckham Jr.",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 1,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 17,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.047619047619047616,
-    "air_yards_share": 0.125,
-    "receiving_tds": 0,
-    "adot": 17.0,
-    "catch_rate_g": 0.0,
-    "ypr_g": null,
-    "f_targets": 1.7288878416998628,
-    "f_tgt_share": 0.05379399338257648,
-    "f_ay_share": 0.09466898711781145,
-    "f_rec": 0.7272127115747501,
-    "f_yards": 4.534513341945636,
-    "f_adot": 10.739575421624934,
-    "f_catch_rate": 0.42005063079599847,
-    "f_ypr": 5.6804443411332395,
-    "c_targets": 7.406593406593407,
-    "c_yards": 57.494505494505496,
-    "games_prior": 92,
-    "f_tgt_sd": 1.035098339013531,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 12,
-    "full_name": "Odell Beckham Jr.",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.773997785593542,
-    "mu_ypr": 11.455379120835078,
-    "proj_rec": 1.773997785593542,
-    "proj_yards": 20.321817193495924,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 15.0,
-    "p_rec_at_fair_line": 0.5087,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 1
-      },
-      {
-        "receptions": 1,
-        "yards": 9
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 13
-      },
-      {
-        "receptions": 2,
-        "yards": 17
-      },
-      {
-        "receptions": 3,
-        "yards": 15
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 33
-      }
-    ]
-  },
-  {
     "player_id": "00-0034854",
     "player_display_name": "KhaDarel Hodge",
     "position_hist": "WR",
@@ -15771,113 +14717,6 @@
     ]
   },
   {
-    "player_id": "00-0036875",
-    "player_display_name": "Rhamondre Stevenson",
-    "position_hist": "RB",
-    "team": "NE",
-    "targets": 4,
-    "receptions": 3,
-    "receiving_yards": 46,
-    "receiving_air_yards": 14,
-    "receiving_yards_after_catch": 26,
-    "target_share": 0.1111111111111111,
-    "air_yards_share": 0.03248259860788863,
-    "receiving_tds": 1,
-    "adot": 3.5,
-    "catch_rate_g": 0.75,
-    "ypr_g": 15.333333333333334,
-    "f_targets": 3.4399163754893305,
-    "f_tgt_share": 0.11965390603030578,
-    "f_ay_share": 0.030220965580155294,
-    "f_rec": 2.9800934234057905,
-    "f_yards": 35.33798251463572,
-    "f_adot": 2.4621916971767623,
-    "f_catch_rate": 0.878977148446283,
-    "f_ypr": 10.764239613804307,
-    "c_targets": 3.358974358974359,
-    "c_yards": 19.32051282051282,
-    "games_prior": 79,
-    "f_tgt_sd": 1.9226098333849666,
-    "current_team": "NE",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 5,
-    "full_name": "Rhamondre Stevenson",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "DET",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 0.8566420155383199,
-    "def_rec_idx": 0.843715482799762,
-    "def_tgt_idx": 0.845338356629051,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.47051715256992,
-    "mu_ypr": 8.009261680153427,
-    "proj_rec": 2.47051715256992,
-    "proj_yards": 19.78701836024002,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 16.0,
-    "p_rec_at_fair_line": 0.4337,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 46
-      },
-      {
-        "receptions": 3,
-        "yards": 8
-      },
-      {
-        "receptions": 5,
-        "yards": 93
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 21
-      },
-      {
-        "receptions": 3,
-        "yards": 27
-      },
-      {
-        "receptions": 3,
-        "yards": 16
-      },
-      {
-        "receptions": 1,
-        "yards": 3
-      },
-      {
-        "receptions": 5,
-        "yards": 44
-      },
-      {
-        "receptions": 2,
-        "yards": 22
-      }
-    ]
-  },
-  {
     "player_id": "00-0039365",
     "player_display_name": "Jacob Cowing",
     "position_hist": "WR",
@@ -15981,6 +14820,113 @@
       {
         "receptions": 0,
         "yards": 0
+      }
+    ]
+  },
+  {
+    "player_id": "00-0036875",
+    "player_display_name": "Rhamondre Stevenson",
+    "position_hist": "RB",
+    "team": "NE",
+    "targets": 4,
+    "receptions": 3,
+    "receiving_yards": 46,
+    "receiving_air_yards": 14,
+    "receiving_yards_after_catch": 26,
+    "target_share": 0.1111111111111111,
+    "air_yards_share": 0.03248259860788863,
+    "receiving_tds": 1,
+    "adot": 3.5,
+    "catch_rate_g": 0.75,
+    "ypr_g": 15.333333333333334,
+    "f_targets": 3.4399163754893305,
+    "f_tgt_share": 0.11965390603030578,
+    "f_ay_share": 0.030220965580155294,
+    "f_rec": 2.9800934234057905,
+    "f_yards": 35.33798251463572,
+    "f_adot": 2.4621916971767623,
+    "f_catch_rate": 0.878977148446283,
+    "f_ypr": 10.764239613804307,
+    "c_targets": 3.358974358974359,
+    "c_yards": 19.32051282051282,
+    "games_prior": 79,
+    "f_tgt_sd": 1.9226098333849666,
+    "current_team": "NE",
+    "position": "RB",
+    "status": "ACT",
+    "years_exp": 5,
+    "full_name": "Rhamondre Stevenson",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "DET",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 0,
+    "team_spread": -2.5,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 0.8566420155383199,
+    "def_rec_idx": 0.843715482799762,
+    "def_tgt_idx": 0.845338356629051,
+    "pos_WR": 0,
+    "pos_TE": 0,
+    "pos_RB": 1,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 2.456506139797423,
+    "mu_ypr": 7.972170889867593,
+    "proj_rec": 2.456506139797423,
+    "proj_yards": 19.58368673847403,
+    "fair_line_rec": 2.5,
+    "fair_line_yards": 16.0,
+    "p_rec_at_fair_line": 0.4306,
+    "recent_receiving_games": [
+      {
+        "receptions": 3,
+        "yards": 46
+      },
+      {
+        "receptions": 3,
+        "yards": 8
+      },
+      {
+        "receptions": 5,
+        "yards": 93
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 3,
+        "yards": 21
+      },
+      {
+        "receptions": 3,
+        "yards": 27
+      },
+      {
+        "receptions": 3,
+        "yards": 16
+      },
+      {
+        "receptions": 1,
+        "yards": 3
+      },
+      {
+        "receptions": 5,
+        "yards": 44
+      },
+      {
+        "receptions": 2,
+        "yards": 22
       }
     ]
   },
@@ -18160,113 +17106,6 @@
     ]
   },
   {
-    "player_id": "00-0037524",
-    "player_display_name": "Tay Martin",
-    "position_hist": "WR",
-    "team": "DET",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 11,
-    "receiving_air_yards": 9,
-    "receiving_yards_after_catch": 2,
-    "target_share": 0.04,
-    "air_yards_share": 0.05732484076433121,
-    "receiving_tds": 0,
-    "adot": 9.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 11.0,
-    "f_targets": 0.41011597377984116,
-    "f_tgt_share": 0.01650144068053365,
-    "f_ay_share": 0.023405248044267617,
-    "f_rec": 0.39676247109349194,
-    "f_yards": 4.87182028410968,
-    "f_adot": 11.631578947368423,
-    "f_catch_rate": 0.9298245614035088,
-    "f_ypr": 16.333333333333332,
-    "c_targets": 0.4444444444444444,
-    "c_yards": 8.0,
-    "games_prior": 10,
-    "f_tgt_sd": 0.7559289460184544,
-    "current_team": "DET",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 4,
-    "full_name": "Tay Martin",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0968920006598522,
-    "def_rec_idx": 1.087690442577334,
-    "def_tgt_idx": 0.9518919323246735,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.399740042319763,
-    "mu_ypr": 12.881489555847232,
-    "proj_rec": 1.399740042319763,
-    "proj_yards": 18.03073673604319,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 12.0,
-    "p_rec_at_fair_line": 0.3981,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 9
-      },
-      {
-        "receptions": 1,
-        "yards": 14
-      },
-      {
-        "receptions": 1,
-        "yards": 49
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0032392",
     "player_display_name": "Austin Hooper",
     "position_hist": "TE",
@@ -18588,6 +17427,113 @@
     ]
   },
   {
+    "player_id": "00-0037524",
+    "player_display_name": "Tay Martin",
+    "position_hist": "WR",
+    "team": "DET",
+    "targets": 1,
+    "receptions": 1,
+    "receiving_yards": 11,
+    "receiving_air_yards": 9,
+    "receiving_yards_after_catch": 2,
+    "target_share": 0.04,
+    "air_yards_share": 0.05732484076433121,
+    "receiving_tds": 0,
+    "adot": 9.0,
+    "catch_rate_g": 1.0,
+    "ypr_g": 11.0,
+    "f_targets": 0.41011597377984116,
+    "f_tgt_share": 0.01650144068053365,
+    "f_ay_share": 0.023405248044267617,
+    "f_rec": 0.39676247109349194,
+    "f_yards": 4.87182028410968,
+    "f_adot": 11.631578947368423,
+    "f_catch_rate": 0.9298245614035088,
+    "f_ypr": 16.333333333333332,
+    "c_targets": 0.4444444444444444,
+    "c_yards": 8.0,
+    "games_prior": 10,
+    "f_tgt_sd": 0.7559289460184544,
+    "current_team": "DET",
+    "position": "WR",
+    "status": "ACT",
+    "years_exp": 4,
+    "full_name": "Tay Martin",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0968920006598522,
+    "def_rec_idx": 1.087690442577334,
+    "def_tgt_idx": 0.9518919323246735,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.391801714269413,
+    "mu_ypr": 12.821835539439068,
+    "proj_rec": 1.391801714269413,
+    "proj_yards": 17.845452683871777,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 12.0,
+    "p_rec_at_fair_line": 0.3955,
+    "recent_receiving_games": [
+      {
+        "receptions": 1,
+        "yards": 11
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 9
+      },
+      {
+        "receptions": 1,
+        "yards": 14
+      },
+      {
+        "receptions": 1,
+        "yards": 49
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      }
+    ]
+  },
+  {
     "player_id": "00-0039451",
     "player_display_name": "Isaiah Williams",
     "position_hist": "WR",
@@ -18691,220 +17637,6 @@
       {
         "receptions": 5,
         "yards": 24
-      }
-    ]
-  },
-  {
-    "player_id": "00-0034270",
-    "player_display_name": "Tyler Conklin",
-    "position_hist": "TE",
-    "team": "DET",
-    "targets": 1,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 8,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.04,
-    "air_yards_share": 0.050955414012738856,
-    "receiving_tds": 0,
-    "adot": 8.0,
-    "catch_rate_g": 0.0,
-    "ypr_g": null,
-    "f_targets": 1.2244664200330138,
-    "f_tgt_share": 0.04184041199978225,
-    "f_ay_share": 0.036788385211324354,
-    "f_rec": 0.7813673679208419,
-    "f_yards": 6.463300450086481,
-    "f_adot": 5.260352837006671,
-    "f_catch_rate": 0.6257136059919836,
-    "f_ypr": 7.45022524486667,
-    "c_targets": 4.0,
-    "c_yards": 27.38144329896907,
-    "games_prior": 98,
-    "f_tgt_sd": 0.7559289460184542,
-    "current_team": "DET",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 8,
-    "full_name": "Tyler Conklin",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0422735296442627,
-    "def_rec_idx": 1.0724160743178826,
-    "def_tgt_idx": 1.1419073949283176,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.7048716244197504,
-    "mu_ypr": 10.200887709985565,
-    "proj_rec": 1.7048716244197504,
-    "proj_yards": 17.391204000646557,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 12.5,
-    "p_rec_at_fair_line": 0.4895,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 7
-      },
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 1,
-        "yards": 6
-      },
-      {
-        "receptions": 1,
-        "yards": 12
-      },
-      {
-        "receptions": 2,
-        "yards": 30
-      },
-      {
-        "receptions": 1,
-        "yards": 3
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 50
-      },
-      {
-        "receptions": 2,
-        "yards": 16
-      }
-    ]
-  },
-  {
-    "player_id": "00-0036754",
-    "player_display_name": "Brock Wright",
-    "position_hist": "TE",
-    "team": "DET",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 11,
-    "receiving_air_yards": 6,
-    "receiving_yards_after_catch": 5,
-    "target_share": 0.034482758620689655,
-    "air_yards_share": 0.021352313167259787,
-    "receiving_tds": 0,
-    "adot": 6.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 11.0,
-    "f_targets": 1.6081282925429772,
-    "f_tgt_share": 0.04483407825378511,
-    "f_ay_share": 0.017227057082297034,
-    "f_rec": 1.1691097233028585,
-    "f_yards": 8.812348756968463,
-    "f_adot": 3.797410330713774,
-    "f_catch_rate": 0.8035824182506587,
-    "f_ypr": 7.909520430755125,
-    "c_targets": 1.8148148148148149,
-    "c_yards": 12.074074074074074,
-    "games_prior": 55,
-    "f_tgt_sd": 2.2519832529192065,
-    "current_team": "DET",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 5,
-    "full_name": "Brock Wright",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0422735296442627,
-    "def_rec_idx": 1.0724160743178826,
-    "def_tgt_idx": 1.1419073949283176,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.7251347869456657,
-    "mu_ypr": 10.0703839339245,
-    "proj_rec": 1.7251347869456657,
-    "proj_yards": 17.372769642311898,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 12.5,
-    "p_rec_at_fair_line": 0.4952,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 2,
-        "yards": 7
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 3,
-        "yards": 29
-      },
-      {
-        "receptions": 2,
-        "yards": 8
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 3,
-        "yards": 23
       }
     ]
   },
@@ -19333,6 +18065,220 @@
       {
         "receptions": 0,
         "yards": 0
+      }
+    ]
+  },
+  {
+    "player_id": "00-0034270",
+    "player_display_name": "Tyler Conklin",
+    "position_hist": "TE",
+    "team": "DET",
+    "targets": 1,
+    "receptions": 0,
+    "receiving_yards": 0,
+    "receiving_air_yards": 8,
+    "receiving_yards_after_catch": 0,
+    "target_share": 0.04,
+    "air_yards_share": 0.050955414012738856,
+    "receiving_tds": 0,
+    "adot": 8.0,
+    "catch_rate_g": 0.0,
+    "ypr_g": null,
+    "f_targets": 1.2244664200330138,
+    "f_tgt_share": 0.04184041199978225,
+    "f_ay_share": 0.036788385211324354,
+    "f_rec": 0.7813673679208419,
+    "f_yards": 6.463300450086481,
+    "f_adot": 5.260352837006671,
+    "f_catch_rate": 0.6257136059919836,
+    "f_ypr": 7.45022524486667,
+    "c_targets": 4.0,
+    "c_yards": 27.38144329896907,
+    "games_prior": 98,
+    "f_tgt_sd": 0.7559289460184542,
+    "current_team": "DET",
+    "position": "TE",
+    "status": "ACT",
+    "years_exp": 8,
+    "full_name": "Tyler Conklin",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0422735296442627,
+    "def_rec_idx": 1.0724160743178826,
+    "def_tgt_idx": 1.1419073949283176,
+    "pos_WR": 0,
+    "pos_TE": 1,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.6952028074757501,
+    "mu_ypr": 10.153647527071076,
+    "proj_rec": 1.6952028074757501,
+    "proj_yards": 17.212491794010095,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 12.5,
+    "p_rec_at_fair_line": 0.4868,
+    "recent_receiving_games": [
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 7
+      },
+      {
+        "receptions": 1,
+        "yards": 4
+      },
+      {
+        "receptions": 1,
+        "yards": 6
+      },
+      {
+        "receptions": 1,
+        "yards": 12
+      },
+      {
+        "receptions": 2,
+        "yards": 30
+      },
+      {
+        "receptions": 1,
+        "yards": 3
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 2,
+        "yards": 50
+      },
+      {
+        "receptions": 2,
+        "yards": 16
+      }
+    ]
+  },
+  {
+    "player_id": "00-0036754",
+    "player_display_name": "Brock Wright",
+    "position_hist": "TE",
+    "team": "DET",
+    "targets": 1,
+    "receptions": 1,
+    "receiving_yards": 11,
+    "receiving_air_yards": 6,
+    "receiving_yards_after_catch": 5,
+    "target_share": 0.034482758620689655,
+    "air_yards_share": 0.021352313167259787,
+    "receiving_tds": 0,
+    "adot": 6.0,
+    "catch_rate_g": 1.0,
+    "ypr_g": 11.0,
+    "f_targets": 1.6081282925429772,
+    "f_tgt_share": 0.04483407825378511,
+    "f_ay_share": 0.017227057082297034,
+    "f_rec": 1.1691097233028585,
+    "f_yards": 8.812348756968463,
+    "f_adot": 3.797410330713774,
+    "f_catch_rate": 0.8035824182506587,
+    "f_ypr": 7.909520430755125,
+    "c_targets": 1.8148148148148149,
+    "c_yards": 12.074074074074074,
+    "games_prior": 55,
+    "f_tgt_sd": 2.2519832529192065,
+    "current_team": "DET",
+    "position": "TE",
+    "status": "ACT",
+    "years_exp": 5,
+    "full_name": "Brock Wright",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0422735296442627,
+    "def_rec_idx": 1.0724160743178826,
+    "def_tgt_idx": 1.1419073949283176,
+    "pos_WR": 0,
+    "pos_TE": 1,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.7153510517835642,
+    "mu_ypr": 10.023748112358497,
+    "proj_rec": 1.7153510517835642,
+    "proj_yards": 17.194246867347665,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 12.5,
+    "p_rec_at_fair_line": 0.4925,
+    "recent_receiving_games": [
+      {
+        "receptions": 1,
+        "yards": 11
+      },
+      {
+        "receptions": 1,
+        "yards": 8
+      },
+      {
+        "receptions": 2,
+        "yards": 7
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 5
+      },
+      {
+        "receptions": 3,
+        "yards": 29
+      },
+      {
+        "receptions": 2,
+        "yards": 8
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 11
+      },
+      {
+        "receptions": 3,
+        "yards": 23
       }
     ]
   },
@@ -22162,220 +21108,6 @@
     ]
   },
   {
-    "player_id": "00-0036626",
-    "player_display_name": "Dyami Brown",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 1.3955128736771045,
-    "f_tgt_share": 0.045139377196260065,
-    "f_ay_share": 0.07362159836517908,
-    "f_rec": 0.8912896065443411,
-    "f_yards": 9.462260878807982,
-    "f_adot": 14.1925362193913,
-    "f_catch_rate": 0.6501609674443145,
-    "f_ypr": 7.88907128095245,
-    "c_targets": 2.3134328358208953,
-    "c_yards": 16.492537313432837,
-    "games_prior": 68,
-    "f_tgt_sd": 1.9594095320493148,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 5,
-    "full_name": "Dyami Brown",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.2928852003801088,
-    "mu_ypr": 11.766285194389196,
-    "proj_rec": 1.2928852003801088,
-    "proj_yards": 15.212455991277384,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 9.5,
-    "p_rec_at_fair_line": 0.3636,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 6
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 3,
-        "yards": 65
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 4,
-        "yards": 21
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0035544",
-    "player_display_name": "Tom Kennedy",
-    "position_hist": "WR",
-    "team": "DET",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.032502762032504746,
-    "f_tgt_share": 0.0011743476251645896,
-    "f_ay_share": 0.0014368447953738346,
-    "f_rec": 0.027386213149371192,
-    "f_yards": 0.28557238646687144,
-    "f_adot": 8.115033722965888,
-    "f_catch_rate": 0.7419924994409407,
-    "f_ypr": 12.975912905560268,
-    "c_targets": 1.25,
-    "c_yards": 9.625,
-    "games_prior": 25,
-    "f_tgt_sd": 0.0,
-    "current_team": "DET",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 7,
-    "full_name": "Tom Kennedy",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.0968920006598522,
-    "def_rec_idx": 1.087690442577334,
-    "def_tgt_idx": 0.9518919323246735,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.2821665150596566,
-    "mu_ypr": 11.817411882314929,
-    "proj_rec": 1.2821665150596566,
-    "proj_yards": 15.151889810172309,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 9.5,
-    "p_rec_at_fair_line": 0.36,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0039794",
     "player_display_name": "Braelon Allen",
     "position_hist": "RB",
@@ -22570,6 +21302,113 @@
       {
         "receptions": 1,
         "yards": 6
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      }
+    ]
+  },
+  {
+    "player_id": "00-0035544",
+    "player_display_name": "Tom Kennedy",
+    "position_hist": "WR",
+    "team": "DET",
+    "targets": 0,
+    "receptions": 0,
+    "receiving_yards": 0,
+    "receiving_air_yards": 0,
+    "receiving_yards_after_catch": 0,
+    "target_share": 0.0,
+    "air_yards_share": 0.0,
+    "receiving_tds": 0,
+    "adot": null,
+    "catch_rate_g": null,
+    "ypr_g": null,
+    "f_targets": 0.032502762032504746,
+    "f_tgt_share": 0.0011743476251645896,
+    "f_ay_share": 0.0014368447953738346,
+    "f_rec": 0.027386213149371192,
+    "f_yards": 0.28557238646687144,
+    "f_adot": 8.115033722965888,
+    "f_catch_rate": 0.7419924994409407,
+    "f_ypr": 12.975912905560268,
+    "c_targets": 1.25,
+    "c_yards": 9.625,
+    "games_prior": 25,
+    "f_tgt_sd": 0.0,
+    "current_team": "DET",
+    "position": "WR",
+    "status": "ACT",
+    "years_exp": 7,
+    "full_name": "Tom Kennedy",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.0968920006598522,
+    "def_rec_idx": 1.087690442577334,
+    "def_tgt_idx": 0.9518919323246735,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.274894980271776,
+    "mu_ypr": 11.762685596253576,
+    "proj_rec": 1.274894980271776,
+    "proj_yards": 14.996188821178805,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 9.5,
+    "p_rec_at_fair_line": 0.3576,
+    "recent_receiving_games": [
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
       },
       {
         "receptions": 0,
@@ -22899,113 +21738,6 @@
     ]
   },
   {
-    "player_id": "00-0037256",
-    "player_display_name": "Rachaad White",
-    "position_hist": "RB",
-    "team": "WAS",
-    "targets": 3,
-    "receptions": 2,
-    "receiving_yards": 41,
-    "receiving_air_yards": -5,
-    "receiving_yards_after_catch": 52,
-    "target_share": 0.08823529411764706,
-    "air_yards_share": -0.020080321285140562,
-    "receiving_tds": 0,
-    "adot": -1.6666666666666667,
-    "catch_rate_g": 0.6666666666666666,
-    "ypr_g": 20.5,
-    "f_targets": 3.0116344378092315,
-    "f_tgt_share": 0.09575710314426555,
-    "f_ay_share": -0.004893437634672982,
-    "f_rec": 2.3021363522984366,
-    "f_yards": 22.448556906670856,
-    "f_adot": -0.3796479713246943,
-    "f_catch_rate": 0.7827408260725489,
-    "f_ypr": 9.832450377317295,
-    "c_targets": 3.4444444444444446,
-    "c_yards": 21.36111111111111,
-    "games_prior": 73,
-    "f_tgt_sd": 1.8322507626258087,
-    "current_team": "WAS",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 4,
-    "full_name": "Rachaad White",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.6579301852948458,
-    "def_rec_idx": 0.6842352845951165,
-    "def_tgt_idx": 0.6460634002974684,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 2.0423971508465506,
-    "mu_ypr": 7.1865971023183075,
-    "proj_rec": 2.0423971508465506,
-    "proj_yards": 14.677885446056989,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 11.5,
-    "p_rec_at_fair_line": 0.5774,
-    "recent_receiving_games": [
-      {
-        "receptions": 2,
-        "yards": 41
-      },
-      {
-        "receptions": 2,
-        "yards": 5
-      },
-      {
-        "receptions": 4,
-        "yards": 30
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 1,
-        "yards": 6
-      },
-      {
-        "receptions": 6,
-        "yards": 40
-      },
-      {
-        "receptions": 2,
-        "yards": 5
-      },
-      {
-        "receptions": 2,
-        "yards": 18
-      },
-      {
-        "receptions": 2,
-        "yards": 7
-      },
-      {
-        "receptions": 2,
-        "yards": 15
-      }
-    ]
-  },
-  {
     "player_id": "00-0033217",
     "player_display_name": "Mo Alie-Cox",
     "position_hist": "TE",
@@ -23109,113 +21841,6 @@
       {
         "receptions": 0,
         "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0040715",
-    "player_display_name": "Cam Skattebo",
-    "position_hist": "RB",
-    "team": "NYG",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": -3,
-    "receiving_air_yards": -5,
-    "receiving_yards_after_catch": 2,
-    "target_share": 0.037037037037037035,
-    "air_yards_share": -0.018726591760299626,
-    "receiving_tds": 0,
-    "adot": -5.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": -3.0,
-    "f_targets": 2.131638349333483,
-    "f_tgt_share": 0.06827471173760949,
-    "f_ay_share": 0.018002651851241412,
-    "f_rec": 1.701702864811713,
-    "f_yards": 10.202560192064842,
-    "f_adot": -0.5734100045154593,
-    "f_catch_rate": 0.8641464326986774,
-    "f_ypr": 4.530894470869019,
-    "c_targets": 3.3846153846153846,
-    "c_yards": 22.0,
-    "games_prior": 14,
-    "f_tgt_sd": 1.9086270308410556,
-    "current_team": "NYG",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 1,
-    "full_name": "Cam Skattebo",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.1577465570555177,
-    "def_rec_idx": 1.2423799783993499,
-    "def_tgt_idx": 1.3078888810859821,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.955024465780101,
-    "mu_ypr": 7.479055243551569,
-    "proj_rec": 1.955024465780101,
-    "proj_yards": 14.62173598206427,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 11.0,
-    "p_rec_at_fair_line": 0.556,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": -3
-      },
-      {
-        "receptions": 2,
-        "yards": 12
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 3,
-        "yards": 40
-      },
-      {
-        "receptions": 4,
-        "yards": 19
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 18
-      },
-      {
-        "receptions": 3,
-        "yards": 34
-      },
-      {
-        "receptions": 2,
-        "yards": 12
-      },
-      {
-        "receptions": 6,
-        "yards": 45
       }
     ]
   },
@@ -23430,113 +22055,6 @@
       {
         "receptions": 2,
         "yards": 7
-      }
-    ]
-  },
-  {
-    "player_id": "00-0040164",
-    "player_display_name": "Jaylin Lane",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.46922375563586716,
-    "f_tgt_share": 0.017417949339257898,
-    "f_ay_share": 0.009514188491279373,
-    "f_rec": 0.3772707503782034,
-    "f_yards": 6.0096431827310015,
-    "f_adot": 5.012185654406151,
-    "f_catch_rate": 0.8315919923835402,
-    "f_ypr": 16.087120578628042,
-    "c_targets": 1.8888888888888888,
-    "c_yards": 13.88888888888889,
-    "games_prior": 19,
-    "f_tgt_sd": 0.5175491695067654,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 1,
-    "full_name": "Jaylin Lane",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.3438566055821832,
-    "mu_ypr": 10.756374231787824,
-    "proj_rec": 1.3438566055821832,
-    "proj_yards": 14.455024563502048,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 9.5,
-    "p_rec_at_fair_line": 0.3802,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 21
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 13
-      },
-      {
-        "receptions": 1,
-        "yards": 41
       }
     ]
   },
@@ -24900,113 +23418,6 @@
     ]
   },
   {
-    "player_id": "00-0036187",
-    "player_display_name": "Reggie Gilliam",
-    "position_hist": "RB",
-    "team": "NE",
-    "targets": 2,
-    "receptions": 1,
-    "receiving_yards": 4,
-    "receiving_air_yards": -1,
-    "receiving_yards_after_catch": 4,
-    "target_share": 0.09523809523809523,
-    "air_yards_share": -0.00510204081632653,
-    "receiving_tds": 0,
-    "adot": -0.5,
-    "catch_rate_g": 0.5,
-    "ypr_g": 4.0,
-    "f_targets": 0.9182231492279247,
-    "f_tgt_share": 0.04059903293629808,
-    "f_ay_share": 0.021932315376551548,
-    "f_rec": 0.5848842093293696,
-    "f_yards": 6.281166392745691,
-    "f_adot": 12.279425244974764,
-    "f_catch_rate": 0.8333261527910188,
-    "f_ypr": 14.446603824316272,
-    "c_targets": 0.47619047619047616,
-    "c_yards": 3.2142857142857144,
-    "games_prior": 43,
-    "f_tgt_sd": 0.4629100498862757,
-    "current_team": "NE",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 6,
-    "full_name": "Reggie Gilliam",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "DET",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 0.8566420155383199,
-    "def_rec_idx": 0.843715482799762,
-    "def_tgt_idx": 0.845338356629051,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.3618429855341236,
-    "mu_ypr": 9.977279290892819,
-    "proj_rec": 1.3618429855341236,
-    "proj_yards": 13.58748781701726,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 9.0,
-    "p_rec_at_fair_line": 0.386,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 1,
-        "yards": 22
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0035345",
     "player_display_name": "Chris Myarick",
     "position_hist": "TE",
@@ -25217,6 +23628,113 @@
       {
         "receptions": 2,
         "yards": 12
+      }
+    ]
+  },
+  {
+    "player_id": "00-0036187",
+    "player_display_name": "Reggie Gilliam",
+    "position_hist": "RB",
+    "team": "NE",
+    "targets": 2,
+    "receptions": 1,
+    "receiving_yards": 4,
+    "receiving_air_yards": -1,
+    "receiving_yards_after_catch": 4,
+    "target_share": 0.09523809523809523,
+    "air_yards_share": -0.00510204081632653,
+    "receiving_tds": 0,
+    "adot": -0.5,
+    "catch_rate_g": 0.5,
+    "ypr_g": 4.0,
+    "f_targets": 0.9182231492279247,
+    "f_tgt_share": 0.04059903293629808,
+    "f_ay_share": 0.021932315376551548,
+    "f_rec": 0.5848842093293696,
+    "f_yards": 6.281166392745691,
+    "f_adot": 12.279425244974764,
+    "f_catch_rate": 0.8333261527910188,
+    "f_ypr": 14.446603824316272,
+    "c_targets": 0.47619047619047616,
+    "c_yards": 3.2142857142857144,
+    "games_prior": 43,
+    "f_tgt_sd": 0.4629100498862757,
+    "current_team": "NE",
+    "position": "RB",
+    "status": "ACT",
+    "years_exp": 6,
+    "full_name": "Reggie Gilliam",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "DET",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 0,
+    "team_spread": -2.5,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 0.8566420155383199,
+    "def_rec_idx": 0.843715482799762,
+    "def_tgt_idx": 0.845338356629051,
+    "pos_WR": 0,
+    "pos_TE": 0,
+    "pos_RB": 1,
+    "is_week1": 0,
+    "excl_reason": "",
+    "questionable": 0,
+    "mu_rec": 1.3541195825840147,
+    "mu_ypr": 9.931074635759785,
+    "proj_rec": 1.3541195825840147,
+    "proj_yards": 13.447862640385736,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 9.0,
+    "p_rec_at_fair_line": 0.3835,
+    "recent_receiving_games": [
+      {
+        "receptions": 1,
+        "yards": 4
+      },
+      {
+        "receptions": 1,
+        "yards": 22
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": 2
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
       }
     ]
   },
@@ -25649,113 +24167,6 @@
     ]
   },
   {
-    "player_id": "00-0039384",
-    "player_display_name": "Tyrone Tracy Jr.",
-    "position_hist": "RB",
-    "team": "NYG",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 2,
-    "receiving_air_yards": -6,
-    "receiving_yards_after_catch": 8,
-    "target_share": 0.037037037037037035,
-    "air_yards_share": -0.02247191011235955,
-    "receiving_tds": 0,
-    "adot": -6.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 2.0,
-    "f_targets": 1.7160708467746368,
-    "f_tgt_share": 0.045743992745465756,
-    "f_ay_share": -0.000867328113491374,
-    "f_rec": 1.3018503582904561,
-    "f_yards": 11.894407523471749,
-    "f_adot": -0.8370568613339711,
-    "f_catch_rate": 0.7894420492426385,
-    "f_ypr": 8.581491352342312,
-    "c_targets": 2.8157894736842106,
-    "c_yards": 16.42105263157895,
-    "games_prior": 39,
-    "f_tgt_sd": 3.090885217631258,
-    "current_team": "NYG",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 2,
-    "full_name": "Tyrone Tracy Jr.",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.1577465570555177,
-    "def_rec_idx": 1.2423799783993499,
-    "def_tgt_idx": 1.3078888810859821,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.78807857389316,
-    "mu_ypr": 7.390355974254543,
-    "proj_rec": 1.78807857389316,
-    "proj_yards": 13.214537171007859,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 10.0,
-    "p_rec_at_fair_line": 0.5125,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 2,
-        "yards": 27
-      },
-      {
-        "receptions": 2,
-        "yards": 25
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 8,
-        "yards": 56
-      },
-      {
-        "receptions": 1,
-        "yards": -5
-      },
-      {
-        "receptions": 2,
-        "yards": 7
-      }
-    ]
-  },
-  {
     "player_id": "00-0040894",
     "player_display_name": "Malik Benson",
     "position_hist": "WR",
@@ -25847,113 +24258,6 @@
       {
         "receptions": 1,
         "yards": 6
-      }
-    ]
-  },
-  {
-    "player_id": "00-0035250",
-    "player_display_name": "Devin Singletary",
-    "position_hist": "RB",
-    "team": "NYG",
-    "targets": 3,
-    "receptions": 2,
-    "receiving_yards": 8,
-    "receiving_air_yards": -2,
-    "receiving_yards_after_catch": 12,
-    "target_share": 0.1111111111111111,
-    "air_yards_share": -0.007407407407407408,
-    "receiving_tds": 0,
-    "adot": -0.6666666666666666,
-    "catch_rate_g": 0.6666666666666666,
-    "ypr_g": 4.0,
-    "f_targets": 2.3695809867307345,
-    "f_tgt_share": 0.08488163137056745,
-    "f_ay_share": -0.015275798697990343,
-    "f_rec": 1.9371366175463316,
-    "f_yards": 11.255740881658486,
-    "f_adot": -2.0386348686683755,
-    "f_catch_rate": 0.7816792160344926,
-    "f_ypr": 7.252332537810062,
-    "c_targets": 2.482456140350877,
-    "c_yards": 13.06140350877193,
-    "games_prior": 115,
-    "f_tgt_sd": 1.5526475085202953,
-    "current_team": "NYG",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 7,
-    "full_name": "Devin Singletary",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.1577465570555177,
-    "def_rec_idx": 1.2423799783993499,
-    "def_tgt_idx": 1.3078888810859821,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.904829436272091,
-    "mu_ypr": 6.876630335097153,
-    "proj_rec": 1.904829436272091,
-    "proj_yards": 13.09880788465467,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 10.0,
-    "p_rec_at_fair_line": 0.5433,
-    "recent_receiving_games": [
-      {
-        "receptions": 2,
-        "yards": 8
-      },
-      {
-        "receptions": 3,
-        "yards": 14
-      },
-      {
-        "receptions": 1,
-        "yards": 19
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 4,
-        "yards": 22
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 4,
-        "yards": 25
-      },
-      {
-        "receptions": 1,
-        "yards": -1
-      },
-      {
-        "receptions": 1,
-        "yards": 1
-      },
-      {
-        "receptions": 3,
-        "yards": 34
       }
     ]
   },
@@ -26489,113 +24793,6 @@
       {
         "receptions": 0,
         "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0039912",
-    "player_display_name": "Ben Sinnott",
-    "position_hist": "TE",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 1.0001056027863744,
-    "f_tgt_share": 0.04312309797084273,
-    "f_ay_share": 0.036005168680989616,
-    "f_rec": 0.6679192411570002,
-    "f_yards": 4.832028879553147,
-    "f_adot": 6.407437058486264,
-    "f_catch_rate": 0.6043428243840153,
-    "f_ypr": 7.803107236530588,
-    "c_targets": 1.1111111111111112,
-    "c_yards": 8.222222222222221,
-    "games_prior": 19,
-    "f_tgt_sd": 1.0606601717798212,
-    "current_team": "WAS",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 2,
-    "full_name": "Ben Sinnott",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.7770721789808446,
-    "def_rec_idx": 0.9705215298735477,
-    "def_tgt_idx": 0.9629504154699327,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.3145503292430285,
-    "mu_ypr": 9.838029661693273,
-    "proj_rec": 1.3145503292430285,
-    "proj_yards": 12.932585130881572,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 8.5,
-    "p_rec_at_fair_line": 0.3706,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 6
-      },
-      {
-        "receptions": 2,
-        "yards": 3
-      },
-      {
-        "receptions": 3,
-        "yards": 29
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 1,
-        "yards": 36
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 1,
-        "yards": 22
       }
     ]
   },
@@ -27488,9 +25685,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 1,
     "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -27504,13 +25701,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 1.476537023408757,
-    "mu_ypr": 8.493230862329925,
-    "proj_rec": 1.476537023408757,
-    "proj_yards": 12.540569816588018,
+    "mu_rec": 1.468163157608018,
+    "mu_ypr": 8.453898816837581,
+    "proj_rec": 1.468163157608018,
+    "proj_yards": 12.411702781026952,
     "fair_line_rec": 1.5,
     "fair_line_yards": 8.5,
-    "p_rec_at_fair_line": 0.4221,
+    "p_rec_at_fair_line": 0.4195,
     "recent_receiving_games": [
       {
         "receptions": 2,
@@ -28082,113 +26279,6 @@
       {
         "receptions": 2,
         "yards": 20
-      }
-    ]
-  },
-  {
-    "player_id": "00-0036628",
-    "player_display_name": "John Bates",
-    "position_hist": "TE",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.8571058465983016,
-    "f_tgt_share": 0.03216245967282876,
-    "f_ay_share": 0.005572444607912203,
-    "f_rec": 0.7455378778864633,
-    "f_yards": 4.001597354727411,
-    "f_adot": 1.7254729037055467,
-    "f_catch_rate": 0.9111719720922735,
-    "f_ypr": 5.150862350414277,
-    "c_targets": 1.746031746031746,
-    "c_yards": 11.46031746031746,
-    "games_prior": 64,
-    "f_tgt_sd": 0.8864052604279187,
-    "current_team": "WAS",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 5,
-    "full_name": "John Bates",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.7770721789808446,
-    "def_rec_idx": 0.9705215298735477,
-    "def_tgt_idx": 0.9629504154699327,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.386413261156811,
-    "mu_ypr": 8.665112114583275,
-    "proj_rec": 1.386413261156811,
-    "proj_yards": 12.013426345068789,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 8.0,
-    "p_rec_at_fair_line": 0.3938,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 1,
-        "yards": 1
-      },
-      {
-        "receptions": 1,
-        "yards": 9
-      },
-      {
-        "receptions": 2,
-        "yards": 13
-      },
-      {
-        "receptions": 2,
-        "yards": 13
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 19
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 9
       }
     ]
   },
@@ -29041,220 +27131,6 @@
       {
         "receptions": 1,
         "yards": 10
-      }
-    ]
-  },
-  {
-    "player_id": "00-0034419",
-    "player_display_name": "Braxton Berrios",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 1,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 3,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.034482758620689655,
-    "air_yards_share": 0.009036144578313253,
-    "receiving_tds": 0,
-    "adot": 3.0,
-    "catch_rate_g": 0.0,
-    "ypr_g": null,
-    "f_targets": 0.553079179403614,
-    "f_tgt_share": 0.017073138465436698,
-    "f_ay_share": 0.005523803437231439,
-    "f_rec": 0.17069174881799182,
-    "f_yards": 1.1193676306003517,
-    "f_adot": 3.2488692132157397,
-    "f_catch_rate": 0.4287198627449462,
-    "f_ypr": 4.250129900365486,
-    "c_targets": 2.234042553191489,
-    "c_yards": 14.46808510638298,
-    "games_prior": 95,
-    "f_tgt_sd": 1.9272482233188633,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "ACT",
-    "years_exp": 8,
-    "full_name": "Braxton Berrios",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.186523928747198,
-    "mu_ypr": 9.677076680896624,
-    "proj_rec": 1.186523928747198,
-    "proj_yards": 11.482083042205357,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 7.0,
-    "p_rec_at_fair_line": 0.3281,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 5,
-        "yards": 38
-      },
-      {
-        "receptions": 1,
-        "yards": -1
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0031484",
-    "player_display_name": "Chris Manhertz",
-    "position_hist": "TE",
-    "team": "NYG",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.2567160856015226,
-    "f_tgt_share": 0.008566921247693897,
-    "f_ay_share": 0.009689753008746756,
-    "f_rec": 0.1022186206289016,
-    "f_yards": 1.034034092869254,
-    "f_adot": 6.871137047821588,
-    "f_catch_rate": 0.398144585762453,
-    "f_ypr": 10.11613255697317,
-    "c_targets": 0.7666666666666667,
-    "c_yards": 5.133333333333334,
-    "games_prior": 61,
-    "f_tgt_sd": 0.5345224838248488,
-    "current_team": "NYG",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 11,
-    "full_name": "Chris Manhertz",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.342411725058031,
-    "def_rec_idx": 1.1843104641100375,
-    "def_tgt_idx": 1.058465736481679,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.129315188190774,
-    "mu_ypr": 9.960924845262944,
-    "proj_rec": 1.129315188190774,
-    "proj_yards": 11.249023716182277,
-    "fair_line_rec": 0.5,
-    "fair_line_yards": 6.5,
-    "p_rec_at_fair_line": 0.6552,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 7
-      },
-      {
-        "receptions": 1,
-        "yards": 16
-      },
-      {
-        "receptions": 1,
-        "yards": 12
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 2
       }
     ]
   },
@@ -30824,113 +28700,6 @@
     ]
   },
   {
-    "player_id": "00-0040242",
-    "player_display_name": "Jacory Croskey-Merritt",
-    "position_hist": "RB",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 1.212072426688635,
-    "f_tgt_share": 0.035196161437679716,
-    "f_ay_share": 0.004911685923656387,
-    "f_rec": 0.7654683244473185,
-    "f_yards": 8.892919021341717,
-    "f_adot": 1.00610350066273,
-    "f_catch_rate": 0.792584023825194,
-    "f_ypr": 9.206004424147963,
-    "c_targets": 0.9523809523809523,
-    "c_yards": 5.142857142857143,
-    "games_prior": 22,
-    "f_tgt_sd": 1.3562026818605375,
-    "current_team": "WAS",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 1,
-    "full_name": "Jacory Croskey-Merritt",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.6579301852948458,
-    "def_rec_idx": 0.6842352845951165,
-    "def_tgt_idx": 0.6460634002974684,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.3282449587760201,
-    "mu_ypr": 7.657395701129009,
-    "proj_rec": 1.3282449587760201,
-    "proj_yards": 10.170897237377774,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 6.5,
-    "p_rec_at_fair_line": 0.3751,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 35
-      },
-      {
-        "receptions": 1,
-        "yards": 7
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 1,
-        "yards": -7
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0035685",
     "player_display_name": "David Montgomery",
     "position_hist": "RB",
@@ -31078,9 +28847,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -31094,13 +28863,13 @@
     "is_week1": 0,
     "excl_reason": "",
     "questionable": 0,
-    "mu_rec": 1.3001820981404144,
-    "mu_ypr": 7.691590470913359,
-    "proj_rec": 1.3001820981404144,
-    "proj_yards": 10.000468236508949,
+    "mu_rec": 1.2928083918033964,
+    "mu_ypr": 7.655970812009206,
+    "proj_rec": 1.2928083918033964,
+    "proj_yards": 9.897703313167364,
     "fair_line_rec": 1.5,
     "fair_line_yards": 6.5,
-    "p_rec_at_fair_line": 0.3659,
+    "p_rec_at_fair_line": 0.3635,
     "recent_receiving_games": [
       {
         "receptions": 0,
@@ -31664,113 +29433,6 @@
       {
         "receptions": 0,
         "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0033376",
-    "player_display_name": "Patrick Ricard",
-    "position_hist": "RB",
-    "team": "NYG",
-    "targets": 2,
-    "receptions": 1,
-    "receiving_yards": 1,
-    "receiving_air_yards": 3,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.06896551724137931,
-    "air_yards_share": 0.009036144578313253,
-    "receiving_tds": 0,
-    "adot": 1.5,
-    "catch_rate_g": 0.5,
-    "ypr_g": 1.0,
-    "f_targets": 1.1320787723651393,
-    "f_tgt_share": 0.042409834863303034,
-    "f_ay_share": 0.004580800937767215,
-    "f_rec": 0.5080766373008979,
-    "f_yards": 1.8238323613245169,
-    "f_adot": 0.5589716127178258,
-    "f_catch_rate": 0.41687625127126093,
-    "f_ypr": 6.017136936978229,
-    "c_targets": 0.8947368421052632,
-    "c_yards": 4.25,
-    "games_prior": 77,
-    "f_tgt_sd": 0.5345224838248488,
-    "current_team": "NYG",
-    "position": "RB",
-    "status": "ACT",
-    "years_exp": 9,
-    "full_name": "Patrick Ricard",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.1577465570555177,
-    "def_rec_idx": 1.2423799783993499,
-    "def_tgt_idx": 1.3078888810859821,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "",
-    "questionable": 0,
-    "mu_rec": 1.2627412022672229,
-    "mu_ypr": 7.529895834057475,
-    "proj_rec": 1.2627412022672229,
-    "proj_yards": 9.50830971844469,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 6.0,
-    "p_rec_at_fair_line": 0.3536,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 1
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 14
       },
       {
         "receptions": 0,
@@ -32675,9 +30337,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -32691,13 +30353,13 @@
     "is_week1": 0,
     "excl_reason": "injury: out/doubtful",
     "questionable": 0,
-    "mu_rec": 1.6997140404445579,
-    "mu_ypr": 7.927461369133939,
-    "proj_rec": 1.6997140404445579,
-    "proj_yards": 13.474417394198793,
+    "mu_rec": 1.6900744736415154,
+    "mu_ypr": 7.890749395061446,
+    "proj_rec": 1.6900744736415154,
+    "proj_yards": 13.33595413049558,
     "fair_line_rec": 1.5,
-    "fair_line_yards": 10.0,
-    "p_rec_at_fair_line": 0.4881,
+    "fair_line_yards": 9.5,
+    "p_rec_at_fair_line": 0.4854,
     "recent_receiving_games": [
       {
         "receptions": 2,
@@ -32738,113 +30400,6 @@
       {
         "receptions": 2,
         "yards": 13
-      }
-    ]
-  },
-  {
-    "player_id": "00-0039686",
-    "player_display_name": "Colson Yankoff",
-    "position_hist": "TE",
-    "team": "WAS",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 6,
-    "receiving_air_yards": 5,
-    "receiving_yards_after_catch": 1,
-    "target_share": 0.029411764705882353,
-    "air_yards_share": 0.020080321285140562,
-    "receiving_tds": 0,
-    "adot": 5.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 6.0,
-    "f_targets": 0.53457757651657,
-    "f_tgt_share": 0.01611613998030771,
-    "f_ay_share": 0.010122435968016978,
-    "f_rec": 0.41614369825236686,
-    "f_yards": 2.5939460500592793,
-    "f_adot": 7.946347687400319,
-    "f_catch_rate": 0.5911961722488038,
-    "f_ypr": 6.781575757575758,
-    "c_targets": 0.3333333333333333,
-    "c_yards": 1.619047619047619,
-    "games_prior": 22,
-    "f_tgt_sd": 0.7559289460184544,
-    "current_team": "WAS",
-    "position": "TE",
-    "status": "ACT",
-    "years_exp": 2,
-    "full_name": "Colson Yankoff",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.7770721789808446,
-    "def_rec_idx": 0.9705215298735477,
-    "def_tgt_idx": 0.9629504154699327,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "injury: out/doubtful",
-    "questionable": 0,
-    "mu_rec": 1.1112024733683452,
-    "mu_ypr": 9.859136985599278,
-    "proj_rec": 1.1112024733683452,
-    "proj_yards": 10.955497403675249,
-    "fair_line_rec": 0.5,
-    "fair_line_yards": 6.0,
-    "p_rec_at_fair_line": 0.6496,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 6
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 1,
-        "yards": 14
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
       }
     ]
   },
@@ -33261,113 +30816,6 @@
     ]
   },
   {
-    "player_id": "00-0035535",
-    "player_display_name": "Darius Slayton",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 9,
-    "receptions": 4,
-    "receiving_yards": 34,
-    "receiving_air_yards": 39,
-    "receiving_yards_after_catch": 17,
-    "target_share": 0.28125,
-    "air_yards_share": 0.21195652173913043,
-    "receiving_tds": 0,
-    "adot": 4.333333333333333,
-    "catch_rate_g": 0.4444444444444444,
-    "ypr_g": 8.5,
-    "f_targets": 5.662881704335275,
-    "f_tgt_share": 0.1921892965140989,
-    "f_ay_share": 0.248330785710489,
-    "f_rec": 2.804154888933034,
-    "f_yards": 34.469919952091864,
-    "f_adot": 10.673083995604959,
-    "f_catch_rate": 0.5394694412759069,
-    "f_ypr": 13.123369737900038,
-    "c_targets": 5.029411764705882,
-    "c_yards": 43.14705882352941,
-    "games_prior": 103,
-    "f_tgt_sd": 2.7774602993176543,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "CUT",
-    "years_exp": 7,
-    "full_name": "Darius Slayton",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 2.858525052103902,
-    "mu_ypr": 12.196227623740672,
-    "proj_rec": 2.858525052103902,
-    "proj_yards": 34.86322220362435,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 29.0,
-    "p_rec_at_fair_line": 0.5171,
-    "recent_receiving_games": [
-      {
-        "receptions": 4,
-        "yards": 34
-      },
-      {
-        "receptions": 2,
-        "yards": 36
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 4,
-        "yards": 53
-      },
-      {
-        "receptions": 2,
-        "yards": 41
-      },
-      {
-        "receptions": 1,
-        "yards": 23
-      },
-      {
-        "receptions": 4,
-        "yards": 89
-      },
-      {
-        "receptions": 5,
-        "yards": 62
-      },
-      {
-        "receptions": 2,
-        "yards": 26
-      },
-      {
-        "receptions": 3,
-        "yards": 31
-      }
-    ]
-  },
-  {
     "player_id": "00-0034775",
     "player_display_name": "Christian Kirk",
     "position_hist": "WR",
@@ -33475,113 +30923,6 @@
     ]
   },
   {
-    "player_id": "00-0037742",
-    "player_display_name": "Treylon Burks",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 5,
-    "receptions": 3,
-    "receiving_yards": 81,
-    "receiving_air_yards": 97,
-    "receiving_yards_after_catch": 16,
-    "target_share": 0.18518518518518517,
-    "air_yards_share": 0.3464285714285714,
-    "receiving_tds": 0,
-    "adot": 19.4,
-    "catch_rate_g": 0.6,
-    "ypr_g": 27.0,
-    "f_targets": 4.487309143375754,
-    "f_tgt_share": 0.1595700632863442,
-    "f_ay_share": 0.26637079268869995,
-    "f_rec": 2.5364903637734835,
-    "f_yards": 52.20128607363533,
-    "f_adot": 17.743123172085646,
-    "f_catch_rate": 0.5434795903980859,
-    "f_ypr": 21.46945369911468,
-    "c_targets": 3.4473684210526314,
-    "c_yards": 25.81578947368421,
-    "games_prior": 39,
-    "f_tgt_sd": 1.772810520855837,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "INA",
-    "years_exp": 4,
-    "full_name": "Treylon Burks",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 2.168391046510267,
-    "mu_ypr": 14.015208619257976,
-    "proj_rec": 2.168391046510267,
-    "proj_yards": 30.390452884972515,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 24.0,
-    "p_rec_at_fair_line": 0.6067,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 81
-      },
-      {
-        "receptions": 4,
-        "yards": 66
-      },
-      {
-        "receptions": 2,
-        "yards": 26
-      },
-      {
-        "receptions": 1,
-        "yards": 47
-      },
-      {
-        "receptions": 2,
-        "yards": 13
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 12
-      },
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 2,
-        "yards": 30
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0040130",
     "player_display_name": "Jayden Higgins",
     "position_hist": "WR",
@@ -33685,113 +31026,6 @@
       {
         "receptions": 1,
         "yards": 4
-      }
-    ]
-  },
-  {
-    "player_id": "00-0040563",
-    "player_display_name": "Efton Chism III",
-    "position_hist": "WR",
-    "team": "NE",
-    "targets": 5,
-    "receptions": 5,
-    "receiving_yards": 49,
-    "receiving_air_yards": 48,
-    "receiving_yards_after_catch": 1,
-    "target_share": 0.1388888888888889,
-    "air_yards_share": 0.11136890951276102,
-    "receiving_tds": 1,
-    "adot": 9.6,
-    "catch_rate_g": 1.0,
-    "ypr_g": 9.8,
-    "f_targets": 3.708383221667984,
-    "f_tgt_share": 0.13505410686869834,
-    "f_ay_share": 0.09665904820469977,
-    "f_rec": 3.426074143780433,
-    "f_yards": 33.353793808046525,
-    "f_adot": 6.839065950306887,
-    "f_catch_rate": 0.849773094778572,
-    "f_ypr": 10.902676099661644,
-    "c_targets": 1.5333333333333334,
-    "c_yards": 15.066666666666666,
-    "games_prior": 16,
-    "f_tgt_sd": 2.065879266282796,
-    "current_team": "NE",
-    "position": "WR",
-    "status": "INA",
-    "years_exp": 1,
-    "full_name": "Efton Chism III",
-    "changed_team": 0,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "DET",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 1.1088162921931597,
-    "def_rec_idx": 1.1875683627777367,
-    "def_tgt_idx": 1.2068432618811875,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 2.464118780833949,
-    "mu_ypr": 11.523397775217049,
-    "proj_rec": 2.464118780833949,
-    "proj_yards": 28.395020876932477,
-    "fair_line_rec": 2.5,
-    "fair_line_yards": 23.0,
-    "p_rec_at_fair_line": 0.4323,
-    "recent_receiving_games": [
-      {
-        "receptions": 5,
-        "yards": 49
-      },
-      {
-        "receptions": 5,
-        "yards": 37
-      },
-      {
-        "receptions": 1,
-        "yards": 16
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 5,
-        "yards": 57
-      },
-      {
-        "receptions": 2,
-        "yards": 42
-      },
-      {
-        "receptions": 1,
-        "yards": 1
-      },
-      {
-        "receptions": 1,
-        "yards": -2
-      },
-      {
-        "receptions": 1,
-        "yards": 35
-      },
-      {
-        "receptions": 2,
-        "yards": 40
       }
     ]
   },
@@ -33962,6 +31196,113 @@
       {
         "receptions": 2,
         "yards": 32
+      }
+    ]
+  },
+  {
+    "player_id": "00-0040563",
+    "player_display_name": "Efton Chism III",
+    "position_hist": "WR",
+    "team": "NE",
+    "targets": 5,
+    "receptions": 5,
+    "receiving_yards": 49,
+    "receiving_air_yards": 48,
+    "receiving_yards_after_catch": 1,
+    "target_share": 0.1388888888888889,
+    "air_yards_share": 0.11136890951276102,
+    "receiving_tds": 1,
+    "adot": 9.6,
+    "catch_rate_g": 1.0,
+    "ypr_g": 9.8,
+    "f_targets": 3.708383221667984,
+    "f_tgt_share": 0.13505410686869834,
+    "f_ay_share": 0.09665904820469977,
+    "f_rec": 3.426074143780433,
+    "f_yards": 33.353793808046525,
+    "f_adot": 6.839065950306887,
+    "f_catch_rate": 0.849773094778572,
+    "f_ypr": 10.902676099661644,
+    "c_targets": 1.5333333333333334,
+    "c_yards": 15.066666666666666,
+    "games_prior": 16,
+    "f_tgt_sd": 2.065879266282796,
+    "current_team": "NE",
+    "position": "WR",
+    "status": "INA",
+    "years_exp": 1,
+    "full_name": "Efton Chism III",
+    "changed_team": 0,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "DET",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 0,
+    "team_spread": -2.5,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 1.1088162921931597,
+    "def_rec_idx": 1.1875683627777367,
+    "def_tgt_idx": 1.2068432618811875,
+    "pos_WR": 1,
+    "pos_TE": 0,
+    "pos_RB": 0,
+    "is_week1": 0,
+    "excl_reason": "not on active roster",
+    "questionable": 0,
+    "mu_rec": 2.450144055066391,
+    "mu_ypr": 11.470033064794372,
+    "proj_rec": 2.450144055066391,
+    "proj_yards": 28.103233325120865,
+    "fair_line_rec": 2.5,
+    "fair_line_yards": 22.5,
+    "p_rec_at_fair_line": 0.4291,
+    "recent_receiving_games": [
+      {
+        "receptions": 5,
+        "yards": 49
+      },
+      {
+        "receptions": 5,
+        "yards": 37
+      },
+      {
+        "receptions": 1,
+        "yards": 16
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 5,
+        "yards": 57
+      },
+      {
+        "receptions": 2,
+        "yards": 42
+      },
+      {
+        "receptions": 1,
+        "yards": 1
+      },
+      {
+        "receptions": 1,
+        "yards": -2
+      },
+      {
+        "receptions": 1,
+        "yards": 35
+      },
+      {
+        "receptions": 2,
+        "yards": 40
       }
     ]
   },
@@ -34584,113 +31925,6 @@
     ]
   },
   {
-    "player_id": "00-0036415",
-    "player_display_name": "Van Jefferson",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 7,
-    "receptions": 5,
-    "receiving_yards": 58,
-    "receiving_air_yards": 86,
-    "receiving_yards_after_catch": 19,
-    "target_share": 0.20588235294117646,
-    "air_yards_share": 0.3453815261044177,
-    "receiving_tds": 1,
-    "adot": 12.285714285714286,
-    "catch_rate_g": 0.7142857142857143,
-    "ypr_g": 11.6,
-    "f_targets": 4.05003355516139,
-    "f_tgt_share": 0.1266109610499181,
-    "f_ay_share": 0.21652966996296155,
-    "f_rec": 2.6556043951226727,
-    "f_yards": 33.79861803016988,
-    "f_adot": 11.29901096859313,
-    "f_catch_rate": 0.5800290730831408,
-    "f_ypr": 15.134239767360999,
-    "c_targets": 3.5294117647058822,
-    "c_yards": 26.188235294117646,
-    "games_prior": 86,
-    "f_tgt_sd": 2.065879266282796,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "DEV",
-    "years_exp": 6,
-    "full_name": "Van Jefferson",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 2.0327636579459143,
-    "mu_ypr": 11.714456778214771,
-    "proj_rec": 2.0327636579459143,
-    "proj_yards": 23.812722011333168,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 18.5,
-    "p_rec_at_fair_line": 0.5751,
-    "recent_receiving_games": [
-      {
-        "receptions": 5,
-        "yards": 58
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 46
-      },
-      {
-        "receptions": 2,
-        "yards": 24
-      },
-      {
-        "receptions": 1,
-        "yards": 43
-      },
-      {
-        "receptions": 2,
-        "yards": 17
-      },
-      {
-        "receptions": 3,
-        "yards": 20
-      },
-      {
-        "receptions": 1,
-        "yards": 11
-      },
-      {
-        "receptions": 3,
-        "yards": 22
-      },
-      {
-        "receptions": 1,
-        "yards": 21
-      }
-    ]
-  },
-  {
     "player_id": "00-0040648",
     "player_display_name": "Tory Horton",
     "position_hist": "WR",
@@ -35210,113 +32444,6 @@
       {
         "receptions": 1,
         "yards": 14
-      }
-    ]
-  },
-  {
-    "player_id": "00-0037837",
-    "player_display_name": "Calvin Austin III",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 7,
-    "receptions": 3,
-    "receiving_yards": 55,
-    "receiving_air_yards": 109,
-    "receiving_yards_after_catch": 10,
-    "target_share": 0.1590909090909091,
-    "air_yards_share": 0.3353846153846154,
-    "receiving_tds": 1,
-    "adot": 15.571428571428571,
-    "catch_rate_g": 0.42857142857142855,
-    "ypr_g": 18.333333333333332,
-    "f_targets": 3.611071702855185,
-    "f_tgt_share": 0.09565664658239922,
-    "f_ay_share": 0.18071431750236866,
-    "f_rec": 1.7050287177608305,
-    "f_yards": 26.62207370497169,
-    "f_adot": 11.015937548655614,
-    "f_catch_rate": 0.512670799102988,
-    "f_ypr": 14.848707407258809,
-    "c_targets": 2.9565217391304346,
-    "c_yards": 22.717391304347824,
-    "games_prior": 47,
-    "f_tgt_sd": 2.474873734152917,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "RES",
-    "years_exp": 4,
-    "full_name": "Calvin Austin III",
-    "changed_team": 1,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.8172435761595502,
-    "mu_ypr": 12.094094596878948,
-    "proj_rec": 1.8172435761595502,
-    "proj_yards": 21.977915715644194,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 16.5,
-    "p_rec_at_fair_line": 0.5204,
-    "recent_receiving_games": [
-      {
-        "receptions": 3,
-        "yards": 55
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 31
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 4,
-        "yards": 36
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 2,
-        "yards": 14
-      },
-      {
-        "receptions": 5,
-        "yards": 56
-      },
-      {
-        "receptions": 4,
-        "yards": 28
       }
     ]
   },
@@ -36110,9 +33237,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -36126,13 +33253,13 @@
     "is_week1": 0,
     "excl_reason": "not on active roster",
     "questionable": 0,
-    "mu_rec": 1.8716265887522103,
-    "mu_ypr": 10.554813104533832,
-    "proj_rec": 1.8716265887522103,
-    "proj_yards": 19.75466884575578,
+    "mu_rec": 1.8610120564818828,
+    "mu_ypr": 10.50593389756067,
+    "proj_rec": 1.8610120564818828,
+    "proj_yards": 19.551669647962104,
     "fair_line_rec": 1.5,
-    "fair_line_yards": 15.0,
-    "p_rec_at_fair_line": 0.5347,
+    "fair_line_yards": 14.5,
+    "p_rec_at_fair_line": 0.532,
     "recent_receiving_games": [
       {
         "receptions": 3,
@@ -36391,113 +33518,6 @@
     ]
   },
   {
-    "player_id": "00-0035645",
-    "player_display_name": "Gunner Olszewski",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 9,
-    "receptions": 8,
-    "receiving_yards": 102,
-    "receiving_air_yards": 76,
-    "receiving_yards_after_catch": 57,
-    "target_share": 0.28125,
-    "air_yards_share": 0.41304347826086957,
-    "receiving_tds": 0,
-    "adot": 8.444444444444445,
-    "catch_rate_g": 0.8888888888888888,
-    "ypr_g": 12.75,
-    "f_targets": 3.300270297937478,
-    "f_tgt_share": 0.10385188391195391,
-    "f_ay_share": 0.1468111048495615,
-    "f_rec": 2.9084077962008212,
-    "f_yards": 38.69047122394434,
-    "f_adot": 6.5665033868476685,
-    "f_catch_rate": 0.890972730868394,
-    "f_ypr": 17.185245234708997,
-    "c_targets": 0.3037974683544304,
-    "c_yards": 2.8227848101265822,
-    "games_prior": 80,
-    "f_tgt_sd": 0.7559289460184544,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "RES",
-    "years_exp": 7,
-    "full_name": "Gunner Olszewski",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.796584823158775,
-    "mu_ypr": 10.657996550238485,
-    "proj_rec": 1.796584823158775,
-    "proj_yards": 19.147994847437044,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 14.0,
-    "p_rec_at_fair_line": 0.5148,
-    "recent_receiving_games": [
-      {
-        "receptions": 8,
-        "yards": 102
-      },
-      {
-        "receptions": 1,
-        "yards": 19
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 24
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0037666",
     "player_display_name": "Jalen Tolbert",
     "position_hist": "WR",
@@ -36601,113 +33621,6 @@
       {
         "receptions": 1,
         "yards": 8
-      }
-    ]
-  },
-  {
-    "player_id": "00-0038576",
-    "player_display_name": "Charlie Jones",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.4575028241982609,
-    "f_tgt_share": 0.010720162352313396,
-    "f_ay_share": 0.02614818122055173,
-    "f_rec": 0.29634550390054126,
-    "f_yards": 9.778303705843232,
-    "f_adot": 25.142965311376937,
-    "f_catch_rate": 0.6129254151631016,
-    "f_ypr": 32.995062918756204,
-    "c_targets": 0.3888888888888889,
-    "c_yards": 3.75,
-    "games_prior": 37,
-    "f_tgt_sd": 1.0690449676496976,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "DEV",
-    "years_exp": 3,
-    "full_name": "Charlie Jones",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.212377650352468,
-    "mu_ypr": 15.49821067722545,
-    "proj_rec": 1.212377650352468,
-    "proj_yards": 18.78968424552212,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 11.5,
-    "p_rec_at_fair_line": 0.3368,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 66
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
       }
     ]
   },
@@ -36946,9 +33859,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -36962,13 +33875,13 @@
     "is_week1": 0,
     "excl_reason": "not on active roster",
     "questionable": 0,
-    "mu_rec": 1.8291751096200226,
-    "mu_ypr": 9.969025129765512,
-    "proj_rec": 1.8291751096200226,
-    "proj_yards": 18.23509263454359,
+    "mu_rec": 1.818801331887956,
+    "mu_ypr": 9.92285869954903,
+    "proj_rec": 1.818801331887956,
+    "proj_yards": 18.047708618875767,
     "fair_line_rec": 1.5,
     "fair_line_yards": 13.5,
-    "p_rec_at_fair_line": 0.5236,
+    "p_rec_at_fair_line": 0.5208,
     "recent_receiving_games": [
       {
         "receptions": 1,
@@ -37651,113 +34564,6 @@
       {
         "receptions": 1,
         "yards": 3
-      }
-    ]
-  },
-  {
-    "player_id": "00-0038938",
-    "player_display_name": "Jalin Hyatt",
-    "position_hist": "WR",
-    "team": "NYG",
-    "targets": 1,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 46,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.037037037037037035,
-    "air_yards_share": 0.17037037037037037,
-    "receiving_tds": 0,
-    "adot": 46.0,
-    "catch_rate_g": 0.0,
-    "ypr_g": null,
-    "f_targets": 1.6260142925170031,
-    "f_tgt_share": 0.05471412621101098,
-    "f_ay_share": 0.14824052164367857,
-    "f_rec": 0.47138793285002617,
-    "f_yards": 3.7549803404332085,
-    "f_adot": 28.961112449160147,
-    "f_catch_rate": 0.13792391086177966,
-    "f_ypr": 8.180690454397364,
-    "c_targets": 2.5172413793103448,
-    "c_yards": 16.20689655172414,
-    "games_prior": 30,
-    "f_tgt_sd": 1.7268882005337975,
-    "current_team": "NYG",
-    "position": "WR",
-    "status": "DEV",
-    "years_exp": 3,
-    "full_name": "Jalin Hyatt",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.0052520608608062,
-    "def_rec_idx": 1.070759709924246,
-    "def_tgt_idx": 1.0593667247589227,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.1167222432764679,
-    "mu_ypr": 15.571999277241591,
-    "proj_rec": 1.1167222432764679,
-    "proj_yards": 17.389597965180766,
-    "fair_line_rec": 0.5,
-    "fair_line_yards": 10.0,
-    "p_rec_at_fair_line": 0.6513,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 18
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 17
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 9
-      },
-      {
-        "receptions": 0,
-        "yards": 0
       }
     ]
   },
@@ -39675,113 +36481,6 @@
     ]
   },
   {
-    "player_id": "00-0039355",
-    "player_display_name": "Luke McCaffrey",
-    "position_hist": "WR",
-    "team": "WAS",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 6,
-    "receiving_air_yards": 5,
-    "receiving_yards_after_catch": 1,
-    "target_share": 0.029411764705882353,
-    "air_yards_share": 0.020080321285140562,
-    "receiving_tds": 0,
-    "adot": 5.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 6.0,
-    "f_targets": 0.6746173079458421,
-    "f_tgt_share": 0.021082192616084242,
-    "f_ay_share": 0.029995884926292106,
-    "f_rec": 0.4710539506612391,
-    "f_yards": 3.9719362934666163,
-    "f_adot": 16.509780520708862,
-    "f_catch_rate": 0.500351620390513,
-    "f_ypr": 15.239699844211815,
-    "c_targets": 1.5384615384615385,
-    "c_yards": 14.26923076923077,
-    "games_prior": 27,
-    "f_tgt_sd": 1.125991626459604,
-    "current_team": "WAS",
-    "position": "WR",
-    "status": "INA",
-    "years_exp": 2,
-    "full_name": "Luke McCaffrey",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.8375696726188168,
-    "def_rec_idx": 0.9418767677104847,
-    "def_tgt_idx": 1.0171001461967795,
-    "pos_WR": 1,
-    "pos_TE": 0,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.1802521140635072,
-    "mu_ypr": 12.898304551041589,
-    "proj_rec": 1.1802521140635072,
-    "proj_yards": 15.22325121420179,
-    "fair_line_rec": 0.5,
-    "fair_line_yards": 9.0,
-    "p_rec_at_fair_line": 0.6704,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 6
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 24
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 33
-      },
-      {
-        "receptions": 1,
-        "yards": 50
-      }
-    ]
-  },
-  {
     "player_id": "00-0037277",
     "player_display_name": "Teagan Quitoriano",
     "position_hist": "TE",
@@ -39889,113 +36588,6 @@
     ]
   },
   {
-    "player_id": "00-0037197",
-    "player_display_name": "Isiah Pacheco",
-    "position_hist": "RB",
-    "team": "DET",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 1.8989429922884327,
-    "f_tgt_share": 0.08123752071548822,
-    "f_ay_share": 0.0021237729512602293,
-    "f_rec": 1.5909691513302708,
-    "f_yards": 10.597801655540826,
-    "f_adot": 0.09102144928121964,
-    "f_catch_rate": 0.8237050810156095,
-    "f_ypr": 5.879271888958829,
-    "c_targets": 2.1,
-    "c_yards": 11.08,
-    "games_prior": 51,
-    "f_tgt_sd": 2.3566016694748027,
-    "current_team": "DET",
-    "position": "RB",
-    "status": "RES",
-    "years_exp": 4,
-    "full_name": "Isiah Pacheco",
-    "changed_team": 1,
-    "game_id": "2026_10_NE_DET",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NE",
-    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 51.5,
-    "implied_team_total": 27.0,
-    "implied_opp_total": 24.5,
-    "is_dome": 0,
-    "wind": 5.68,
-    "unposted_lines": 0,
-    "is_open_field": 1,
-    "def_yards_idx": 0.7742334431315565,
-    "def_rec_idx": 0.7806338051966686,
-    "def_tgt_idx": 0.803500745291329,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.903492859317024,
-    "mu_ypr": 7.961529615241649,
-    "proj_rec": 1.903492859317024,
-    "proj_yards": 15.154714771853492,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 11.5,
-    "p_rec_at_fair_line": 0.543,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 6,
-        "yards": 41
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 17
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": -3
-      },
-      {
-        "receptions": 1,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 20
-      },
-      {
-        "receptions": 2,
-        "yards": 13
-      }
-    ]
-  },
-  {
     "player_id": "00-0039165",
     "player_display_name": "Zach Charbonnet",
     "position_hist": "RB",
@@ -40099,6 +36691,113 @@
       {
         "receptions": 2,
         "yards": 10
+      }
+    ]
+  },
+  {
+    "player_id": "00-0037197",
+    "player_display_name": "Isiah Pacheco",
+    "position_hist": "RB",
+    "team": "DET",
+    "targets": 0,
+    "receptions": 0,
+    "receiving_yards": 0,
+    "receiving_air_yards": 0,
+    "receiving_yards_after_catch": 0,
+    "target_share": 0.0,
+    "air_yards_share": 0.0,
+    "receiving_tds": 0,
+    "adot": null,
+    "catch_rate_g": null,
+    "ypr_g": null,
+    "f_targets": 1.8989429922884327,
+    "f_tgt_share": 0.08123752071548822,
+    "f_ay_share": 0.0021237729512602293,
+    "f_rec": 1.5909691513302708,
+    "f_yards": 10.597801655540826,
+    "f_adot": 0.09102144928121964,
+    "f_catch_rate": 0.8237050810156095,
+    "f_ypr": 5.879271888958829,
+    "c_targets": 2.1,
+    "c_yards": 11.08,
+    "games_prior": 51,
+    "f_tgt_sd": 2.3566016694748027,
+    "current_team": "DET",
+    "position": "RB",
+    "status": "RES",
+    "years_exp": 4,
+    "full_name": "Isiah Pacheco",
+    "changed_team": 1,
+    "game_id": "2026_10_NE_DET",
+    "season": 2026,
+    "week": 10,
+    "opponent_team": "NE",
+    "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
+    "is_home": 1,
+    "team_spread": 2.5,
+    "total_line": 50.5,
+    "implied_team_total": 26.5,
+    "implied_opp_total": 24.0,
+    "is_dome": 0,
+    "wind": 5.68,
+    "unposted_lines": 0,
+    "is_open_field": 1,
+    "def_yards_idx": 0.7742334431315565,
+    "def_rec_idx": 0.7806338051966686,
+    "def_tgt_idx": 0.803500745291329,
+    "pos_WR": 0,
+    "pos_TE": 0,
+    "pos_RB": 1,
+    "is_week1": 0,
+    "excl_reason": "not on active roster",
+    "questionable": 0,
+    "mu_rec": 1.8926976042682973,
+    "mu_ypr": 7.924659871549149,
+    "proj_rec": 1.8926976042682973,
+    "proj_yards": 14.998984753522187,
+    "fair_line_rec": 1.5,
+    "fair_line_yards": 11.5,
+    "p_rec_at_fair_line": 0.5402,
+    "recent_receiving_games": [
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 6,
+        "yards": 41
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 2,
+        "yards": 17
+      },
+      {
+        "receptions": 0,
+        "yards": 0
+      },
+      {
+        "receptions": 1,
+        "yards": -3
+      },
+      {
+        "receptions": 1,
+        "yards": 0
+      },
+      {
+        "receptions": 3,
+        "yards": 20
+      },
+      {
+        "receptions": 2,
+        "yards": 13
       }
     ]
   },
@@ -42963,113 +39662,6 @@
     ]
   },
   {
-    "player_id": "00-0037011",
-    "player_display_name": "Tre' McKitty",
-    "position_hist": "TE",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.6737645784397049,
-    "f_tgt_share": 0.01811749362554169,
-    "f_ay_share": 0.008690988306076447,
-    "f_rec": 0.2794302399326645,
-    "f_yards": 2.1604695795542472,
-    "f_adot": 2.5773361333725346,
-    "f_catch_rate": 0.3782425441860201,
-    "f_ypr": 7.851680794352187,
-    "c_targets": 1.368421052631579,
-    "c_yards": 6.157894736842105,
-    "games_prior": 20,
-    "f_tgt_sd": 1.9955307206712847,
-    "current_team": "WAS",
-    "position": "TE",
-    "status": "CUT",
-    "years_exp": 5,
-    "full_name": "Tre' McKitty",
-    "changed_team": 1,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.7770721789808446,
-    "def_rec_idx": 0.9705215298735477,
-    "def_tgt_idx": 0.9629504154699327,
-    "pos_WR": 0,
-    "pos_TE": 1,
-    "pos_RB": 0,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.2204165419841433,
-    "mu_ypr": 9.127495427464183,
-    "proj_rec": 1.2204165419841433,
-    "proj_yards": 11.139346406561918,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 7.0,
-    "p_rec_at_fair_line": 0.3395,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 10
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 3,
-        "yards": 21
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0037120",
     "player_display_name": "Tyler Goodson",
     "position_hist": "RB",
@@ -43676,113 +40268,6 @@
     ]
   },
   {
-    "player_id": "00-0036893",
-    "player_display_name": "Najee Harris",
-    "position_hist": "RB",
-    "team": "NYG",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.42886223374702703,
-    "f_tgt_share": 0.01125802304495659,
-    "f_ay_share": 0.0007699776328967515,
-    "f_rec": 0.3911550541051943,
-    "f_yards": 2.288586946789616,
-    "f_adot": 1.681225273303973,
-    "f_catch_rate": 0.9568645148868425,
-    "f_ypr": 5.512707506513042,
-    "c_targets": 3.16,
-    "c_yards": 15.72,
-    "games_prior": 76,
-    "f_tgt_sd": 1.7268882005337949,
-    "current_team": "NYG",
-    "position": "RB",
-    "status": "INA",
-    "years_exp": 5,
-    "full_name": "Najee Harris",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.1577465570555177,
-    "def_rec_idx": 1.2423799783993499,
-    "def_tgt_idx": 1.3078888810859821,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.4315607825886023,
-    "mu_ypr": 7.385313402917827,
-    "proj_rec": 1.4315607825886023,
-    "proj_yards": 10.572525034743139,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 7.0,
-    "p_rec_at_fair_line": 0.4081,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 20
-      },
-      {
-        "receptions": 1,
-        "yards": 5
-      },
-      {
-        "receptions": 4,
-        "yards": 20
-      },
-      {
-        "receptions": 2,
-        "yards": 7
-      }
-    ]
-  },
-  {
     "player_id": "00-0036635",
     "player_display_name": "Ihmir Smith-Marsette",
     "position_hist": "WR",
@@ -43886,113 +40371,6 @@
       {
         "receptions": 0,
         "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0033955",
-    "player_display_name": "Jeremy McNichols",
-    "position_hist": "RB",
-    "team": "WAS",
-    "targets": 1,
-    "receptions": 1,
-    "receiving_yards": 7,
-    "receiving_air_yards": 1,
-    "receiving_yards_after_catch": 6,
-    "target_share": 0.037037037037037035,
-    "air_yards_share": 0.0035714285714285713,
-    "receiving_tds": 0,
-    "adot": 1.0,
-    "catch_rate_g": 1.0,
-    "ypr_g": 7.0,
-    "f_targets": 1.165180347314972,
-    "f_tgt_share": 0.05200545358728723,
-    "f_ay_share": 0.0017110832338226565,
-    "f_rec": 1.088958813636962,
-    "f_yards": 6.674174238428961,
-    "f_adot": 0.7296831065974914,
-    "f_catch_rate": 0.961972249860287,
-    "f_ypr": 6.731079229162983,
-    "c_targets": 1.53125,
-    "c_yards": 8.09375,
-    "games_prior": 65,
-    "f_tgt_sd": 1.0606601717798212,
-    "current_team": "WAS",
-    "position": "RB",
-    "status": "RES",
-    "years_exp": 9,
-    "full_name": "Jeremy McNichols",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.6579301852948458,
-    "def_rec_idx": 0.6842352845951165,
-    "def_tgt_idx": 0.6460634002974684,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.4399593845400274,
-    "mu_ypr": 7.3090720861077925,
-    "proj_rec": 1.4399593845400274,
-    "proj_yards": 10.524766942670471,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 7.0,
-    "p_rec_at_fair_line": 0.4108,
-    "recent_receiving_games": [
-      {
-        "receptions": 1,
-        "yards": 7
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 8
-      },
-      {
-        "receptions": 3,
-        "yards": 12
-      },
-      {
-        "receptions": 2,
-        "yards": 9
-      },
-      {
-        "receptions": 1,
-        "yards": 16
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 2,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 16
-      },
-      {
-        "receptions": 1,
-        "yards": 4
       }
     ]
   },
@@ -44104,113 +40482,6 @@
     ]
   },
   {
-    "player_id": "00-0038396",
-    "player_display_name": "Eric Gray",
-    "position_hist": "RB",
-    "team": "NYG",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.5615924320514784,
-    "f_tgt_share": 0.01819601756004201,
-    "f_ay_share": 0.00048517740797047494,
-    "f_rec": 0.555473238837625,
-    "f_yards": 2.1071143743955805,
-    "f_adot": 0.34485770103077157,
-    "f_catch_rate": 0.9967954777156561,
-    "f_ypr": 3.524600400309985,
-    "c_targets": 0.75,
-    "c_yards": 4.333333333333333,
-    "games_prior": 25,
-    "f_tgt_sd": 0.7071067811865475,
-    "current_team": "NYG",
-    "position": "RB",
-    "status": "CUT",
-    "years_exp": 3,
-    "full_name": "Eric Gray",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "WAS",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 1,
-    "team_spread": 2.5,
-    "total_line": 40.5,
-    "implied_team_total": 21.5,
-    "implied_opp_total": 19.0,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 1.1577465570555177,
-    "def_rec_idx": 1.2423799783993499,
-    "def_tgt_idx": 1.3078888810859821,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.3017249070277923,
-    "mu_ypr": 7.5234663891784885,
-    "proj_rec": 1.3017249070277923,
-    "proj_yards": 9.793483585980088,
-    "fair_line_rec": 1.5,
-    "fair_line_yards": 6.5,
-    "p_rec_at_fair_line": 0.3665,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 4
-      },
-      {
-        "receptions": 1,
-        "yards": 2
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 7
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 1,
-        "yards": 3
-      },
-      {
-        "receptions": 1,
-        "yards": 7
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
     "player_id": "00-0037617",
     "player_display_name": "Hassan Haskins",
     "position_hist": "RB",
@@ -44251,9 +40522,9 @@
     "pricing_cutoff_timestamp": "2026-11-15T14:30:00+00:00",
     "is_home": 0,
     "team_spread": -2.5,
-    "total_line": 51.5,
-    "implied_team_total": 24.5,
-    "implied_opp_total": 27.0,
+    "total_line": 50.5,
+    "implied_team_total": 24.0,
+    "implied_opp_total": 26.5,
     "is_dome": 0,
     "wind": 5.68,
     "unposted_lines": 0,
@@ -44267,13 +40538,13 @@
     "is_week1": 0,
     "excl_reason": "not on active roster",
     "questionable": 0,
-    "mu_rec": 1.249575099598431,
-    "mu_ypr": 7.83242337833193,
-    "proj_rec": 1.249575099598431,
-    "proj_yards": 9.7872012230762,
+    "mu_rec": 1.2424884000940561,
+    "mu_ypr": 7.796151524001655,
+    "proj_rec": 1.2424884000940561,
+    "proj_yards": 9.686627833947654,
     "fair_line_rec": 1.5,
     "fair_line_yards": 6.0,
-    "p_rec_at_fair_line": 0.3492,
+    "p_rec_at_fair_line": 0.3469,
     "recent_receiving_games": [
       {
         "receptions": 0,
@@ -44920,113 +41191,6 @@
       {
         "receptions": 0,
         "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      }
-    ]
-  },
-  {
-    "player_id": "00-0035567",
-    "player_display_name": "Craig Reynolds",
-    "position_hist": "RB",
-    "team": "WAS",
-    "targets": 0,
-    "receptions": 0,
-    "receiving_yards": 0,
-    "receiving_air_yards": 0,
-    "receiving_yards_after_catch": 0,
-    "target_share": 0.0,
-    "air_yards_share": 0.0,
-    "receiving_tds": 0,
-    "adot": null,
-    "catch_rate_g": null,
-    "ypr_g": null,
-    "f_targets": 0.11099591688990096,
-    "f_tgt_share": 0.0034294672776124645,
-    "f_ay_share": -0.0014720306987755308,
-    "f_rec": 0.05245909170328471,
-    "f_yards": 0.7528477698924554,
-    "f_adot": -2.4173691022625317,
-    "f_catch_rate": 0.5288871885447705,
-    "f_ypr": 12.483681187173532,
-    "c_targets": 0.7837837837837838,
-    "c_yards": 6.972972972972973,
-    "games_prior": 38,
-    "f_tgt_sd": 0.9161253813129043,
-    "current_team": "WAS",
-    "position": "RB",
-    "status": "DEV",
-    "years_exp": 7,
-    "full_name": "Craig Reynolds",
-    "changed_team": 0,
-    "game_id": "2026_10_WAS_NYG",
-    "season": 2026,
-    "week": 10,
-    "opponent_team": "NYG",
-    "pricing_cutoff_timestamp": "2026-11-13T01:15:00+00:00",
-    "is_home": 0,
-    "team_spread": -2.5,
-    "total_line": 40.5,
-    "implied_team_total": 19.0,
-    "implied_opp_total": 21.5,
-    "is_dome": 0,
-    "wind": 14.0,
-    "unposted_lines": 0,
-    "is_open_field": 0,
-    "def_yards_idx": 0.6579301852948458,
-    "def_rec_idx": 0.6842352845951165,
-    "def_tgt_idx": 0.6460634002974684,
-    "pos_WR": 0,
-    "pos_TE": 0,
-    "pos_RB": 1,
-    "is_week1": 0,
-    "excl_reason": "not on active roster",
-    "questionable": 0,
-    "mu_rec": 1.1466936703709043,
-    "mu_ypr": 7.416952073916169,
-    "proj_rec": 1.1466936703709043,
-    "proj_yards": 8.504971996604024,
-    "fair_line_rec": 0.5,
-    "fair_line_yards": 5.0,
-    "p_rec_at_fair_line": 0.6605,
-    "recent_receiving_games": [
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 0,
-        "yards": 0
-      },
-      {
-        "receptions": 2,
-        "yards": 35
-      },
-      {
-        "receptions": 1,
-        "yards": 5
       },
       {
         "receptions": 0,

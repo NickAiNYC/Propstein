@@ -112,7 +112,17 @@ def test_merge_feed_is_idempotent_and_fails_closed(tmp_path, monkeypatch):
     feed_path = tmp_path / "live_odds_feed.json"
     feed_path.write_text(json.dumps({
         "feed_status": "UNVERIFIED_MANUAL_ONLY",
-        "quotes": [{"quote_id": "syn_a", "book": "Synthetic Book A"}],
+        "quotes": [
+            {"quote_id": "syn_a", "book": "Synthetic Book A",
+             "source": "Synthetic Book A Manual Entry (UNVERIFIED - demonstration fixture)",
+             "observed_at": datetime.now(timezone.utc).isoformat()},
+            {"quote_id": "dk_fresh", "book": "DraftKings",
+             "source": "The Odds API (unverified sportsbook quote)",
+             "observed_at": datetime.now(timezone.utc).isoformat()},
+            {"quote_id": "dk_stale", "book": "DraftKings",
+             "source": "The Odds API (unverified sportsbook quote)",
+             "observed_at": "2026-10-20T06:23:35+00:00"},
+        ],
         "monitored_books": ["DraftKings"],
     }))
     monkeypatch.setattr(pm, "FEED_PATH", feed_path)
@@ -142,12 +152,14 @@ def test_merge_feed_is_idempotent_and_fails_closed(tmp_path, monkeypatch):
     assert data["verified_quotes_count"] == 0
     assert (tmp_path / "live_odds_feed.manifest.json").exists()
     assert "Polymarket" in data["monitored_books"]
-    # Synthetic quote preserved; re-merge replaces Polymarket quotes only.
+    # Re-merge replaces Polymarket quotes; fresh real rows from other books
+    # survive, while fixture rows and rows older than 24h are pruned.
     assert pm.merge_feed([dict(quote)])
     data2 = json.loads(feed_path.read_text())
     pm_n = [q for q in data2["quotes"] if q["book"] == "Polymarket"]
     assert len(pm_n) == 1
-    assert any(q["book"] == "Synthetic Book A" for q in data2["quotes"])
+    assert [q["quote_id"] for q in data2["quotes"] if q["book"] != "Polymarket"] == ["dk_fresh"]
+    assert data2["total_quotes"] == 2
 
     from src.contracts.polymarket import PolymarketMergedFeed
     with pytest.raises(ValueError, match="verified counts"):

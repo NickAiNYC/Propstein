@@ -594,14 +594,36 @@ def collect_quotes(min_liquidity: float = 10.0) -> list[dict]:
     return quotes
 
 
+#: Non-Polymarket rows (sportsbook sweep, manual entries) older than this are
+#: dropped on every Polymarket merge. Without it, rows from a dead source or a
+#: one-off fixture stayed in the public feed forever (PHASE1A_AUDIT.md).
+OTHER_BOOK_MAX_AGE = timedelta(hours=24)
+
+
+def retain_other_book_quote(q: dict, now: datetime) -> bool:
+    """Keep a non-Polymarket row only if it is real and recently observed."""
+    if str(q.get("book", "")).startswith("Synthetic") or "fixture" in str(q.get("source", "")).lower():
+        return False
+    try:
+        observed = datetime.fromisoformat(str(q.get("observed_at")).replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if observed.tzinfo is None:
+        return False
+    return now - observed <= OTHER_BOOK_MAX_AGE
+
+
 def merge_feed(quotes: list[dict], dry_run: bool = False) -> bool:
     if not quotes:
         print("[polymarket] nothing to merge (no liquid matched quotes) — feed untouched")
         return False
     feed = json.loads(FEED_PATH.read_text(encoding="utf-8"))
-    keep = [q for q in feed.get("quotes", []) if q.get("book") != BOOK]
-    seen = set()
     base = datetime.now(timezone.utc)
+    others = [q for q in feed.get("quotes", []) if q.get("book") != BOOK]
+    keep = [q for q in others if retain_other_book_quote(q, base)]
+    if len(keep) != len(others):
+        print(f"[polymarket] pruned {len(others) - len(keep)} stale/fixture non-Polymarket quote(s)")
+    seen = set()
     merged: list[dict] = []
     for i, q in enumerate(quotes):
         key = (q["player_id"], q["market"], q["line"])
