@@ -12010,7 +12010,7 @@ body.coming-soon-active .pw-filterbar { padding-bottom: 0 !important; }
 
 /* v180: schedule-first front page; advanced controls remain in the menu. */
 .pw-topbar .pw-telemetry-pod, .pw-topbar-center,
-.pw-topbar-right > :not(#frontMenuBtn):not(#mobileMenuBtn):not(#frontSearchBtn) { display: none !important; }
+.pw-topbar-right > :not(#frontMenuBtn):not(#mobileMenuBtn):not(#frontSearchBtn):not(#themeToggle) { display: none !important; }
 #mobileMenuBtn.pw-mobile-menu-btn { display: none !important; }
 .pw-topbar { overflow: visible !important; }
 .pw-topbar-right { margin-left: auto; }

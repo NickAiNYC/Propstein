@@ -452,6 +452,26 @@
    * mean = projection and spread matched to the 80% range, then marks the
    * fair line (dashed) and projection (solid). Visual aid only.
    */
+  /** Visible "how this projection is built" strip: receptions x yards per catch.
+   * Only shows numbers the slate row actually carries (mu_rec, mu_ypr). */
+  function rfMethodStrip(row, market) {
+    const muRec = Number(row.mu_rec);
+    const muYpr = Number(row.mu_ypr);
+    if (!Number.isFinite(muRec) || muRec <= 0) return '';
+    const isYards = market !== 'receptions' && Number.isFinite(muYpr) && muYpr > 0;
+    const prod = muRec * muYpr;
+    const proj = Number(projectionValue(row));
+    const matches = isYards && Number.isFinite(proj) && proj > 0 && Math.abs(prod - proj) / proj <= 0.03;
+    const step = (label, value, cls = '') => `<span class="rf-m-step ${cls}"><small>${label}</small><b>${value}</b></span>`;
+    const flow = isYards
+      ? `${step('Receptions', muRec.toFixed(1))}<i aria-hidden="true">×</i>${step('Yds / catch', muYpr.toFixed(1))}${matches ? `<i aria-hidden="true">=</i>${step('Mean', prod.toFixed(1), 'rf-m-out')}` : ''}`
+      : `${step('Expected receptions', muRec.toFixed(1), 'rf-m-out')}`;
+    return `<div class="rf-method">
+      <div class="rf-method-flow" aria-label="Projection method">${flow}</div>
+      <p class="rf-method-note">${isYards ? 'Catches (Negative Binomial, from target-share role) × yards per catch (Gamma). ' : 'Catch count from target-share role (Negative Binomial). '}Fair line is the median outcome; the range is P10–P90. <a href="/methodology/">Full method</a></p>
+    </div>`;
+  }
+
   let rfDistSeq = 0;
   function densityCurveSvg(dist, unit = '') {
     const mean = Number(dist.proj);
@@ -507,12 +527,12 @@
         <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38BDF8" stop-opacity="0.22"/><stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/></linearGradient></defs>
         <path class="rf-dist-tail" d="${fullArea}"/>
         ${bandPath ? `<path class="rf-dist-band" fill="url(#${gid})" d="${bandPath}"/>` : ''}
-        <path class="rf-dist-line" d="${line}"/>
+        <path class="rf-dist-line" pathLength="1" d="${line}"/>
         <line class="rf-dist-base" x1="0" x2="${W}" y1="${base}" y2="${base}"/>
         <line class="rf-dist-fair" x1="${fx}" x2="${fx}" y1="${top - 4}" y2="${base}"/>
         <line class="rf-dist-proj" x1="${mx}" x2="${mx}" y1="${top - 4}" y2="${base}"/>
-        <text class="rf-dist-call rf-dist-call-fair" x="${fairLabelX}" y="9" text-anchor="${fairAnchor}">${fair.toFixed(1)}</text>
-        <text class="rf-dist-call rf-dist-call-proj" x="${projLabelX}" y="9" text-anchor="${projAnchor}">${mean.toFixed(1)}</text>
+        <g class="rf-dist-chip rf-dist-chip-fair"><rect x="${fairLabelX - (fairLeft ? 44 : 0)}" y="0" width="44" height="14" rx="4"/><text x="${fairLabelX - (fairLeft ? 22 : -22)}" y="10" text-anchor="middle">${fair.toFixed(1)}</text></g>
+        <g class="rf-dist-chip rf-dist-chip-proj"><rect x="${projLabelX - (fairLeft ? 0 : 44)}" y="0" width="44" height="14" rx="4"/><text x="${projLabelX + (fairLeft ? 22 : -22)}" y="10" text-anchor="middle">${mean.toFixed(1)}</text></g>
         <g class="rf-dist-ticks">${ticks}</g>
       </svg>
     </figure>`;
@@ -2143,7 +2163,9 @@
     });
   }
 
-  // Terminal is dark-locked (2026-10 restyle): one calibrated FanDuel-style
+  // Default is the dark terminal; users can switch to the light 'Glass' theme
+  // (persisted in localStorage). Originally dark-locked in the 2026-10 restyle:
+  // one calibrated FanDuel-style
   // dark palette — obsidian navy canvas, white text, baby-blue accent. The
   // PR #13 light/dark toggle was removed with the restyle and any stale
   // persisted choice is cleared so every visitor gets the same shell. The
@@ -2152,11 +2174,31 @@
   const THEME_KEY = 'propwire-theme';
 
   function initTheme() {
-    document.documentElement.dataset.theme = 'dark';
-    document.documentElement.classList.add('dark');
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', '#0b0e14');
-    try { localStorage.removeItem(THEME_KEY); } catch (_) {}
+    let pref = 'dark';
+    try { pref = localStorage.getItem(THEME_KEY) === 'glass' ? 'glass' : 'dark'; } catch (_) {}
+    const apply = (mode) => {
+      const glass = mode === 'glass';
+      const root = document.documentElement;
+      root.dataset.theme = glass ? 'light' : 'dark';
+      root.classList.toggle('dark', !glass);
+      root.classList.toggle('glass', glass);
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', glass ? '#dcecfb' : '#0b0e14');
+      const btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.setAttribute('aria-pressed', glass ? 'true' : 'false');
+        btn.querySelectorAll('[data-theme-opt]').forEach((o) => o.classList.toggle('on', o.dataset.themeOpt === mode));
+      }
+    };
+    apply(pref);
+    const btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const next = document.documentElement.classList.contains('glass') ? 'dark' : 'glass';
+        apply(next);
+        try { localStorage.setItem(THEME_KEY, next); } catch (_) {}
+      });
+    }
   }
 
   // ─── Sport switcher + per-sport filter chrome (Phase 2) ─────────────
@@ -4081,6 +4123,7 @@
               <div class="rf-stat"><small>${dist.isTd ? 'Anytime TD' : '80% range'}</small><b>${rangeText}</b></div>
             </div>
             ${dist.isTd ? '' : densityCurveSvg(dist, unit)}
+            ${rfMethodStrip(row, state.filters.market)}
             <p class="home-research-note"><span class="home-research-label">MODEL FAIR · NO LIVE PRICE</span> No verified sportsbook price yet. Research only · no current edge or stake is available.</p>
           </article>`;
           }).join('')
