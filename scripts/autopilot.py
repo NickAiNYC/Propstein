@@ -64,6 +64,8 @@ import os
 import re
 import subprocess
 import sys
+import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -357,10 +359,47 @@ def ensure_schedule_only_slate(season: int, week: int) -> Path:
     return dest
 
 
-def run_model(season: int, week: int) -> bool:
+#: A full-slate NFL props pull costs roughly 250-450 credits (src/odds.py), and
+#: the same key also feeds NBA (~7-10/day) and UFC. Pull NFL props only when the
+#: balance covers a pull plus a reserve for those jobs. On a small plan this
+#: pauses NFL sportsbook pulls instead of starving NBA mid-month (Nov 2026).
+NFL_ODDS_MIN_CREDITS = int(os.environ.get("NFL_ODDS_MIN_CREDITS") or 1000)
+
+
+def odds_api_credits_remaining(key: str) -> int | None:
+    """Balance from GET /v4/sports, which costs 0 credits. None if unreadable."""
+    url = "https://api.the-odds-api.com/v4/sports?" + urllib.parse.urlencode({"apiKey": key})
+    try:
+        with urllib.request.urlopen(url, timeout=20) as resp:
+            return int(float(resp.headers.get("x-requests-remaining")))
+    except urllib.error.HTTPError as exc:
+        return 0 if exc.code in (401, 429) else None
+    except (OSError, TypeError, ValueError):
+        return None
+
+
+def nfl_odds_pull_allowed(games: list[dict], now: datetime,
+                          remaining_fn=odds_api_credits_remaining) -> tuple[bool, str]:
+    """Spend NFL props credits only on a game day with enough balance (fail closed)."""
+    key = os.environ.get("ODDS_API_KEY", "").strip()
+    if not key:
+        return False, "no ODDS_API_KEY"
+    today = now.astimezone(ET).date()
+    if not any(g["kickoff"].astimezone(ET).date() == today and g["kickoff"] > now for g in games):
+        return False, "no NFL kickoff later today (ET); props pull saved for game day"
+    remaining = remaining_fn(key)
+    if remaining is None:
+        return False, "could not read the Odds API balance"
+    if remaining < NFL_ODDS_MIN_CREDITS:
+        return False, (f"only {remaining} Odds API credits left (pull needs ~250-450; "
+                       f"floor {NFL_ODDS_MIN_CREDITS} keeps NBA/UFC running)")
+    return True, f"{remaining} credits available"
+
+
+def run_model(season: int, week: int, with_odds: bool = False) -> bool:
     """Run src/week1.py for the week. Returns True on success."""
     cmd = [sys.executable, "week1.py", "--season", str(season), "--week", str(week)]
-    if os.environ.get("ODDS_API_KEY"):
+    if with_odds:
         cmd.append("--odds")
     print(f"[autopilot] model run: {' '.join(cmd)} (cwd=src)")
     result = subprocess.run(cmd, cwd=SRC, capture_output=True, text=True, timeout=1800)
@@ -779,7 +818,7 @@ def main() -> int:
         print("[plan] capture ESPN pregame spread, total, and weather into the journal")
         if game_context_has_capture_times(now) and not args.skip_model:
             print(f"[plan] run src/week1.py --season {season} --week {week}"
-                  f"{' --odds' if os.environ.get('ODDS_API_KEY') else ' (no ODDS_API_KEY: fair lines only)'}")
+                  f"{' [--odds on game days when credits allow]' if os.environ.get('ODDS_API_KEY') else ' (no ODDS_API_KEY: fair lines only)'}")
         else:
             print("[plan] model blocked or skipped; refresh independent feeds and lock subscriber board")
         print(f"[plan] write viewer/games_{season}_w{week}.json")
@@ -808,7 +847,9 @@ def main() -> int:
         print("[autopilot] model BLOCKED: game spread, total, and weather lack capture times; "
               "refreshing independent feeds only")
     elif not args.skip_model:
-        if not run_model(season, week):
+        with_odds, why = nfl_odds_pull_allowed(games, now)
+        print(f"[autopilot] NFL sportsbook props pull: {'yes' if with_odds else 'skipped'} ({why})")
+        if not run_model(season, week, with_odds=with_odds):
             print("[autopilot] model run failed - aborting (fail closed)", file=sys.stderr)
             return 1
     else:
