@@ -1,0 +1,57 @@
+name: Data Health
+
+# One daily report across every feed a user sees, plus the shared Odds API
+# key's balance. Per-job alarms only check their own output and several data
+# steps fail soft on purpose, so a dry key or a stalled NBA job can otherwise
+# go unnoticed for days (Nov 2026). Read-only: never edits or commits data.
+on:
+  schedule:
+    # 18:30 UTC: after the noon-Eastern NBA slate job (16:00/17:00 UTC) has had
+    # its two attempts, so a failed NBA day is reported the same day.
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: data-health
+  cancel-in-progress: true
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Check feeds and Odds API credits
+        id: health
+        env:
+          # Read through /v4/sports, which costs 0 credits. Never printed.
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          set -o pipefail
+          python scripts/check_data_health.py --summary "$GITHUB_STEP_SUMMARY" | tee health.md
+
+      - name: Notify on failure (webhook, optional)
+        if: failure()
+        env:
+          ALARM_WEBHOOK_URL: ${{ secrets.ALARM_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "${ALARM_WEBHOOK_URL:-}" ]; then
+            echo "ALARM_WEBHOOK_URL secret not configured; alarm visible only in Actions history and owner email."
+            exit 0
+          fi
+          FAILS=$(grep -o '`[a-z_]*` | ❌' health.md 2>/dev/null | cut -d'`' -f2 | paste -sd, - || true)
+          MESSAGE="PropStein data health FAILED: ${FAILS:-see run}. ${RUN_URL}"
+          python3 -c 'import json,sys; m=sys.argv[1]; print(json.dumps({"content": m, "text": m}))' "$MESSAGE" > payload.json
+          curl -fsS -X POST "$ALARM_WEBHOOK_URL" -H 'Content-Type: application/json' --data @payload.json \
+            || echo "WARN: webhook POST failed; alarm still recorded in Actions history."
