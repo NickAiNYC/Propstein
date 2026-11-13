@@ -59,6 +59,28 @@ test('NBA market-only date separates empty picks from browsable unverified lines
   assert.match(registry.get('#emptyState').innerHTML, /Test Player/);
 });
 
+test('NBA market-only date labels Kalshi fallback lines by their real source', () => {
+  const { sandbox, registry } = buildSandbox({ seedLocalStorage: { propwire_active_sport: 'nba' } });
+  const app = loadApp(sandbox);
+  app.SLATES['2026-11-13'] = { marketOnly: true, historical: false, date: '2026-11-13' };
+  app.state.slateKey = '2026-11-13';
+  app.state.slate = [];
+  app.state.games = [{ game_id: 'nba-20261113-ATL-CHI', away_team: 'ATL', home_team: 'CHI' }];
+  app.state.odds = {
+    feed_status: 'live-unverified', updated_at: '2026-11-13T16:00:00Z', source: 'kalshi',
+    quotes: [{ player_name: 'Jalen Smith', game_id: 'nba-20261113-ATL-CHI', book: 'Kalshi',
+      market: 'points', line: 14.5, over_odds: -104, under_odds: -108, _fixture: false, verified: false }]
+  };
+  app.renderBoard();
+  assert.match(registry.get('#emptyState').innerHTML, /Browse Kalshi lines/);
+  app.setPlayMode('all');
+  const markup = registry.get('#emptyState').innerHTML;
+  assert.match(markup, /Jalen Smith/);
+  assert.match(markup, /Kalshi exchange/);
+  assert.match(markup, /check current availability at Kalshi/);
+  assert.doesNotMatch(markup, /FanDuel/);
+});
+
 test('October 31 NBA market feed keeps every alternate points line distinct and unverified', () => {
   const feed = readViewerJson('nba_odds_2026-10-31.json');
   assert.equal(feed.feed_status, 'live-unverified');

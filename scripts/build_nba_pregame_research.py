@@ -111,8 +111,8 @@ def run(dataset_dir: Path, games_file: Path, odds_file: Path, out_dir: Path, sla
         raise ValueError("history reaches slate date; refusing possible outcome leakage")
     if feed.get("slate") != slate or feed.get("_fixture") or not quotes:
         raise ValueError("real quote feed for the requested slate required")
-    if any(q.get("book") != "FanDuel" or q.get("_fixture") for q in quotes):
-        raise ValueError("this research bridge accepts only real FanDuel quotes")
+    if any(q.get("book") not in ("FanDuel", "Kalshi") or q.get("_fixture") for q in quotes):
+        raise ValueError("this research bridge accepts only real FanDuel or Kalshi quotes")
 
     test, mapped_quotes, exclusions = pregame_rows(history, games, quotes, slate)
     if test.empty:
@@ -150,7 +150,7 @@ def run(dataset_dir: Path, games_file: Path, odds_file: Path, out_dir: Path, sla
         "slate_date": slate, "generated_at": datetime.now(timezone.utc).isoformat(),
         "model_id": "nba-points-v1", "calibrated": False, "qualified_plays": 0,
         "recommendations": [], "source": meta["source"],
-        "boxscores_through": meta["max_game_date"], "quote_source": "FanDuel via The Odds API",
+        "boxscores_through": meta["max_game_date"], "quote_source": "Kalshi exchange" if quotes[0].get("book") == "Kalshi" else "FanDuel via The Odds API",
         "input_sha256": {
             "player_games": file_sha256(dataset_dir / (
                 "nba_player_games.parquet" if (dataset_dir / "nba_player_games.parquet").exists()

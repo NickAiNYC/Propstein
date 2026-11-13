@@ -784,11 +784,26 @@
     return 'UNVERIFIED';
   }
 
+  // NBA market-only reference books. FanDuel comes through The Odds API; Kalshi
+  // is the free, keyless exchange fallback when that key is out of credits
+  // (scripts/fetch_kalshi_nba.py). Labels follow whichever book the feed holds.
+  const NBA_REFERENCE_BOOKS = { fanduel: 'FanDuel via The Odds API', kalshi: 'Kalshi exchange' };
+  function isNbaReferenceQuote(quote) {
+    return Object.prototype.hasOwnProperty.call(NBA_REFERENCE_BOOKS, String((quote && quote.book) || '').toLowerCase());
+  }
+  function nbaReferenceBook(quotes) {
+    const quote = (quotes || []).find(isNbaReferenceQuote);
+    return quote ? String(quote.book) : 'FanDuel';
+  }
+  function nbaReferenceSource(book) {
+    return NBA_REFERENCE_BOOKS[String(book).toLowerCase()] || String(book);
+  }
+
   function marketFeedSourceLabel() {
     if (state.feedHealth?.dataKind === 'fixture') return 'Research fixture';
     const quotes = state.odds?.quotes || [];
-    if (SPORT_ID === 'nba') return quotes.some((quote) => String(quote.book).toLowerCase() === 'fanduel')
-      ? 'FanDuel via The Odds API' : 'No current FanDuel lines';
+    if (SPORT_ID === 'nba') return quotes.some(isNbaReferenceQuote)
+      ? nbaReferenceSource(nbaReferenceBook(quotes)) : 'No current NBA lines';
     const polymarket = quotes.some((quote) => String(quote.book).toLowerCase() === 'polymarket');
     const sportsbooks = quotes.some((quote) => {
       const book = String(quote.book || '').toLowerCase();
@@ -3580,7 +3595,9 @@
   }
 
   function renderNbaMarketOnly() {
-    const all = (state.odds.quotes || []).filter(q => q._fixture === false && q.market === 'points' && q.verified === false && String(q.book).toLowerCase() === 'fanduel');
+    const all = (state.odds.quotes || []).filter(q => q._fixture === false && q.market === 'points' && q.verified === false && isNbaReferenceQuote(q));
+    const refBook = esc(nbaReferenceBook(all));
+    const refSource = esc(nbaReferenceSource(nbaReferenceBook(all)));
     const { search, gameId } = state.filters;
     const browsingLines = state.filters.playMode === 'all';
     const rows = browsingLines && state.filters.market === 'points'
@@ -3600,7 +3617,7 @@
     if ($('#mobileChipActive')) $('#mobileChipActive').textContent = 'ACTIVE 0';
     if ($('#mobileChipAll')) $('#mobileChipAll').textContent = `All ${all.length}`;
     if ($('#resultCount')) $('#resultCount').textContent = browsingLines
-      ? `${rows.length} unverified FanDuel lines · 0 model picks`
+      ? `${rows.length} unverified ${refBook} lines · 0 model picks`
       : '0 NBA picks · no model predictions available';
     syncFilterChipsUI();
     if ($('#slateRows')) $('#slateRows').innerHTML = '';
@@ -3631,9 +3648,9 @@
         <div class="nba-market-sides"><span>Over ${esc(q.line)} <b>${esc(oddsLabel(q.over_odds))}</b></span><span>Under ${esc(q.line)} <b>${esc(oddsLabel(q.under_odds))}</b></span></div>
       </article>`;
     }).join('');
-    box.innerHTML = `<div class="nba-market-head"><div><strong>${browsingLines ? `${esc(slateDateLabel)} FanDuel player points` : '0 NBA picks today'}</strong><p>${stale ? 'STALE · ' : ''}FanDuel via The Odds API · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
-      <p class="nba-market-disclaimer">No NBA model predictions or qualified edges are available. FanDuel prices below are reference lines, not picks; check current availability at FanDuel.</p>
-      ${!browsingLines ? '<button type="button" class="nba-market-browse" id="nbaBrowseLines">Browse FanDuel lines</button>'
+    box.innerHTML = `<div class="nba-market-head"><div><strong>${browsingLines ? `${esc(slateDateLabel)} ${refBook} player points` : '0 NBA picks today'}</strong><p>${stale ? 'STALE · ' : ''}${refSource} · ${esc(stamp)} · ${all.length} observed lines</p></div><span>UNVERIFIED</span></div>
+      <p class="nba-market-disclaimer">No NBA model predictions or qualified edges are available. ${refBook} prices below are reference lines, not picks; check current availability at ${refBook}.</p>
+      ${!browsingLines ? `<button type="button" class="nba-market-browse" id="nbaBrowseLines">Browse ${refBook} lines</button>`
         : rows.length ? `<div class="nba-market-list">${quotesHtml}</div>`
         : `<p>${state.filters.market === 'points' ? 'No player points lines match this filter.' : 'Only player points quotes are available for this date.'}</p>`}`;
     $('#nbaBrowseLines')?.addEventListener('click', () => setPlayMode('all'));
@@ -3963,11 +3980,12 @@
       ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(health.oddsUpdatedAt))
       : null;
     if (SPORT_ID === 'nba' && SLATES[state.slateKey]?.marketOnly) {
-      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false && String(quote.book).toLowerCase() === 'fanduel' && matches(quote.player_name, quote.team, quote.market, quote.book));
+      const quotes = (state.odds.quotes || []).filter((quote) => quote.market === 'points' && quote._fixture === false && isNbaReferenceQuote(quote) && matches(quote.player_name, quote.team, quote.market, quote.book));
       const title = $('#homeEdgeTitle');
       if (title) title.textContent = '0 NBA picks today';
-      status.textContent = `${quotes.length} unverified FanDuel reference lines · The Odds API · ${asOf || 'time unavailable'}`;
-      if ($('#homeEdgeOpenBoard')) $('#homeEdgeOpenBoard').textContent = 'Browse FanDuel lines ↗';
+      const refBook = nbaReferenceBook(state.odds.quotes);
+      status.textContent = `${quotes.length} unverified ${refBook} reference lines · ${refBook.toLowerCase() === 'kalshi' ? 'Kalshi public API' : 'The Odds API'} · ${asOf || 'time unavailable'}`;
+      if ($('#homeEdgeOpenBoard')) $('#homeEdgeOpenBoard').textContent = `Browse ${refBook} lines ↗`;
       if (mountEl) mountEl.innerHTML = '';
       list.innerHTML = '<p class="home-edge-empty">No NBA model prediction or verified edge is available for this slate. No over or under is being recommended.</p>';
       return;
