@@ -73,6 +73,7 @@ test('NBA market-only date labels Kalshi fallback lines by their real source', (
   };
   app.renderBoard();
   assert.match(registry.get('#emptyState').innerHTML, /Browse Kalshi lines/);
+  assert.equal(registry.get('#homeEdgeEyebrow').textContent, 'NBA player props');
   app.setPlayMode('all');
   const markup = registry.get('#emptyState').innerHTML;
   assert.match(markup, /Jalen Smith/);
