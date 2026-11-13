@@ -1,6 +1,7 @@
 {
   "version": 2,
   "outputDirectory": "viewer",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)data/news_watcher_state.json' ':(exclude)public/news_watcher_state.json' ':(exclude)viewer/news_watcher_state.json'",
   "cleanUrls": true,
   "trailingSlash": true,
   "rewrites": [
