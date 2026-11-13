@@ -8673,14 +8673,27 @@
     $('#detailTitle').innerHTML = `
       <div class="detail-title-row" data-team="${esc(row.team)}">
         ${avatarFor(row.player_id, row.player_display_name, row.team)}
-        <span>${esc(row.player_display_name)}</span>
+        <span class="detail-title-crest">${teamCrest(row.team, 'md')}</span>
+        <span class="detail-title-name">${esc(row.player_display_name)}</span>
         ${sideBadge}
         ${beneficiary ? ` <span class="surge-tag">${SVG_ICONS.surge} ROLE SURGE</span>` : ''}
       </div>`;
-    $('#detailMeta').textContent = `${row.position} · ${row.team} ${row.is_home ? 'vs' : '@'} ${row.opponent_team} · ${detailMarketLabel(state.filters.market)}`;
+    const detailGame = (state.games || []).find((item) => item.game_id === row.game_id);
+    const kickoffText = (() => {
+      if (!detailGame || !detailGame.gameday) return '';
+      const [hh, mm] = String(detailGame.gametime_et || detailGame.gametime || '').split(':').map(Number);
+      const day = new Date(`${detailGame.gameday}T12:00:00Z`);
+      if (Number.isNaN(day.getTime())) return '';
+      const dayText = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(day);
+      if (!Number.isFinite(hh)) return dayText;
+      const h12 = ((hh + 11) % 12) + 1;
+      return `${dayText} · ${h12}:${String(Number.isFinite(mm) ? mm : 0).padStart(2, '0')} ${hh >= 12 ? 'PM' : 'AM'} ET`;
+    })();
+    $('#detailMeta').innerHTML = `<span class="detail-meta-line">${esc(`${row.position} · ${row.team}`)}</span><span class="detail-meta-line">${esc([`${row.team} ${row.is_home ? 'vs' : '@'} ${row.opponent_team}`, kickoffText].filter(Boolean).join(' · '))}</span>`;
     $('#detailSummary').textContent = `Model fair ${fair.toFixed(1)} ${marketDef().unit || 'units'} · ${evaluation.closed ? 'Game started' : evaluation.state === 'verified' ? 'Feed-verified quote' : 'Quote unverified'}`;
     updateModalWatchlistBtn(row.player_id);
     $('#detailContent').innerHTML = detailMarkup(row, evaluation, injury, beneficiary, fair, projection);
+    bindPlayerDetailHero(row);
 
     // Line History: load continuous B1 observations asynchronously if unpopulated
     const lineMarketSlug = String(state.filters.market || '').replace(/_/g, '-');
@@ -9035,6 +9048,271 @@
       </div>`;
   }
 
+  // ── Player detail hero (2026-11 redesign) ─────────────────────────────
+  // Market tabs, Fair / Projection / Market tiles, the model outcome
+  // distribution (or CDF) with Market / Median / Mean markers and the -110
+  // no-value band, model edge, key probabilities, and a jump to the risk
+  // envelope. Every number comes from the model (pRecOver / pYardsOver, or the
+  // adapter's mu/sd for normal-approximation sports) or the quote; nothing is
+  // illustrative. Fail-closed: no quote -> "No live quote", no edge claim.
+  function pdNormalCdf(z) {
+    const t = 1 / (1 + 0.2316419 * Math.abs(z));
+    const d = 0.3989423 * Math.exp(-z * z / 2);
+    const p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z > 0 ? 1 - p : p;
+  }
+
+  /** Model P(stat > line) for the active sport/market, NaN when the model has no distribution for it. */
+  function modelPOver(row, market, line) {
+    const L = Number(line);
+    if (!row || !Number.isFinite(L)) return NaN;
+    if (SPORT_ID === 'nfl' && market === 'receptions' && finite(row.mu_rec)) return pRecOver(num(row.mu_rec), L);
+    if (SPORT_ID === 'nfl' && market === 'receiving_yards' && finite(row.mu_rec) && finite(row.mu_ypr)) {
+      return pYardsOver(num(row.mu_rec), num(row.mu_ypr), L);
+    }
+    const m = adapter.markets && adapter.markets[market];
+    if (SPORT_ID !== 'nfl' && m && typeof m.mu === 'function' && typeof m.sd === 'function') {
+      const mu = num(m.mu(row));
+      const sd = num(m.sd(row));
+      if (mu > 0 && sd > 0) return 1 - pdNormalCdf((L + 0.5 - mu) / sd);
+    }
+    return NaN;
+  }
+
+  function pdNiceStep(span, target) {
+    const raw = span / Math.max(1, target);
+    const mag = 10 ** Math.floor(Math.log10(raw));
+    const norm = raw / mag;
+    return (norm >= 5 ? 5 : norm >= 2 ? 2 : norm >= 1 ? 1 : 0.5) * mag;
+  }
+
+  /** Grid of model PDF and CDF values, or null when the market has no model distribution. */
+  function pdDistribution(row, market) {
+    if (!Number.isFinite(modelPOver(row, market, 0.5))) return null;
+    const discrete = market !== 'receiving_yards';
+    let xMax = 4;
+    for (let x = 4; x < 600; x += discrete ? 1 : 5) {
+      xMax = x;
+      if (modelPOver(row, market, x) < 0.004) break;
+    }
+    const points = [];
+    if (discrete) {
+      for (let k = 0; k <= Math.ceil(xMax); k += 1) {
+        const above = modelPOver(row, market, k - 0.5);
+        const pmf = (k === 0 ? 1 : above) - modelPOver(row, market, k + 0.5);
+        points.push({ x: k, pdf: Math.max(0, pmf), cdf: 1 - modelPOver(row, market, k + 0.5) });
+      }
+    } else {
+      // Yards are a compound distribution with a point mass at 0 (no catches).
+      // Keep that atom out of the density curve (it would dwarf it) and report it.
+      const n = 120;
+      const h = xMax / n;
+      const eps = Math.min(0.05, h / 10);
+      for (let i = 0; i <= n; i += 1) {
+        const x = i * h;
+        const lo = Math.max(eps, x - h / 2);
+        const hi = Math.max(lo + eps, x + h / 2);
+        const pdf = (modelPOver(row, market, lo) - modelPOver(row, market, hi)) / (hi - lo);
+        points.push({ x, pdf: Math.max(0, pdf), cdf: 1 - modelPOver(row, market, x) });
+      }
+    }
+    const zeroMass = discrete ? 0 : Math.max(0, 1 - modelPOver(row, market, 0.01));
+    return { discrete, xMax: Math.ceil(xMax), points, zeroMass };
+  }
+
+  /** Lines where neither side clears a -110 price under the model (P(over) within 47.6%-52.4%). */
+  function pdNoValueBand(row, market, xMax) {
+    const breakEven = 110 / 210;
+    let lo = null;
+    let hi = null;
+    const step = xMax > 40 ? 0.5 : 0.25;
+    for (let x = 0; x <= xMax; x += step) {
+      const p = modelPOver(row, market, x);
+      if (p <= breakEven && p >= 1 - breakEven) {
+        if (lo === null) lo = x;
+        hi = x;
+      }
+    }
+    return lo === null ? null : { lo, hi };
+  }
+
+  function pdChartSvg(dist, markers, band, view, unitLabel) {
+    const W = 340; const H = 214;
+    const L = 58; const R = 330; const T = 52; const B = 166;
+    const values = dist.points.map((p) => (view === 'cdf' ? p.cdf : p.pdf));
+    const yMax = view === 'cdf' ? 1 : Math.max(...values) * 1.12 || 1;
+    const sx = (x) => L + (x / dist.xMax) * (R - L);
+    const sy = (v) => B - (v / yMax) * (B - T);
+    const yStep = view === 'cdf' ? 0.25 : pdNiceStep(yMax, 4);
+    const yTicks = [];
+    for (let v = 0; v <= yMax + 1e-12; v += yStep) yTicks.push(v);
+    const xStep = pdNiceStep(dist.xMax, 6);
+    const xTicks = [];
+    for (let x = 0; x <= dist.xMax + 1e-9; x += xStep) xTicks.push(x);
+    const fmtY = (v) => (view === 'cdf' ? `${Math.round(v * 100)}%` : v >= 0.1 ? v.toFixed(2) : v.toFixed(3));
+    const grid = yTicks.map((v) => `<line x1="${L}" x2="${R}" y1="${sy(v).toFixed(1)}" y2="${sy(v).toFixed(1)}" class="pd-grid"/><text x="${L - 6}" y="${(sy(v) + 3).toFixed(1)}" class="pd-tick" text-anchor="end">${fmtY(v)}</text>`).join('')
+      + xTicks.map((x) => `<line x1="${sx(x).toFixed(1)}" x2="${sx(x).toFixed(1)}" y1="${T}" y2="${B}" class="pd-grid"/><text x="${sx(x).toFixed(1)}" y="${B + 13}" class="pd-tick" text-anchor="middle">${Math.round(x * 10) / 10}</text>`).join('');
+    const bandRect = band && view !== 'cdf'
+      ? `<rect x="${sx(band.lo).toFixed(1)}" y="${T}" width="${Math.max(2, sx(band.hi) - sx(band.lo)).toFixed(1)}" height="${B - T}" class="pd-band"/>` : '';
+    let shape;
+    if (dist.discrete && view !== 'cdf') {
+      const bw = Math.max(2, ((R - L) / (dist.xMax + 1)) * 0.62);
+      shape = dist.points.map((p) => `<rect x="${(sx(p.x) - bw / 2).toFixed(1)}" y="${sy(p.pdf).toFixed(1)}" width="${bw.toFixed(1)}" height="${(B - sy(p.pdf)).toFixed(1)}" rx="1.5" class="pd-bar"/>`).join('');
+    } else {
+      const path = dist.points.map((p, i) => `${i ? 'L' : 'M'}${sx(p.x).toFixed(1)},${sy(view === 'cdf' ? p.cdf : p.pdf).toFixed(1)}`).join(' ');
+      shape = `${view === 'cdf' ? '' : `<path d="${path} L${R},${B} L${L},${B} Z" class="pd-area"/>`}<path d="${path}" class="pd-curve"/>`;
+    }
+    // Marker chips sit in one row above the plot; spread them so labels never overlap.
+    const chipW = 50;
+    const chips = markers.filter((m) => Number.isFinite(m.value) && m.value >= 0)
+      .map((m) => ({ ...m, x: sx(Math.min(m.value, dist.xMax)) }))
+      .sort((a, b) => a.x - b.x);
+    chips.forEach((c, i) => { c.cx = Math.min(Math.max(c.x, L + chipW / 2), R - chipW / 2); if (i && c.cx - chips[i - 1].cx < chipW + 4) c.cx = chips[i - 1].cx + chipW + 4; });
+    const overflow = chips.length ? chips[chips.length - 1].cx - (R - chipW / 2) : 0;
+    if (overflow > 0) chips.forEach((c) => { c.cx -= overflow; });
+    const markerSvg = chips.map((c) => `<g class="pd-marker pd-marker-${c.kind}">
+        <line x1="${c.x.toFixed(1)}" x2="${c.x.toFixed(1)}" y1="${T - 4}" y2="${B}" class="pd-marker-line"/>
+        <rect x="${(c.cx - chipW / 2).toFixed(1)}" y="6" width="${chipW}" height="34" rx="7" class="pd-chip"/>
+        <text x="${c.cx.toFixed(1)}" y="19" text-anchor="middle" class="pd-chip-label">${esc(c.label)}</text>
+        <text x="${c.cx.toFixed(1)}" y="34" text-anchor="middle" class="pd-chip-value">${c.value.toFixed(1)}</text>
+      </g>`).join('');
+    return `<svg class="pd-chart-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${view === 'cdf' ? 'Cumulative' : 'Outcome'} distribution of ${esc(unitLabel)}">
+      <defs><linearGradient id="pdAreaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38BDF8" stop-opacity="0.55"/><stop offset="1" stop-color="#38BDF8" stop-opacity="0.04"/></linearGradient></defs>
+      ${grid}${bandRect}${shape}${markerSvg}
+      <line x1="${L}" x2="${R}" y1="${B}" y2="${B}" class="pd-axis"/>
+      <text x="${(L + R) / 2}" y="${H - 6}" text-anchor="middle" class="pd-axis-label">${esc(unitLabel)}</text>
+      <text x="10" y="${(T + B) / 2}" text-anchor="middle" class="pd-axis-label" transform="rotate(-90 10 ${(T + B) / 2})">${view === 'cdf' ? 'P(at or below)' : dist.discrete ? 'Probability' : 'Probability density'}</text>
+    </svg>`;
+  }
+
+  const PD_ICONS = {
+    scale: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3v18M5 21h14M4 7h16M7 7l-3 7a3 3 0 0 0 6 0L7 7zm10 0-3 7a3 3 0 0 0 6 0l-3-7z"/></svg>',
+    bars: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 20h16M7 16v-3M11 16V8M15 16v-5M19 16V5"/></svg>',
+    layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5zM3 13l9 5 9-5"/></svg>',
+    bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>',
+    check: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 8.5 3 3 7-7"/></svg>',
+    chevron: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg>'
+  };
+
+  function bindPlayerDetailHero(row) {
+    const root = $('#detailContent');
+    if (!root || typeof root.querySelectorAll !== 'function') return;
+    root.querySelectorAll('[data-pd-view]').forEach((btn) => btn.addEventListener('click', () => {
+      const view = btn.dataset.pdView;
+      root.querySelectorAll('[data-pd-view]').forEach((b) => {
+        const on = b === btn;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-selected', String(on));
+      });
+      root.querySelectorAll('[data-pd-panel]').forEach((panel) => { panel.hidden = panel.dataset.pdPanel !== view; });
+    }));
+    root.querySelectorAll('[data-pd-market]').forEach((btn) => btn.addEventListener('click', () => {
+      const id = btn.dataset.pdMarket;
+      if (!id || id === state.filters.market) return;
+      triggerHaptic('light');
+      state.filters.market = id;
+      if ($('#marketFilter')) $('#marketFilter').value = id;
+      syncFilterChipsUI();
+      renderBoard();
+      renderDetailModal(row);
+    }));
+    const breakBtn = root.querySelector('[data-pd-break]');
+    if (breakBtn) breakBtn.addEventListener('click', () => {
+      const target = root.querySelector('.spec-grid-card');
+      if (target && typeof target.scrollIntoView === 'function') target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  function playerDetailHero(row, evaluation, fair, projection) {
+    const market = state.filters.market;
+    const mdef = marketDef(market);
+    const unitLabel = (adapter.detail && adapter.detail.marketLabel ? adapter.detail.marketLabel(market) : mdef.label || market);
+    const hasQuote = evaluation.state !== 'none' && Number.isFinite(Number(evaluation.line));
+    const marketLine = hasQuote ? Number(evaluation.line) : NaN;
+    // Edge on this screen uses the same model as Key Probabilities (NegBin-Gamma
+    // for NFL, mu/sd elsewhere) against the no-vig market, so the two agree.
+    // Without a model distribution it falls back to the quote's evaluation.
+    let edge = { side: evaluation.side, value: num(evaluation.edge), pModel: NaN, source: 'quote evaluation' };
+    const q = evaluation.quote;
+    const pOverAtLine = hasQuote ? modelPOver(row, market, marketLine) : NaN;
+    if (hasQuote && q && Number.isFinite(pOverAtLine) && finite(q.over_odds) && finite(q.under_odds)) {
+      const fairMarket = devig(Number(q.over_odds), Number(q.under_odds));
+      const overEdge = pOverAtLine - fairMarket.over;
+      const underEdge = (1 - pOverAtLine) - fairMarket.under;
+      edge = overEdge >= underEdge
+        ? { side: 'OVER', value: overEdge, pModel: pOverAtLine, odds: q.over_odds, source: 'model vs no-vig market' }
+        : { side: 'UNDER', value: underEdge, pModel: 1 - pOverAtLine, odds: q.under_odds, source: 'model vs no-vig market' };
+    }
+    const tabs = (adapter.marketOrder || []).map((id) => {
+      const m = adapter.markets[id] || {};
+      const label = adapter.detail && adapter.detail.marketLabel ? adapter.detail.marketLabel(id) : (m.chipLabel || id);
+      return `<button type="button" class="pd-tab${id === market ? ' is-active' : ''}" data-pd-market="${esc(id)}" role="tab" aria-selected="${id === market}">${esc(label)}</button>`;
+    }).join('');
+
+    const badge = !hasQuote ? ''
+      : evaluation.state === 'verified'
+        ? `<span class="pd-badge pd-badge-verified">${PD_ICONS.check} Verified</span>`
+        : '<span class="pd-badge pd-badge-unverified">Unverified</span>';
+    const marketTile = hasQuote
+      ? `<div class="pd-market-line"><b>${marketLine.toFixed(1)}</b><span>${esc(oddsText(q && finite(q.over_odds) ? q.over_odds : evaluation.odds))}</span></div>${badge}<small class="pd-tile-foot">Over price · ${esc(bookShort(evaluation.book))}</small>`
+      : '<div class="pd-market-none">No live quote</div><small class="pd-tile-foot">Model only</small>';
+
+    const dist = pdDistribution(row, market);
+    const band = dist ? pdNoValueBand(row, market, dist.xMax) : null;
+    const markers = [
+      { kind: 'market', label: 'Market', value: marketLine },
+      { kind: 'median', label: 'Median', value: fair },
+      { kind: 'mean', label: 'Mean', value: projection }
+    ];
+    const chart = dist
+      ? `<div class="pd-seg" role="tablist">
+          <button type="button" class="pd-seg-btn is-active" data-pd-view="pdf" role="tab" aria-selected="true">Distribution</button>
+          <button type="button" class="pd-seg-btn" data-pd-view="cdf" role="tab" aria-selected="false">CDF</button>
+        </div>
+        <div class="pd-chart" data-pd-panel="pdf">${pdChartSvg(dist, markers, band, 'pdf', unitLabel)}</div>
+        <div class="pd-chart" data-pd-panel="cdf" hidden>${pdChartSvg(dist, markers, band, 'cdf', unitLabel)}</div>
+        <div class="pd-legend"><span><i class="pd-key pd-key-dist"></i>Outcome distribution (${dist.discrete ? 'PMF' : 'PDF'})</span>${band ? '<span><i class="pd-key pd-key-band"></i>No-value band (−110)</span>' : ''}${dist.zeroMass >= 0.02 ? `<span class="pd-legend-atom">P(0 ${esc(mdef.unit || '')}) = ${(dist.zeroMass * 100).toFixed(1)}%, not drawn</span>` : ''}</div>`
+      : `<div class="pd-chart pd-chart-fallback">${densityCurveSvg(mdef.dist(row), mdef.unit || '')}</div>
+        <p class="pd-note">${esc(adapter.detail && adapter.detail.distributionDesc ? adapter.detail.distributionDesc(market) : 'Approximate model range')}</p>`;
+
+    const probLines = [
+      hasQuote ? { label: `P(Over ${marketLine.toFixed(1)})`, line: marketLine, hi: true } : null,
+      { label: `P(Over ${fair.toFixed(1)})`, line: fair },
+      { label: `P(Over ${projection.toFixed(1)})`, line: projection }
+    ].filter(Boolean);
+    const probRows = probLines.map((p) => {
+      const v = modelPOver(row, market, p.line);
+      return `<div class="pd-prob-row${p.hi ? ' is-hi' : ''}"><span>${esc(p.label)}</span><strong>${Number.isFinite(v) ? `${(v * 100).toFixed(1)}%` : '—'}</strong></div>`;
+    }).join('');
+
+    const edgeTile = hasQuote
+      ? `<strong class="pd-edge-value ${edge.value >= 0 ? 'is-pos' : 'is-neg'}">${signedPct(edge.value)}</strong>
+         <small>${Number.isFinite(edge.pModel) ? `P(${esc(edge.side === 'UNDER' ? 'Under' : 'Over')} ${marketLine.toFixed(1)}): ${(edge.pModel * 100).toFixed(1)}%` : `${esc(edge.side || '')} ${marketLine.toFixed(1)}`} · ${evaluation.state === 'verified' ? 'verified quote' : 'unverified quote'}</small>`
+      : '<strong class="pd-edge-value is-none">—</strong><small>No live market line to compare</small>';
+
+    const breakCopy = SPORT_ID === 'nba' ? 'Minutes, injury/usage, pace, blowout risk'
+      : SPORT_ID === 'nfl' ? 'Game script, injury/usage, coverage, volatility' : 'Injury, usage and volatility';
+
+    return `<section class="pd-hero" aria-label="Model summary">
+      <div class="pd-tabs" role="tablist" aria-label="Market">${tabs}</div>
+      <div class="pd-tiles">
+        <div class="pd-tile pd-tile-fair"><div class="pd-tile-head">${PD_ICONS.scale}<span>Fair Line<small>(Median)</small></span></div><strong class="pd-tile-value">${fair.toFixed(1)}</strong></div>
+        <div class="pd-tile"><div class="pd-tile-head">${PD_ICONS.bars}<span>Projection<small>(Mean)</small></span></div><strong class="pd-tile-value">${projection.toFixed(1)}</strong></div>
+        <div class="pd-tile pd-tile-market"><div class="pd-tile-head">${PD_ICONS.layers}<span>Market Line</span></div>${marketTile}</div>
+      </div>
+      <div class="pd-chart-card">${chart}</div>
+      <div class="pd-duo${dist ? '' : ' pd-duo-single'}">
+        <div class="pd-card pd-edge"><div class="pd-card-head">Model Edge <span class="pd-info" title="Model probability minus the no-vig market probability for the better side at the quoted line. Same model as Key Probabilities.">i</span></div>${edgeTile}</div>
+        ${dist ? `<div class="pd-card pd-probs"><div class="pd-card-head">Key Probabilities</div>${probRows}</div>` : ''}
+      </div>
+      <button type="button" class="pd-break" data-pd-break>
+        <span class="pd-break-icon">${PD_ICONS.bolt}</span>
+        <span class="pd-break-copy"><strong>What Could Break This?</strong><small>${esc(breakCopy)}</small></span>
+        <span class="pd-break-chev">${PD_ICONS.chevron}</span>
+      </button>
+    </section>`;
+  }
+
   function detailMarkup(row, evaluation, injury, beneficiary, fair, projection) {
     const isLogged = (state.portfolio || []).some((b) => b.sport === SPORT_ID && b.player_id === row.player_id && b.market === state.filters.market);
 
@@ -9058,23 +9336,6 @@
 
     const isGated = evaluation.state === 'verified' && evaluation.edge > 0 && evaluation.edge < (policy()?.gate || 0.10);
     const isOverridden = Boolean(state.gateOverride?.[row.player_id]);
-
-    const priceStat = evaluation.state === 'none'
-      ? '<div class="detail-stat"><span>Book offer</span><strong>No verified sportsbook price yet</strong></div>'
-      : `<div class="detail-stat">
-          <span>Book Offer</span>
-          <strong class="${evaluation.side === 'UNDER' ? 'text-sky' : 'text-accent'}">
-            <span class="hero-side-pill ${evaluation.side === 'UNDER' ? 'pill-under' : 'pill-over'}">${evaluation.side}</span>
-            ${evaluation.line.toFixed(1)} <small class="odds-val">${oddsText(evaluation.odds)}</small>
-          </strong>
-          <small class="cell-sub">${bookShort(evaluation.book)} · ${evaluation.state === 'verified' ? 'Verified' : 'Unverified'}</small>
-        </div>`;
-
-    const actionStat = evaluation.state === 'none'
-      ? `<div class="detail-stat"><span>Projection</span><strong>${projection.toFixed(1)}</strong></div>`
-      : evaluation.state === 'ingested'
-        ? `<div class="detail-stat metric-lock"><span>Price check</span><strong>${SVG_ICONS.lock} ${signedPct(evaluation.edge)}</strong><small class="cell-sub">Unverified quote</small></div>`
-        : `<div class="detail-stat ${evaluation.tone}"><span>Price check</span><strong>${signedPct(evaluation.edge)}</strong><small class="cell-sub">Return ${signedPct(evaluation.ev)}</small></div>`;
 
     const surgeSection = beneficiary ? `
       <div class="detail-section">
@@ -9130,19 +9391,7 @@
     const weatherDesc = env.desc;
 
     return `
-      <div class="detail-hero">
-        ${priceStat}
-        <div class="detail-stat detail-stat-fair">
-          <div class="detail-stat-head">
-            <span>Model Fair</span>
-            <span class="detail-stat-badge">${fairProbabilityText(row)}</span>
-          </div>
-          <strong class="text-white">${fair.toFixed(1)} <small class="text-dim" style="font-size:11px;">(μ ${projection.toFixed(1)})</small></strong>
-          <small class="cell-sub">${SPORT_ID === 'nba' ? 'Uncalibrated fixture · normal approximation' : `Continuous median · ${num(row.games_prior, 16)}G baseline`}</small>
-          <div class="detail-fair-plot">${distSparklineSvg(marketDef().dist(row), evaluation.line)}</div>
-        </div>
-        ${actionStat}
-      </div>
+      ${playerDetailHero(row, evaluation, fair, projection)}
 
       ${surgeSection}
 
