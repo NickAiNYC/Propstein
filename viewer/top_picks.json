@@ -4,26 +4,11 @@
   "gate_edge": 0.1,
   "kelly_cap": 0.03,
   "rostered_player_records": 394,
-  "projectable_player_records": 287,
+  "projectable_player_records": 286,
   "note": "Top 25 Projections & Fair Lines (Active Games Only)",
   "picks": [
     {
       "rank": 1,
-      "player": "Puka Nacua",
-      "team": "LA",
-      "opponent": "ARI",
-      "position": "WR",
-      "proj_rec": 14.6,
-      "fair_line_rec": 13.5,
-      "p_rec_at_fair_line": 0.528,
-      "proj_yards": 175.7,
-      "fair_line_yards": 165.0,
-      "implied_total": 24.5,
-      "spread": 9.5,
-      "questionable": 0
-    },
-    {
-      "rank": 2,
       "player": "CeeDee Lamb",
       "team": "DAL",
       "opponent": "SF",
@@ -38,7 +23,7 @@
       "questionable": 0
     },
     {
-      "rank": 3,
+      "rank": 2,
       "player": "Ja'Marr Chase",
       "team": "CIN",
       "opponent": "PIT",
@@ -53,7 +38,7 @@
       "questionable": 0
     },
     {
-      "rank": 4,
+      "rank": 3,
       "player": "Jaxon Smith-Njigba",
       "team": "SEA",
       "opponent": "LV",
@@ -68,22 +53,22 @@
       "questionable": 0
     },
     {
-      "rank": 5,
+      "rank": 4,
       "player": "Amon-Ra St. Brown",
       "team": "DET",
       "opponent": "NE",
       "position": "WR",
-      "proj_rec": 8.7,
+      "proj_rec": 8.6,
       "fair_line_rec": 8.5,
-      "p_rec_at_fair_line": 0.468,
-      "proj_yards": 105.3,
-      "fair_line_yards": 97.5,
-      "implied_total": 26.5,
-      "spread": 2.5,
+      "p_rec_at_fair_line": 0.464,
+      "proj_yards": 104.5,
+      "fair_line_yards": 96.5,
+      "implied_total": 26.2,
+      "spread": 3.0,
       "questionable": 0
     },
     {
-      "rank": 6,
+      "rank": 5,
       "player": "Chris Olave",
       "team": "NO",
       "opponent": "CAR",
@@ -98,37 +83,37 @@
       "questionable": 0
     },
     {
-      "rank": 7,
+      "rank": 6,
       "player": "Justin Jefferson",
       "team": "MIN",
       "opponent": "GB",
       "position": "WR",
       "proj_rec": 6.1,
       "fair_line_rec": 5.5,
-      "p_rec_at_fair_line": 0.525,
-      "proj_yards": 81.8,
-      "fair_line_yards": 74.0,
-      "implied_total": 19.2,
+      "p_rec_at_fair_line": 0.527,
+      "proj_yards": 82.2,
+      "fair_line_yards": 74.5,
+      "implied_total": 19.8,
       "spread": -3.0,
       "questionable": 0
     },
     {
-      "rank": 8,
+      "rank": 7,
       "player": "Matthew Golden",
       "team": "GB",
       "opponent": "MIN",
       "position": "WR",
       "proj_rec": 5.7,
       "fair_line_rec": 5.5,
-      "p_rec_at_fair_line": 0.471,
-      "proj_yards": 73.4,
-      "fair_line_yards": 66.0,
-      "implied_total": 22.2,
+      "p_rec_at_fair_line": 0.472,
+      "proj_yards": 73.7,
+      "fair_line_yards": 66.5,
+      "implied_total": 22.8,
       "spread": 3.0,
       "questionable": 0
     },
     {
-      "rank": 9,
+      "rank": 8,
       "player": "Mike Evans",
       "team": "SF",
       "opponent": "DAL",
@@ -143,22 +128,7 @@
       "questionable": 0
     },
     {
-      "rank": 10,
-      "player": "A.J. Brown",
-      "team": "NE",
-      "opponent": "DET",
-      "position": "WR",
-      "proj_rec": 4.7,
-      "fair_line_rec": 4.5,
-      "p_rec_at_fair_line": 0.473,
-      "proj_yards": 68.2,
-      "fair_line_yards": 60.5,
-      "implied_total": 24.0,
-      "spread": -2.5,
-      "questionable": 0
-    },
-    {
-      "rank": 11,
+      "rank": 9,
       "player": "Omar Cooper Jr.",
       "team": "NYJ",
       "opponent": "BUF",
@@ -173,7 +143,22 @@
       "questionable": 0
     },
     {
-      "rank": 12,
+      "rank": 10,
+      "player": "A.J. Brown",
+      "team": "NE",
+      "opponent": "DET",
+      "position": "WR",
+      "proj_rec": 4.6,
+      "fair_line_rec": 4.5,
+      "p_rec_at_fair_line": 0.468,
+      "proj_yards": 67.3,
+      "fair_line_yards": 59.5,
+      "implied_total": 23.2,
+      "spread": -3.0,
+      "questionable": 1
+    },
+    {
+      "rank": 11,
       "player": "Tee Higgins",
       "team": "CIN",
       "opponent": "PIT",
@@ -188,7 +173,7 @@
       "questionable": 0
     },
     {
-      "rank": 13,
+      "rank": 12,
       "player": "Tetairoa McMillan",
       "team": "CAR",
       "opponent": "NO",
@@ -200,6 +185,21 @@
       "fair_line_yards": 59.0,
       "implied_total": 23.0,
       "spread": -2.5,
+      "questionable": 0
+    },
+    {
+      "rank": 13,
+      "player": "Rashee Rice",
+      "team": "KC",
+      "opponent": "ATL",
+      "position": "WR",
+      "proj_rec": 5.7,
+      "fair_line_rec": 5.5,
+      "p_rec_at_fair_line": 0.477,
+      "proj_yards": 65.1,
+      "fair_line_yards": 58.5,
+      "implied_total": 25.2,
+      "spread": 3.0,
       "questionable": 0
     },
     {
@@ -219,21 +219,6 @@
     },
     {
       "rank": 15,
-      "player": "Rashee Rice",
-      "team": "KC",
-      "opponent": "ATL",
-      "position": "WR",
-      "proj_rec": 5.7,
-      "fair_line_rec": 5.5,
-      "p_rec_at_fair_line": 0.473,
-      "proj_yards": 64.4,
-      "fair_line_yards": 58.0,
-      "implied_total": 24.8,
-      "spread": 3.0,
-      "questionable": 0
-    },
-    {
-      "rank": 16,
       "player": "Zay Flowers",
       "team": "BAL",
       "opponent": "LAC",
@@ -245,6 +230,21 @@
       "fair_line_yards": 56.5,
       "implied_total": 21.5,
       "spread": 4.5,
+      "questionable": 0
+    },
+    {
+      "rank": 16,
+      "player": "Drake London",
+      "team": "ATL",
+      "opponent": "KC",
+      "position": "WR",
+      "proj_rec": 4.9,
+      "fair_line_rec": 4.5,
+      "p_rec_at_fair_line": 0.508,
+      "proj_yards": 62.2,
+      "fair_line_yards": 55.5,
+      "implied_total": 22.2,
+      "spread": -3.0,
       "questionable": 0
     },
     {
@@ -264,21 +264,6 @@
     },
     {
       "rank": 18,
-      "player": "Drake London",
-      "team": "ATL",
-      "opponent": "KC",
-      "position": "WR",
-      "proj_rec": 4.9,
-      "fair_line_rec": 4.5,
-      "p_rec_at_fair_line": 0.504,
-      "proj_yards": 61.6,
-      "fair_line_yards": 55.0,
-      "implied_total": 21.8,
-      "spread": -3.0,
-      "questionable": 0
-    },
-    {
-      "rank": 19,
       "player": "George Pickens",
       "team": "DAL",
       "opponent": "SF",
@@ -293,37 +278,37 @@
       "questionable": 0
     },
     {
-      "rank": 20,
+      "rank": 19,
       "player": "Carnell Tate",
       "team": "TEN",
       "opponent": "JAX",
       "position": "WR",
-      "proj_rec": 4.6,
+      "proj_rec": 4.7,
       "fair_line_rec": 4.5,
-      "p_rec_at_fair_line": 0.471,
-      "proj_yards": 60.2,
-      "fair_line_yards": 53.5,
+      "p_rec_at_fair_line": 0.476,
+      "proj_yards": 60.9,
+      "fair_line_yards": 54.0,
       "implied_total": 18.0,
       "spread": -10.5,
       "questionable": 0
     },
     {
-      "rank": 21,
+      "rank": 20,
       "player": "Christian Watson",
       "team": "GB",
       "opponent": "MIN",
       "position": "WR",
       "proj_rec": 4.2,
       "fair_line_rec": 3.5,
-      "p_rec_at_fair_line": 0.562,
-      "proj_yards": 59.9,
-      "fair_line_yards": 52.5,
-      "implied_total": 22.2,
+      "p_rec_at_fair_line": 0.563,
+      "proj_yards": 60.3,
+      "fair_line_yards": 53.0,
+      "implied_total": 22.8,
       "spread": 3.0,
       "questionable": 0
     },
     {
-      "rank": 22,
+      "rank": 21,
       "player": "Trey McBride",
       "team": "ARI",
       "opponent": "LA",
@@ -338,7 +323,7 @@
       "questionable": 0
     },
     {
-      "rank": 23,
+      "rank": 22,
       "player": "Michael Wilson",
       "team": "ARI",
       "opponent": "LA",
@@ -353,7 +338,7 @@
       "questionable": 0
     },
     {
-      "rank": 24,
+      "rank": 23,
       "player": "DK Metcalf",
       "team": "PIT",
       "opponent": "CIN",
@@ -368,7 +353,7 @@
       "questionable": 0
     },
     {
-      "rank": 25,
+      "rank": 24,
       "player": "Caleb Douglas",
       "team": "MIA",
       "opponent": "IND",
@@ -380,6 +365,21 @@
       "fair_line_yards": 46.0,
       "implied_total": 17.5,
       "spread": -3.5,
+      "questionable": 0
+    },
+    {
+      "rank": 25,
+      "player": "Keenan Allen",
+      "team": "IND",
+      "opponent": "MIA",
+      "position": "WR",
+      "proj_rec": 4.7,
+      "fair_line_rec": 4.5,
+      "p_rec_at_fair_line": 0.483,
+      "proj_yards": 52.4,
+      "fair_line_yards": 46.5,
+      "implied_total": 21.0,
+      "spread": 3.5,
       "questionable": 0
     }
   ]

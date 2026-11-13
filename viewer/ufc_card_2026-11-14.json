@@ -1,7 +1,7 @@
 {
   "schema_version": "ufc-card.v1",
   "sport": "ufc",
-  "generated_at": "2026-11-13T03:30:16Z",
+  "generated_at": "2026-11-13T18:27:23Z",
   "event_id": "600061400",
   "event_name": "UFC 334: Gane vs. Hokit",
   "date": "2026-11-14",
@@ -305,7 +305,7 @@
     {
       "fight_id": "401931773",
       "start": "2026-11-15T00:00Z",
-      "weight_class": "Middleweight",
+      "weight_class": "Catch Weight",
       "sched_rounds": 3,
       "result": null,
       "end_round": null,
@@ -360,10 +360,10 @@
           -205,
           205
         ],
-        "p_finish": 0.6028,
+        "p_finish": 0.5411,
         "p_over_by_line": {
-          "1.5": 0.5962,
-          "2.5": 0.444
+          "1.5": 0.6376,
+          "2.5": 0.501
         }
       },
       "market": null,
@@ -913,7 +913,7 @@
           "record": "10-0-0",
           "flag": "https://a.espncdn.com/i/teamlogos/countries/500/usa.png",
           "winner": false,
-          "age": 28,
+          "age": 29,
           "reach_in": 73.5,
           "stance": "Orthodox",
           "headshot": "https://a.espncdn.com/i/headshots/mma/players/full/4049391.png"

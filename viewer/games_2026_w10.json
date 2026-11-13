@@ -17,8 +17,8 @@
     "gametime": "09:30",
     "away_team": "NE",
     "home_team": "DET",
-    "spread_line": 2.5,
-    "total_line": 50.5,
+    "spread_line": 3.0,
+    "total_line": 49.5,
     "roof": "dome",
     "wind": null,
     "is_open_field": 1
@@ -78,7 +78,7 @@
     "away_team": "KC",
     "home_team": "ATL",
     "spread_line": -3.0,
-    "total_line": 46.5,
+    "total_line": 47.5,
     "roof": null,
     "wind": null,
     "is_open_field": 0
@@ -102,7 +102,7 @@
     "away_team": "MIN",
     "home_team": "GB",
     "spread_line": 3.0,
-    "total_line": 41.5,
+    "total_line": 42.5,
     "roof": "outdoors",
     "wind": null,
     "is_open_field": 0
