@@ -508,8 +508,9 @@
     const bandPath = band.length
       ? `M${X(low)} ${base} ${band.map(([x, y]) => `L${X(x)} ${Y(y)}`).join(' ')} L${X(high)} ${base} Z`
       : '';
-    const tickVals = [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(xMax * f));
-    const ticks = tickVals.map((v, i) => `<text x="${X(v)}" y="${base + 12}" text-anchor="${i === 0 ? 'start' : i === tickVals.length - 1 ? 'end' : 'middle'}">${v}</text>`).join('');
+    // Decluttered axis: only the endpoints. The fair line is already marked by
+    // its chip, and the 80% CI floats above the curve on the side the chips leave free.
+    const ticks = `<text x="0" y="${base + 12}" text-anchor="start">0</text><text x="${W}" y="${base + 12}" text-anchor="end">${Math.round(xMax)}</text>`;
     const label = `Approximate shape: projection ${mean.toFixed(1)}, fair line ${fair.toFixed(1)}, 80% range ${low} to ${high}${unit ? ` ${unit}` : ''}`;
     rfDistSeq += 1;
     const gid = `rfFill${rfDistSeq}`;
@@ -520,6 +521,11 @@
     const fairAnchor = fairLeft ? 'end' : 'start';
     const projAnchor = fairLeft ? 'start' : 'end';
     const off = gap < 44 ? 4 : 0;
+    const ciText = `80% CI ${Math.round(low)}–${Math.round(high)}`;
+    const chipLo = Math.min(fx, mx) - 52; const chipHi = Math.max(fx, mx) + 52;
+    const ciLabel = chipLo >= 92 ? `<text class="rf-dist-ci" x="0" y="10" text-anchor="start">${ciText}</text>`
+      : W - chipHi >= 92 ? `<text class="rf-dist-ci" x="${W}" y="10" text-anchor="end">${ciText}</text>`
+      : `<text class="rf-dist-ci" x="${W / 2}" y="${base + 12}" text-anchor="middle">${ciText}</text>`;
     const fairLabelX = fx + (fairLeft ? -4 - off : 4 + off);
     const projLabelX = mx + (fairLeft ? 4 + off : -4 - off);
     return `<figure class="rf-dist" role="img" aria-label="${esc(label)}">
@@ -534,6 +540,7 @@
         <g class="rf-dist-chip rf-dist-chip-fair"><rect x="${fairLabelX - (fairLeft ? 44 : 0)}" y="0" width="44" height="14" rx="4"/><text x="${fairLabelX - (fairLeft ? 22 : -22)}" y="10" text-anchor="middle">${fair.toFixed(1)}</text></g>
         <g class="rf-dist-chip rf-dist-chip-proj"><rect x="${projLabelX - (fairLeft ? 0 : 44)}" y="0" width="44" height="14" rx="4"/><text x="${projLabelX + (fairLeft ? 22 : -22)}" y="10" text-anchor="middle">${mean.toFixed(1)}</text></g>
         <g class="rf-dist-ticks">${ticks}</g>
+        ${ciLabel}
       </svg>
     </figure>`;
   }
@@ -2163,30 +2170,31 @@
     });
   }
 
-  // Default is the dark terminal; users can switch to the light 'Glass' theme
-  // (persisted in localStorage). Originally dark-locked in the 2026-10 restyle:
-  // one calibrated FanDuel-style
-  // dark palette — obsidian navy canvas, white text, baby-blue accent. The
-  // PR #13 light/dark toggle was removed with the restyle and any stale
-  // persisted choice is cleared so every visitor gets the same shell. The
-  // [data-theme="light"] CSS hooks stay dormant; restoring a toggle is a
-  // one-commit revert (docs/TECH-DEBT.md — dark-lock decision row).
+  // Dark (default) / Light theme toggle, persisted in localStorage. Light mode
+  // reuses the `html.glass` styling hooks from the Glass theme patch; a stored
+  // 'glass' preference from that version still loads as Light. Originally the
+  // terminal was dark-locked in the 2026-10 restyle (docs/TECH-DEBT.md).
   const THEME_KEY = 'propwire-theme';
 
   function initTheme() {
     let pref = 'dark';
-    try { pref = localStorage.getItem(THEME_KEY) === 'glass' ? 'glass' : 'dark'; } catch (_) {}
+    try {
+      const stored = localStorage.getItem(THEME_KEY);
+      pref = stored === 'light' || stored === 'glass' ? 'light' : 'dark';
+    } catch (_) {}
     const apply = (mode) => {
-      const glass = mode === 'glass';
+      const light = mode === 'light';
       const root = document.documentElement;
-      root.dataset.theme = glass ? 'light' : 'dark';
-      root.classList.toggle('dark', !glass);
-      root.classList.toggle('glass', glass);
+      root.dataset.theme = light ? 'light' : 'dark';
+      root.classList.toggle('dark', !light);
+      root.classList.toggle('glass', light);
+      root.classList.toggle('light', light);
       const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', glass ? '#dcecfb' : '#0b0e14');
+      if (meta) meta.setAttribute('content', light ? '#eef4fa' : '#0b0e14');
       const btn = document.getElementById('themeToggle');
       if (btn) {
-        btn.setAttribute('aria-pressed', glass ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', light ? 'true' : 'false');
+        btn.setAttribute('aria-label', light ? 'Light theme on. Switch to dark theme' : 'Dark theme on. Switch to light theme');
         btn.querySelectorAll('[data-theme-opt]').forEach((o) => o.classList.toggle('on', o.dataset.themeOpt === mode));
       }
     };
@@ -2194,7 +2202,7 @@
     const btn = document.getElementById('themeToggle');
     if (btn) {
       btn.addEventListener('click', () => {
-        const next = document.documentElement.classList.contains('glass') ? 'dark' : 'glass';
+        const next = document.documentElement.classList.contains('light') ? 'dark' : 'light';
         apply(next);
         try { localStorage.setItem(THEME_KEY, next); } catch (_) {}
       });

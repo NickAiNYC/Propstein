@@ -1053,3 +1053,98 @@ html.glass body #homeEdgeTitle { background: linear-gradient(90deg, #0b2540 40%,
 @media (prefers-reduced-motion: reduce) {
   .rf-dist-line, .rf-dist-band, .rf-dist-fair, .rf-dist-proj, .rf-dist-chip, html body .home-edge-card[data-rf-card] { animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; }
 }
+
+/* ================= Terminal discipline pass (2026-11) =================
+   Five refinements: (1) muted missing-data badges, high contrast reserved for
+   actionable signals; (2) monospace tabular numerals for scannable numbers;
+   (3) tight radii + hairline borders with a hover state instead of neon glow;
+   (4) decluttered card chart (endpoint ticks + floated 80% CI); (5) segmented
+   controls with a distinct active tier. Loaded last on purpose. */
+
+/* (1) "No live price" is a missing-data state, not a signal: quiet text + dot */
+html body .rf-prop-top .rf-badge {
+  background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important;
+  padding: 0 0 1px !important; color: #71717a !important; text-transform: none !important; letter-spacing: 0 !important;
+  font: 400 11px/1.3 var(--rf-sans) !important; border-bottom: 1px dashed rgba(113, 113, 122, 0.55) !important;
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+}
+html body .rf-prop-top .rf-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #52525b; }
+html body .home-research-note .home-research-label { color: #71717a !important; letter-spacing: .04em !important; }
+html.light body .rf-prop-top .rf-badge { color: #64748b !important; border-bottom-color: rgba(100, 116, 139, 0.5) !important; }
+
+/* (2) numbers: monospace, tabular, so digits and decimals stack */
+html body [data-rf-card] .rf-stat b,
+html body .rf-m-step b,
+html body .rf-dist-chip text,
+html body .rf-dist-ticks text,
+html body .rf-dist-ci,
+html body #detailDialog :is(.pd-market-line, .pd-prob-row strong, .pd-tick, .pd-chip-value, .pd-edge small) {
+  font-family: var(--rf-mono) !important; font-variant-numeric: tabular-nums slashed-zero;
+}
+html body [data-rf-card] .rf-stat b { letter-spacing: -0.01em !important; }
+html body .rf-dist-ci { font-size: 9.5px; fill: #a1a1aa; letter-spacing: .02em; }
+html.light body .rf-dist-ci { fill: #52627a; }
+
+/* (3) tight radii, hairline borders, hover instead of glow */
+html body .home-edge-card[data-rf-card] {
+  border-radius: 10px !important; border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+html body .home-edge-card[data-rf-card]::after { display: none; }
+html body .home-edge-card[data-rf-card]::before { background: linear-gradient(160deg, rgba(255,255,255,0.035), rgba(255,255,255,0) 40%); }
+@media (hover: hover) {
+  html:not(.light) body .home-edge-card[data-rf-card]:hover { border-color: rgba(255, 255, 255, 0.18) !important; background-color: rgba(24, 24, 27, 0.4) !important; }
+  html.light body .home-edge-card[data-rf-card]:hover { border-color: rgba(15, 23, 42, 0.22) !important; }
+}
+html.light body .home-edge-card[data-rf-card] { border-color: rgba(15, 23, 42, 0.1) !important; }
+html body .rf-prop-stats, html body .rf-method, html body .rf-m-step { border-radius: 8px !important; }
+.rf-stat-fair b { text-shadow: none !important; }
+.rf-m-out { box-shadow: none !important; }
+html:not(.glass) .rf-prop-top .pw-avatar { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) !important; }
+.rf-dist-line { filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.35)); }
+.rf-theme-toggle span.on { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35) !important; }
+html.light .rf-theme-toggle span.on { box-shadow: 0 1px 2px rgba(15, 23, 42, 0.18), inset 0 0 0 1px rgba(15, 23, 42, 0.12) !important; }
+html body #detailDialog .pd-tile, html body #detailDialog .pd-card, html body #detailDialog .pd-chart-card, html body #detailDialog .pd-break { border-radius: 10px; border-color: rgba(255, 255, 255, 0.09); }
+html body #detailDialog .pd-tab, html body #detailDialog .pd-seg { border-radius: 8px; }
+html body #detailDialog .pd-seg-btn { border-radius: 6px; }
+html body #detailDialog .pd-tab.is-active, html body #detailDialog .pd-seg-btn.is-active { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5); border-color: transparent; background: #1e2330; }
+html body #detailDialog .pd-tile-fair .pd-tile-value, html body #detailDialog .pd-edge-value.is-pos { text-shadow: none; }
+@media (hover: hover) {
+  html body #detailDialog .pd-break:hover, html body #detailDialog .pd-tab:not(.is-active):hover { border-color: rgba(255, 255, 255, 0.2); background-color: rgba(24, 24, 27, 0.5); }
+}
+
+/* (5) segmented controls at every width: a recessed tray, one raised active tile */
+html body #mobileFilterStrip .chip-segment-group {
+  display: inline-flex !important; gap: 0 !important; padding: 2px !important; border-radius: 8px !important;
+  background: rgba(9, 9, 11, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+html body #mobileFilterStrip .chip-segment-group .chip-pill {
+  border: 1px solid transparent !important; border-radius: 6px !important; background: transparent !important;
+  box-shadow: none !important; color: #a1a1aa !important;
+}
+html body #mobileFilterStrip .chip-segment-group .chip-pill:hover { color: #e4e4e7 !important; }
+html body #mobileFilterStrip .chip-segment-group .chip-pill.active {
+  background: #1e2330 !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.5) !important;
+}
+html body #mobileFilterStrip .chip-count-pill { font-family: var(--rf-mono) !important; font-variant-numeric: tabular-nums; }
+html.light body #mobileFilterStrip .chip-segment-group { background: #f4f4f5 !important; border-color: rgba(15, 23, 42, 0.1) !important; }
+html.light body #mobileFilterStrip .chip-segment-group .chip-pill { color: #52525b !important; }
+html.light body #mobileFilterStrip .chip-segment-group .chip-pill.active {
+  background: #fff !important; color: #09090b !important; border-color: rgba(15, 23, 42, 0.18) !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* light mode chrome: no tile or dark-mode drop shadow behind the dark-ink logo;
+   the theme toggle tray follows the theme */
+html.light body .pw-brand { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
+html.light body .pw-brand-img { filter: none !important; }
+html.light body .rf-theme-toggle { background: #f4f4f5 !important; border-color: rgba(15, 23, 42, 0.12) !important; }
+html.light body .rf-theme-toggle span:not(.on) { color: #52525b !important; }
+/* (5) view switch (Table / Grid / Compact) uses the same segmented treatment */
+html body .pw-view-toggle { background: rgba(9, 9, 11, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 8px !important; padding: 2px !important; box-shadow: none !important; }
+html body .pw-view-toggle .pw-seg-btn { border-radius: 6px !important; border: 1px solid transparent !important; color: #a1a1aa !important; background: transparent !important; box-shadow: none !important; }
+html body .pw-view-toggle .pw-seg-btn.active, html body .pw-view-toggle .pw-seg-btn[aria-pressed="true"] { background: #1e2330 !important; color: #fff !important; border-color: rgba(255, 255, 255, 0.5) !important; }
+html.light body .pw-view-toggle { background: #f4f4f5 !important; border-color: rgba(15, 23, 42, 0.1) !important; }
+html.light body .pw-view-toggle .pw-seg-btn { color: #52525b !important; }
+html.light body .pw-view-toggle .pw-seg-btn.active, html.light body .pw-view-toggle .pw-seg-btn[aria-pressed="true"] { background: #fff !important; color: #09090b !important; border-color: rgba(15, 23, 42, 0.18) !important; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12) !important; }
+html.light body #mobileFilterStrip .chip-segment-group .chip-pill:not(.active) { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
