@@ -727,3 +727,131 @@ html body [data-rf-card] .rf-stat b { font-size: 17.5px !important; font-weight:
    spilled past both edges, so overflow: hidden clipped the avatar and badge.
    Children take the card's width so the ellipsis applies inside it. */
 html body .home-edge-card[data-rf-card] > * { align-self: stretch; min-width: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Player detail redesign (2026-11): research-terminal layout — player header
+   with team crest, market tabs, three stat tiles, the model distribution card
+   with Market / Median / Mean markers, model edge + key probabilities, and
+   the "what could break this" jump. Scoped to the detail dialog.
+   ═══════════════════════════════════════════════════════════════════════════ */
+html body #detailDialog {
+  --pd-card: linear-gradient(180deg, rgba(22, 30, 44, 0.92), rgba(14, 19, 29, 0.92));
+  --pd-border: rgba(125, 211, 252, 0.14);
+  --pd-border-hi: rgba(56, 189, 248, 0.55);
+  --pd-glow: 0 0 0 1px rgba(56, 189, 248, 0.45), 0 0 18px -4px rgba(56, 189, 248, 0.55), inset 0 0 12px -6px rgba(56, 189, 248, 0.6);
+  --pd-green: #4ade80;
+}
+
+/* header: big photo + crest + name, meta underneath */
+html body #detailDialog .detail-header-copy { display: flex; flex-direction: column; min-width: 0; }
+html body #detailDialog #detailTitle { order: 1; margin: 0 !important; }
+html body #detailDialog #detailMeta {
+  order: 2; margin: 6px 0 0 !important; text-transform: none !important; letter-spacing: 0 !important;
+  font: 400 13px/1.45 var(--rf-sans) !important; color: #b6c2d3 !important;
+}
+html body #detailDialog #detailSummary { order: 3; }
+html body #detailDialog .detail-title-row { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 12px; min-width: 0; }
+html body #detailDialog .detail-meta-line { display: block; }
+html body #detailDialog .detail-title-row .pw-avatar {
+  width: 64px !important; height: 64px !important; flex: 0 0 64px; border-radius: 14px !important;
+  box-shadow: 0 0 0 1px var(--pd-border), 0 10px 24px -12px rgba(0, 0, 0, 0.9);
+}
+html body #detailDialog .detail-title-crest { display: inline-flex; flex: 0 0 auto; }
+html body #detailDialog .detail-title-crest .team-crest { width: 36px; height: 36px; }
+html body #detailDialog .detail-title-name {
+  font: 700 clamp(22px, 6vw, 28px)/1.1 var(--rf-display) !important; letter-spacing: -0.02em; color: #fff;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* market tabs */
+html body #detailDialog .pd-hero { display: grid; gap: 12px; margin-bottom: 14px; }
+html body #detailDialog .pd-tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 2px; }
+html body #detailDialog .pd-tabs::-webkit-scrollbar { display: none; }
+html body #detailDialog .pd-tab {
+  flex: 0 0 auto; padding: 9px 16px; border-radius: 12px; border: 1px solid var(--pd-border);
+  background: rgba(22, 30, 44, 0.8); color: #c3cddb; font: 500 14px/1 var(--rf-sans); cursor: pointer;
+  transition: box-shadow .15s ease, color .15s ease, border-color .15s ease;
+}
+html body #detailDialog .pd-tab.is-active { color: #fff; border-color: var(--pd-border-hi); box-shadow: var(--pd-glow); background: rgba(14, 40, 60, 0.85); }
+
+/* stat tiles */
+html body #detailDialog .pd-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+html body #detailDialog .pd-tile, html body #detailDialog .pd-card, html body #detailDialog .pd-chart-card, html body #detailDialog .pd-break {
+  background: var(--pd-card); border: 1px solid var(--pd-border); border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 30px -24px rgba(0, 0, 0, 0.95);
+}
+html body #detailDialog .pd-tile { padding: 12px 10px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; min-width: 0; }
+html body #detailDialog .pd-tile-head { display: flex; align-items: flex-start; gap: 6px; color: #e2e8f0; font: 500 12.5px/1.2 var(--rf-sans); }
+html body #detailDialog .pd-tile-head svg { width: 18px; height: 18px; flex: 0 0 18px; color: #94a3b8; }
+html body #detailDialog .pd-tile-head small { display: block; color: #94a3b8; font-size: 11.5px; }
+html body #detailDialog .pd-tile-value { font: 700 clamp(26px, 8vw, 36px)/1 var(--rf-display); letter-spacing: -0.03em; color: #fff; font-variant-numeric: tabular-nums; }
+html body #detailDialog .pd-tile-fair .pd-tile-value { color: #7dd3fc; text-shadow: 0 0 18px rgba(56, 189, 248, 0.45); }
+html body #detailDialog .pd-market-line { display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums; }
+html body #detailDialog .pd-market-line b { font: 700 22px/1 var(--rf-display); color: #fff; }
+html body #detailDialog .pd-market-line span { font: 500 15px/1 var(--rf-sans); color: #e2e8f0; }
+html body #detailDialog .pd-market-none { font: 600 14px/1.25 var(--rf-sans); color: #94a3b8; margin-top: 4px; }
+html body #detailDialog .pd-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font: 600 11.5px/1.2 var(--rf-sans); }
+html body #detailDialog .pd-badge svg { width: 12px; height: 12px; }
+html body #detailDialog .pd-badge-verified { color: var(--pd-green); background: rgba(74, 222, 128, 0.12); border: 1px solid rgba(74, 222, 128, 0.5); }
+html body #detailDialog .pd-badge-unverified { color: #f5b041; background: rgba(245, 176, 65, 0.1); border: 1px solid rgba(245, 176, 65, 0.45); }
+html body #detailDialog .pd-tile-foot { color: #94a3b8; font: 400 11px/1.2 var(--rf-sans); }
+
+/* distribution card */
+html body #detailDialog .pd-chart-card { padding: 12px 12px 10px; }
+html body #detailDialog .pd-seg { display: inline-flex; gap: 4px; padding: 3px; border-radius: 12px; border: 1px solid var(--pd-border); background: rgba(10, 15, 24, 0.6); margin-bottom: 6px; }
+html body #detailDialog .pd-seg-btn { padding: 7px 16px; border-radius: 9px; border: 1px solid transparent; background: transparent; color: #c3cddb; font: 500 13.5px/1 var(--rf-sans); cursor: pointer; }
+html body #detailDialog .pd-seg-btn.is-active { color: #fff; border-color: var(--pd-border-hi); box-shadow: var(--pd-glow); background: rgba(14, 40, 60, 0.85); }
+html body #detailDialog .pd-chart-svg { display: block; width: 100%; height: auto; overflow: visible; }
+html body #detailDialog .pd-grid { stroke: rgba(148, 163, 184, 0.12); stroke-dasharray: 2 3; }
+html body #detailDialog .pd-axis { stroke: rgba(148, 163, 184, 0.35); }
+html body #detailDialog .pd-tick { fill: #94a3b8; font: 400 9.5px var(--rf-sans); font-variant-numeric: tabular-nums; }
+html body #detailDialog .pd-axis-label { fill: #b6c2d3; font: 400 10.5px var(--rf-sans); }
+html body #detailDialog .pd-band { fill: rgba(148, 163, 184, 0.12); }
+html body #detailDialog .pd-area { fill: url(#pdAreaGrad); }
+html body #detailDialog .pd-curve { fill: none; stroke: #7dd3fc; stroke-width: 2; filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.7)); }
+html body #detailDialog .pd-bar { fill: rgba(56, 189, 248, 0.55); stroke: #7dd3fc; stroke-width: 0.8; }
+html body #detailDialog .pd-marker-line { stroke-width: 1.6; stroke-dasharray: 4 3; }
+html body #detailDialog .pd-chip { fill: rgba(10, 15, 24, 0.92); stroke-width: 1.2; }
+html body #detailDialog .pd-chip-label { font: 500 9.5px var(--rf-sans); }
+html body #detailDialog .pd-chip-value { font: 700 12.5px var(--rf-sans); font-variant-numeric: tabular-nums; }
+html body #detailDialog .pd-marker-market :is(.pd-marker-line, .pd-chip) { stroke: var(--pd-green); }
+html body #detailDialog .pd-marker-market :is(.pd-chip-label, .pd-chip-value) { fill: var(--pd-green); }
+html body #detailDialog .pd-marker-median :is(.pd-marker-line, .pd-chip) { stroke: #38bdf8; }
+html body #detailDialog .pd-marker-median :is(.pd-chip-label, .pd-chip-value) { fill: #7dd3fc; }
+html body #detailDialog .pd-marker-mean :is(.pd-marker-line, .pd-chip) { stroke: #e5e7eb; }
+html body #detailDialog .pd-marker-mean :is(.pd-chip-label, .pd-chip-value) { fill: #f8fafc; }
+html body #detailDialog .pd-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 6px; color: #c3cddb; font: 400 12px/1.3 var(--rf-sans); }
+html body #detailDialog .pd-legend span { display: inline-flex; align-items: center; gap: 7px; }
+html body #detailDialog .pd-key { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+html body #detailDialog .pd-key-dist { background: #7dd3fc; box-shadow: 0 0 8px rgba(56, 189, 248, 0.8); }
+html body #detailDialog .pd-key-band { width: 20px; border-radius: 4px; background: rgba(148, 163, 184, 0.3); }
+html body #detailDialog .pd-note { margin: 6px 0 0; color: #94a3b8; font: 400 12px/1.4 var(--rf-sans); }
+
+/* model edge + key probabilities */
+html body #detailDialog .pd-duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 8px; }
+html body #detailDialog .pd-card { padding: 12px 14px; min-width: 0; }
+html body #detailDialog .pd-card-head { display: flex; align-items: center; gap: 6px; color: #f1f5f9; font: 600 14px/1.2 var(--rf-sans); margin-bottom: 8px; }
+html body #detailDialog .pd-info { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 50%; border: 1px solid #94a3b8; color: #94a3b8; font: 600 9.5px/1 var(--rf-sans); cursor: help; }
+html body #detailDialog .pd-edge-value { display: block; font: 700 clamp(28px, 8.5vw, 36px)/1 var(--rf-display); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+html body #detailDialog .pd-edge-value.is-pos { color: #7dd3fc; text-shadow: 0 0 18px rgba(56, 189, 248, 0.45); }
+html body #detailDialog .pd-edge-value.is-neg { color: #f8fafc; }
+html body #detailDialog .pd-edge-value.is-none { color: #64748b; }
+html body #detailDialog .pd-edge small { display: block; margin-top: 6px; color: #b6c2d3; font: 400 12px/1.35 var(--rf-sans); }
+html body #detailDialog .pd-prob-row { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-top: 1px solid rgba(148, 163, 184, 0.12); color: #e2e8f0; font: 400 13px/1.2 var(--rf-sans); font-variant-numeric: tabular-nums; }
+html body #detailDialog .pd-prob-row:first-of-type { border-top: 0; }
+html body #detailDialog .pd-prob-row strong { color: #fff; font-weight: 700; }
+html body #detailDialog .pd-prob-row.is-hi strong { color: #7dd3fc; }
+
+/* what could break this */
+html body #detailDialog .pd-break { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; text-align: left; color: inherit; cursor: pointer; }
+html body #detailDialog .pd-break-icon svg { width: 24px; height: 24px; color: #cbd5e1; }
+html body #detailDialog .pd-break-copy { flex: 1 1 auto; min-width: 0; }
+html body #detailDialog .pd-break-copy strong { display: block; color: #fff; font: 600 15px/1.25 var(--rf-sans); }
+html body #detailDialog .pd-break-copy small { display: block; color: #b6c2d3; font: 400 12.5px/1.3 var(--rf-sans); }
+html body #detailDialog .pd-break-chev svg { width: 18px; height: 18px; color: #94a3b8; }
+
+html body #detailDialog .pd-duo.pd-duo-single { grid-template-columns: 1fr; }
+@media (max-width: 380px) {
+  html body #detailDialog .pd-duo { grid-template-columns: 1fr; }
+}
+html body #detailDialog .pd-legend-atom { color: #94a3b8; }

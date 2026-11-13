@@ -288,7 +288,7 @@
     // test/snapshots/nfl/detail_modal.json golden.
     detail: {
       scenarioCapable: true,
-      marketLabel: (market) => (market === 'receptions' ? 'Receptions' : 'Receiving yards'),
+      marketLabel: (market) => (market === 'receptions' ? 'Receptions' : market === 'anytime_td' ? 'Anytime TD' : 'Receiving yards'),
       modelSpec: (market) => market === 'receptions' ? 'MODEL SPEC: NEGATIVE BINOMIAL' : market === 'anytime_td' ? 'MODEL SPEC: RECEIVING-SHARE HEURISTIC' : 'MODEL SPEC: CONTINUOUS MEDIAN',
       distributionDesc: (market) => market === 'receptions' ? 'Discrete NegBin2 (Half-step)' : market === 'anytime_td' ? 'Receiving-Share Heuristic (Rushing TDs Excluded)' : 'Calibrated Continuous Log-Normal',
       sampleNote: (row) => `${num(row.games_prior, 16)} games prior · ${row.season || '2026'}`,
