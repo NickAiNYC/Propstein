@@ -1,0 +1,14 @@
+{
+  "season": 2026,
+  "week": 10,
+  "published_at": "2026-11-10T10:43:00-07:00",
+  "source_url": "https://arizonasports.com/nfl/arizona-cardinals/rams-puka-nacua-out-at-least-a-month-with-several-injuries-to-miss-cardinals-game",
+  "scope": "Players ruled out by their head coach for the Week 10 game, ahead of the official gameday inactive list. Not an official NFL inactive report: Rams HC Sean McVay said Nov 9-10 that Puka Nacua (right-knee MCL/PCL sprains, turf toe) will be placed on injured reserve and miss at least a month, including the Nov 15 game at ARI. Corroborated by https://www.covers.com/nfl/when-will-puka-nacua-return-2026. Replace with the official inactive list once published.",
+  "players": [
+    {
+      "player_id": "00-0039075",
+      "player_name": "Puka Nacua",
+      "team": "LA"
+    }
+  ]
+}
