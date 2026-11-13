@@ -1,11 +1,13 @@
 # Ignore Python backend & heavy science dependencies on Vercel edge deployment
-api/
-src/
-data/
-evaluation/
-tests/
-docs/
-.venv/
-requirements.txt
-Dockerfile
-railway.json
+# Root-anchored: an unanchored 'api/' also matched viewer/api/, so the
+# static line-history files (viewer/api/lines/...) were never deployed.
+/api/
+/src/
+/data/
+/evaluation/
+/tests/
+/docs/
+/.venv/
+/requirements.txt
+/Dockerfile
+/railway.json
