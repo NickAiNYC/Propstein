@@ -77,7 +77,15 @@ jobs:
         run: |
           NBA_DATE=$(TZ=America/New_York date +%F)
           echo "Refreshing NBA market slate for $NBA_DATE Eastern"
-          PYTHONPATH=. python scripts/fetch_nba_odds.py --dates "$NBA_DATE" --max-credits 20
+          # FanDuel via The Odds API first. When that fails (no key, budget cap,
+          # or HTTP 401 OUT_OF_USAGE_CREDITS as in Nov 2026), fall back to the
+          # free, keyless Kalshi exchange lines + ESPN schedule. A fallback that
+          # finds games but no two-sided quotes exits non-zero (job retries at
+          # the second cron tick).
+          if ! PYTHONPATH=. python scripts/fetch_nba_odds.py --dates "$NBA_DATE" --max-credits 20; then
+            echo "::warning::The Odds API NBA fetch failed; using free Kalshi lines instead."
+            PYTHONPATH=. python scripts/fetch_kalshi_nba.py --date "$NBA_DATE"
+          fi
           if [ -f "viewer/nba_games_$NBA_DATE.json" ]; then
             python scripts/publish_nba_market_slate.py "$NBA_DATE"
           else

@@ -135,11 +135,15 @@
     return `<span class="today-prop-photo"><span>${escapeHtml(initials)}</span>${safeUrl ? `<img src="${escapeHtml(safeUrl)}" alt="" loading="lazy">` : ''}</span>`;
   }
 
+  // NBA reference books: FanDuel (The Odds API) or the free Kalshi fallback.
+  const NBA_BOOKS = ['fanduel', 'kalshi'];
+  const isNbaBook = (quote) => NBA_BOOKS.includes(String(quote.book || '').toLowerCase());
+
   function matchingLine(row, game, sport, dateKey, quotes) {
     const market = sport === 'nba' ? 'points' : 'receiving_yards';
     const projection = Number(sport === 'nba' ? row.proj_pts : row.proj_yards);
     const candidates = quotes.filter((quote) => quote.game_id === game.game_id && quote.market === market
-      && (sport !== 'nba' || String(quote.book).toLowerCase() === 'fanduel')
+      && (sport !== 'nba' || isNbaBook(quote))
       && (String(quote.player_id) === String(row.player_id) || normalizedName(quote.player_name) === normalizedName(row.player_display_name))
       && !/synthetic|fixture/i.test(`${quote.book || ''} ${quote.source || ''}`)
       && /^https:\/\//.test(quote.source_url || '')
@@ -175,7 +179,7 @@
   function marketQuoteRow(quote, photos) {
     const row = { player_display_name: quote.player_name, player_id: quote.player_id };
     return `<div class="today-prop-row">
-      <div class="today-prop-summary">${playerPhoto(row, photos)}<div class="today-prop-player"><strong>${escapeHtml(quote.player_name)}</strong><span>FanDuel line · unverified</span></div><div class="today-prop-projection"><b>${Number(quote.line).toFixed(1)}</b><small>PTS LINE</small></div></div>
+      <div class="today-prop-summary">${playerPhoto(row, photos)}<div class="today-prop-player"><strong>${escapeHtml(quote.player_name)}</strong><span>${escapeHtml(quote.book || 'Book')} line · unverified</span></div><div class="today-prop-projection"><b>${Number(quote.line).toFixed(1)}</b><small>PTS LINE</small></div></div>
       ${lineBoxes(quote, Number.NaN)}
     </div>`;
   }
@@ -205,10 +209,10 @@
         : [];
       rows.sort((a, b) => Number(b.proj_yards ?? b.proj_pts ?? 0) - Number(a.proj_yards ?? a.proj_pts ?? 0));
       const marketQuotes = sport === 'nba' && match && !rows.length
-        ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false && String(quote.book).toLowerCase() === 'fanduel')
+        ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false && isNbaBook(quote))
         : [];
       panel.innerHTML = marketQuotes.length
-        ? `<div class="today-prop-heading"><strong>${marketQuotes.length} FanDuel player-points lines</strong><span>Unverified lines · no model predictions or qualified edges</span></div><div class="today-prop-list">${marketQuotes.map((quote) => marketQuoteRow(quote, extras.photos)).join('')}</div>`
+        ? `<div class="today-prop-heading"><strong>${marketQuotes.length} ${escapeHtml(marketQuotes[0].book)} player-points lines</strong><span>Unverified lines · no model predictions or qualified edges</span></div><div class="today-prop-list">${marketQuotes.map((quote) => marketQuoteRow(quote, extras.photos)).join('')}</div>`
         : rows.length
         ? `<div class="today-prop-heading"><strong>${rows.length} player props</strong><span>Model estimates · line snapshots, not picks</span></div><div class="today-prop-list">${rows.map((row) => projectionRow(row, sport, match.game, dateKey, extras.photos, extras.quotes)).join('')}</div>`
         : '<p class="today-prop-message">No player-points lines or PropStein projections are available for this matchup yet.</p>';
@@ -326,9 +330,9 @@
           const count = match && Array.isArray(match.slate)
             ? match.slate.filter((row) => row.game_id === match.game.game_id && !row._fixture && (row.status === 'ACT' || row.status === 'ACTIVE') && !row.excl_reason).length : 0;
           const marketCount = sport === 'nba' && match && !count
-            ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false && String(quote.book).toLowerCase() === 'fanduel').length : 0;
+            ? extras.quotes.filter((quote) => quote.game_id === match.game.game_id && quote.market === 'points' && quote._fixture === false && quote.verified === false && isNbaBook(quote)).length : 0;
           const label = gamesEl.querySelector(`[data-game-index="${index}"] [data-prop-count]`);
-          if (label && (count || marketCount)) label.textContent = marketCount ? `FANDUEL LINES (${marketCount})` : `PLAYER PROPS (${count})`;
+          if (label && (count || marketCount)) label.textContent = marketCount ? `${String(extras.quotes.find((quote) => quote.game_id === match.game.game_id && isNbaBook(quote))?.book || 'Book').toUpperCase()} LINES (${marketCount})` : `PLAYER PROPS (${count})`;
         });
       }).catch(() => {});
     } catch (error) {
