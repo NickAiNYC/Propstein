@@ -993,3 +993,63 @@ html.glass .rf-status-strip .how-math-works-btn { background: rgba(255,255,255,0
 .rf-m-step { padding: 6px 8px; flex: 1 1 0; }
 .rf-method-flow i { flex: none; }
 html.glass body #mobileFilterStrip summary, html.glass body #mobileFilterStrip .chip-pill:not(.active) { background: rgba(255,255,255,0.7) !important; color: #0b2540 !important; border-color: rgba(30,90,150,0.16) !important; }
+
+/* ================= 2027 pass: depth, aurora, motion ================= */
+/* aurora canvas (dark) */
+html:not(.glass) body {
+  background:
+    radial-gradient(900px 520px at 85% -8%, rgba(56,189,248,0.16), transparent 60%),
+    radial-gradient(700px 480px at -5% 18%, rgba(99,102,241,0.12), transparent 60%),
+    radial-gradient(800px 500px at 50% 110%, rgba(14,165,233,0.10), transparent 60%),
+    #0B0D11 !important;
+  background-attachment: fixed !important;
+}
+/* cards: glass sheen + gradient hairline border */
+html body .home-edge-card[data-rf-card] { position: relative; isolation: isolate; }
+html body .home-edge-card[data-rf-card]::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0) 38%);
+}
+html body .home-edge-card[data-rf-card]::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(160deg, rgba(125,211,252,0.55), rgba(255,255,255,0.06) 40%, rgba(56,189,248,0.25));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+html:not(.glass) body .home-edge-card[data-rf-card] {
+  background: linear-gradient(180deg, rgba(20,26,38,0.82), rgba(13,17,25,0.82)) !important;
+  backdrop-filter: blur(16px) saturate(1.2); -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border-color: transparent !important;
+}
+html.glass body .home-edge-card[data-rf-card]::after { background: linear-gradient(160deg, #fff, rgba(255,255,255,0.4) 40%, rgba(14,165,233,0.35)); }
+html.glass body .home-edge-card[data-rf-card]::before { background: linear-gradient(160deg, rgba(255,255,255,0.9), rgba(255,255,255,0) 45%); }
+/* stat tiles: the fair line is the hero number */
+.rf-stat-fair b { font-size: 22px; text-shadow: 0 0 18px rgba(56,189,248,0.45); }
+html.glass .rf-stat-fair b { text-shadow: none; }
+.rf-stat b { background: none; }
+/* avatar: soft accent halo */
+html:not(.glass) .rf-prop-top .pw-avatar { box-shadow: 0 0 0 1px rgba(125,211,252,0.35), 0 0 28px -4px rgba(56,189,248,0.35), 0 10px 24px -10px rgba(0,0,0,.7) !important; }
+/* curve: glow + draw-in */
+.rf-dist-line { filter: drop-shadow(0 0 5px rgba(56,189,248,0.7)); stroke-dasharray: 1; stroke-dashoffset: 1; animation: rf-draw 1.1s cubic-bezier(.2,.7,.2,1) .15s forwards; }
+html.glass .rf-dist-line { filter: none; }
+.rf-dist-band { opacity: 0; animation: rf-fade .7s ease .7s forwards; }
+.rf-dist-fair, .rf-dist-proj { opacity: 0; animation: rf-fade .5s ease .9s forwards; }
+.rf-dist-chip { opacity: 0; animation: rf-fade .5s ease 1.05s forwards; }
+@keyframes rf-draw { to { stroke-dashoffset: 0; } }
+@keyframes rf-fade { to { opacity: 1; } }
+/* cards rise in, staggered */
+@keyframes rf-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+html body .home-edge-card[data-rf-card] { animation: rf-rise .5s cubic-bezier(.2,.7,.2,1) both; }
+html body .home-edge-card[data-rf-card]:nth-child(2) { animation-delay: .06s; }
+html body .home-edge-card[data-rf-card]:nth-child(3) { animation-delay: .12s; }
+html body .home-edge-card[data-rf-card]:nth-child(n+4) { animation-delay: .18s; }
+/* method strip: connected flow */
+.rf-m-out { box-shadow: 0 0 20px -6px rgba(56,189,248,0.5); }
+/* hero heading: gradient wordmark */
+html:not(.glass) body #homeEdgeTitle { background: linear-gradient(90deg, #fff 30%, #7dd3fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.03em; }
+html.glass body #homeEdgeTitle { background: linear-gradient(90deg, #0b2540 40%, #0284c7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.03em; }
+/* toggle + dock: glow on active */
+.rf-theme-toggle span.on { box-shadow: inset 0 0 0 1px rgba(125,211,252,0.35), 0 0 12px -2px rgba(56,189,248,0.35); }
+@media (prefers-reduced-motion: reduce) {
+  .rf-dist-line, .rf-dist-band, .rf-dist-fair, .rf-dist-proj, .rf-dist-chip, html body .home-edge-card[data-rf-card] { animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important; }
+}

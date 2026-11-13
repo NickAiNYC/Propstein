@@ -527,7 +527,7 @@
         <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38BDF8" stop-opacity="0.22"/><stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/></linearGradient></defs>
         <path class="rf-dist-tail" d="${fullArea}"/>
         ${bandPath ? `<path class="rf-dist-band" fill="url(#${gid})" d="${bandPath}"/>` : ''}
-        <path class="rf-dist-line" d="${line}"/>
+        <path class="rf-dist-line" pathLength="1" d="${line}"/>
         <line class="rf-dist-base" x1="0" x2="${W}" y1="${base}" y2="${base}"/>
         <line class="rf-dist-fair" x1="${fx}" x2="${fx}" y1="${top - 4}" y2="${base}"/>
         <line class="rf-dist-proj" x1="${mx}" x2="${mx}" y1="${top - 4}" y2="${base}"/>
