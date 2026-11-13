@@ -1,6 +1,6 @@
 {
   "schema_version": "slate-index.v1",
-  "generated_at": "2026-11-13T03:29:40Z",
+  "generated_at": "2026-11-13T05:59:58Z",
   "source": "scripts/autopilot.py",
   "sports": {
     "nfl": {
@@ -89,7 +89,7 @@
       }
     },
     "nba": {
-      "default_slate": null,
+      "default_slate": "2026-11-13",
       "slates": {
         "2026-10-22": {
           "season": 2026,
@@ -238,6 +238,21 @@
           "odds": "nba_odds_2026-11-07.json",
           "snapshots": null,
           "historical": true,
+          "timezone": "America/New_York",
+          "marketOnly": true
+        },
+        "2026-11-13": {
+          "season": 2026,
+          "date": "2026-11-13",
+          "shortLabel": "Nov 13 Slate",
+          "state": "Slate \u00b7 2026-11-13",
+          "slate": "nba_slate_2026-11-13.json",
+          "games": "nba_games_2026-11-13.json",
+          "picks": null,
+          "injuries": "nba_injuries_2026-11-13.json",
+          "odds": "nba_odds_2026-11-13.json",
+          "snapshots": null,
+          "historical": false,
           "timezone": "America/New_York",
           "marketOnly": true
         }

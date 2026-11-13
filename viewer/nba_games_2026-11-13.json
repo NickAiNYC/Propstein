@@ -1,0 +1,110 @@
+[
+ {
+  "game_id": "nba-20261113-MIL-ORL",
+  "gameday": "2026-11-13",
+  "gametime": "19:00",
+  "gametime_et": "19:00",
+  "tipoff_utc": "2026-11-14T00:00:00Z",
+  "away_team": "MIL",
+  "home_team": "ORL",
+  "odds_event_id": null,
+  "espn_event_id": "401909297",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-NYK-IND",
+  "gameday": "2026-11-13",
+  "gametime": "19:00",
+  "gametime_et": "19:00",
+  "tipoff_utc": "2026-11-14T00:00:00Z",
+  "away_team": "NYK",
+  "home_team": "IND",
+  "odds_event_id": null,
+  "espn_event_id": "401909296",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-ATL-CHI",
+  "gameday": "2026-11-13",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-11-14T01:00:00Z",
+  "away_team": "ATL",
+  "home_team": "CHI",
+  "odds_event_id": null,
+  "espn_event_id": "401909299",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-CLE-MIA",
+  "gameday": "2026-11-13",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-11-14T01:00:00Z",
+  "away_team": "CLE",
+  "home_team": "MIA",
+  "odds_event_id": null,
+  "espn_event_id": "401909298",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-MEM-NOP",
+  "gameday": "2026-11-13",
+  "gametime": "20:00",
+  "gametime_et": "20:00",
+  "tipoff_utc": "2026-11-14T01:00:00Z",
+  "away_team": "MEM",
+  "home_team": "NOP",
+  "odds_event_id": null,
+  "espn_event_id": "401909300",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-UTA-HOU",
+  "gameday": "2026-11-13",
+  "gametime": "20:30",
+  "gametime_et": "20:30",
+  "tipoff_utc": "2026-11-14T01:30:00Z",
+  "away_team": "UTA",
+  "home_team": "HOU",
+  "odds_event_id": null,
+  "espn_event_id": "401909301",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-GSW-SAS",
+  "gameday": "2026-11-13",
+  "gametime": "21:30",
+  "gametime_et": "21:30",
+  "tipoff_utc": "2026-11-14T02:30:00Z",
+  "away_team": "GSW",
+  "home_team": "SAS",
+  "odds_event_id": null,
+  "espn_event_id": "401909302",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-POR-SAC",
+  "gameday": "2026-11-13",
+  "gametime": "22:00",
+  "gametime_et": "22:00",
+  "tipoff_utc": "2026-11-14T03:00:00Z",
+  "away_team": "POR",
+  "home_team": "SAC",
+  "odds_event_id": null,
+  "espn_event_id": "401909303",
+  "_fixture": false
+ },
+ {
+  "game_id": "nba-20261113-OKC-LAC",
+  "gameday": "2026-11-13",
+  "gametime": "22:30",
+  "gametime_et": "22:30",
+  "tipoff_utc": "2026-11-14T03:30:00Z",
+  "away_team": "OKC",
+  "home_team": "LAC",
+  "odds_event_id": null,
+  "espn_event_id": "401909304",
+  "_fixture": false
+ }
+]
